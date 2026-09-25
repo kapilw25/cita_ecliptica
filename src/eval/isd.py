@@ -20,9 +20,8 @@ import pandas as pd
 project_root = Path(__file__).parent.parent.parent  # finetuning_evaluation
 
 sys.path.insert(0, str(project_root))
-  # For dataset submodule
 
-from dataset import (
+from src.eval.isd_dataset import (   # the dataset module lives next to this script (the old `dataset` package is gone)
     InstructionSwitchDataset,
     ISDTestCase
 )

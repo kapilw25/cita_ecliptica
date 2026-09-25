@@ -1,6 +1,13 @@
-# CITA : Contrastive Instruction-Tuned Alignment 
+# SwiPO (Switchable Preference Optimization), formerly CITA
 
-Comparative study of SFT → DPO/PPO/GRPO → CITA training pipeline on Llama-3.1-8B.
+Comparative study of SFT → DPO/PPO/GRPO → SwiPO training pipeline on Llama-3.1-8B.
+
+> **Naming.** The method was called CITA (Contrastive Instruction-Tuned Alignment) in arXiv v1 (2601.06157) and is
+> SwiPO from arXiv v2 and the AAAI-27 student abstract on. Code identifiers, checkpoint names and output directories
+> (`CITA_Instruct`, `CITATrainer`, `outputs/training/CITA_*`) keep the old name; printed figure labels are renamed at
+> save time via `plots.display_names` in `configs/pipeline.yaml`. Datasets: [ECLIPTICA-3k](https://huggingface.co/datasets/anonymousML123/ECLIPTICA-3k)
+> (evaluated, 300 prompts x 10 types) and [ECLIPTICA-30k](https://huggingface.co/datasets/anonymousML123/ECLIPTICA-30k)
+> (300 x 100 types; the 3k set is its `eval_3k` config; built by `src/eval/ecliptica_30k_build.py` from `configs/ecliptica_taxonomy_100.yaml`).
 
 ## Installation
 
@@ -248,7 +255,7 @@ python comparative_study/05_evaluation/isd/evaluation.py \
 | NoInstruct | [SFT-NoInstruct](https://huggingface.co/kapilw25/llama3-8b-pku-SFT-NoInstruct-Baseline-NoInstruct) | [DPO-NoInstruct](https://huggingface.co/kapilw25/llama3-8b-pku-DPO-NoInstruct-SFT-NoInstruct) | [PPO-NoInstruct](https://huggingface.co/kapilw25/llama3-8b-pku-PPO-NoInstruct-SFT-NoInstruct) | [GRPO-NoInstruct](https://huggingface.co/kapilw25/llama3-8b-pku-GRPO-NoInstruct-SFT-NoInstruct) | [CITA-NoInstruct](https://huggingface.co/kapilw25/llama3-8b-pku-CITA-NoInstruct-DPO-NoInstruct) |
 | Instruct | [SFT-Instruct](https://huggingface.co/kapilw25/llama3-8b-pku-SFT-Instruct-Baseline-NoInstruct) | [DPO-Instruct](https://huggingface.co/kapilw25/llama3-8b-pku-DPO-Instruct-SFT-Instruct) | [PPO-Instruct](https://huggingface.co/kapilw25/llama3-8b-pku-PPO-Instruct-SFT-Instruct) | [GRPO-Instruct](https://huggingface.co/kapilw25/llama3-8b-pku-GRPO-Instruct-SFT-Instruct) | [CITA-Instruct](https://huggingface.co/kapilw25/llama3-8b-pku-CITA-Instruct-DPO-Instruct) |
 
-**Dataset:** [ISD-Instruction-Switch-Dataset](https://huggingface.co/datasets/kapilw25/ISD-Instruction-Switch-Dataset)
+**Dataset:** [ECLIPTICA-3k](https://huggingface.co/datasets/kapilw25/ECLIPTICA-3k)
 
 ## Results
 

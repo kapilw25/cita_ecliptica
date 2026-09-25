@@ -26,6 +26,17 @@ debugpy
 python-dotenv
 huggingface_hub
 
+# CPU-side imports of src/utils/eval (its __init__ imports model_loader, so every plotting /
+# replot script needs these even without a GPU), the ECLIPTICA-30k builder, and YAML configs
+torch
+transformers==4.51.0
+peft==0.17.1
+tensorboard
+datasets==4.2.0
+pyarrow
+pyyaml
+tqdm
+
 # LLM-as-judge evaluation (Fireworks API)
 litellm
 sentence-transformers

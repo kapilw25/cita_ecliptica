@@ -14,11 +14,13 @@ from pathlib import Path
 from typing import List, Dict, Optional, Tuple
 
 from .model_loader import MODEL_NAME
+from .display_names import apply_display_names
 
 
 def save_figure_dual_format(fig, output_path: Path, dpi: int = 300) -> Tuple[str, str]:
     """
     Save figure in both PDF (for Overleaf) and PNG (for sharing) formats.
+    Printed method labels are renamed first (configs/pipeline.yaml: plots.display_names).
 
     Args:
         fig: Matplotlib figure
@@ -28,6 +30,7 @@ def save_figure_dual_format(fig, output_path: Path, dpi: int = 300) -> Tuple[str
     Returns:
         Tuple of (pdf_path, png_path)
     """
+    apply_display_names(fig)
     output_path = Path(output_path)
 
     # Save PNG

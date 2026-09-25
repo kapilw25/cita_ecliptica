@@ -75,3 +75,21 @@ base_model:
   short_name: Llama-3.1-8B
   context_length: 4096
   dtype: bfloat16
+
+# ----------------------------------------------------------------------------
+# Figure text (src/utils/eval/display_names.py): method renamed 2026-09-24,
+# directory / checkpoint names stay CITA_*, only printed labels change.
+# ----------------------------------------------------------------------------
+plots:
+  display_names:
+    CITA: SwiPO
+
+# ----------------------------------------------------------------------------
+# Public datasets (HF ids) and the ECLIPTICA-30k build (src/eval/ecliptica_30k_build.py)
+# ----------------------------------------------------------------------------
+datasets:
+  ecliptica_3k: anonymousML123/ECLIPTICA-3k        # evaluated subset: 300 prompts x 10 types
+  ecliptica_30k: anonymousML123/ECLIPTICA-30k      # release: 300 prompts x 100 types
+  ecliptica_taxonomy: configs/ecliptica_taxonomy_100.yaml
+  ecliptica_30k_seed: 42                           # variant sampling for the 90 new types
+  ecliptica_30k_dir: outputs/ecliptica_30k         # local build dir (mirrors the HF repo layout)

@@ -15,6 +15,7 @@ Output:
 # Model identifier for figure titles
 MODEL_NAME = "Llama-3.1-8B"
 
+import sys
 from pathlib import Path
 import numpy as np
 import optuna
@@ -30,6 +31,8 @@ plt.rcParams['axes.linewidth'] = 1.2
 
 # Paths
 PROJECT_ROOT = Path(__file__).parent.parent.parent
+sys.path.insert(0, str(PROJECT_ROOT))
+from src.utils.eval.display_names import apply_display_names  # noqa: E402  (printed labels: CITA -> SwiPO)
 OPTUNA_DB_INSTRUCT = PROJECT_ROOT / "outputs" / "training" / "optuna_cita_instruct.db"
 OPTUNA_DB_NOINSTRUCT = PROJECT_ROOT / "outputs" / "training" / "optuna_cita.db"
 OUTPUT_DIR = PROJECT_ROOT / "Overleaf_draft" / "figures" / "appendix"
@@ -207,6 +210,7 @@ def plot_hp_vs_metric(
     # Save both PDF and PNG
     pdf_path = output_path.with_suffix('.pdf')
     png_path = output_path.with_suffix('.png')
+    apply_display_names(fig)
     fig.savefig(pdf_path, format='pdf', dpi=300, bbox_inches='tight', facecolor='white')
     fig.savefig(png_path, format='png', dpi=300, bbox_inches='tight', facecolor='white')
     plt.close(fig)
@@ -306,6 +310,7 @@ def plot_combined_ablation(trials: list, output_path: Path, best_trial_num: int 
     # Save
     pdf_path = output_path.with_suffix('.pdf')
     png_path = output_path.with_suffix('.png')
+    apply_display_names(fig)
     fig.savefig(pdf_path, format='pdf', dpi=300, bbox_inches='tight', facecolor='white')
     fig.savefig(png_path, format='png', dpi=300, bbox_inches='tight', facecolor='white')
     plt.close(fig)
@@ -381,6 +386,7 @@ def plot_pareto_frontier(trials: list, output_path: Path, best_trial_num: int = 
     # Save
     pdf_path = output_path.with_suffix('.pdf')
     png_path = output_path.with_suffix('.png')
+    apply_display_names(fig)
     fig.savefig(pdf_path, format='pdf', dpi=300, bbox_inches='tight', facecolor='white')
     fig.savefig(png_path, format='png', dpi=300, bbox_inches='tight', facecolor='white')
     plt.close(fig)

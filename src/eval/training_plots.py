@@ -20,6 +20,7 @@ Output:
 # Model identifier for figure titles
 MODEL_NAME = "Llama-3.1-8B"
 
+import sys
 from pathlib import Path
 
 import matplotlib.pyplot as plt
@@ -34,6 +35,8 @@ from tensorboard.backend.event_processing import event_accumulator
 
 # Paths
 PROJECT_ROOT = Path(__file__).parent.parent.parent
+sys.path.insert(0, str(PROJECT_ROOT))
+from src.utils.eval.display_names import apply_display_names  # noqa: E402  (printed labels: CITA -> SwiPO)
 TB_LOGS = PROJECT_ROOT / "tensorboard_logs"
 OUTPUT_DIR = PROJECT_ROOT / "Overleaf_draft" / "figures" / "training"
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
@@ -159,6 +162,7 @@ def plot_single_metric(
     # Save both PDF and PNG
     pdf_path = output_path.with_suffix('.pdf')
     png_path = output_path.with_suffix('.png')
+    apply_display_names(fig)
     fig.savefig(pdf_path, format='pdf', dpi=300, bbox_inches='tight', facecolor='white')
     fig.savefig(png_path, format='png', dpi=300, bbox_inches='tight', facecolor='white')
     plt.close(fig)
@@ -378,6 +382,7 @@ def generate_combined_loss_subplot():
     output_path = OUTPUT_DIR / "combined_eval_loss"
     pdf_path = output_path.with_suffix('.pdf')
     png_path = output_path.with_suffix('.png')
+    apply_display_names(fig)
     fig.savefig(pdf_path, format='pdf', dpi=300, bbox_inches='tight', facecolor='white')
     fig.savefig(png_path, format='png', dpi=300, bbox_inches='tight', facecolor='white')
     plt.close(fig)
@@ -433,6 +438,7 @@ def generate_combined_loss_subplot():
     output_path = OUTPUT_DIR / "combined_eval_loss_withSFT"
     pdf_path = output_path.with_suffix('.pdf')
     png_path = output_path.with_suffix('.png')
+    apply_display_names(fig)
     fig.savefig(pdf_path, format='pdf', dpi=300, bbox_inches='tight', facecolor='white')
     fig.savefig(png_path, format='png', dpi=300, bbox_inches='tight', facecolor='white')
     plt.close(fig)
@@ -501,6 +507,7 @@ def generate_combined_accuracy_subplot():
     output_path = OUTPUT_DIR / "combined_accuracy"
     pdf_path = output_path.with_suffix('.pdf')
     png_path = output_path.with_suffix('.png')
+    apply_display_names(fig)
     fig.savefig(pdf_path, format='pdf', dpi=300, bbox_inches='tight', facecolor='white')
     fig.savefig(png_path, format='png', dpi=300, bbox_inches='tight', facecolor='white')
     plt.close(fig)
@@ -566,6 +573,7 @@ def generate_combined_accuracy_subplot():
     output_path = OUTPUT_DIR / "combined_accuracy_withSFT"
     pdf_path = output_path.with_suffix('.pdf')
     png_path = output_path.with_suffix('.png')
+    apply_display_names(fig)
     fig.savefig(pdf_path, format='pdf', dpi=300, bbox_inches='tight', facecolor='white')
     fig.savefig(png_path, format='png', dpi=300, bbox_inches='tight', facecolor='white')
     plt.close(fig)

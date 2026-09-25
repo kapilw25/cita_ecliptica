@@ -16,7 +16,7 @@ def get_isd_max_samples() -> Tuple[int, int, str]:
     from datasets import load_dataset
 
     try:
-        dataset = load_dataset("kapilw25/ISD-Instruction-Switch-Dataset", split="train")
+        dataset = load_dataset("anonymousML123/ECLIPTICA-3k", split="train")
         unique_prompts = len(set(dataset['prompt_id']))
         total_cases = unique_prompts * 10  # 10 instruction types
         return unique_prompts, total_cases, "fetched"
