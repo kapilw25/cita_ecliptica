@@ -33,6 +33,12 @@
 \title{SwiPO on ECLIPTICA-30k: Can You Trust One LLM Checkpoint to Switch Its Alignment for Every Agent Role?}
 
 \author{
+    % Author e-mails, not printed; kept for future submissions (EasyChair AAAI-27 SA form, 2026-09-25):
+    %   Gaytri Jena     gaytri_jena@berkeley.edu
+    %   Kapil Wanaskar  kapilw25@gmail.com
+    %   Vinija Jain     vinija@gmail.com
+    %   Aman Chadha     aman@amanchadha.com
+    %   Amitava Das     amitavad@goa.bits-pilani.ac.in
     % Primary author = Gaytri Jena, as in the FactorJEPA abstract (user decision 2026-09-24).
     % NOTE: the Student Abstract call allows ONE submission per primary student author;
     % Gaytri is also primary on the FactorJEPA abstract. Swap back to Kapil (SJSU,
@@ -54,7 +60,7 @@
     \textsuperscript{\rm 3}Meta, USA\quad
     \textsuperscript{\rm 4}Apple, USA\quad
     \textsuperscript{\rm 5}Pragya Lab, BITS Pilani Goa, India\\
-    gaytri\_jena@ucberkeley.edu
+    gaytri\_jena@berkeley.edu
 }
 
 \begin{document}
@@ -62,7 +68,7 @@
 \maketitle
 
 \begin{abstract}
-Preference optimization such as DPO or GRPO imprints one behavioral policy into a checkpoint, so one model cannot serve every agent role without prompt hacks or re-alignment. We treat alignment as a runtime control channel: a natural-language alignment instruction states the behavioral contract, which the model must realize under an unchanged user request. ECLIPTICA-30k, 300 prompts crossed with 100 alignment-instruction types, isolates this effect; every experiment here uses its evaluated 10-type, 3,000-case subset. SwiPO (Switchable Preference Optimization) learns instruction-conditioned preferences under a mandatory KL anchor. On Llama-3.1-8B across five suites, SwiPO reaches 86.7\% instruction-alignment efficiency against 56.1\% (DPO), 36.1\% (GRPO), and 20.4\% (PPO), while DPO switches more on two suites.
+Preference optimization such as DPO or GRPO imprints one behavioral policy into a checkpoint, so one model cannot serve every agent role without prompt hacks or re-alignment. We treat alignment as a runtime control channel in which a natural-language alignment instruction states the behavioral contract that the model must realize under an unchanged user request. ECLIPTICA-30k, 300 prompts crossed with 100 alignment-instruction types, isolates this effect; every experiment here uses its evaluated 10-type, 3,000-case subset. SwiPO (Switchable Preference Optimization) learns instruction-conditioned preferences under a mandatory KL anchor. On Llama-3.1-8B across five suites, SwiPO reaches 86.7\% instruction-alignment efficiency against 56.1\% (DPO), 36.1\% (GRPO), and 20.4\% (PPO), while DPO switches more on two suites.
 \end{abstract}
 
 \begin{links}
@@ -76,7 +82,7 @@ Preference optimization such as DPO or GRPO imprints one behavioral policy into 
 
 \section{Problem}
 
-RLHF, DPO \cite{rafailov2023direct}, and their variants fix one policy per checkpoint, yet each agent role needs its own safety threshold, tone, and disclosure norms. We instead pass an alignment instruction $I$ next to the user prompt $X$: the same $X$ must yield different aligned behaviors only because $I$ changed, and the switch must be clean, without repetition, prompt leakage, incoherence, or unsafe drift (Figure~\ref{fig:teaser}).
+RLHF, DPO \cite{rafailov2023direct}, and their variants fix one policy per checkpoint, yet each agent role needs its own safety threshold, tone, and disclosure norms. We instead pass an alignment instruction $I$ next to the user prompt $X$. The same $X$ must then yield different aligned behaviors only because $I$ changed, and the switch must be clean, with no repetition, prompt leakage, incoherence, or unsafe drift (Figure~\ref{fig:teaser}).
 
 \section{ECLIPTICA Benchmark}
 
@@ -156,7 +162,7 @@ LITMUS (AQI) & Instruct & 11.8 & 43.5 & 31.5 & \textbf{55.0} \\
 \end{table}
 
 \paragraph{Findings.}
-In Table~\ref{tab:scores}, SwiPO has the largest instruction sensitivity on TruthfulQA, Length Control, and AQI, reaches a positive calibration score, and has the highest AQI of all eight models (55.0). Averaging per-suite $\Delta$ after min-max normalization gives the 86.7\% efficiency. The gain is not universal: DPO switches more on ECLIPTICA (+0.172 against +0.162) and Conditional Safety (+0.475 against +0.391), whereas SwiPO trades peak separation on one axis for stable switching across several. Two ceilings hold: no Instruct model exceeds 0.39 of ECLIPTICA's maximum, and none reaches the Length Control target (best ratio 1.14). One caveat holds for every trainer: 46 to 67\% of Instruct-model ECLIPTICA answers contain over 30\% duplicated sentences or 5-grams at 512 tokens, and all scores include them.
+In Table~\ref{tab:scores}, SwiPO has the largest instruction sensitivity on TruthfulQA, Length Control, and AQI, reaches a positive calibration score, and has the highest AQI of all eight models (55.0). Averaging per-suite $\Delta$ after min-max normalization gives the 86.7\% efficiency. DPO still switches more on ECLIPTICA (+0.172 against +0.162) and Conditional Safety (+0.475 against +0.391); SwiPO trades peak separation on one axis for stable switching across several. No Instruct model exceeds 0.39 of ECLIPTICA's maximum, and none reaches the Length Control target (best ratio 1.14). Every trainer also loops: 46 to 67\% of Instruct-model ECLIPTICA answers contain over 30\% duplicated sentences or 5-grams at 512 tokens, and all scores include them.
 
 % The kit allows references, and only references, at \small (9 pt) when the page limit is exceeded.
 {\small
