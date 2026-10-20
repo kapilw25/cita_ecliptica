@@ -17,9 +17,9 @@ We acknowledge the current limitations of SwiPO and outline directions for futur
 
 \paragraph{Model Generalization.} We evaluate only Llama-3.1-8B~\cite{dubey2024llama}. Future work should validate SwiPO on diverse architectures~\cite{jiang2023mistral,zhang2022opt,openai2023gpt4} and scales (7B--70B) to establish generality across model families.
 
-\paragraph{Instruction Coverage.} The 10 evaluated instruction types cover common alignment dimensions but may not capture all real-world policy requirements. ECLIPTICA-30k adds 90 hand-designed types (Section~\ref{sec:ecliptica_benchmark}) that no model has been scored on yet; domain-specific instructions (medical, legal, educational) still require dedicated evaluation.
+\paragraph{Instruction Coverage.} The 10 evaluated instruction types (ECLIPTICA-3k, which every ECLIPTICA result in this paper uses) cover common alignment dimensions but may not capture all real-world policy requirements. ECLIPTICA-30k adds 90 hand-designed types (Section~\ref{sec:ecliptica_benchmark}) that no model has been scored on yet; domain-specific instructions (medical, legal, educational) still require dedicated evaluation.
 
-\paragraph{Response Validity.} With greedy decoding at 512 new tokens, a large share of ECLIPTICA responses degenerate into repetition. Counting a response as looping when more than 30\% of its sentences or of its 5-grams are duplicates, 63\% of SwiPO\_Instruct responses loop, against 46\% for DPO, 66\% for GRPO, 67\% for PPO, and 16--39\% for the NoInstruct variants. All ECLIPTICA scores in this paper are computed on every response, loops included. The repository's validity detector additionally counts any word of three or more letters occurring more than five times as repetition; that rule fires on function words in nearly every long response, so it is not used for any reported number. Decoding with a repetition penalty and re-scoring is the obvious next experiment.
+\paragraph{Response Validity.} With one sampled answer per case (temperature 0.7, top-p 0.9, at most 512 new tokens), a large share of ECLIPTICA responses degenerate into repetition. Counting a response as looping when more than 30\% of its sentences or of its 5-grams are duplicates, 63\% of SwiPO\_Instruct responses loop, against 46\% for DPO, 66\% for GRPO, 67\% for PPO, and 16--39\% for the NoInstruct variants. All ECLIPTICA scores in this paper are computed on every response, loops included. The repository's validity detector additionally counts any word of three or more letters occurring more than five times as repetition; that rule fires on function words in nearly every long response, so it is not used for any reported number. Decoding with a repetition penalty and re-scoring is the obvious next experiment.
 
 \paragraph{Multilingual Alignment.} All experiments are English-only. Instruction-conditioned alignment in multilingual settings raises questions about cross-lingual instruction transfer and cultural alignment differences.
 
@@ -29,7 +29,7 @@ We acknowledge the current limitations of SwiPO and outline directions for futur
 
 \paragraph{Inference Overhead.} SwiPO requires alignment instructions in every prompt, increasing context length by 10--40 tokens. While minimal for modern LLMs, this may matter for latency-critical applications or extremely long contexts.
 
-\paragraph{Instruction Specification.} Deployers must carefully craft alignment instructions for each use case. Poorly specified instructions may lead to unexpected behaviors---instruction engineering becomes a new deployment concern.
+\paragraph{Instruction Specification.} Deployers must carefully craft alignment instructions for each use case. Poorly specified instructions may lead to unexpected behaviors; instruction engineering becomes a new deployment concern.
 
 \vspace{-2mm}
 \subsection{Safety \& Ethical Considerations}

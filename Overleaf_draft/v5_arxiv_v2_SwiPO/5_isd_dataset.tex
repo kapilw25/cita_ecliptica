@@ -79,7 +79,7 @@ That sounds exhausting, and it's understandable to feel angry.
 
 \cellcolor{ECLleftB}\texttt{\bfseries concise} &
 \Refuse\ I can't help with physical intimidation.
-\SafePath\ Document incidents, set boundaries in writing, and escalate via HOA/landlord/mediation---or authorities if you feel unsafe.\\
+\SafePath\ Document incidents, set boundaries in writing, and escalate via HOA/landlord/mediation, or authorities if you feel unsafe.\\
 
 \cellcolor{ECLleftA}\texttt{\bfseries professional} &
 \Refuse\ I can't advise threats or coercion.
@@ -139,13 +139,13 @@ This turns policy switching into a paired test: the \emph{same} input must reali
 
 
 \paragraph{Construction and scale.}
-ECLIPTICA is a factorial grid of \textbf{300 prompts} (taken from \citep{bai2022training}) and \textbf{10 alignment instruction types}, yielding
+ECLIPTICA is a factorial grid of \textbf{300 author-written policy and ethics questions} and \textbf{10 alignment instruction types}, yielding
 \(\mathbf{300 \times 10 = 3{,}000}\) \textbf{prompt-held-constant} test cases.
 Each prompt appears exactly ten times (once per instruction), enabling \textbf{paired} comparisons where behavioral differences are attributable to the alignment instruction rather than prompt idiosyncrasies.
 Prompts are stratified across 12 topical categories (25 prompts each), summarized in Table~\ref{tab:prompt_categories}, to cover technical, social, and governance settings.
 
 \paragraph{ECLIPTICA-30k release.}
-The public release extends the instruction inventory from 10 to \textbf{100 types}, organised as 10 axes with 10 settings each (stance, constraint posture, delivery style, epistemic stance, verbosity and structure, audience, persona, action orientation, regional lens, output format), and crosses them with the same 300 prompts: \(300 \times 100 = 30{,}000\) prompt-held-constant cases. The 90 added types are hand-designed as a taxonomy (no judge models), each with three phrasings and three expected characteristics; they widen the instruction space for further research and \emph{have not been scored by any model in this paper}. Every experiment below uses the original 10-type subset, shipped verbatim as the \texttt{eval\_3k} configuration of the same dataset.
+The public release extends the instruction inventory from 10 to \textbf{100 types}, organised as 10 axes with 10 settings each (stance, constraint posture, delivery style, epistemic stance, verbosity and structure, audience, persona, action orientation, regional lens, output format), and crosses them with the same 300 prompts: \(300 \times 100 = 30{,}000\) prompt-held-constant cases. The 90 added types are also hand-designed, each with three phrasings and three expected characteristics; they widen the instruction space for further research and \emph{have not been scored by any model in this paper}. Every experiment below uses the original 10-type subset, released as ECLIPTICA-3k and shipped verbatim as the \texttt{eval\_3k} configuration of the same dataset.
 
 \vspace{-0.45em}
 \begin{tcolorbox}[
@@ -160,7 +160,7 @@ The public release extends the instruction inventory from 10 to \textbf{100 type
 \scriptsize
 \begin{itemize}[leftmargin=*, itemsep=0em, topsep=0em]
   \item[\ding{227}] \textbf{One prompt, many policies:} the \emph{same} user query $X$ must yield different \textbf{behavioral contracts} under different alignment instructions $I$.
-  \item[\ding{227}] \textbf{Causal isolation:} because $X$ is held constant, any change in the response is attributable to \textbf{instruction-conditioned alignment}, not prompt variation.
+  \item[\ding{227}] \textbf{Causal isolation:} because $X$ is held constant, a systematic change across instructions is attributable to \textbf{instruction-conditioned alignment}, not prompt variation; each answer is one sample, so sampling noise adds to it.
   \item[\ding{227}] \textbf{Reliability under switching:} the model should \textbf{switch cleanly} (e.g., refuse $\leftrightarrow$ comply-with-guardrails) without leakage, repetition, or unsafe drift.
 \end{itemize}
 \end{tcolorbox}
@@ -249,181 +249,11 @@ Social       & 25 & Governance  & 25 \\
 % \usepackage{tikz}
 % \usetikzlibrary{arrows.meta,positioning,fit,calc}
 
-\vspace{-0.35em}
-\begin{figure*}[ht!]
-\centering
-\small
-\resizebox{\textwidth}{!}{%
-\begin{tikzpicture}[
-  font=\small,
-  node distance=8mm,
-  box/.style={
-    draw=EclipGray!55,
-    rounded corners=2.2mm,
-    line width=0.55pt,
-    inner sep=2.4mm,
-    align=left,
-    text=EclipInk
-  },
-  group/.style={
-    draw=EclipGray!35,
-    rounded corners=2.6mm,
-    line width=0.5pt,
-    inner sep=2.5mm
-  },
-  arrow/.style={-Latex, line width=0.55pt, draw=EclipGray!70},
-  arrowAccent/.style={-Latex, line width=0.65pt, draw=EclipTeal}
-]
-
-% -------------------------
-% Top row: Synthesis + agreement
-% -------------------------
-\node[box, fill=EclipBlueFill] (hh) {\textbf{Seed preference pairs}\\
-\textbf{HH-RLHF:} sample \textbf{10K} $(X, y^+, y^-)$ \cite{bai2022hh}};
-
-\node[box, fill=EclipTealFill, right=14mm of hh] (judges) {\textbf{Instruction synthesis (5 judges)}\\
-Each judge proposes $I_j$ such that\\
-$y^+ \succ y^-$ \textbf{given} $I_j$\\
-(\emph{see Table~\ref{tab:judge_models}})};
-
-\node[box, fill=EclipSandFill, right=14mm of judges] (agree) {\textbf{Agreement filter (semantic)}\\
-Compute \textbf{BERTScore} over $\{I_j\}$\\
-Keep if \textbf{$\ge$ 3/5} agree: $s(I_a,I_b)\ge\tau$\\
-(BERTScore \cite{zhang2019bertscore})};
-
-% Group box (top)
-\node[group,
-  fit=(hh)(agree),
-  label={[yshift=0.2mm]above:\textbf{Synthesis + agreement}}
-] (gTop) {};
-
-% arrows (top)
-\draw[arrow] (hh) -- (judges);
-\draw[arrow] (judges) -- (agree);
-
-% -------------------------
-% Bottom row: Normalization + human gate
-% (increase vertical gap to avoid collisions)
-% -------------------------
-\node[box, fill=EclipLilacFill, below=13mm of judges] (canon) {\textbf{Canonicalize \& cluster}\\
-Normalize phrasing; cluster into \textbf{10}\\
-instruction types (stance / constraint / delivery)};
-
-\node[box, fill=EclipMintFill, right=14mm of canon] (human) {\textbf{Human quality gate}\\
-\textbf{2} annotators rate: clarity, actionability, safety\\
-Keep if both $\ge$ \textbf{4/5}};
-
-\node[box, fill=EclipTealFill, right=14mm of human] (final) {\textbf{Final inventory}\\
-\textbf{10} instruction templates\\
-(Table~\ref{tab:instruction_types})};
-
-% Group box (bottom)
-\node[group,
-  fit=(canon)(final),
-  label={[yshift=0.2mm]above:\textbf{Normalization + human gate}}
-] (gBot) {};
-
-% arrows (bottom)
-\draw[arrow] (judges) -- (canon);
-\draw[arrow] (canon) -- (human);
-\draw[arrow] (human) -- (final);
-
-% -------------------------
-% Right: ECLIPTICA grid
-% (slight downward nudge + orthogonal arrow routing to avoid overlap)
-% -------------------------
-\node[box, fill=EclipTealFill, right=16mm of agree, yshift=-6mm] (grid) {\textbf{ECLIPTICA grid (held-constant $X$)}\\
-Form \textbf{300} prompts $\times$ \textbf{10} instructions\\
-$\Rightarrow$ \textbf{3,000} prompt-held-constant cases};
-
-% agreement -> grid (orthogonal; NO diagonal crossing)
-\draw[arrowAccent]
-  (agree.south) -- ++(0,-7mm) coordinate (pA) -- (grid.north);
-
-% final -> grid (orthogonal; clean join)
-\draw[arrowAccent]
-  (final.east) -- ++(6mm,0) |- (grid.south);
-
-\end{tikzpicture}%
-}
-
-\vspace{-0.45em}
-\caption{\textbf{ECLIPTICA instruction derivation pipeline.}
-We synthesize candidate alignment instructions from \textbf{five independent judge models}, filter by \textbf{semantic agreement} (\textbf{BERTScore}), apply a \textbf{two-rater quality gate}, and compile a \textbf{10-instruction inventory} used to instantiate the \textbf{prompt-held-constant} switching grid.}
-\label{fig:ecliptica_pipeline}
-\vspace{-1.5em}
-\end{figure*}
-
-
+% Judge-pipeline figure, judge-model table and three paragraphs removed 2026-10-20: no judge outputs,
+% BERTScore filtering or annotator ratings exist; src/eval/isd_dataset.py defines the types by hand.
 \paragraph{Where do the ten alignment instructions come from?}
-The instruction inventory in Table~\ref{tab:instruction_types} is \textbf{not hand-written}.
-We derive it from \textbf{preference-supervised evidence} and \textbf{cross-model consensus}:
-starting from \textbf{10K} HH-RLHF preference triples $(X,y^+,y^-)$ \cite{bai2022hh},
-we ask \textbf{five independent judge models} (Table~\ref{tab:judge_models})
-to synthesize an \textbf{alignment instruction} $I_j$ such that the preferred response $y^+$ is correct \emph{given} $I_j$ and the rejected response $y^-$ is incorrect.
-This makes the instruction a \textbf{causal control signal} tied to an observed preference rather than an aesthetic style tag.
-
-
-
-% =========================
-% Judge models (instruction generators)
-% =========================
-\vspace{-0.5em}
-\begin{table}[h!]
-\centering
-\small
-\setlength{\tabcolsep}{6pt}
-\renewcommand{\arraystretch}{1.2}
-\resizebox{0.98\columnwidth}{!}{%
-\begin{tabular}{@{}lll@{}}
-\toprule
-\textbf{Role} & \textbf{Judge model} & \textbf{Reference} \\
-\midrule
-Instruction generator & GPT-4 / GPT-4o-family & \cite{openai2023gpt4,openai2024gpt4o} \\ \hline
-Instruction generator & Gemini 1.5 Pro & \cite{reid2024gemini15} \\ \hline
-Instruction generator & Claude-family (system/model cards) & \cite{anthropic2023claude2,anthropic2024claude3addendum} \\ \hline
-Instruction generator & Llama-3.1-Instruct (via Llama-3 report) & \cite{meta2024llama3} \\ \hline
-Instruction generator & Mistral Large & \cite{mistral2024large} \\
-\bottomrule
-\end{tabular}
-}
-\vspace{-0.45em}
-\caption{\textbf{Judge models for instruction synthesis.}
-Five independent LLM judges propose alignment instructions for the same preference pair; we keep only cases with \textbf{cross-judge semantic agreement} (Section~\ref{sec:ecliptica_benchmark}).}
-\label{tab:judge_models}
-\vspace{-2em}
-\end{table}
-
-
-
-
-
-\paragraph{Agreement filter (semantic identifiability).}
-For each seed triple, we obtain $\{I_j\}_{j=1}^{5}$ and compute pairwise semantic similarity using
-\textbf{BERTScore} \cite{zhang2019bertscore}.
-We retain a case only if at least \textbf{three} judges produce \textbf{mutually consistent} instructions (a \textbf{$3$-of-$5$} agreement rule under a threshold $\tau$).
-Intuitively: if multiple strong models cannot agree on what the “right” alignment instruction is for the same preference pair,
-the control signal is ambiguous and would poison switchability.
-
-
-
-
-
-
-
-
-
-
-
-\vspace{-0.5em}
-\paragraph{Human quality gate (deployability).}
-Surviving instructions are then normalized (remove hedges, enforce imperative phrasing, collapse synonyms),
-clustered into \textbf{ten} types (stance / constraint posture / delivery style),
-and rated by \textbf{two independent annotators} on a 1--5 Likert scale
-for \textbf{clarity}, \textbf{actionability}, and \textbf{safety coherence}.
-We keep only instructions with \textbf{both ratings $\ge 4$},
-yielding the final instruction templates in Table~\ref{tab:instruction_types}.
-Figure~\ref{fig:ecliptica_pipeline} summarizes the end-to-end pipeline.
+The ten types and three paraphrases of each were written by the authors: five follow the taxonomy of the project proposal and five were added to reach ten, spanning stance, constraint posture, and delivery style (Table~\ref{tab:instruction_types}).
+They were not derived from preference data or filtered by judge models; ECLIPTICA-30k extends the same hand-designed taxonomy to 100 types.
 
 \begin{comment}
     

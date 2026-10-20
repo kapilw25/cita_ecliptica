@@ -66,6 +66,29 @@ paths:
   logs_dir: logs
   tensorboard_dir: tensorboard_logs
   checkpoints_dir: checkpoints
+  score_table_ci_dir: outputs/evaluation/score_table_ci   # src/eval/score_table_ci.py
+
+# ----------------------------------------------------------------------------
+# Paper score table with 95% CIs (src/eval/score_table_ci.py). Suite folders are
+# the subdirectories of paths.evaluation_dir written by src/eval/<suite>.py.
+# ----------------------------------------------------------------------------
+score_table:
+  trainers: [DPO, PPO, GRPO, CITA]
+  ours: CITA              # on-disk prefix of SwiPO; every rival gets a paired SwiPO-minus-rival CI
+  suite_dirs:
+    ecliptica: ISD_Evaluation_Embedding
+    truthfulqa: TruthfulQA_Evaluation
+    conditional_safety: Conditional_Safety_Evaluation
+    length_control: Length_Control_Evaluation
+    aqi: AQI_Evaluation
+  reproduce_tol:          # |recomputed - stored| allowed before FATAL
+    exact: 1.0e-9         # TruthfulQA, Cond. Safety, Length Ctrl (pure arithmetic on saved CSVs)
+    embedding: 1.0e-4     # ECLIPTICA (re-embedded with the scorer's own model)
+  bootstrap_batch: 500    # resamples per vectorized batch (memory bound)
+  efficiency_variants:    # suites averaged into instruction-alignment efficiency (src/utils/eval/plotting.py min-max)
+    all: [ecliptica, truthfulqa, conditional_safety, length_control, aqi]
+    no_aqi: [ecliptica, truthfulqa, conditional_safety, length_control]
+    no_aqi_no_truthfulqa: [ecliptica, conditional_safety, length_control]   # NoInstruct TruthfulQA sees identical inputs in both arms
 
 # ----------------------------------------------------------------------------
 # Base model

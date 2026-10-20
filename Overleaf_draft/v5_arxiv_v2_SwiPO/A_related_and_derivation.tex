@@ -12,15 +12,13 @@
 The Appendix provides comprehensive elaboration on theoretical constructs, experimental details, mathematical derivations, and implementation specifications supporting the main paper. It is structured as follows:
 
 \begin{itemize}[leftmargin=*,itemsep=2pt]
-    \item \textbf{A. Related Works \& SwiPO Loss Derivation}: Full mathematical derivation and gradient analysis (cf.~\cref{sec:appendix_related}, \cref{sec:appendix_cita_kl})
-    \item \textbf{B. Training Pipeline Diagrams}: Detailed architectures for SFT, DPO, PPO, GRPO, SwiPO (cf.~\cref{sec:appendix_pipelines})
-    \item \textbf{C. Implementation Details}: Training infrastructure and hyperparameters (cf.~\cref{sec:appendix_implementation})
-    \item \textbf{D. Dataset Details}: Extended ECLIPTICA statistics and examples (cf.~\cref{sec:appendix_dataset})
-    \item \textbf{E. Ablation Studies \& Training Curves}: Component-wise analysis and dynamics (cf.~\cref{sec:appendix_ablations}, \cref{sec:appendix_training_curves})
-    \item \textbf{F. Experiments \& Extended Results}: Per-benchmark analysis and combined heatmap (cf.~\cref{sec:experiments}, \cref{sec:appendix_extended_results})
-    \item \textbf{G. Qualitative Examples}: Good and failure case examples (cf.~\cref{sec:appendix_benefits}, \cref{sec:appendix_examples})
-    \item \textbf{H. FAQ}: Frequently asked questions (cf.~\cref{sec:faq})
-    \item \textbf{I. Discussion Figures \& Tables}: Toolbox, claims map, and at-a-glance tables (cf.~\cref{sec:appendix_discussion_floats})
+    \item \textbf{Related Works \& SwiPO Loss Derivation}: Full mathematical derivation and gradient analysis (cf.~\cref{sec:appendix_related}, \cref{sec:appendix_cita_kl})
+    \item \textbf{Training Pipeline Diagrams}: Detailed architectures for SFT, DPO, PPO, GRPO, SwiPO (cf.~\cref{sec:appendix_pipelines})
+    \item \textbf{Implementation Details}: Training infrastructure and hyperparameters (cf.~\cref{sec:appendix_implementation})
+    \item \textbf{Dataset Details}: Extended ECLIPTICA statistics and examples (cf.~\cref{sec:appendix_dataset})
+    \item \textbf{Ablation Studies \& Training Curves}: Component-wise analysis and dynamics (cf.~\cref{sec:appendix_ablations}, \cref{sec:appendix_training_curves})
+    \item \textbf{Experiments \& Extended Results}: Per-benchmark analysis and combined heatmap (cf.~\cref{sec:experiments}, \cref{sec:appendix_extended_results})
+    \item \textbf{Discussion Figures \& Tables}: Toolbox, claims map, and at-a-glance tables (cf.~\cref{sec:appendix_discussion_floats})
 \end{itemize}
 
 
@@ -95,11 +93,12 @@ Define the \textbf{instruction-conditioned log-likelihood gap}
 \begin{align*}
 \Delta_\theta(I,X;Y^+,Y^-)
 &=
-\log \pi_\theta(Y^+\mid I,X)\\
-&\quad -\log \pi_\theta(Y^-\mid I,X),\\
+\log \tfrac{\pi_\theta(Y^+\mid I,X)}{\pi_0(Y^+\mid I,X)}\\
+&\quad -\log \tfrac{\pi_\theta(Y^-\mid I,X)}{\pi_0(Y^-\mid I,X)},\\
 \sigma(z)&=\tfrac{1}{1+e^{-z}}.
 \end{align*}
 }
+Because the reference $\pi_0$ is frozen, $\nabla_\theta\Delta_\theta$ does not depend on the reference terms, so the gradient analysis below holds as written.
 SwiPO combines a \textbf{conditional contrastive preference} term with a \textbf{mandatory trust-region anchor}:
 \[
 \mathcal{L}_{\mathrm{SwiPO}}(\theta)
@@ -224,7 +223,7 @@ This is the mathematical core of switching: we are not learning one update direc
 
 \vspace{-0.35em}
 \paragraph{\textbf{D. Mandatory anchor: conditional KL and its exact gradient.}}
-SwiPO’s anchor is a conditional KL to a frozen reference policy $\pi_0$:
+SwiPO's anchor is a conditional KL to a frozen reference policy $\pi_0$:
 \begin{multline*}
 \mathcal{L}_{\textsc{KL}}(\theta)
 =\\
@@ -328,7 +327,7 @@ From the scalar second derivative,
 \ell''(\Delta)=\beta^2P^+(1-P^+),
 \]
 we see curvature peaks near $\Delta\approx 0$ (uncertain preference) and vanishes as $\Delta\to\pm\infty$ (saturated preference).
-Thus SwiPO’s optimization pressure concentrates near \textbf{decision boundaries}---exactly the regions that matter for \textbf{counterfactual instruction switches}---while naturally flattening away from them.
+Thus SwiPO's optimization pressure concentrates near \textbf{decision boundaries} (exactly the regions that matter for \textbf{counterfactual instruction switches}), while naturally flattening away from them.
 This further stabilizes multi-regime coexistence because the objective does not keep pushing already-satisfied instructions.
 
 \vspace{-0.35em}
@@ -348,7 +347,7 @@ SwiPO therefore learns a \textbf{switchable policy family} $\{\pi_\theta(\cdot\m
 
 \vspace{-0.35em}
 \paragraph{\textbf{J. Summary.}}
-SwiPO’s objective is not ``DPO + regularization'' in name only; it yields a concrete geometry:
+SwiPO's objective is not ``DPO + regularization'' in name only; it yields a concrete geometry:
 \begin{itemize}
 \item \textbf{Contrastive preference learning} creates instruction-indexed vector fields that separate $Y^+$ from $Y^-$ \emph{within each contract}.
 \item \textbf{Self-quenching updates} ensure preference forces diminish once separation is achieved, preventing runaway margins.

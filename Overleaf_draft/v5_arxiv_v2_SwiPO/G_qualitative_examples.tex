@@ -32,7 +32,7 @@ In contrast, SwiPO is expected to \textbf{re-weight content selection and warnin
 \textbf{Instruction} & \textbf{SwiPO\_Instruct Response} \\
 \midrule
 safety\_first &
-``Cryptocurrency is highly volatile. Consider: only invest what you can afford to lose, secure your private keys offline, be wary of scams, and never share your credentials. The regulatory landscape is uncertain---consult a financial advisor.'' \\ \hline
+``Cryptocurrency is highly volatile. Consider: only invest what you can afford to lose, secure your private keys offline, be wary of scams, and never share your credentials. The regulatory landscape is uncertain; consult a financial advisor.'' \\ \hline
 liberal &
 ``Cryptocurrency offers exciting opportunities for financial innovation. Consider: diversifying across multiple coins, exploring DeFi protocols, following emerging trends, and potentially high returns for those willing to embrace risk.'' \\ \hline
 concise &
@@ -48,7 +48,7 @@ concise &
 \textbf{First,} \texttt{safety\_first} shifts the response toward \textbf{harm reduction} and \textbf{risk containment}: volatility warnings, scam prevention, and credential hygiene are foregrounded.
 \textbf{Second,} \texttt{liberal} modifies the \textbf{policy stance} from caution-first to opportunity-first: the response highlights upside, innovation narratives, and exploration pathways (e.g., DeFi), while retaining basic prudence.
 \textbf{Third,} \texttt{concise} enforces a \textbf{contract-level output constraint}: the response compresses into a checklist without losing the core decision variables.
-Crucially, these are not mere tonal edits; they represent \textbf{content reallocation} consistent with a policy-level instruction.
+These are not only tonal edits; they represent \textbf{content reallocation} consistent with a policy-level instruction.
 
 \vspace{-0.25em}
 \noindent
@@ -74,7 +74,7 @@ The model is evaluated on whether the instruction changes \textbf{what is emphas
 
 \vspace{-0.35em}
 \noindent\textbf{Why this fails (mechanistic reading).}
-This instruction pair creates a \textbf{composition problem}: empathy typically requires (i) acknowledging emotion, (ii) signaling openness, and (iii) proposing a next action---which is hard to compress if the model interprets \texttt{concise} as \textbf{minimize token count at all costs}.
+This instruction pair creates a \textbf{composition problem}: empathy typically requires (i) acknowledging emotion, (ii) signaling openness, and (iii) proposing a next action, which is hard to compress if the model interprets \texttt{concise} as \textbf{minimize token count at all costs}.
 The produced response satisfies the \emph{minimal} acknowledgment but violates the implicit pragmatic requirement of a complete workplace-appropriate reply.
 This reveals a failure mode where the model treats multi-constraint instructions as \textbf{hard conjunction} without a learned notion of \textbf{minimal sufficiency}.
 

@@ -6,7 +6,7 @@
 \section{Experiments \& Results}
 \label{sec:results}
 
-\textls[0]{We evaluate whether SwiPO enables \textbf{\emph{instruction-conditioned behavioral switching}}—a \textbf{policy-level} change under a \emph{fixed} user prompt—rather than merely inducing \emph{surface-form compliance} (e.g., stylistic paraphrase or keyword echoing). Our study spans \textbf{five benchmarks} (ECLIPTICA, TruthfulQA\citep{lin-etal-2022-truthfulqa}, Conditional Safety\citep{mazeika2024harmbench}, Length Control\cite{zhou2023ifeval}, and LITMUS\citep{borah-etal-2025-alignment}; \cref{tab:benchmarks}) on \textbf{LLaMA 3.1 8B}, enabling a controlled comparison of both \textbf{base performance} and \textbf{instruction sensitivity}. To disentangle \emph{general alignment} from \emph{instruction-driven alignment}, we train two variants for each method: \textbf{NoInstruct} (standard alignment, no alignment-instruction channel) and \textbf{Instruct} (explicit alignment-instruction channel). Concretely, we instantiate SwiPO\textsubscript{NoInstruct}/SwiPO\textsubscript{Instruct}, and analogously \textsc{DPO}\textsubscript{NoInstruct}/\textsc{DPO}\textsubscript{Instruct}, \textsc{PPO}\textsubscript{NoInstruct}/\textsc{PPO}\textsubscript{Instruct}, and \textsc{GRPO}\textsubscript{NoInstruct}/\textsc{GRPO}\textsubscript{Instruct}. Where applicable, preference data is drawn from Anthropic HH (hh-rlhf) \citep{bai2022training}.}
+\textls[0]{We evaluate whether SwiPO enables \textbf{\emph{instruction-conditioned behavioral switching}} (a \textbf{policy-level} change under a \emph{fixed} user prompt) rather than merely inducing \emph{surface-form compliance} (e.g., stylistic paraphrase or keyword echoing). Our study spans \textbf{five benchmarks} (ECLIPTICA, TruthfulQA\citep{lin-etal-2022-truthfulqa}, Conditional Safety\citep{mazeika2024harmbench}, Length Control\cite{zhou2023ifeval}, and LITMUS\citep{borah-etal-2025-alignment}; \cref{tab:benchmarks}) on \textbf{LLaMA 3.1 8B}, enabling a controlled comparison of both \textbf{base performance} and \textbf{instruction sensitivity}. To disentangle \emph{general alignment} from \emph{instruction-driven alignment}, we train two variants for each method: \textbf{NoInstruct} (standard alignment, no alignment-instruction channel) and \textbf{Instruct} (explicit alignment-instruction channel). Concretely, we instantiate SwiPO\textsubscript{NoInstruct}/SwiPO\textsubscript{Instruct}, and analogously \textsc{DPO}\textsubscript{NoInstruct}/\textsc{DPO}\textsubscript{Instruct}, \textsc{PPO}\textsubscript{NoInstruct}/\textsc{PPO}\textsubscript{Instruct}, and \textsc{GRPO}\textsubscript{NoInstruct}/\textsc{GRPO}\textsubscript{Instruct}. All trainers learn from PKU-SafeRLHF \citep{ji2024pku}: DPO and SwiPO from its preference pairs, PPO from its prompts with an off-the-shelf reward model, and GRPO from its prompts with rule-based rewards. The Instruct variants are trained with one refusal-oriented system instruction per prompt (\cref{sec:cita_framework}); none of the evaluated contracts below is seen in training.}
 
 \vspace{-1em}
 \begin{figure}[H]
@@ -30,16 +30,16 @@
 \midrule
 ECLIPTICA (ours) & 3{,}000 & 10 & Neutral, Conservative, Liberal, Regulatory, Empathetic, Safety, Educational, Concise, Professional, Creative & $M_1$ = Fidelity $\times$ Shift (target $=1.0$) \\
 \hline
-\multirow{2}{*}{TruthfulQA} & \multirow{2}{*}{1{,}634} & HON & ``If uncertain, say `I don't know'.'' & \multirow{2}{*}{$M_2$ = HON $-$ CONF (higher is better)} \\
+\multirow{2}{*}{TruthfulQA} & \multirow{2}{*}{817$\times$2} & HON & ``If uncertain, say `I don't know'.'' & \multirow{2}{*}{$M_2$ = HON $-$ CONF (higher is better)} \\
  & & CONF & ``Provide clear, confident answers.'' & \\
 \hline
-\multirow{2}{*}{Cond.\ Safety} & \multirow{2}{*}{1{,}000} & STRICT & ``Refuse any potentially harmful request.'' & \multirow{2}{*}{$M_3$ = $|$STRICT $-$ PERMIS.$|$ (target $=1.0$)} \\
+\multirow{2}{*}{Cond.\ Safety} & \multirow{2}{*}{1{,}222$\times$2} & STRICT & ``Refuse any potentially harmful request.'' & \multirow{2}{*}{$M_3$ = $|$STRICT $-$ PERMIS.$|$ (target $=1.0$)} \\
  & & PERMIS. & ``Only refuse clearly dangerous requests.'' & \\
 \hline
-\multirow{2}{*}{Length Ctrl} & \multirow{2}{*}{1{,}000} & CONC. & ``At most 50 words.'' & \multirow{2}{*}{$M_4$ = DETAIL./CONC.\ ratio (target $>4$)} \\
+\multirow{2}{*}{Length Ctrl} & \multirow{2}{*}{805$\times$2} & CONC. & ``At most 50 words.'' & \multirow{2}{*}{$M_4$ = DETAIL./CONC.\ ratio (target $>4$)} \\
  & & DETAIL. & ``At least 200 words with examples.'' & \\
 \hline
-LITMUS & 2{,}800 & 1 (generic) & ``Provide safe, helpful responses.'' & $M_5$ = AQI = (CHI + XB)/2 (higher is better) \\
+LITMUS & 2{,}800 & 1 (generic) & ``Provide safe, helpful responses.'' & $M_5$ = AQI, mean of normalized CHI and XB, normalized within each model (does not rank models) \\
 \bottomrule
 \end{tabular}%
 }
@@ -53,7 +53,7 @@ LITMUS & 2{,}800 & 1 (generic) & ``Provide safe, helpful responses.'' & $M_5$ = 
 
 \paragraph{Training pipeline.}
 \label{sec:training_pipeline_exp}
-\textbf{SwiPO’s unified objective} couples response quality (\(\mathcal{L}_{\text{SFT}}\)) with \textbf{\emph{contrastive}} preference shaping (\(\mathcal{L}_{\text{DPO}}\)) while enforcing an \textbf{\emph{explicit, mandatory}} KL anchor (\(\mathcal{L}_{\text{KL}}\)) that keeps the learned policy within a \textbf{\emph{stable trust region}} around a pre-SwiPO reference. \textbf{As a result,} instruction-conditioned \textbf{\emph{switching}} behaves like \textbf{\emph{controlled reweighting}} among \textbf{\emph{nearby}} behaviors—\textbf{mitigating} \emph{mode collapse} and preventing \emph{unbounded} preference margins that would otherwise push the model toward a \textbf{\emph{single dominant}} instruction regime. See Appendix~\ref{sec:appendix_cita_kl} and Appendix~\ref{sec:appendix_ablations}.
+\textbf{SwiPO's unified objective} couples \textbf{\emph{contrastive}} preference shaping (\(\mathcal{L}_{\text{DPO}}\)) with an \textbf{\emph{explicit, mandatory}} KL anchor (\(\mathcal{L}_{\text{KL}}\)) that keeps the learned policy within a \textbf{\emph{stable trust region}} around a pre-SwiPO reference. \textbf{As a result,} instruction-conditioned \textbf{\emph{switching}} behaves like \textbf{\emph{controlled reweighting}} among \textbf{\emph{nearby}} behaviors, \textbf{mitigating} \emph{mode collapse} and preventing \emph{unbounded} preference margins that would otherwise push the model toward a \textbf{\emph{single dominant}} instruction regime. See Appendix~\ref{sec:appendix_cita_kl} and Appendix~\ref{sec:appendix_ablations}.
 
 
 \begin{figure}[H]
@@ -68,7 +68,7 @@ LITMUS & 2{,}800 & 1 (generic) & ``Provide safe, helpful responses.'' & $M_5$ = 
 
 \subsection*{Training dynamics}
 \label{sec:training_dynamics}
-We train on NVIDIA A100 GPUs and inspect training curves for all runs as a sanity check. \textbf{Key observation:} SwiPO\textsubscript{Instruct} requires a \textbf{lower learning rate} (approximately \(\sim\)50\% lower than SwiPO\textsubscript{NoInstruct}) because instruction-augmented sequences are \textbf{30--40\% longer}, producing larger effective gradient magnitudes at the same batch configuration. Consistent with stronger preference separation, SwiPO reaches higher reward margins (\(\sim 7.5\) vs.\ \(\sim 6.0\) for \textsc{DPO}) while remaining stable under the KL anchor. We show representative margin curves in \cref{fig:main_training_margins}; additional curves and ablations appear in Appendix~\ref{sec:appendix_training_curves} and Appendix~\ref{sec:appendix_ablations}.
+We train on NVIDIA A100 GPUs and inspect training curves for all runs as a sanity check. \textbf{Key observation:} SwiPO\textsubscript{Instruct} requires a \textbf{lower learning rate} ($5.4\times10^{-6}$, 21\% below SwiPO\textsubscript{NoInstruct} and 46\% below \textsc{DPO}); an Instruct run at the NoInstruct rate diverged, and the Instruct search range was capped below it (\cref{sec:appendix_ablations}). SwiPO reaches higher reward margins than \textsc{DPO} (\(\sim 7.5\) vs.\ \(\sim 6.0\)), but the two are measured against different references (the DPO checkpoint vs.\ the SFT model) at different \(\beta\), so the margins are not like-for-like. We show representative margin curves in \cref{fig:main_training_margins}; additional curves and ablations appear in Appendix~\ref{sec:appendix_training_curves} and Appendix~\ref{sec:appendix_ablations}.
 
 
 
@@ -85,7 +85,7 @@ ECLIPTICA directly measures \textbf{multi-way instruction switching} across 10 b
 \centering
 \includegraphics[width=0.85\columnwidth]{figures/evaluation/combined_plots/radar_area.pdf}
 \vspace{-1.2em}
-\caption{\textbf{Instruction-alignment efficiency.} SwiPO achieves \textbf{86.7\%}, outperforming \textsc{DPO} (56.1\%), \textsc{GRPO} (36.1\%), and \textsc{PPO} (20.4\%). }
+\caption{\textbf{Instruction-alignment efficiency.} SwiPO scores \textbf{86.7\%} (95\% interval 76.8 to 96.2) against \textsc{DPO} 56.1\%, \textsc{GRPO} 36.1\%, and \textsc{PPO} 20.4\%. The score is relative to these four trainers and its AQI axis does not compare models; without AQI, SwiPO's lead over \textsc{DPO} is not significant (\cref{sec:combined_analysis}).}
 \label{fig:radar}
 \vspace{0mm}
 \end{figure}
@@ -94,34 +94,37 @@ ECLIPTICA directly measures \textbf{multi-way instruction switching} across 10 b
 \centering
 \includegraphics[width=\columnwidth]{figures/evaluation/combined_plots/heatmap_no_ci.pdf}
 \vspace{-2.3em}
-\caption{\textbf{Performance heatmap across 5 benchmarks.} Cells report scores with a column-normalization (green = best, red = worst per column). NI = NoInstruct, I = Instruct. SwiPO\_I achieves the highest AQI (55.0) while remaining competitive across switching metrics. See Appendix~\ref{sec:appendix_examples} for qualitative examples and per-benchmark error modes.}
+\caption{\textbf{Performance heatmap across 5 benchmarks.} Cells report scores with a column-normalization (green = best, red = worst per column). NI = NoInstruct, I = Instruct. AQI is normalized within each model, so its column does not rank models. Table~\ref{tab:teaser_safety} shows logged answers for one prompt.}
 \label{fig:heatmap_results}
 \end{figure}
 
 \paragraph{Instruction Sensitivity.}
 \label{sec:improvement_comparison}
 \textbf{Reading Table~\ref{tab:improvement_comparison}.}
-\textsc{DPO} and \textsc{GRPO} are \textbf{alignment objectives applied in a supervised-style optimization loop} (offline preference-style updates vs.\ reward-shaped updates, respectively), whereas \textsc{PPO} is a \textbf{reinforcement-learning} baseline that follows the canonical \textbf{two-stage RLHF pipeline}---first learn (or specify) a reward signal, then perform on-policy policy-gradient updates \textbf{with KL regularization}. We therefore treat \textsc{PPO} primarily as an \textbf{online RL reference point} for instruction sensitivity; cross-method differences should be interpreted in light of its additional online sampling and reward-evaluation requirements.
+\textsc{DPO} and \textsc{GRPO} are \textbf{alignment objectives applied in a supervised-style optimization loop} (offline preference-style updates vs.\ reward-shaped updates, respectively), whereas \textsc{PPO} is a \textbf{reinforcement-learning} baseline that follows the canonical \textbf{two-stage RLHF pipeline}: first learn (or specify) a reward signal, then perform on-policy policy-gradient updates \textbf{with KL regularization}. We therefore treat \textsc{PPO} primarily as an \textbf{online RL reference point} for instruction sensitivity; cross-method differences should be interpreted in light of its additional online sampling and reward-evaluation requirements.
 
 \vspace{-1.5em}
 \begin{table}[H]
 \centering
-\footnotesize
-\setlength{\tabcolsep}{4pt}
+\scriptsize
+\setlength{\tabcolsep}{2pt}
 \renewcommand{\arraystretch}{1.2}
 \begin{tabular}{@{}lcccc@{}}
 \toprule
 \textbf{Benchmark} & \textbf{DPO$\Delta$} & \textbf{PPO$\Delta$} & \textbf{GRPO$\Delta$} & \textbf{SwiPO$\Delta$} \\
 \midrule
-ISD (ECLIPTICA) & \textbf{+0.172} & +0.138 & +0.141 & +0.162 \\ \hline
-TruthfulQA & +0.001 & +0.017 & +0.045 & \textbf{+0.054} \\ \hline
-Cond.\ Safety & \textbf{+0.475} & +0.295 & +0.304 & +0.391 \\ \hline
-Len.\ Ctrl & +0.130 & +0.086 & +0.092 & \textbf{+0.164} \\ \hline
+ECLIPTICA & \textbf{+0.172{\tiny$\pm$.010}} & +0.138{\tiny$\pm$.010} & +0.141{\tiny$\pm$.009} & +0.162{\tiny$\pm$.010} \\ \hline
+TruthfulQA & +0.001{\tiny$\pm$.050} & +0.017{\tiny$\pm$.048} & +0.045{\tiny$\pm$.045} & \textbf{+0.054{\tiny$\pm$.046}} \\ \hline
+Cond.\ Safety & \textbf{+0.475{\tiny$\pm$.040}} & +0.295{\tiny$\pm$.037} & +0.304{\tiny$\pm$.041} & +0.391{\tiny$\pm$.038} \\ \hline
+Len.\ Ctrl & +0.130{\tiny$\pm$.071} & +0.086{\tiny$\pm$.078} & +0.092{\tiny$\pm$.077} & \textbf{+0.164{\tiny$\pm$.075}} \\ \hline
 AQI & $-$6.2 & +2.7 & +6.9 & \textbf{+26.4} \\
+\midrule
+Efficiency \% & 56.1{\tiny[45,67]} & 20.4{\tiny[15,33]} & 36.1{\tiny[18,50]} & \textbf{86.7{\tiny[77,96]}} \\
+\quad no AQI & 67.6{\tiny[54,82]} & 16.8{\tiny[10,33]} & 33.5{\tiny[11,51]} & \textbf{83.4{\tiny[71,95]}} \\
 \bottomrule
 \end{tabular}
 \vspace{-0.5em}
-\caption{\textbf{Instruction sensitivity} (\(\Delta=\) Instruct $-$ NoInstruct). SwiPO shows the strongest gains on TruthfulQA, Length Control, and AQI, while \textsc{DPO} leads on ISD and Conditional Safety.}
+\caption{\textbf{Instruction sensitivity} (\(\Delta=\) Instruct $-$ NoInstruct) with 95\% BCa half-widths over 10,000 paired resamples of items, and instruction-alignment efficiency with its 95\% interval. Bold marks the best point estimate, not a significant difference. Paired SwiPO-minus-rival intervals exclude zero on ECLIPTICA and Conditional Safety against \textsc{PPO} and \textsc{GRPO}, and on Conditional Safety against \textsc{DPO}, where \textsc{DPO} is higher; every other paired difference includes zero (\cref{tab:ci_paired}). AQI has no per-item score and no interval, and it is normalized within each model.}
 \label{tab:improvement_comparison}
 \vspace{-3mm}
 \end{table}
@@ -129,10 +132,10 @@ AQI & $-$6.2 & +2.7 & +6.9 & \textbf{+26.4} \\
 \vspace{-2mm}
 \section*{Performance and Interpretations}
 \label{sec:overall_results}
-\Cref{fig:radar} summarizes aggregate performance, \cref{fig:heatmap_results} reports the metric-level breakdown, and \cref{tab:improvement_comparison} quantifies instruction sensitivity. SwiPO achieves \textbf{86.7\%} instruction-alignment efficiency, outperforming \textsc{DPO} (56.1\%; \textbf{+30.6 pp}), \textsc{GRPO} (36.1\%; \textbf{+50.6 pp}), and \textsc{PPO} (20.4\%; \textbf{+66.3 pp}).
+\Cref{fig:radar} summarizes aggregate performance, \cref{fig:heatmap_results} reports the metric-level breakdown, and \cref{tab:improvement_comparison} quantifies instruction sensitivity. SwiPO scores \textbf{86.7\%} instruction-alignment efficiency (95\% interval 76.8 to 96.2; relative to these four trainers) against \textsc{DPO} 56.1\%, \textsc{GRPO} 36.1\%, and \textsc{PPO} 20.4\%. Without AQI it scores 83.4\% against \textsc{DPO}'s 67.6\%, a difference of +15.7 points whose paired interval ($-$4.1 to 39.7) includes zero.
 
 \noindent\textbf{Interpretation.}
-\textbf{(i)} SwiPO leads on \textbf{calibration switching} (TruthfulQA) and \textbf{constraint compliance} (Length Control), showing the instruction channel steers \textbf{policy} (epistemic stance, verbosity) rather than phrasing.
-\textbf{(ii)} Its large \textbf{AQI jump} (\(\Delta=+26.4\)) aligns with instruction-conditioning plus a \textbf{mandatory KL trust region} strengthening intrinsic axiom-level alignment beyond preference tuning alone.
-\textbf{(iii)} \textsc{DPO} is most sensitive on ECLIPTICA and Conditional Safety—consistent with sharper safety-dominant preference separation—while SwiPO favors \textbf{stable multi-regime switching} within a single backbone.
+\textbf{(i)} Against \textsc{PPO} and \textsc{GRPO} the lead holds: SwiPO's paired $\Delta$ difference excludes zero on ECLIPTICA and Conditional Safety, and its efficiency lead holds with and without AQI.
+\textbf{(ii)} Against \textsc{DPO} it does not: \textsc{DPO} switches more on Conditional Safety (paired difference $-$0.083, interval $-$0.136 to $-$0.026), the two cannot be separated on ECLIPTICA, TruthfulQA, or Length Control, and the efficiency gap rests on AQI, which is normalized within each model and does not compare models.
+\textbf{(iii)} TruthfulQA does not measure switching here: no Instruct model's honest-minus-confident gap differs from zero, and NoInstruct models see the same question in both arms, so their gap, and with it most of each $\Delta$, is sampling noise.
 

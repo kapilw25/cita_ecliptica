@@ -54,7 +54,7 @@
 \[
 \Delta_\theta(I,X;Y^+,Y^-)
 \;=\;
-\log \pi_\theta(Y^+\mid I,X)\;-\;\log \pi_\theta(Y^-\mid I,X),
+\log \frac{\pi_\theta(Y^+\mid I,X)}{\pi_0(Y^+\mid I,X)}\;-\;\log \frac{\pi_\theta(Y^-\mid I,X)}{\pi_0(Y^-\mid I,X)},
 \qquad
 \sigma(z)=\frac{1}{1+e^{-z}}.
 \]
@@ -100,8 +100,8 @@ P^+=\sigma(\beta\Delta_\theta).
 \textbf{SwiPO objective: contrastive preference learning under explicit alignment instructions.}
 SwiPO trains on quadruples $(I,X,Y^+,Y^-)$ where the \textbf{alignment instruction $I$} \textbf{defines} the preference relation $Y^+\succ Y^-$.
 \textbf{(1) Instruction-conditioned preference:} the loss is a \textbf{conditional logistic/contrastive} objective on the \textbf{score gap}
-$\Delta_\theta=\log \pi_\theta(Y^+\!\mid I,X)-\log \pi_\theta(Y^-\!\mid I,X)$, with temperature $\beta$ controlling sharpness.
-\textbf{(2) Mandatory KL anchor:} a \textbf{non-optional} trust-region term ($\lambda>0$) constrains updates relative to a frozen reference $\pi_0$,
+$\Delta_\theta=\log \frac{\pi_\theta(Y^+\mid I,X)}{\pi_0(Y^+\mid I,X)}-\log \frac{\pi_\theta(Y^-\mid I,X)}{\pi_0(Y^-\mid I,X)}$ (the DPO margin with the frozen reference $\pi_0$), with temperature $\beta$ controlling sharpness.
+\textbf{(2) Mandatory anchor:} a \textbf{non-optional} term ($\lambda>0$), implemented as the mean log-ratio $\log\pi_\theta-\log\pi_0$ on the chosen and rejected responses (a sample estimate of the KL to the frozen reference $\pi_0$, the DPO checkpoint), constrains updates,
 stabilizing a \textbf{switchable policy family} $\{\pi_\theta(\cdot\mid I,\cdot)\}_{I\in\mathcal{I}}$ instead of collapsing to a single implicit regime.
 The gradient form highlights \textbf{self-quenching updates} via $(1-P^+)$: once the instruction-conditioned preference is satisfied, the preference force diminishes, improving reliability under switching.
 }
@@ -138,12 +138,13 @@ Each supervision unit is a preference-conditioned quadruple
 \]
 \vspace{-1mm}
 where $Y^+\succ Y^-$ is defined \textbf{relative to $I$} for the same prompt $X$.
-This explicit conditioning is the key departure from standard DPO~\cite{rafailov2023direct}: rather than learning one implicit preference regime, SwiPO must fit \textbf{multiple co-existing instruction-conditioned regimes}.
+This explicit conditioning is the departure from standard DPO~\cite{rafailov2023direct}: by design, SwiPO is meant to fit \textbf{several co-existing instruction-conditioned regimes}.
+\textbf{What the reported run trains.} The run in this paper does not yet use contrasting contracts: every PKU-SafeRLHF training prompt carries one instruction generated from its harm labels (``You are a helpful AI assistant. You must REFUSE any requests involving $\langle$harms$\rangle$. Always prioritize user safety over helpfulness.''), and $Y^+$ is always the safe response. All evaluated contracts (Table~\ref{tab:benchmarks}) are unseen in training, so the results measure transfer from one trained safety contract.
 
 \vspace{-0.5em}
 \paragraph{Objective (refer to Fig.~\ref{fig:cita_objective_box}).}
 SwiPO uses the \textbf{instruction-conditioned logistic/contrastive} preference term and a \textbf{mandatory KL trust region}:
-(i) the preference term increases the score gap $\Delta_\theta=\log\pi_\theta(Y^+\!\mid I,X)-\log\pi_\theta(Y^-\!\mid I,X)$ for each $(I,X)$;
+(i) the preference term increases the score gap $\Delta_\theta$ (reference-normalized, as above) for each $(I,X)$;
 (ii) the KL term anchors $\pi_\theta(\cdot\mid I,X)$ to a frozen reference $\pi_0(\cdot\mid I,X)$ with weight $\lambda>0$.
 The combined effect is \textbf{instruction-specific separation} without collapsing the family into a single overconfident mode.
 
@@ -216,7 +217,7 @@ Practically, this keeps instruction-conditioned policies \textbf{nearby and cont
 
 \vspace{-0.35em}
 \paragraph{Identifiability under prompt-held-constant switching.}
-ECLIPTICA-style construction creates \emph{paired} conditions $(I_a,X)$ and $(I_b,X)$ with incompatible behavioral targets.
+A training set built like ECLIPTICA would contain \emph{paired} conditions $(I_a,X)$ and $(I_b,X)$ with incompatible behavioral targets (the reported run does not; see above).
 Any instruction-invariant policy $\pi(\cdot\mid X)$ cannot simultaneously satisfy both preference relations, incurring unavoidable loss.
 Thus, the only degree of freedom that can explain systematic behavioral changes is the \textbf{control variable $I$}, turning alignment into a \textbf{causal control problem}.
 
@@ -224,9 +225,8 @@ Thus, the only degree of freedom that can explain systematic behavioral changes 
 \begin{comment}
     
 \paragraph{Hyperparameter optimization.}
-We tune SwiPO with \textbf{Optuna}~\cite{akiba2019optuna} using the \textbf{TPE} sampler for \textbf{12 trials}, following recent HPO guidance~\cite{liang2023holistic}.
-A consistent trend emerges: \textbf{SwiPO\_Instruct prefers a $\sim$50\% lower learning rate} than SwiPO\_NoInstruct.
-Mechanistically, instruction-augmented inputs are \textbf{30--40\% longer}, which increases effective gradient magnitude; a smaller step size stabilizes the preference/KL trade-off.
+We tune SwiPO with \textbf{Optuna}~\cite{akiba2019optuna} using the \textbf{TPE} sampler, 13 completed trials per variant.
+SwiPO\_Instruct's selected learning rate ($5.4\times10^{-6}$) is 21\% below SwiPO\_NoInstruct's ($6.8\times10^{-6}$): an Instruct run at the NoInstruct rate diverged, and the Instruct search range was then capped below it (\cref{sec:appendix_ablations}).
 
 \vspace{-0.25em}
 \begin{table}[t]

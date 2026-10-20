@@ -25,11 +25,9 @@ ECLIPTICA (\textbf{E}valuating \textbf{C}ontrollable \textbf{L}anguage \textbf{I
 \toprule
 \textbf{Statistic} & \textbf{Value} \\
 \midrule
-Total Examples & 44,137 \\ \hline
-Training Split & 83\% \\ \hline
-Validation Split & 17\% \\ \hline
-Avg. Prompt Length & 42 tokens \\ \hline
-Avg. Response Length & 187 tokens \\ \hline
+Safe/unsafe pairs used & 12,035 \\ \hline
+from the train / test splits & 10,813 / 1,222 \\ \hline
+Re-split train / validation & 10,831 / 1,204 \\ \hline
 Safety Categories & 19 \\
 \bottomrule
 \end{tabular}
@@ -153,9 +151,9 @@ Table~\ref{tab:characteristics_taxonomy} provides a detailed taxonomy of the 30 
 
 This section presents representative examples from ECLIPTICA, demonstrating how the \textbf{same user prompt} elicits \textbf{different behavioral responses} based solely on the alignment instruction. Each example shows the fixed prompt with \textbf{all 10 instruction variations} to illustrate the complete policy switching requirement.
 
-The examples span diverse domains---economics, personal advice, healthcare, and technology---to ensure the evaluation captures genuine instruction-following rather than domain-specific patterns. For each prompt, we list the instruction text in \textbf{[brackets]} followed by the expected behavioral markers that a well-aligned model should exhibit. These markers form the basis of our automated classification system: responses are embedded using E5-large-v2 and compared against instruction-specific centroids to compute \textbf{Fidelity} (probability of correct instruction classification) and \textbf{Shift} (semantic distance traveled between instruction conditions).
+The examples span diverse domains (economics, personal advice, healthcare, and technology) to ensure the evaluation captures genuine instruction-following rather than domain-specific patterns. For each prompt, we list the instruction text in \textbf{[brackets]} followed by the expected behavioral markers that a well-aligned model should exhibit. These markers form the basis of the automated scorer: each type's markers are turned into a prototype sentence, responses and prototypes are embedded with all-MiniLM-L6-v2, and \textbf{Fidelity} is the rescaled cosine similarity $(1+\cos)/2$ between a response and its prototype, combined with \textbf{Shift}, the mean pairwise cosine distance among the ten responses to one prompt; the ECLIPTICA score is mean Fidelity times mean Shift.
 
-Reading these examples reveals why ECLIPTICA is challenging: the same factual question (e.g., ``How should we handle corporate tax avoidance?'') requires fundamentally different response \textit{styles}---from brief bullet points under \texttt{[concise]} to emotionally supportive framing under \texttt{[empathetic]} to balanced multi-perspective analysis under \texttt{[neutral]}. Models that memorize content rather than learning to modulate behavior will fail to achieve the required policy switching, resulting in low Fidelity scores despite potentially high-quality individual responses.
+Reading these examples reveals why ECLIPTICA is challenging: the same factual question (e.g., ``How should we handle corporate tax avoidance?'') requires fundamentally different response \textit{styles}, from brief bullet points under \texttt{[concise]} to emotionally supportive framing under \texttt{[empathetic]} to balanced multi-perspective analysis under \texttt{[neutral]}. Models that memorize content rather than learning to modulate behavior will fail to achieve the required policy switching, resulting in low Fidelity scores despite potentially high-quality individual responses.
 
 %% --- Example 1: Economics (ALL 10) ---
 \begin{figure*}[p]
@@ -697,7 +695,7 @@ $\rightarrow$ Expected: \texttt{safety\_focused}, \texttt{risk\_aware}, \texttt{
 }}
 \end{figure*}
 
-\paragraph{Key Observation.} Across all examples, the \textbf{user prompt remains identical}---only the alignment instruction changes. Each prompt has exactly \textbf{10 instruction variations}, one per instruction type. A model with strong instruction-conditioned alignment (e.g., SwiPO) should produce responses that demonstrably shift in tone, emphasis, and policy stance according to the specified behavioral contract, while models trained with static alignment (e.g., standard DPO) tend to produce more uniform responses regardless of instruction variation. The full ECLIPTICA benchmark contains 300 such prompts $\times$ 10 instructions = 3,000 test cases.
+\paragraph{Key Observation.} Across all examples, the \textbf{user prompt remains identical}; only the alignment instruction changes. Each prompt has exactly \textbf{10 instruction variations}, one per instruction type. A model with strong instruction-conditioned alignment (e.g., SwiPO) should produce responses that demonstrably shift in tone, emphasis, and policy stance according to the specified behavioral contract, while models trained with static alignment (e.g., standard DPO) tend to produce more uniform responses regardless of instruction variation. The full ECLIPTICA benchmark contains 300 such prompts $\times$ 10 instructions = 3,000 test cases.
 
 
 

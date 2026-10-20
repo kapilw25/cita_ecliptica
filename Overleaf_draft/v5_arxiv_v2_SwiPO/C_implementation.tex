@@ -5,8 +5,8 @@
 \noindent
 This appendix reports the \textbf{exact training stack}, \textbf{hyperparameters}, and \textbf{compute footprint} used to reproduce our results.
 We emphasize two principles that guided the implementation:
-\textbf{(i) comparability}---all methods share the same backbone, tokenization, LoRA target modules, and maximum context length; and
-\textbf{(ii) auditability}---all reported metrics are deterministic, and all optimization settings are explicitly enumerated in Tables~\ref{tab:hardware}--\ref{tab:compute}.
+\textbf{(i) comparability}: all methods share the same backbone, tokenization, LoRA target modules, and maximum context length; and
+\textbf{(ii) auditability}: all reported metrics are deterministic, and all optimization settings are explicitly enumerated in Tables~\ref{tab:hardware}--\ref{tab:compute}.
 
 % -----------------------------------------------------------------------------
 \subsection{Hardware and Software}
@@ -27,10 +27,10 @@ We implement all methods in PyTorch using the HuggingFace Transformers ecosystem
 \toprule
 \textbf{Component} & \textbf{Specification} \\
 \midrule
-GPU & NVIDIA A100-40GB \\ \hline
-Framework & PyTorch 2.1 + Transformers 4.35 \\ \hline
-Training Library & TRL~\cite{tunstall2023zephyr} \\ \hline
-Optimization & Optuna~\cite{akiba2019optuna} 3.4 with TPE sampler \\ \hline
+GPU & NVIDIA A100-40GB (SFT, DPO, SwiPO); A100-80GB (PPO, GRPO) \\ \hline
+Framework & PyTorch 2.5.1 + Transformers 4.51.0 (4.56.2 for GRPO) \\ \hline
+Training Library & TRL 0.11.4 (0.22.2 for GRPO) \\ \hline
+Optimization & Optuna~\cite{akiba2019optuna} 4.1.0 with TPE sampler \\ \hline
 Mixed Precision & bfloat16 \\ \hline
 Gradient Checkpointing & Enabled \\
 \bottomrule
@@ -43,7 +43,7 @@ Gradient Checkpointing & Enabled \\
 \vspace{-0.35em}
 \noindent\textbf{Implementation convention (shared across methods).}
 We standardize (i) tokenizer and padding behavior, (ii) maximum sequence length (2048), and (iii) LoRA injection points to ensure differences arise from the \textbf{learning objective} rather than engineering artifacts.
-All methods branch from the same SFT initialization; \textsc{DPO}/SwiPO then apply offline preference optimization, while \textsc{PPO}/\textsc{GRPO} run on-policy updates.
+DPO, PPO, and GRPO branch from the same SFT initialization; SwiPO continues from the DPO checkpoint. DPO and SwiPO apply offline preference optimization, while PPO and GRPO run on-policy updates.
 
 % -----------------------------------------------------------------------------
 \subsection{Training Hyperparameters (Full)}
@@ -53,9 +53,9 @@ All methods branch from the same SFT initialization; \textsc{DPO}/SwiPO then app
 \noindent
 Table~\ref{tab:full_hyperparams} reports the complete training hyperparameters used for each method.
 We highlight three practical details that matter for reproduction:
-\textbf{(i) effective batch parity}---we match effective batch sizes where feasible via gradient accumulation;
-\textbf{(ii) identical context budgets}---max sequence length is held fixed across all runs;
-\textbf{(iii) stable LoRA capacity}---LoRA rank/alpha and target modules are constant, so optimization difficulty is primarily dictated by the objective (offline contrast vs.\ online RL).
+\textbf{(i) effective batch parity}: we match effective batch sizes where feasible via gradient accumulation;
+\textbf{(ii) identical context budgets}: max sequence length is held fixed across all runs;
+\textbf{(iii) stable LoRA capacity}: LoRA rank/alpha and target modules are constant, so optimization difficulty is primarily dictated by the objective (offline contrast vs.\ online RL).
 
 \vspace{-0.25em}
 \noindent
@@ -78,12 +78,12 @@ Grad. Accum. & 4 & 2 & 8 & 8 \\ \hline
 Eff. Batch & 64 & 24 & 8 & 8 \\ \hline
 Max Seq. Len. & 2048 & 2048 & 2048 & 2048 \\ \hline
 Learning Rate & 1e-5 & 5e-6 & 1e-5 & 5.4e-6 \\ \hline
-LR Scheduler & --- & Cosine & Cosine & Cosine \\ \hline
-Warmup & --- & 10\% & 100 steps & 10\% \\ \hline
-Weight Decay & --- & 0.1 & 0.01 & 0.011 \\ \hline
-$\beta$ (temp.) & --- & --- & 0.1 & 0.107 \\ \hline
-KL Coef. & 0.1 & --- & --- & 2.3e-4 \\ \hline
-Max Grad Norm & 1.0 & 0.1 & --- & 1.0 \\ \hline
+LR Scheduler & n/a & Cosine & Cosine & Cosine \\ \hline
+Warmup & n/a & 10\% & 100 steps & 10\% \\ \hline
+Weight Decay & n/a & 0.1 & 0.01 & 0.011 \\ \hline
+$\beta$ (temp.) & n/a & n/a & 0.1 & 0.107 \\ \hline
+KL Coef. & 0.1 & n/a & n/a & 2.3e-4 \\ \hline
+Max Grad Norm & 1.0 & 0.1 & n/a & 1.0 \\ \hline
 LoRA Rank & 16 & 16 & 16 & 16 \\ \hline
 LoRA Alpha & 16 & 16 & 16 & 16 \\ \hline
 Target Modules & \multicolumn{4}{c}{q, k, v, o, gate, up, down\_proj} \\
@@ -95,9 +95,9 @@ Target Modules & \multicolumn{4}{c}{q, k, v, o, gate, up, down\_proj} \\
 
 \vspace{-0.4em}
 \noindent\textbf{Optuna and TPE (what it does here).}
-We use Optuna’s \textbf{Tree-structured Parzen Estimator (TPE)} sampler to perform Bayesian-style hyperparameter search.
+We use Optuna's \textbf{Tree-structured Parzen Estimator (TPE)} sampler to perform Bayesian-style hyperparameter search.
 TPE fits separate density models over configurations that perform well vs.\ poorly and proposes new trials by maximizing an expected improvement criterion.
-In our setting, we run 13 trials per method family and tune learning rate, weight decay, KL coefficient (when applicable), and $\beta$ for contrastive objectives.
+Only SwiPO was tuned this way (13 completed trials per variant over learning rate, weight decay, KL coefficient, $\beta$, and warmup); DPO, PPO, and GRPO use fixed settings, which favors SwiPO in the comparison.
 
 % -----------------------------------------------------------------------------
 \subsection{Compute Requirements}
@@ -149,14 +149,9 @@ The following details are the most common sources of silent divergence in reprod
 
     \item \textbf{Paired preference packing for \textsc{DPO}/SwiPO.}
     For each $(I,X)$ we compute $\log\pi_\theta(Y^+\mid I,X)$ and $\log\pi_\theta(Y^-\mid I,X)$ under the \emph{same} prefix.
-    We verify that both completions fit within the maximum sequence length to avoid implicit truncation bias that can flip preference ordering.
 
     \item \textbf{Sequence-length discipline.}
-    We keep \textbf{Max Seq.\ Len.\ = 2048} fixed across all methods.
-    When $(I,X)$ is long, we truncate from the \emph{left} only after preserving the full instruction header, ensuring the behavioral contract is never partially dropped.
-
-    \item \textbf{Hard negatives (when available).}
-    When preference data provides multiple non-preferred candidates, we prioritize \textbf{hard negatives} (high-likelihood but wrong-under-contract) to sharpen $\Delta_\theta$ learning and reduce reliance on trivial stylistic cues.
+    We keep \textbf{Max Seq.\ Len.\ = 2048} fixed across all methods (TRL default truncation; prompts up to 1,024 tokens).
 
     \item \textbf{KL control and stability.}
     For RL methods, a KL coefficient is used in the policy optimization loop to prevent policy explosion.

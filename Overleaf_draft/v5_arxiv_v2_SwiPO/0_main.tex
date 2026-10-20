@@ -261,7 +261,10 @@
 
 % arXiv v2 (2026-09): method renamed CITA -> SwiPO; the v1 title banner (figures/banner.pdf)
 % carried the old name as a raster, so the title is plain text from v2 on.
-\title{ECLIPTICA: A Framework for Switchable LLM Alignment via SwiPO, Switchable Preference Optimization}
+% Title, abstract and conclusion mirror the AAAI-27 student abstract
+% (../v4_AAAI27_student_abstract/0_main_AAAI.tex), which submits this paper as its
+% supplement: edit them in both files together.
+\title{SwiPO on ECLIPTICA-30k: Can You Trust One LLM Checkpoint to Switch Its Alignment for Every Agent Role?}
 
 \author{
 % Author e-mails, not printed; kept for future submissions (EasyChair AAAI-27 SA form, 2026-09-25):
@@ -271,7 +274,7 @@
 %   Aman Chadha     aman@amanchadha.com
 %   Amitava Das     amitavad@goa.bits-pilani.ac.in
 Kapil Wanaskar$^{1}$ \quad Gaytri Jena$^{2}$ \quad Vinija Jain$^{3}$ \quad Aman Chadha$^{4}$ \quad Amitava Das$^{5}$ \\[0.5em]
-{\small $^{1}$San Jos\'e State University, USA \quad $^{2}$UC Berkeley School of Information, USA \quad $^{3}$Meta, USA \quad $^{4}$Apple, USA \quad $^{5}$Pragya Lab, BITS Pilani Goa, India} \\[0.3em]
+{\small $^{1}$San Jos\'e State University, USA \quad $^{2}$UC Berkeley School of Information, USA \quad $^{3}$Meta, USA \quad $^{4}$Apple, USA \quad $^{5}$AIISC, University of South Carolina, USA} \\[0.3em]
 {\small \texttt{kapilw25@gmail.com}}
 }
 
@@ -311,31 +314,7 @@ Kapil Wanaskar$^{1}$ \quad Gaytri Jena$^{2}$ \quad Vinija Jain$^{3}$ \quad Aman 
 % =============================================================================
 \begin{abstract}
 \vspace{-1.5mm}
-Alignment in large language models (LLMs) remains largely \emph{static}: frozen after training. Methods such as DPO/GRPO typically imprint a \emph{single} behavioral policy into the weights, leaving no room for \textbf{run-time policy control} beyond prompt hacks \textbf{or costly re-alignment cycles}. We introduce \textbf{ECLIPTICA}, which reframes alignment as \textbf{instruction-driven and runtime-controllable}: models should accept natural-language \emph{alignment instructions} as an explicit \textbf{behavioral contract} (epistemic stance, refusal boundary, verbosity) that modulates behavior \emph{on-the-fly}, enabling policy updates under evolving safety requirements, user roles, and governance constraints.
-
-
-We introduce \textbf{SwiPO} (\textbf{Swi}tchable \textbf{P}reference \textbf{O}ptimization), combining supervised fine-tuning with contrastive preference optimization under an \emph{explicit, mandatory} \textbf{geometric anchor} to a reference model:
-\(
-\mathcal{L}_{\mathrm{SwiPO}}(\theta)
-=
-\mathbb{E}\!\left[\ell_{\textsc{pref}}\!\big(\Delta_\theta(I,X)\big)\right]
-\;+\;
-\alpha\,\mathbb{E}\!\left[\|\nabla_\theta \Delta_\theta(I,X)\|_{F(\theta)^{-1}}^{2}\right]
-\)
-, yielding \textbf{a stable Riemannian chart.} SwiPO keeps instruction updates within a \textbf{shared manifold neighborhood} of the reference policy, so regimes stay \textbf{nearby and traversable}—enabling \textbf{stable switching} over superficial variation.
-
-
-
-
-
-
-
-
-
-
-
-
-To separate \textbf{policy switching} from standard instruction following, we introduce the \textbf{ECLIPTICA benchmark}: $3{,}000$ controlled test cases ($300$ prompts $\times$ $10$ instruction types) in which the \emph{user request is held fixed} and only the alignment instruction varies, released as \textbf{ECLIPTICA-30k} ($300$ prompts $\times$ $100$ instruction types), of which the ten evaluated types form the $3{,}000$-case subset. On \textbf{Llama-3.1-8B} across five suites (ECLIPTICA, TruthfulQA, Conditional Safety, Length Control, LITMUS), \textbf{SwiPO attains \colorbox{bg-green}{86.7\%} instruction-alignment efficiency}, exceeding DPO (56.1\%; +30.6 pp), GRPO (36.1\%; +50.6 pp), and PPO (20.4\%; +66.3 pp). Together, \textbf{ECLIPTICA + SwiPO} move alignment beyond \emph{one-policy-per-checkpoint} toward \textbf{switchable, instruction-governed behavior} aligned with modern deployment and agentic settings. \href{https://github.com/kapilw25/cita_ecliptica}{Code} \& \href{https://huggingface.co/datasets/anonymousML123/ECLIPTICA-30k}{Dataset}
+Preference optimization such as DPO or GRPO imprints one behavioral policy into a checkpoint, so one model cannot serve every agent role without prompt hacks or re-alignment. We treat alignment as a runtime control channel in which a natural-language alignment instruction states the behavioral contract that the model must realize under an unchanged user request. ECLIPTICA-30k, 300 prompts crossed with 100 alignment-instruction types, isolates this effect; every result here is on ECLIPTICA-3k, its evaluated 10-type, 3{,}000-case subset. SwiPO (Switchable Preference Optimization) conditions preference optimization on the instruction under a mandatory KL anchor; in the run reported here it is trained with a single safety contract and tested on contracts it never saw. On Llama-3.1-8B across five suites (ECLIPTICA, TruthfulQA, Conditional Safety, Length Control, LITMUS), SwiPO reaches 86.7\% instruction-alignment efficiency (95\% interval 76.8 to 96.2), a score relative to the four trainers compared, against 56.1\% (DPO), 36.1\% (GRPO), and 20.4\% (PPO). Its lead over PPO and GRPO survives every check we ran; its lead over DPO depends on the AQI suite, which is normalized within each model, and without AQI the two cannot be separated, while DPO switches more under safety contracts. \href{https://github.com/kapilw25/cita_ecliptica}{Code} \& \href{https://huggingface.co/datasets/anonymousML123/ECLIPTICA-30k}{Dataset} \& \href{https://huggingface.co/datasets/anonymousML123/ECLIPTICA-3k}{Evaluated subset}
 
 %To foster further research in this domain, we make the \href{https://github.com/kapilw25/cita_ecliptica}{code} and \href{https://huggingface.co/datasets/anonymousML123/ECLIPTICA-30k}{dataset} publicly available.
 \end{abstract}
@@ -351,37 +330,36 @@ To separate \textbf{policy switching} from standard instruction following, we in
 
 \item[\faBolt] \textbf{\textit{TL;DR}}:
 \textbf{ECLIPTICA} makes alignment \emph{instruction-driven and runtime-switchable};
-\textbf{SwiPO} makes switching \emph{reliable} via contrastive preference learning \emph{with a \textbf{mandatory} KL anchor} (stability, not prompt tricks).
+\textbf{SwiPO} makes switching \emph{more consistent across suites} via contrastive preference learning \emph{with a \textbf{mandatory} KL anchor} (stability, not prompt tricks).
 
 \item[\faGlobeAmericas] \textbf{\textit{Why now (agentic reality)}}:
 Real deployments need \textbf{one backbone} to adopt \textbf{multiple alignment postures} across roles (support, research, compliance, creative).
-Static alignment hard-codes one policy; ECLIPTICA instead elevates alignment to a \textbf{first-class inference-time control channel}.
+Static alignment hard-codes one policy; ECLIPTICA instead makes alignment a \textbf{first-class inference-time control channel}.
 
 \item[\faCompass] \textbf{\textit{Framework (ECLIPTICA)}}:
 We shift alignment from \textbf{train-and-freeze} to \textbf{instruction-governed policy control}:
 natural-language \emph{alignment instructions} specify a \textbf{behavioral contract} that the model must honor \emph{on-the-fly}, enabling policy updates \textbf{without retraining checkpoints}.
 
 \item[\faCogs] \textbf{\textit{Algorithm (SwiPO)}}:
-SwiPO instantiates ECLIPTICA with a \textbf{single objective} coupling quality, preference contrast, and stability:
+SwiPO instantiates ECLIPTICA with a \textbf{single objective} coupling instruction-conditioned preference contrast with stability:
 \vspace{-1em}
 \[
 \boxed{
 \begin{aligned}
 \mathcal{L}_{\mathrm{SwiPO}}(\theta)
 \;=\;&
-\mathbb{E}\!\left[\ell_{\textsc{pref}}\!\big(\Delta_\theta(I,X)\big)\right]
+\mathbb{E}\!\left[-\log\sigma\!\big(\beta\,\Delta_\theta(I,X)\big)\right]
 \\[0.25em]
 &+\;
-\alpha\,\mathbb{E}\!\left[\|\nabla_\theta \Delta_\theta(I,X)\|_{F(\theta)^{-1}}^{2}\right]
-\\[0.25em]
-&+\;
-\lambda\,\mathbb{E}\!\left[\mathrm{KL}\!\big(\pi_\theta \,\|\, \pi_0\big)\right]
+\lambda\,\mathbb{E}\!\left[\mathrm{KL}\!\big(\pi_\theta \,\|\, \pi_0\big)\right],\quad \lambda>0
 \end{aligned}
 }
 \]
 \vspace{-1.5em}
 
-\textbf{Geometric view: a stable Riemannian chart.} The KL anchor induces a \textbf{local metric / trust region} around the reference policy, so instruction updates move within a \textbf{shared chart}—preserving \textbf{multiple nearby regimes} and enabling \textbf{switchable} behavior without collapsing into a single overfit stance.
+The reported run trains a single safety contract and tests transfer to unseen contracts.
+
+\textbf{Geometric view: a stable Riemannian chart.} The KL anchor induces a \textbf{local metric / trust region} around the reference policy, so instruction updates move within a \textbf{shared chart}, preserving \textbf{multiple nearby regimes} and enabling \textbf{switchable} behavior without collapsing into a single overfit stance.
 
 
 \item[\faRandom] \textbf{\textit{Instruction-conditioned switching (not prompt hacks)}}:
@@ -391,7 +369,7 @@ Design goal: the \textbf{same user prompt} yields \textbf{different aligned beha
 \item[\faVial] \textbf{\textit{New diagnostic (ECLIPTICA benchmark)}}:
 We introduce \textbf{ECLIPTICA} to isolate instruction effects:
 \textbf{hold \(X\) fixed}, vary \textbf{only} instruction \(I\).
-Full-factorial grid with \(\lvert\text{ECLIPTICA}\rvert = 300 \times 10 = 3{,}000\) prompt-held-constant cases for direct, paired comparisons.
+Full-factorial grid with \(\lvert\text{ECLIPTICA}\rvert = 300 \times 10 = 3{,}000\) prompt-held-constant cases for direct, paired comparisons: the evaluated subset of the released ECLIPTICA-30k (\(300 \times 100\)).
 
 \item[\faBalanceScale] \textbf{\textit{Key distinction: following vs.\ alignment}}:
 We explicitly separate \textbf{instruction-following} (surface compliance: tone/format)
@@ -399,11 +377,11 @@ from \textbf{instruction-alignment} (robust \emph{policy embodiment}: consistent
 
 \item[\faChartLine] \textbf{\textit{Results (switchability without judges)}}:
 On \textbf{Llama-3.1-8B} across \textbf{five deterministic suites},
-\textbf{SwiPO reaches \colorbox{bg-green}{86.7\%} instruction-alignment efficiency}—beating DPO (56.1\%, +30.6 pp), GRPO (36.1\%, +50.6 pp), PPO (20.4\%, +66.3 pp).
+\textbf{SwiPO reaches \colorbox{bg-green}{86.7\%} instruction-alignment efficiency} (relative to these four trainers), ahead of DPO (56.1\%), GRPO (36.1\%), and PPO (20.4\%). The lead over PPO and GRPO holds with paired 95\% intervals; the lead over DPO holds only with AQI, which does not compare models (83.4\% against 67.6\% without it, difference interval $-$4.1 to 39.7), and DPO switches more on Conditional Safety.
 
 \item[\faTools] \textbf{\textit{Practical upshot}}:
-ECLIPTICA + SwiPO move from \textbf{one-policy-per-checkpoint} to \textbf{switchable, instruction-governed alignment}:
-a single deployed model can be \textbf{re-scoped} by policy instructions (safety, verbosity, tone, compliance emphasis, creativity) \textbf{without proliferating models}.
+ECLIPTICA + SwiPO move from \textbf{one-policy-per-checkpoint} toward \textbf{switchable, instruction-governed alignment}:
+the goal is a single deployed model \textbf{re-scoped} by policy instructions (safety, verbosity, tone, compliance emphasis, creativity) \textbf{without proliferating models}; \cref{sec:conclusion} reports how far current trainers still are from it.
 
 %\item[\faCode] \textbf{\textit{Release}}:
 %\textbf{Code:} \url{https://github.com/kapilw25/cita_ecliptica};
@@ -431,7 +409,9 @@ a single deployed model can be \textbf{re-scoped} by policy instructions (safety
 \section{Conclusion}
 \label{sec:conclusion}
 
-To the best of our knowledge, we formalize \textbf{instruction-aware alignment} as \textbf{explicit, run-time policy switching} within a single backbone: natural-language \emph{alignment} instructions specify a \textbf{behavioral contract} (epistemic stance, refusal boundary, verbosity) rather than task intent, and the model must switch accordingly at inference time. Beyond static alignment that bakes one policy into the weights, we introduce \textbf{ECLIPTICA}—a controlled benchmark that fixes the user prompt and varies only the policy instruction—and \textbf{SwiPO}, which learns \textbf{instruction-conditioned policy families} \textbf{under a shared backbone}, stabilized by a mandatory KL trust region. This differs from standard instruction following: we evaluate \textbf{counterfactual behavior} under an unchanged request (same prompt, different policy instruction), isolating \emph{policy control} from superficial compliance.
+Can one LLM checkpoint be trusted to switch its alignment for every agent role? Preference optimization such as DPO or GRPO imprints one behavioral policy into a checkpoint, so we treat alignment as a runtime control channel instead: a natural-language alignment instruction states the behavioral contract (epistemic stance, refusal boundary, verbosity) that the model must realize under an unchanged user request. ECLIPTICA holds the request fixed and varies only the instruction, so a systematic behavioral difference across instructions is attributable to the instruction rather than the request (each answer is one sample, which adds sampling noise); this measures counterfactual policy control rather than the surface compliance that standard instruction following rewards. ECLIPTICA-30k releases 100 instruction types; every result here is on ECLIPTICA-3k, the 3{,}000-case subset formed by the 10 evaluated types. SwiPO conditions preference optimization on the instruction under a mandatory KL anchor to a frozen reference; in the run reported here it is trained with a single safety contract, so every result measures transfer to unseen contracts.
+
+On Llama-3.1-8B across five suites, SwiPO reaches 86.7\% relative instruction-alignment efficiency against 56.1\% (DPO), 36.1\% (GRPO), and 20.4\% (PPO). Its lead over PPO and GRPO holds with paired 95\% intervals. Its lead over DPO does not survive removing AQI, whose within-model normalization keeps it from comparing models (83.4\% against 67.6\%, difference interval $-$4.1 to 39.7): DPO switches more on Conditional Safety (+0.475 against +0.391), the two cannot be separated on ECLIPTICA, TruthfulQA, or Length Control, and no trainer's TruthfulQA calibration responds to the contract. The answer to the title question is therefore not yet. No Instruct model exceeds 0.39 of ECLIPTICA's maximum, none reaches the Length Control target (best ratio 1.14), and 46 to 67\% of Instruct-model ECLIPTICA answers loop at 512 tokens, with every score computed on them (\cref{sec:limitations}). Decoding with a repetition penalty and re-scoring, and scoring the 90 unscored ECLIPTICA-30k types, are the next experiments.
 
 
 
@@ -462,9 +442,9 @@ We used AI assistants for code debugging and \LaTeX{} formatting.
 \newpage
 
 \appendix
-\input{O_discussion}              % A. Discussion (first appendix — moved from main body for ARR 8-page limit compliance)
+\input{O_discussion}              % A. Discussion (first appendix; moved from main body for ARR 8-page limit compliance)
 
-\input{H_faq}                     % B. FAQ (reviewer-oriented)
+% \input{H_faq}  % FAQ removed 2026-10-20: 18 of 24 answers restated the paper and several had no backing runs (ARR_feedback/audit_v5_*.md)
 
 
 %% --- Remaining appendices ---
@@ -474,7 +454,7 @@ We used AI assistants for code debugging and \LaTeX{} formatting.
 \input{D_dataset_details}         % D. Dataset Details (PKU-SafeRLHF, ECLIPTICA examples)
 \input{E_ablations}               % E. Ablation Studies + Training Curves
 \input{F_extended_results}        % F. Experiments + Extended Results (per-benchmark)
-\input{G_qualitative_examples}    % G. Detailed Evaluation + Qualitative Examples
+% \input{G_qualitative_examples}  % removed 2026-10-20: its quoted responses appear in no output file (ARR_feedback/audit_v5_discrepancy.md row 28)
 \input{I_discussion_floats}       % I. Discussion Figures and Tables (moved from main text)
 
 %% --- OLD STRUCTURE (fallback) ---

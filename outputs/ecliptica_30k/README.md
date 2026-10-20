@@ -26,16 +26,23 @@ configs:
 
 # ECLIPTICA-30k
 
-**ECLIPTICA** holds the user prompt fixed and varies only the alignment instruction, so any behavioral
-difference between two rows with the same `prompt_id` is attributable to the instruction. ECLIPTICA-30k
+**ECLIPTICA** holds the user prompt fixed and varies only the alignment instruction, so a systematic behavioral
+difference between rows with the same `prompt_id` is attributable to the instruction. ECLIPTICA-30k
 crosses the same 300 prompts as [ECLIPTICA-3k](https://huggingface.co/datasets/anonymousML123/ECLIPTICA-3k) with
 **100 instruction types** (10 axes x 10 settings) = **30,000 cases**.
 
-**What has been evaluated.** All experiments in the companion paper use the original 10 types, i.e. the
+**Provenance.** The 300 prompts are author-written policy and ethics questions (12 categories x 25), and all
+100 instruction types, the original 10 included, were written by the authors. No judge models, annotators or
+external preference data were used to create prompts or types.
+
+**What has been evaluated.** Every ECLIPTICA result in the companion paper uses the original 10 types, i.e. the
 `eval_3k` config (300 x 10 = 3,000 cases, byte-identical to ECLIPTICA-3k).
-The 90 additional types are released to widen the instruction space for further research; they are
-hand-designed as a taxonomy (no judge models), they have **not** been scored by any model yet, and they
-carry no evaluation claims.
+The 90 additional types are released to widen the instruction space for further research; like the original 10
+they are hand-designed, they have **not** been scored by any model yet, and they carry no evaluation claims.
+
+**Corrections (2026-10-20).** Earlier versions of the ECLIPTICA-3k card said the prompts came from HH-RLHF and the
+10 original types were derived by judge models, and this card's wording implied the same. Both were wrong: prompts
+and types are author-written (`src/eval/isd_dataset.py` in the code repository). The data files are unchanged.
 
 ## Configs
 
