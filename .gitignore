@@ -134,7 +134,7 @@ wandb/
 lightning_logs/
 
 # GIT credentials
-git_push.sh
+# git_push.sh [ removed the credentials from the repo, but keep this line to ignore any local git_push.sh files ]
 
 # Large output files and checkpoints (ALLOW metadata, BLOCK binaries)
 # Keep: *.json, README.md, .db files (small metadata)
