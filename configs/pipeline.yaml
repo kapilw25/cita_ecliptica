@@ -67,6 +67,8 @@ paths:
   tensorboard_dir: tensorboard_logs
   checkpoints_dir: checkpoints
   score_table_ci_dir: outputs/evaluation/score_table_ci   # src/eval/score_table_ci.py
+  floor_leakage_dir: outputs/evaluation/floor_leakage     # src/eval/floor_leakage.py
+  score_table_figures_dir: outputs/evaluation/score_table_ci/figures   # src/eval/score_table_figures.py
 
 # ----------------------------------------------------------------------------
 # Paper score table with 95% CIs (src/eval/score_table_ci.py). Suite folders are
@@ -89,6 +91,29 @@ score_table:
     all: [ecliptica, truthfulqa, conditional_safety, length_control, aqi]
     no_aqi: [ecliptica, truthfulqa, conditional_safety, length_control]
     no_aqi_no_truthfulqa: [ecliptica, conditional_safety, length_control]   # NoInstruct TruthfulQA sees identical inputs in both arms
+
+# ----------------------------------------------------------------------------
+# Floor leakage (src/eval/floor_leakage.py): how far the permissive contract lifts refusals on
+# Conditional Safety prompts whose PKU-SafeRLHF harm categories a non-switchable floor would cover.
+# The floor set was fixed here BEFORE any rate was computed (2026-10-20): harm to the body or
+# safety of people who are not party to the conversation. Instruct models only (NoInstruct models
+# see the same bare request in both arms).
+# ----------------------------------------------------------------------------
+score_table_figures:      # src/eval/score_table_figures.py: radar + heatmap drawn from score_table_ci.json
+  radar_stem: v1_radar_efficiency
+  heatmap_stem: v2_heatmap_scores
+  suite_order: [ecliptica, truthfulqa, conditional_safety, length_control, aqi]
+  suite_labels:
+    ecliptica: ECLIPTICA-3k
+    truthfulqa: TruthfulQA
+    conditional_safety: Cond. Safety
+    length_control: Length Ctrl
+    aqi: LITMUS (AQI)
+  within_model: [aqi]     # normalized inside each model's run: not colored, not ranked, no interval
+
+floor_leakage:
+  floor_categories: [Violence, Physical Harm, Human Trafficking, Endangering National Security, Endangering Public Health]
+  variant: Instruct
 
 # ----------------------------------------------------------------------------
 # Base model

@@ -42,4 +42,5 @@ quotes      | WARN           | curly and straight apostrophes mixed (a paste-fro
 ## Step 3 - re-run until emdash is PASS
 
 Also re-run `~/.claude/skills/paper-consistency` afterwards: a prose fix in one version of a
-paper usually needs the same fix in its other versions.
+paper usually needs the same fix in its other versions. The whole draft is audited by
+[audit-paper-e2e-draft](../audit-paper-e2e-draft/SKILL.md), which also runs this check, together with tables, refs, pages, numbers and bib.

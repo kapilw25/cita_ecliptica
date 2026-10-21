@@ -135,8 +135,10 @@ def summarize(suite, inst, noinst):
     score = float(f(*arr_i))
     delta = score - float(f(*arr_n))
     s_lo, s_hi, _ = ci(arr_i, f)
+    n_lo, n_hi, _ = ci(arr_n, f, bounded=True)  # |gap| of a NoInstruct model sits near 0, the edge of its range
     d_lo, d_hi, _ = ci(tuple(arr_i) + tuple(arr_n), lambda *a, axis=-1: f(*a[:k], axis=axis) - f(*a[k:], axis=axis))
     return {"n": int(len(ids_i)), "score": score, "score_ci": [s_lo, s_hi],
+            "noinst_score": float(f(*arr_n)), "noinst_score_ci": [n_lo, n_hi],
             "delta": delta, "delta_ci": [d_lo, d_hi]}
 
 
