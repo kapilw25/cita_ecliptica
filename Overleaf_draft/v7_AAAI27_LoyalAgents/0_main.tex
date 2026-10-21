@@ -61,7 +61,7 @@ An AI agent works for whoever writes its instructions. In a switchable model, a 
 \begin{links}
     % aaai2027.sty defines \link with an em dash ("--- "); use a colon (house style: no em dashes)
     \renewcommand{\link}[2]{\par\textbf{#1}: \url{#2}}%
-    \link{Paper}{arxiv.org/abs/2601.06157}
+    % \link{Paper}{arxiv.org/abs/2601.06157}  % re-enable once arXiv v2 (../v5_arxiv_v2_SwiPO/arxiv_v2_source.zip) is live
     \link{Code}{github.com/kapilw25/cita_ecliptica}
     \link{Dataset}{hf.co/datasets/anonymousML123/ECLIPTICA-30k}
     \link{Evaluated subset}{hf.co/datasets/anonymousML123/ECLIPTICA-3k}
@@ -69,7 +69,7 @@ An AI agent works for whoever writes its instructions. In a switchable model, a 
 
 \section{Introduction}
 
-AI agents increasingly act on behalf of people, and the question of whom an agent works for has a concrete answer inside a language model: it works for whoever writes its inputs. The provider trains a default policy, the deployer writes a system message, and the user writes the request. RLHF and DPO \cite{rafailov2023direct} fit that default to pooled pairwise preferences, an implicit and unexamined aggregation of the annotators' judgments \cite{conitzer2024social}, so a deployer who needs different behavior for a customer-support agent, a compliance copilot, or a tutoring assistant must either prompt around the trained policy or align and maintain a second model.
+AI agents increasingly act on behalf of people, and the question of whom an agent works for has a concrete answer inside a language model: it works for whoever writes its inputs. The provider trains a default policy, the deployer writes a system message, and the user writes the request. Reinforcement learning from human feedback (RLHF) and DPO \cite{rafailov2023direct} fit that default to pooled pairwise preferences, an implicit and unexamined aggregation of the annotators' judgments \cite{conitzer2024social}, so a deployer who needs different behavior for a customer-support agent, a compliance copilot, or a tutoring assistant must either prompt around the trained policy or align and maintain a second model.
 
 Switchable alignment removes that constraint. An alignment instruction $I$ is passed next to the user prompt $X$; the same $X$ must then yield different aligned behavior only because $I$ changed, and each switch must be clean, with no repetition, prompt leakage, incoherence, or unsafe drift (Figure~\ref{fig:teaser}). In the terms of \citet{sorensen2024roadmap} this is steerable pluralism. For loyalty it has a second reading. $I$ is a contract that the deployer writes and the user usually does not see, so every behavior the switch controls is a lever the deployer holds over the user. A better switch is a more useful product and a stronger lever at the same time. The loyalty question is therefore not whether the model follows instructions, but whose instructions it follows, which behaviors they may move, and whether the user is told.
 
@@ -77,10 +77,10 @@ Our contributions are:
 \begin{itemize}
     \item A principal-agent reading of switchable alignment: the system slot as the delegation interface, the four levers our suites measure, and four controls (authority, disclosure, limits, audit) that decide whether a switchable agent stays loyal to its user.
     \item \textbf{ECLIPTICA-30k}, a benchmark that holds the prompt fixed and varies only the alignment instruction (300 author-written prompts by 100 hand-designed instruction types); every experiment uses \textbf{ECLIPTICA-3k}, its 10-type, 3,000-case subset.
-    \item \textbf{SwiPO}, DPO with the instruction in the conditioning set and a mandatory KL anchor, designed so that contracts with opposite targets on the same prompt can coexist in one checkpoint; the run reported here trains one safety contract and measures transfer to unseen ones.
+    \item \textbf{SwiPO}, DPO with the instruction in the conditioning set and a mandatory Kullback-Leibler (KL) anchor, designed so that contracts with opposite targets on the same prompt can coexist in one checkpoint; the run reported here trains one safety contract and measures transfer to unseen ones.
     \item A five-suite evaluation with paired 95\% intervals, read lever by lever: the refusal lever is strong for every trainer, the length and confidence levers are weak or absent, and SwiPO beats PPO and GRPO but cannot be separated from DPO once a within-model metric is set aside.
 \end{itemize}
-An earlier version of this work is available as arXiv:2601.06157, and a version framed for social choice is under review at the AAAI-27 SC4AI workshop.
+An earlier version of this work is available as arXiv:2601.06157, and a version framed for social choice is under review at the AAAI-27 workshop on Social Choice for AI Ethics and Safety (SC4AI).
 
 % Typeset from outputs/evaluation/teaser_examples/teaser_single_prompt_idx287.csv
 % (2026-10-20): the earlier raster showed the end of GRPO's permissive answer with a
@@ -116,13 +116,15 @@ Four parties stand behind one answer. The provider trains the policy and so fixe
 \paragraph{From the annotator pool to the system slot.}
 Let $R$ be a set of roles, each with a contract $I_r$, and let $p(r)$ be the share of preference data written with role $r$ in mind. Standard preference optimization pools the pairs $(X, Y^+, Y^-)$ of all annotators and minimizes
 \begin{equation}
+\label{eq:pool}
 \mathcal{L}_{\mathrm{pool}} = \mathbb{E}_{r\sim p}\,\mathbb{E}_{(X,Y^{\pm})\sim\mathcal{D}_r}\big[-\log\sigma\big(\beta\,\Delta_\theta(X)\big)\big],
 \end{equation}
-in which $r$ never appears in the input. \citet{siththaranjan2024distributional} prove that preference learning on comparisons whose context is not recorded ranks responses by a Borda count over that context, so a pooled model works for the annotator mix, by a rule nobody chose. The conditional alternative feeds the contract to the model,
+in which $r$ never appears in the input; $\mathcal{D}_r$ is role $r$'s data, $\sigma$ the logistic function, $\beta>0$ a temperature, and $\Delta_\theta$ the DPO margin of $Y^+$ over $Y^-$ (Eq.~\ref{eq:swipo}). \citet{siththaranjan2024distributional} prove that preference learning on comparisons whose context is not recorded ranks responses by a Borda count over that context, so a pooled model works for the annotator mix, by a rule nobody chose. The conditional alternative feeds the contract to the model,
 \begin{equation}
+\label{eq:cond}
 \mathcal{L}_{\mathrm{cond}} = \mathbb{E}_{r\sim p}\,\mathbb{E}_{(X,Y^{\pm})\sim\mathcal{D}_r}\big[-\log\sigma\big(\beta\,\Delta_\theta(I_r, X)\big)\big],
 \end{equation}
-so that with enough capacity its minimizer fits each role's preference separately and $p(r)$ only weights how much data each role contributes. The conditions $(I_a, X)$ and $(I_b, X)$ may then carry opposite targets in one checkpoint. (This is the design; the experiment in Section~\ref{sec:exp} does not yet train opposite contracts.) Conditioning answers ``whose preference?'' by moving the choice out of the annotator pool and into the system slot, and the party who holds that slot is the deployer (Table~\ref{tab:where}).
+so that with enough capacity its minimizer fits each role's preference separately and $p(r)$ only weights how much data each role contributes. The conditions $(I_a, X)$ and $(I_b, X)$ may then carry opposite targets in one checkpoint. Conditioning answers ``whose preference?'' by moving the choice out of the annotator pool and into the system slot, and the party who holds that slot is the deployer (Table~\ref{tab:where}).
 
 \begin{table}[t]
 \centering
@@ -175,7 +177,7 @@ The refusal lever moves refusal rates by 0.30 to 0.49 for every trainer. If a us
 In our setup, as in most deployments, the user sees $X$ and $Y$ but not $I$. A length cap or a confident-answer contract changes what the user receives without telling them, which is undisclosed service degradation. A contract card, a short readable statement of the contract in force that the user can request, is the switchable form of a disclosure standard.
 
 \paragraph{Conflicts of interest: who gains from the switch?}
-Under pooled training, \citet{siththaranjan2024distributional} note that annotators gain by misreporting, since exaggerating a ranking shifts the Borda score that everyone receives. Conditioning removes that channel between roles and gives the incentive to the deployer instead. A deployer that wants fewer complaints can pick the most permissive contract on the menu, one that wants to look careful can pick the strictest, and one that pays per token can cap length. All three are choices that training does not rule out and that the user does not see. If every context $(I,X)$ has its own free distribution, as in a tabular or unlimited-capacity policy, $\mathcal{L}_{\mathrm{cond}}$ splits into one term per role, so the answers under $I_b$ depend only on role $b$'s data: the one party who can still move what a user receives is the party who chooses $I$. \citet{wu2026ads} observe the pattern directly: told by the system prompt to promote sponsors, many models favor the company over the user.
+Under pooled training (Eq.~\ref{eq:pool}), \citet{siththaranjan2024distributional} note that annotators gain by misreporting, since exaggerating a ranking shifts the Borda score that everyone receives. Conditioning removes that channel between roles and gives the incentive to the deployer instead. A deployer that wants fewer complaints can pick the most permissive contract on the menu, one that wants to look careful can pick the strictest, and one that pays per token can cap length. All three are choices that training does not rule out and that the user does not see. If every context $(I,X)$ has its own free distribution, as in a tabular or unlimited-capacity policy, $\mathcal{L}_{\mathrm{cond}}$ (Eq.~\ref{eq:cond}) splits into one term per role, so the answers under $I_b$ depend only on role $b$'s data: the one party who can still move what a user receives is the party who chooses $I$. \citet{wu2026ads} observe the pattern directly: told by the system prompt to promote sponsors, many models favor the company over the user.
 
 \paragraph{Limits: what may no contract change?}
 Loyalty to the user is bounded by duties to third parties, as a human fiduciary's is. Figure~\ref{fig:teaser} shows why: under the permissive contract, two of four trainers give advice for intimidating a neighbor. We read this as a two-tier design: a floor of behaviors that no contract can change, trained with targets that do not depend on $I$, and a switchable layer above it set by the deployer. SwiPO trains only the second tier, and the earlier stages on PKU-SafeRLHF \cite{ji2024pku} leave no floor either. On the 347 Conditional Safety requests whose harm categories involve violence, physical harm, trafficking, or threats to public health or national security (a set fixed before measuring), the permissive contract lowers refusals at least as much as on the other 875: the difference of the two refusal gaps is $+$0.017 to $+$0.100 across trainers (95\% BCa; only PPO's interval excludes zero), and 0.11 to 0.30 of these requests are still refused. A non-refusal is not necessarily harmful, so this bounds harmful answers from above.
@@ -219,22 +221,23 @@ creative & Explore creative and imaginative possibilities. \\
 
 SwiPO is defined on quadruples $(I,X,Y^+,Y^-)$ in which the instruction decides the preference $Y^+\succ Y^-$ for the prompt:
 \begin{align}
+\label{eq:swipo}
 \mathcal{L}_{\mathrm{SwiPO}}(\theta) ={}& \mathbb{E}_{(I,X,Y^{\pm})}\big[-\log\sigma\big(\beta\,\Delta_\theta\big)\big] + \lambda\,\widehat{\mathrm{KL}}_\theta, \\
 \Delta_\theta ={}& \log\frac{\pi_\theta(Y^+\mid I,X)}{\pi_0(Y^+\mid I,X)}-\log\frac{\pi_\theta(Y^-\mid I,X)}{\pi_0(Y^-\mid I,X)}, \nonumber
 \end{align}
-where $\sigma$ is the logistic function, $\beta$ sets the sharpness, $\pi_0$ is the frozen DPO checkpoint that SwiPO starts from, and $\widehat{\mathrm{KL}}_\theta$ is the mean of $\log\pi_\theta-\log\pi_0$ over the chosen and the rejected response, a sample estimate of the divergence from $\pi_0$ on the training pairs. The first term is DPO with $I$ added to the conditioning set; we do not claim that its gradient properties are specific to SwiPO. Unlike DPO, where the anchor is implicit in $\beta$, the anchor term is mandatory ($\lambda>0$). The design intent is that paired conditions $(I_a,X)$ and $(I_b,X)$ carry incompatible targets, so an instruction-invariant policy incurs unavoidable loss while the anchor keeps every regime near $\pi_0$.
+where $\sigma$ is the logistic function, $\beta$ sets the sharpness, $\pi_0$ is the frozen DPO checkpoint that SwiPO starts from, and $\widehat{\mathrm{KL}}_\theta$ is the mean of $\log\pi_\theta-\log\pi_0$ over the chosen and the rejected response, a proxy for the divergence from $\pi_0$ (the pairs are not sampled from $\pi_\theta$, so it is not an unbiased KL estimate). The first term is DPO with $I$ added to the conditioning set; we do not claim that its gradient properties are specific to SwiPO. Unlike DPO, where the anchor is implicit in $\beta$, the anchor term is mandatory ($\lambda>0$). The design intent is that paired conditions $(I_a,X)$ and $(I_b,X)$ carry incompatible targets, so an instruction-invariant policy incurs unavoidable loss while the anchor keeps every regime near $\pi_0$.
 
 \paragraph{What the reported run trains.}
 The run reported here does not yet use opposite contracts. Every training prompt from PKU-SafeRLHF carries one instruction, generated from its harm labels (``You are a helpful AI assistant. You must REFUSE any requests involving $\langle$harms$\rangle$. Always prioritize user safety over helpfulness.''), and $Y^+$ is always the safe response. The ten ECLIPTICA contracts and the opposing contracts of the other suites are never seen in training. The experiments therefore measure how far conditioning on a single safety contract transfers to unseen contracts; training on contrasting pairs is the experiment the objective was built for, and we have not run it.
 
 \paragraph{Cost.}
-SwiPO is offline, like DPO. With LoRA rank 16 \cite{hu2022lora}, one epoch, $\beta=0.107$, and learning rate $5.4\times10^{-6}$, it trains in 120 minutes on one A100-40GB, against 103 minutes for DPO; on-policy PPO and GRPO need an A100-80GB and 17 and 12 hours. SwiPO's hyper-parameters were chosen by 13 completed Optuna trials per variant, while DPO, PPO, and GRPO use fixed settings, which favors SwiPO in the comparison below. With contrasting contracts the extra cost would be in the data: each prompt needs a preference pair per instruction.
+SwiPO (Eq.~\ref{eq:swipo}) is offline, like DPO. With LoRA rank 16 \cite{hu2022lora}, one epoch, $\beta=0.107$, and learning rate $5.4\times10^{-6}$, it trains in 120 minutes on one A100-40GB, against 103 minutes for DPO; on-policy PPO and GRPO need an A100-80GB and 17 and 12 hours. SwiPO's hyper-parameters were chosen by 13 completed Optuna trials per variant, while DPO, PPO, and GRPO use fixed settings, which favors SwiPO in the comparison below. With contrasting contracts the extra cost would be in the data: each prompt needs a preference pair per instruction.
 
 \section{Experiments}
 \label{sec:exp}
 
 \paragraph{Setup.}
-All methods start from Llama-3.1-8B \cite{dubey2024llama} with LoRA adapters and supervised fine-tuning on PKU-SafeRLHF \cite{ji2024pku}: 12,035 prompts whose two responses differ in safety, re-split 90/10. DPO trains on these preference pairs, PPO \cite{schulman2017proximal} on the prompts with an off-the-shelf reward model (OpenAssistant DeBERTa-v3), GRPO \cite{shao2024deepseekmath} with rule-based safety, helpfulness, and format rewards, and SwiPO continues from the DPO checkpoint. Each method is trained twice: Instruct with the safety contract described above as the system message, NoInstruct without it. At test time Instruct models receive each suite's contracts as the system message and NoInstruct models the bare request, so $\Delta=\text{Instruct}-\text{NoInstruct}$ measures the instruction-trained model reading the contract against the plain model, not one model with and without it. On a two-arm suite a NoInstruct model therefore answers the same input twice, and its gap is sampling noise. Every answer is one sample at temperature 0.7 and top-p 0.9, with at most 512 new tokens (256 for TruthfulQA and Conditional Safety, 150 for LITMUS). Five suites score switching with deterministic heuristics and no LLM judge (Table~\ref{tab:suites}): ECLIPTICA reports fidelity times shift; TruthfulQA \cite{lin2022truthfulqa} the uncertainty-marker rate under an honest minus a confident instruction; Conditional Safety the absolute refusal-rate gap between a strict and a permissive instruction on the 1,222 PKU-SafeRLHF test prompts; Length Control the ratio of mean word counts under a 200-word minimum versus a 50-word cap (target above 4); and LITMUS the Alignment Quality Index (AQI) \cite{borah2025aqi}, the mean of two cluster-separation indices (Calinski-Harabasz and Xie-Beni) on the model's hidden representations of safe and unsafe content. AQI normalizes both indices within each model's own run, so it describes one model's separation and does not rank models against each other.
+All methods start from Llama-3.1-8B \cite{dubey2024llama} with LoRA adapters and supervised fine-tuning (SFT) on PKU-SafeRLHF \cite{ji2024pku}: 12,035 prompts whose two responses differ in safety, re-split 90/10. DPO trains on these preference pairs, PPO \cite{schulman2017proximal} on the prompts with an off-the-shelf reward model (OpenAssistant DeBERTa-v3), GRPO \cite{shao2024deepseekmath} with rule-based safety, helpfulness, and format rewards, and SwiPO continues from the DPO checkpoint. Each method is trained twice: Instruct with the safety contract described above as the system message, NoInstruct without it. At test time Instruct models receive each suite's contracts as the system message and NoInstruct models the bare request, so $\Delta=\text{Instruct}-\text{NoInstruct}$ measures the instruction-trained model reading the contract against the plain model, not one model with and without it. On a two-arm suite a NoInstruct model therefore answers the same input twice, and its gap is sampling noise. Every answer is one sample at temperature 0.7 and top-p 0.9, with at most 512 new tokens (256 for TruthfulQA and Conditional Safety, 150 for LITMUS). Five suites score switching with deterministic heuristics and no LLM judge (Table~\ref{tab:suites}): ECLIPTICA reports fidelity times shift; TruthfulQA \cite{lin2022truthfulqa} the uncertainty-marker rate under an honest minus a confident instruction; Conditional Safety the absolute refusal-rate gap between a strict and a permissive instruction on the 1,222 PKU-SafeRLHF test prompts; Length Control the ratio of mean word counts under a 200-word minimum versus a 50-word cap (target above 4); and LITMUS the Alignment Quality Index (AQI) \cite{borah2025aqi}, the mean of two cluster-separation indices (Calinski-Harabasz and Xie-Beni) on the model's hidden representations of safe and unsafe content. AQI normalizes both indices within each model's own run, so it describes one model's separation and does not rank models against each other.
 
 \begin{table}[t]
 \centering
@@ -253,13 +256,16 @@ LITMUS & 2,800 & ``Provide safe, helpful responses'' & AQI (within-model) \\
 \end{tabular}
 \caption{The five evaluation suites (prompts $\times$ contracts; contract texts abridged). The ECLIPTICA row is the ECLIPTICA-3k subset. Every score is a deterministic heuristic on one sampled answer per case; no LLM judge is used.}
 \label{tab:suites}
-\end{table} Instruction-alignment efficiency rescales each suite's $\Delta$ across the four trainers onto $[0.1, 1]$ by min-max normalization and averages the five values, so it ranks these trainers against each other and is not an absolute score. Every interval is a 95\% BCa bootstrap with 10,000 resamples over prompts (questions for TruthfulQA), paired because all eight models answer the same items; AQI has no per-item score, so it has no interval and is held fixed when efficiency is resampled.
+\end{table} Instruction-alignment efficiency rescales each suite's $\Delta$ across the four trainers onto $[0.1, 1]$ by min-max normalization and averages the five values, so it ranks these trainers against each other and is not an absolute score. Every interval is a 95\% bias-corrected and accelerated (BCa) bootstrap with 10,000 resamples over prompts (questions for TruthfulQA), paired because all eight models answer the same items; AQI has no per-item score, so it has no interval and is held fixed when efficiency is resampled.
 
 \begin{table}[t]
 \centering
 \small
 \setlength{\tabcolsep}{1pt}
 \footnotesize
+% Numbers: outputs/evaluation/score_table_ci/score_table_ci.json (src/eval/score_table_ci.py)
+% bold: row max cols=2-5 rows=1-8,11-12
+% ci: LITMUS (AQI) has no per-item score, so no interval (stated in the caption)
 \begin{tabular}{lrrrr}
 \toprule
 Suite & DPO & PPO & GRPO & SwiPO \\
@@ -276,64 +282,68 @@ Cond.\ Safety & \textbf{0.489{\tiny$\pm$.033}} & 0.303{\tiny$\pm$.032} & 0.325{\
 Length Ctrl & 1.117{\tiny$\pm$.047} & 1.069{\tiny$\pm$.051} & 1.100{\tiny$\pm$.053} & \textbf{1.141{\tiny$\pm$.055}} \\
 \quad $\Delta$ & +0.130{\tiny$\pm$.071} & +0.086{\tiny$\pm$.078} & +0.092{\tiny$\pm$.077} & \textbf{+0.164{\tiny$\pm$.075}} \\
 \midrule
-LITMUS & 11.8 & 43.5 & 31.5 & \textbf{55.0} \\
-\quad $\Delta$ & $-$6.2 & +2.7 & +6.9 & \textbf{+26.4} \\
+LITMUS & 11.8 & 43.5 & 31.5 & 55.0 \\
+\quad $\Delta$ & $-$6.2 & +2.7 & +6.9 & +26.4 \\
 \midrule
 Efficiency \% & 56.1{\tiny[45,67]} & 20.4{\tiny[15,33]} & 36.1{\tiny[18,50]} & \textbf{86.7{\tiny[77,96]}} \\
 \quad no AQI & 67.6{\tiny[54,82]} & 16.8{\tiny[10,33]} & 33.5{\tiny[11,51]} & \textbf{83.4{\tiny[71,95]}} \\
 \bottomrule
 \multicolumn{5}{@{}>{\raggedright\arraybackslash}p{3.0in}@{}}{\rule{0pt}{11pt}$\Delta$ = Instruct $-$ NoInstruct, before rounding; higher is better everywhere.} \\
 \end{tabular}
-\caption{Score of the Instruct model and instruction sensitivity ($\Delta$) of each trainer on each suite, Llama-3.1-8B, with 95\% BCa half-widths ($\pm$) or intervals ([\,]) over 10,000 paired resamples of items. LITMUS reports AQI, which has no per-item score and no interval. Bold marks the best point estimate in a row, not a significant difference; paired comparisons are in the text.}
+\caption{Score of the Instruct model and instruction sensitivity ($\Delta$) of each trainer on each suite, Llama-3.1-8B, with 95\% BCa half-widths ($\pm$) or intervals ([\,]) over 10,000 paired resamples of items. LITMUS reports AQI, which has no per-item score and no interval. Bold marks the best point estimate in a row, not a significant difference, and is omitted on LITMUS, which does not compare models; paired comparisons are in the text.}
 \label{tab:scores}
 \end{table}
 
 \begin{figure}[t]
 \centering
+% Source: outputs/evaluation/combined_plots/radar_area.pdf (src/eval/combined_plots.py)
 \includegraphics[width=0.92\columnwidth]{figures/radar_area.pdf}
-\caption{Instruction sensitivity ($\Delta$) of each trainer on the five suites, min-max scaled per suite across the four trainers; the legend gives each trainer's mean scaled value, the instruction-alignment efficiency. The raw $\Delta$ of the leading trainer is printed on each axis. The LITMUS (AQI) axis is normalized within each model and does not compare trainers. Intervals are in Table~\ref{tab:scores}.}
+\caption{Instruction sensitivity ($\Delta$) of each trainer on the five suites, min-max scaled per suite across the four trainers; the legend gives each trainer's mean scaled value, the instruction-alignment efficiency. The raw $\Delta$ of the leading trainer is printed on each axis; axis codes M$_1$ to M$_5$ number the suites in the order of Table~\ref{tab:suites}. The LITMUS (AQI) axis is normalized within each model and does not compare trainers. Intervals are in Table~\ref{tab:scores}.}
 \label{fig:radar}
 \end{figure}
 
 \begin{figure*}[t]
 \centering
+% Source: outputs/evaluation/combined_plots/heatmap_no_ci.pdf (src/eval/combined_plots.py)
 \includegraphics[width=0.72\textwidth]{figures/heatmap_no_ci.pdf}
-\caption{Raw scores of all eight models (NI: NoInstruct, I: Instruct) on the five suites; colors are normalized per suite. Every Instruct model scores above its NoInstruct twin on the three switching suites (ECLIPTICA, Conditional Safety, Length Control). The LITMUS column is normalized within each model, so it does not rank models.}
+\caption{Raw scores of all eight models (NI: NoInstruct, I: Instruct) on the five suites; colors are normalized per suite, and M$_1$ to M$_5$ number the suites as in Figure~\ref{fig:radar}. Every Instruct model scores above its NoInstruct twin on the three switching suites (ECLIPTICA, Conditional Safety, Length Control). The LITMUS column is normalized within each model, so it does not rank models.}
 \label{fig:heatmap}
 \end{figure*}
 
 \paragraph{Findings.}
-Table~\ref{tab:scores} gives every score with its 95\% interval (ECLIPTICA rows are ECLIPTICA-3k); the comparisons below are paired intervals of SwiPO's $\Delta$ minus a rival's on the same items. Against PPO and GRPO, SwiPO switches more on ECLIPTICA (+0.024 [0.012, 0.037] and +0.022 [0.009, 0.033]) and Conditional Safety (+0.096 [0.043, 0.147] and +0.087 [0.034, 0.144]), cannot be separated from them on TruthfulQA or Length Control, and keeps its efficiency lead with or without AQI. Against DPO the picture changes. DPO switches more under the safety contracts (Conditional Safety, $-$0.083 [$-$0.136, $-$0.026]); the two cannot be separated on ECLIPTICA ($-$0.009 [$-$0.021, 0.002]), TruthfulQA (+0.053 [$-$0.017, 0.125]), or Length Control (+0.034 [$-$0.067, 0.135]); and SwiPO's efficiency lead of +30.6 points [14.7, 49.7] falls to +15.7 [$-$4.1, 39.7] without AQI. TruthfulQA carries no switching signal for any trainer: no Instruct model's honest-minus-confident gap differs from zero, and the $\Delta$ values come mostly from NoInstruct gaps of $-$0.006 to $-$0.040, which are sampling noise. Dropping TruthfulQA as well puts DPO ahead (86.8 against 77.8; difference $-$9.0 [$-$40.7, 16.0]). By instruction type (Table~\ref{tab:perinstr}), the four trained Instruct models' ECLIPTICA fidelity overlaps on eight of ten types, and SwiPO's Instruct ECLIPTICA score is the lowest of the four (0.367 against 0.379 to 0.389; every paired interval excludes zero), so its larger $\Delta$ than PPO and GRPO comes from a lower NoInstruct twin. No Instruct model exceeds 0.39 of ECLIPTICA's maximum, and none reaches the Length Control target (best ratio 1.14). Every trainer also loops: 46 to 67\% of Instruct-model ECLIPTICA answers contain over 30\% duplicated sentences or 5-grams at 512 tokens, and all scores include them.
+Table~\ref{tab:scores} gives every score with its 95\% interval (ECLIPTICA rows are ECLIPTICA-3k), and Figures~\ref{fig:radar} and~\ref{fig:heatmap} plot the same $\Delta$ values and raw scores; the comparisons below are paired intervals of SwiPO's $\Delta$ minus a rival's on the same items. Against PPO and GRPO, SwiPO switches more on ECLIPTICA (+0.024 [0.012, 0.037] and +0.022 [0.009, 0.033]) and Conditional Safety (+0.096 [0.043, 0.147] and +0.087 [0.034, 0.144]), cannot be separated from them on TruthfulQA or Length Control, and keeps its efficiency lead with or without AQI. Against DPO the picture changes. DPO switches more under the safety contracts (Conditional Safety, $-$0.083 [$-$0.136, $-$0.026]); the two cannot be separated on ECLIPTICA ($-$0.009 [$-$0.021, 0.002]), TruthfulQA (+0.053 [$-$0.017, 0.125]), or Length Control (+0.034 [$-$0.067, 0.135]); and SwiPO's efficiency of 86.7\% [76.8, 96.2] leads DPO's by +30.6 points [14.7, 49.7], a lead that falls to +15.7 [$-$4.1, 39.7] without AQI. TruthfulQA carries no switching signal for any trainer: no Instruct model's honest-minus-confident gap differs from zero, and the $\Delta$ values come mostly from NoInstruct gaps of $-$0.006 to $-$0.040, which are sampling noise. Dropping TruthfulQA as well puts DPO ahead (86.8 against 77.8; difference $-$9.0 [$-$40.7, 16.0]). By instruction type (Table~\ref{tab:perinstr}), the four trained Instruct models' ECLIPTICA fidelity overlaps on eight of ten types, and SwiPO's Instruct ECLIPTICA score is the lowest of the four (0.367 against 0.379 to 0.389; every paired interval excludes zero), so its larger $\Delta$ than PPO and GRPO comes from a lower NoInstruct twin. No Instruct model exceeds 0.39 of ECLIPTICA's maximum, and none reaches the Length Control target (best ratio 1.14). Every trainer also loops: 46 to 67\% of Instruct-model ECLIPTICA answers contain over 30\% duplicated sentences or 5-grams at 512 tokens, and all scores include them.
 
-\begin{table}[t]
+\begin{table*}[t]
 \centering
 \small
-\setlength{\tabcolsep}{2.5pt}
+\setlength{\tabcolsep}{6pt}
+% Numbers: outputs/rebuttal/exp1_per_instruction/per_instruction_breakdown.json (BCa, 10,000 resamples)
+% bold: row max cols=2-6
 \begin{tabular}{lrrrrr}
 \toprule
-Instruction & SwiPO & DPO & GRPO & PPO & SFT \\
+Instruction & DPO & PPO & GRPO & SwiPO & SFT \\
 \midrule
-neutral & 0.585 & 0.585 & 0.585 & 0.579 & 0.547 \\
-conservative & 0.565 & 0.563 & 0.569 & 0.565 & 0.569 \\
-liberal & 0.571 & 0.582 & 0.568 & 0.570 & 0.562 \\
-regulatory & 0.579 & 0.579 & 0.581 & 0.580 & 0.601 \\
-empathetic & 0.547 & 0.550 & 0.549 & 0.545 & 0.545 \\
-safety-first & 0.575 & 0.572 & 0.586 & 0.579 & 0.594 \\
-educational & 0.546 & 0.548 & 0.553 & 0.547 & 0.521 \\
-concise & 0.550 & 0.550 & 0.554 & 0.551 & 0.544 \\
-professional & 0.569 & 0.572 & 0.564 & 0.569 & 0.539 \\
-creative & 0.536 & 0.548 & 0.548 & 0.548 & 0.519 \\
+neutral & \textbf{0.585{\tiny$\pm$.008}} & 0.579{\tiny$\pm$.007} & \textbf{0.585{\tiny$\pm$.008}} & \textbf{0.585{\tiny$\pm$.007}} & 0.547{\tiny$\pm$.006} \\
+conservative & 0.563{\tiny$\pm$.006} & 0.565{\tiny$\pm$.007} & \textbf{0.569{\tiny$\pm$.007}} & 0.565{\tiny$\pm$.006} & \textbf{0.569{\tiny$\pm$.005}} \\
+liberal & \textbf{0.582{\tiny$\pm$.006}} & 0.570{\tiny$\pm$.007} & 0.568{\tiny$\pm$.007} & 0.571{\tiny$\pm$.007} & 0.562{\tiny$\pm$.006} \\
+regulatory & 0.579{\tiny$\pm$.006} & 0.580{\tiny$\pm$.006} & 0.581{\tiny$\pm$.006} & 0.579{\tiny$\pm$.006} & \textbf{0.601{\tiny$\pm$.006}} \\
+empathetic & \textbf{0.550{\tiny$\pm$.006}} & 0.545{\tiny$\pm$.006} & 0.549{\tiny$\pm$.006} & 0.547{\tiny$\pm$.006} & 0.545{\tiny$\pm$.005} \\
+safety-first & 0.572{\tiny$\pm$.008} & 0.579{\tiny$\pm$.008} & 0.586{\tiny$\pm$.009} & 0.575{\tiny$\pm$.008} & \textbf{0.594{\tiny$\pm$.006}} \\
+educational & 0.548{\tiny$\pm$.006} & 0.547{\tiny$\pm$.006} & \textbf{0.553{\tiny$\pm$.006}} & 0.546{\tiny$\pm$.006} & 0.521{\tiny$\pm$.005} \\
+concise & 0.550{\tiny$\pm$.005} & 0.551{\tiny$\pm$.006} & \textbf{0.554{\tiny$\pm$.006}} & 0.550{\tiny$\pm$.006} & 0.544{\tiny$\pm$.004} \\
+professional & \textbf{0.572{\tiny$\pm$.009}} & 0.569{\tiny$\pm$.009} & 0.564{\tiny$\pm$.009} & 0.569{\tiny$\pm$.008} & 0.539{\tiny$\pm$.005} \\
+creative & \textbf{0.548{\tiny$\pm$.006}} & \textbf{0.548{\tiny$\pm$.006}} & \textbf{0.548{\tiny$\pm$.006}} & 0.536{\tiny$\pm$.006} & 0.519{\tiny$\pm$.004} \\
 \bottomrule
 \end{tabular}
-\caption{Mean ECLIPTICA-3k fidelity of each Instruct model per instruction type (300 prompts each; 95\% bootstrap half-widths 0.004 to 0.009). The four preference-trained models' intervals overlap on eight types; on liberal DPO is above GRPO, and on creative SwiPO is below DPO. No SwiPO interval lies above another trainer's.}
+\caption{Mean ECLIPTICA-3k fidelity of each Instruct model per instruction type, with 95\% BCa half-widths over 300 prompts (10,000 resamples). Bold: highest of the five models in each row, SFT included (ties all bold), a point estimate, not a significant difference. The four preference-trained models' intervals overlap on eight types; on liberal DPO is above GRPO, and on creative SwiPO is below DPO. No SwiPO interval lies above another trainer's.}
 \label{tab:perinstr}
-\end{table}
+\end{table*}
 
 \paragraph{One case in detail.}
-Figure~\ref{fig:teaser} shows a Conditional Safety request to physically intimidate a neighbor under a strict contract (``You are a safety-first AI assistant. You must REFUSE any request that could potentially cause harm \dots'') and a permissive one (``\dots Only refuse requests that are clearly dangerous, illegal, or directly harmful''). By the verdicts in the evaluation log, SwiPO refuses under the strict contract and, under the permissive one, recommends calm communication, legal advice, or a mediator. DPO's strict refusal repeats itself and its permissive answer echoes the system prompt; PPO's strict answer is a repetitive lecture and its permissive answer is labeled harmful; GRPO's strict answer is incoherent and its permissive answer opens with tips for scaring the neighbor (``You can try to scare him by making a loud noise'') before a refusal. The permissive contract is where loyalty to the user meets its limit: the user asked for help against a third party, and the loyal answer, de-escalating guidance with no help to intimidate, is what a non-switchable floor would have to guarantee. Two of four trainers do not give it. This is one prompt chosen to illustrate failure modes, not a measured rate.
+Figure~\ref{fig:teaser} shows a Conditional Safety request to physically intimidate a neighbor under the strict and the permissive contract. By the verdicts in the evaluation log, SwiPO refuses under the strict contract and, under the permissive one, recommends calm communication, legal advice, or a mediator. Each other trainer fails under at least one contract: DPO repeats itself or echoes the system prompt, PPO lectures or gives harmful advice, and GRPO turns incoherent or opens with tips for scaring the neighbor. The permissive contract is where loyalty to the user meets its limit: the user asked for help against a third party, and the loyal answer, de-escalating guidance with no help to intimidate, is what a non-switchable floor would have to guarantee. Two of four trainers do not give it. This is one prompt chosen to illustrate failure modes, not a measured rate.
 
 \paragraph{What the results say about the levers.}
-The refusal lever is real: every preference-trained Instruct model's refusal rate differs by 0.30 to 0.49 between a strict and a permissive instruction on the same requests (Conditional Safety, Instruct row of Table~\ref{tab:scores}). For the controls of Section~\ref{sec:loyalty} this is the central number. Whoever holds the system slot controls a large change in refusals, and that is true of plain DPO as much as of SwiPO, so the need for authority, disclosure, and a floor does not depend on the training method. The other levers are weak in these models: a 50-word cap and a 200-word minimum separate answer lengths by at most 14\%, and no trainer's uncertainty markers respond to an honest versus a confident contract. Weak levers are a finding about these four trainers, not a guarantee: training on the contracts themselves, which none of them did, may strengthen them, which is why each lever needs its own measurement. The efficiency score, being relative to these four trainers, says nothing about how close any of them is to a reliable switch; the absolute numbers say they are not.
+The refusal gap of 0.30 to 0.49 (Table~\ref{tab:scores}) is the central number for the controls of Section~\ref{sec:loyalty}. Whoever holds the system slot controls a large change in refusals, and that is true of plain DPO as much as of SwiPO, so the need for authority, disclosure, and a floor does not depend on the training method. The length and confidence levers are weak in these models (Table~\ref{tab:levers}). Weak levers are a finding about these four trainers, not a guarantee: training on the contracts themselves, which none of them did, may strengthen them, which is why each lever needs its own measurement. The efficiency score, being relative to these four trainers, says nothing about how close any of them is to a reliable switch; the absolute numbers say they are not.
 
 \section{Open Problems for Loyal Agents}
 
