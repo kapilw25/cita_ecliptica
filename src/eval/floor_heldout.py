@@ -75,15 +75,18 @@ def main():
     mode = ap.add_mutually_exclusive_group(required=True)
     mode.add_argument("--SANITY", action="store_true", help=f"first {SANITY_N} prompts, separate output dir")
     mode.add_argument("--FULL", action="store_true", help=f"all {H['n_prompts']} held-out prompts")
+    ap.add_argument("--trainers", nargs="+", choices=TRAINERS, default=TRAINERS,
+                    help="subset of trainers for this process; run one process per trainer in parallel to keep the GPU busy")
     add_wandb_args(ap)
     args = ap.parse_args()
     if not torch.cuda.is_available():
         raise RuntimeError("CUDA not available: floor_heldout.py is GPU-only")
     rows = load_prompts(SANITY_N if args.SANITY else H["n_prompts"])
     out_root = project_root / H["dir"] / ("sanity" if args.SANITY else "full")
-    run = init_wandb("floor_heldout", "sanity" if args.SANITY else "full", {**H, "n": len(rows)}, enabled=not args.no_wandb)
+    run = init_wandb("floor_heldout", "sanity" if args.SANITY else "full", {**H, "n": len(rows), "trainers": args.trainers},
+                     enabled=not args.no_wandb)
     torch.manual_seed(H["seed"])
-    for t in TRAINERS:
+    for t in args.trainers:
         key = f"{t}_{VARIANT}"
         if not MODELS[key]["use_instruction"]:
             raise RuntimeError(f"{key} is not an instruction-trained model")
