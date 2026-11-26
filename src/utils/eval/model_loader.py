@@ -116,6 +116,44 @@ MODELS = {
         "display_name": "G2c pooled DPO, 30% permissive flipped",
         "use_instruction": True,
     },
+    # G1 c1: pooled no-contract data trained with cita.py and the SwiPO settings (G1c above = c2, dpo.py settings);
+    # contracts at eval for the same reason as c2.
+    "G1c1_PooledSwiPO_Instruct": {
+        "hf_repo": str(project_root / "outputs/training/g1/c_pooled_cita/lora_model_CITA_Instruct"),
+        "display_name": "G1c1 pooled, SwiPO settings (no contract)",
+        "use_instruction": True,
+    },
+    # G5: seed reruns on one box (Blackwell, SDPA), seed 3407 included so all three seeds share the stack.
+    "G5_DPO_seed3407_Instruct": {
+        "hf_repo": str(project_root / "outputs/training/g5/DPO_Instruct_seed3407/lora_model_DPO_Instruct"),
+        "display_name": "DPO Instruct (G5 seed 3407)",
+        "use_instruction": True,
+    },
+    "G5_DPO_seed1_Instruct": {
+        "hf_repo": str(project_root / "outputs/training/g5/DPO_Instruct_seed1/lora_model_DPO_Instruct"),
+        "display_name": "DPO Instruct (G5 seed 1)",
+        "use_instruction": True,
+    },
+    "G5_DPO_seed2_Instruct": {
+        "hf_repo": str(project_root / "outputs/training/g5/DPO_Instruct_seed2/lora_model_DPO_Instruct"),
+        "display_name": "DPO Instruct (G5 seed 2)",
+        "use_instruction": True,
+    },
+    "G5_CITA_seed3407_Instruct": {
+        "hf_repo": str(project_root / "outputs/training/g5/CITA_Instruct_seed3407/lora_model_CITA_Instruct"),
+        "display_name": "CITA Instruct (G5 seed 3407)",
+        "use_instruction": True,
+    },
+    "G5_CITA_seed1_Instruct": {
+        "hf_repo": str(project_root / "outputs/training/g5/CITA_Instruct_seed1/lora_model_CITA_Instruct"),
+        "display_name": "CITA Instruct (G5 seed 1)",
+        "use_instruction": True,
+    },
+    "G5_CITA_seed2_Instruct": {
+        "hf_repo": str(project_root / "outputs/training/g5/CITA_Instruct_seed2/lora_model_CITA_Instruct"),
+        "display_name": "CITA Instruct (G5 seed 2)",
+        "use_instruction": True,
+    },
 }
 
 
