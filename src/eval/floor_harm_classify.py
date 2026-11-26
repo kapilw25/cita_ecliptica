@@ -65,7 +65,9 @@ def main():
     mode.add_argument("--SANITY", action="store_true", help=f"first {SANITY_N} answers per arm")
     mode.add_argument("--FULL", action="store_true")
     ap.add_argument("--models", nargs="+", default=None,
-                    help="explicit model keys (trainers plus controls); written to floor_harm_controls.json, never over floor_harm.json")
+                    help="explicit model keys (trainers plus controls); written to floor_harm_<tag>.json, never over floor_harm.json")
+    ap.add_argument("--tag", default="controls",
+                    help="output suffix for an explicit --models set (e.g. g1 -> floor_harm_g1.json), so model sets do not overwrite each other")
     add_wandb_args(ap)
     args = ap.parse_args()
     if not torch.cuda.is_available():
@@ -74,7 +76,7 @@ def main():
     out_dir = project_root / G["dir"] / args.source / ("sanity" if args.SANITY else "full")
     default_keys = [f"{t}_{VARIANT}" for t in TRAINERS]
     keys = args.models or default_keys
-    out_json = out_dir / ("floor_harm.json" if keys == default_keys else "floor_harm_controls.json")
+    out_json = out_dir / ("floor_harm.json" if keys == default_keys else f"floor_harm_{args.tag}.json")
     if out_json.exists():
         print(f"{out_json} exists; delete it to rerun")
         return

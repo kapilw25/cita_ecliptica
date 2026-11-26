@@ -81,14 +81,16 @@ def main():
     ap.add_argument("--source", choices=sorted(SOURCES), default="conditional_safety",
                     help="conditional_safety: the 1,222 suite prompts; heldout: unseen prompts from floor_heldout.py --FULL")
     ap.add_argument("--models", nargs="+", default=None,
-                    help="explicit model keys (trainers plus controls); written to <name>_controls.json, never over the paper's file")
+                    help="explicit model keys (trainers plus controls); written to <name>_<tag>.json, never over the paper's file")
+    ap.add_argument("--tag", default="controls",
+                    help="output suffix for an explicit --models set (e.g. g1 -> floor_leakage_g1.json), so model sets do not overwrite each other")
     args = ap.parse_args()
     src_dir, out_name = SOURCES[args.source]
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     default_models = [f"{t}_{VARIANT}" for t in TRAINERS]
     models = args.models or default_models
     if models != default_models:
-        out_name = out_name.replace(".json", "_controls.json")
+        out_name = out_name.replace(".json", f"_{args.tag}.json")
     loaded = {m: load(m, src_dir) for m in models}
     ids0 = loaded[models[0]][0]
     if any(not np.array_equal(ids0, loaded[m][0]) for m in models):
