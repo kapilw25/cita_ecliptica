@@ -1,9 +1,13 @@
 """Shared GPU batch generation + chat-template formatting + memory cleanup."""
 
 import gc
+import inspect
 import torch
-from typing import List, Dict, Callable
+from typing import List, Dict, Callable, Optional
 from tqdm import tqdm
+from transformers import LogitsProcessorList, RepetitionPenaltyLogitsProcessor
+
+PENALTY_SCOPES = ("all", "generated")  # all = HF/vLLM default (prompt + generated tokens); generated = prompt exempt
 
 
 def cleanup_gpu():
@@ -19,6 +23,33 @@ def cleanup_gpu():
         torch.cuda.synchronize()
 
 
+def repetition_penalty_kwargs(penalty: Optional[float], scope: str, prompt_len: int) -> Dict:
+    """model.generate kwargs for a repetition penalty; {} when penalty is None (paper decoding, nothing passed)."""
+    if penalty is None:
+        return {}
+    if scope not in PENALTY_SCOPES:
+        raise ValueError(f"repetition_penalty_scope must be one of {PENALTY_SCOPES}, got {scope!r}")
+    kwargs = {"repetition_penalty": penalty}  # builds HF's processor at its default slot (before temperature/top-p)
+    if scope == "generated":
+        if "prompt_ignore_length" not in inspect.signature(RepetitionPenaltyLogitsProcessor.__init__).parameters:
+            raise RuntimeError("repetition_penalty_scope='generated' needs transformers>=4.52 (prompt_ignore_length)")
+        # same type as the default processor, so generate() swaps it in at the same slot (HF logs a warning once)
+        kwargs["logits_processor"] = LogitsProcessorList(
+            [RepetitionPenaltyLogitsProcessor(penalty=penalty, prompt_ignore_length=prompt_len)])
+    return kwargs
+
+
+def stop_token_kwargs(tokenizer, stop_tokens: Optional[List[str]]) -> Dict:
+    """model.generate eos_token_id override from token strings; {} when None (model's generation_config decides)."""
+    if stop_tokens is None:
+        return {}
+    ids = [tokenizer.convert_tokens_to_ids(t) for t in stop_tokens]
+    bad = [t for t, i in zip(stop_tokens, ids) if i is None or i == tokenizer.unk_token_id]
+    if bad:
+        raise ValueError(f"stop tokens not in the tokenizer vocabulary: {bad}")
+    return {"eos_token_id": ids}
+
+
 def batch_generate(
     model,
     tokenizer,
@@ -31,7 +62,10 @@ def batch_generate(
     show_progress: bool = True,
     desc: str = "Generating",
     checkpoint_callback: Callable = None,
-    checkpoint_interval: int = 100
+    checkpoint_interval: int = 100,
+    repetition_penalty: Optional[float] = None,
+    repetition_penalty_scope: str = "all",
+    stop_tokens: Optional[List[str]] = None
 ) -> List[str]:
     """
     Batch generation with configurable batch_size
@@ -49,12 +83,16 @@ def batch_generate(
         desc: Description for progress bar
         checkpoint_callback: Function to call for checkpointing (receives list of responses so far)
         checkpoint_interval: Save checkpoint every N responses
+        repetition_penalty: None = not passed to generate (paper decoding); else HF repetition_penalty
+        repetition_penalty_scope: "all" (prompt + generated tokens) or "generated" (prompt exempt)
+        stop_tokens: None = model's generation_config eos; else token strings that end generation
 
     Returns:
         List of generated response strings
     """
     responses = []
     device = next(model.parameters()).device
+    stop_kwargs = stop_token_kwargs(tokenizer, stop_tokens)
 
     iterator = range(0, len(prompts), batch_size)
     if show_progress:
@@ -81,7 +119,9 @@ def batch_generate(
                 temperature=temperature,
                 top_p=top_p,
                 do_sample=do_sample,
-                pad_token_id=tokenizer.eos_token_id
+                pad_token_id=tokenizer.eos_token_id,
+                **repetition_penalty_kwargs(repetition_penalty, repetition_penalty_scope, inputs["input_ids"].shape[1]),
+                **stop_kwargs
             )
 
         # Decode responses (skip prompt tokens)
