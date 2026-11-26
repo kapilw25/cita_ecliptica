@@ -22,7 +22,7 @@ n_instructions: 10           # all 10
 n_inferences: 3000           # 100 × 10 × 3 new conditions (full is cached)
 
 # Cached input
-existing_responses_csv: outputs/evaluation/ISD_Evaluation_Embedding/CITA_Instruct/CITA_Instruct_isd_responses.csv
+existing_responses_csv: outputs/evaluation/ISD_Evaluation_Embedding/{model}/{model}_isd_responses.csv   # {model} = --model (default: model above)
 
 # Outputs
 output_dir: outputs/rebuttal/exp2_query_scrambled

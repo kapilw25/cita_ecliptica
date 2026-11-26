@@ -1,12 +1,14 @@
 """Query-scrambled evaluation: CITA full vs scrambled vs i_only vs x_only. GPU-only.
 
     python -u src/eval/exp2_query_scrambled.py 2>&1 | tee logs/rebuttal/exp2.log
+    python -u src/eval/exp2_query_scrambled.py --model DPO_Instruct --batch_size 64 2>&1 | tee logs/rebuttal/exp2_DPO_Instruct.log
 
 Tests whether CITA_Instruct learns joint (I, X) interaction (full ≫ scrambled) or
 a shortcut "I → style" mapping (full ≈ scrambled). The "full" responses are reused
 from cached ISD eval; only 3 new conditions get fresh inference (~10-30 min).
 """
 
+import argparse
 import json
 import random
 import sys
@@ -25,7 +27,7 @@ project_root = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(project_root))
 
 from src.eval.isd_dataset import ISD_INSTRUCTIONS  # noqa: E402,F401
-from src.utils.eval.model_loader import load_model_for_eval, unload_model  # noqa: E402
+from src.utils.eval.model_loader import MODELS, load_model_for_eval, unload_model  # noqa: E402
 from src.utils.eval.generation import batch_generate, format_chat_messages  # noqa: E402
 from src.utils.eval.eclipta_scoring import (  # noqa: E402
     CHAR_DESCRIPTIONS,  # noqa: F401  (re-exported for any downstream callers)
@@ -78,20 +80,28 @@ def build_message_lists(condition, sub_df, all_prompts_by_id, i_only_placeholder
 def main():
     cfg_path = project_root / "configs" / "rebuttal" / "exp2.yaml"
     cfg = yaml.safe_load(cfg_path.read_text())
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--model", choices=sorted(MODELS), default=cfg["model"],
+                    help="model to test (G7 runs DPO/PPO/GRPO); the YAML focal model keeps the original output dir")
+    ap.add_argument("--batch_size", type=int, default=cfg["batch_size"], help="generation batch size")
+    args = ap.parse_args()
+    model_key = args.model
 
     output_dir = project_root / cfg["output_dir"]
+    if model_key != cfg["model"]:
+        output_dir = output_dir / model_key
     output_dir.mkdir(parents=True, exist_ok=True)
 
     rng = np.random.default_rng(cfg["seed"])
     py_random = random.Random(cfg["seed"])  # noqa: F841  # for any future use
 
     # 1. Load existing CITA_Instruct responses (this gives us 'full' condition + prompt set)
-    existing_csv = project_root / cfg["existing_responses_csv"]
+    existing_csv = project_root / cfg["existing_responses_csv"].format(model=model_key)
     if not existing_csv.exists():
         print(f"❌ Missing {existing_csv}")
         sys.exit(1)
     full_df = pd.read_csv(existing_csv)
-    print(f"📂 Loaded {len(full_df)} cached CITA_Instruct responses (full condition)")
+    print(f"📂 Loaded {len(full_df)} cached {model_key} responses (full condition)")
 
     # Build prompt-id → prompt-text map (any single instruction works since prompt is the same)
     pids_unique = sorted(full_df["prompt_id"].unique())
@@ -109,8 +119,8 @@ def main():
     print(f"🎯 Sampled {len(sampled_pids)} prompts × 10 instructions = {len(sub_df)} (I,X) pairs")
 
     # 3. Load model
-    print(f"\n📦 Loading {cfg['model']}...")
-    model, tokenizer = load_model_for_eval(cfg["model"])
+    print(f"\n📦 Loading {model_key}...")
+    model, tokenizer = load_model_for_eval(model_key)
 
     all_results = []  # rows: condition, prompt_id, instruction_type, response, fidelity
 
@@ -140,7 +150,7 @@ def main():
         responses = batch_generate(
             model=model, tokenizer=tokenizer, prompts=prompts_text,
             max_new_tokens=cfg["max_new_tokens"],
-            batch_size=cfg["batch_size"],
+            batch_size=args.batch_size,
             temperature=cfg["temperature"],
             top_p=cfg["top_p"],
             do_sample=cfg["do_sample"],
@@ -204,7 +214,7 @@ def main():
         {"per_condition": summary, "deltas": deltas}, indent=2))
 
     # Markdown table for rebuttal text
-    md = ["| Condition | Score (CITA_I) | Δ vs Full |",
+    md = [f"| Condition | Score ({model_key}) | Δ vs Full |",
           "|---|---|---|"]
     md.append(f"| Full (I, X)        | {summary[0]['ci']['mean']:.3f}±{summary[0]['ci']['ci_half']:.3f} | — |")
     for d, s in zip(deltas, summary[1:]):
