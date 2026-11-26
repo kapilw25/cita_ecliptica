@@ -199,6 +199,7 @@ g1_contracts:
   dataset: PKU-Alignment/PKU-SafeRLHF
   dir: outputs/training_data/g1_contracts
   source_split: train                # pairs come from this split only
+  drop_both_safe: false              # true = keep only pairs with at least one unsafe response (49% of eligible pairs are both-safe; true leaves 6,217 pairs after exclusion + dedupe, enough for 6,017; floor share 16% -> 31%)
   exclude_splits: [test]             # every prompt of these splits is dropped: a superset of the Cond. Safety eval prompts (test split, clear contrast)
   exclude_files:                     # eval prompt files (.jsonl rows or .parquet column with a "prompt" field); every listed prompt is dropped
     - outputs/evaluation/floor_heldout/heldout_prompts.jsonl            # held-out floor test (2,444 prompts)

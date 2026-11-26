@@ -173,6 +173,9 @@ def main():
 
     src = load_dataset(G["dataset"], split=G["source_split"]).to_pandas()
     dis = src[src["safer_response_id"] != src["better_response_id"]].copy()
+    if G["drop_both_safe"]:
+        dis = dis[~(dis["is_response_0_safe"] & dis["is_response_1_safe"])].copy()
+        print(f"drop_both_safe: kept {len(dis):,} disagreement pairs with at least one unsafe response")
     dis["key"] = dis["prompt"].map(norm_prompt)
     print(f"{G['dataset']} {G['source_split']}: {len(src):,} pairs; safer != better: {len(dis):,} pairs, {dis['key'].nunique():,} unique prompts")
 
@@ -254,7 +257,7 @@ def main():
         return {"pairs": n, "share": round(n / len(pairs[split]), 4)}
 
     stats = {
-        "dataset": G["dataset"], "source_split": G["source_split"], "seed": G["seed"],
+        "dataset": G["dataset"], "source_split": G["source_split"], "seed": G["seed"], "drop_both_safe": G["drop_both_safe"],
         "source_pairs": len(src),
         "label_disagreement": {"pairs": len(dis), "unique_prompts": int(dis["key"].nunique()),
                                "by_safety_class": counts(dis.apply(safety_class, axis=1))},

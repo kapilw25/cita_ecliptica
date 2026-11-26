@@ -2,6 +2,7 @@
   "dataset": "PKU-Alignment/PKU-SafeRLHF",
   "source_split": "train",
   "seed": 3407,
+  "drop_both_safe": false,
   "source_pairs": 73907,
   "label_disagreement": {
     "pairs": 17798,
