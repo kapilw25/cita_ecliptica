@@ -69,7 +69,7 @@
 - Be brutally honest. Disagree [challenge me] when I'm wrong, but never hallucinate or lie.
 - Devil's advocate does NOT mean fabricating bugs that don't exist. If code is correct, say so and move on.
 - WEBSEARCH when needed to confirm universal AI/ML research practices.
-- Git: Claude may run `git add <paths>`, `git commit`, `git push` when the user asks for a push (owner unblocked 2026-11-26). Stage named paths, never `git add .` blindly; never force-push, reset, or rebase without asking. The user may still push via git_push.sh.
+- Git: **commit and push every file Claude modifies, right after the change, without asking** (owner standing order 2026-11-26: "always PUSH each modified file, no permission needed"). Stage the modified files by name, never `git add .` blindly; never commit secrets (`.env`, tokens, credentials); never force-push, reset, or rebase without asking. The user may still push via git_push.sh.
 - NEVER draw conclusions from statistically insufficient data. A sanity check validates code correctness (no crashes, valid output), NOT model performance.
 - Think like a Sr. Research Scientist: before making any recommendation, ask "do I have enough evidence for this claim?" If the answer is no, say so explicitly instead of speculating.
 - **Scalability-first design:** Remote storage paths MUST mirror local project layout exactly (e.g., `outputs/full/` locally = `outputs/full/` on HF, NOT `full/`). Never flatten or rename directory structures — future directories (poc, sanity, surgical) must slot in without refactoring. Apply the same principle to file naming, config keys, and API paths.
