@@ -1,10 +1,7 @@
-"""Length Control evaluation with instruction variants. GPU-only.
-
-    # Sanity (smoke test, no push)
-    python -u src/eval/length_control.py --mode sanity 2>&1 | tee logs/eval_length_control_sanity.log
-
-    # Full evaluation
-    python -u src/eval/length_control.py --mode full 2>&1 | tee logs/eval_length_control_full.log
+"""Length Control evaluation with instruction variants; menus unless --non_interactive. GPU-only.
+    python -u src/eval/length_control.py 2>&1 | tee logs/eval_length_control.log
+    python -u src/eval/length_control.py --non_interactive --mode max --models DPO_Instruct 2>&1 | tee logs/eval_length_control_max.log
+    python -u src/eval/length_control.py --non_interactive --mode max --decode_variant rep_penalty_1.15 --models DPO_Instruct 2>&1 | tee logs/g3/length_control.log
 """
 
 import sys
@@ -25,7 +22,7 @@ from src.utils.eval import (
     MODELS, load_model_for_eval, unload_model,
     setup_training_logger, restore_logging,
     save_checkpoint, load_checkpoint, delete_checkpoint,
-    batch_generate, cleanup_gpu, format_chat_messages, verify_hf_repos,
+    batch_generate, cleanup_gpu, format_chat_messages,
     add_validation_columns, get_validation_summary,
     show_cached_data_menu, show_mode_selection_menu, show_checkpoint_resume_menu,
     filter_model_keys,
@@ -34,6 +31,8 @@ from src.utils.eval import (
     generate_boxviolin_chart as _generate_boxviolin_chart
 )
 from src.utils.eval.checkpoint import get_checkpoint_dir
+from src.utils.eval.cli_menus import is_non_interactive
+from src.utils.eval.run_options import add_run_args, resolve_run, verify_models, fail_on_missing
 
 
 # =============================================================================
@@ -147,12 +146,14 @@ def generate_responses(
     use_instruction: bool,
     max_new_tokens: int = 512,
     batch_size: int = 8,
-    checkpoint_interval: int = 100
+    checkpoint_interval: int = 100,
+    decode: Optional[Dict] = None
 ) -> List[StyleResponse]:
     """Generate responses for all prompts with batch processing and checkpointing"""
 
     # Check for existing checkpoint
-    checkpoint = load_checkpoint(model_key, eval_type="length_control", variant=variant)
+    checkpoint = load_checkpoint(model_key, eval_type="length_control", variant=variant,
+                                 expected_total=len(prompts) if is_non_interactive() else None)
 
     if checkpoint and checkpoint['completed']:
         choice = show_checkpoint_resume_menu(
@@ -230,7 +231,8 @@ def generate_responses(
         show_progress=True,
         desc=f"{model_key}/{variant}",
         checkpoint_callback=checkpoint_cb,
-        checkpoint_interval=checkpoint_interval
+        checkpoint_interval=checkpoint_interval,
+        **(decode or {})  # decode variant (G3); empty = paper decoding
     )
 
     # Convert to StyleResponse objects
@@ -315,7 +317,8 @@ def calculate_metrics(
 def run_style_evaluation(
     model_keys: List[str],
     prompts_df: pd.DataFrame,
-    batch_size: int = 8
+    batch_size: int = 8,
+    decode: Optional[Dict] = None
 ) -> Dict[str, Dict]:
     """Run evaluation on all models"""
 
@@ -338,13 +341,13 @@ def run_style_evaluation(
             concise_responses = generate_responses(
                 model, tokenizer, prompts,
                 model_key, "CONCISE", use_instruction,
-                batch_size=batch_size
+                batch_size=batch_size, decode=decode
             )
 
             detailed_responses = generate_responses(
                 model, tokenizer, prompts,
                 model_key, "DETAILED", use_instruction,
-                batch_size=batch_size
+                batch_size=batch_size, decode=decode
             )
 
             # Unload model
@@ -379,6 +382,8 @@ def run_style_evaluation(
             print(f"{'-' * 40}")
 
         except RuntimeError as e:
+            if is_non_interactive():  # FAIL HARD: no silent skip (OOM is a RuntimeError too)
+                raise
             print(f"\nFailed to evaluate {model_key}: {e}")
             print("   Skipping this model...")
             continue
@@ -508,19 +513,22 @@ def generate_comparison_plots(all_results: Dict, output_dir: Path, stratified_me
 # =============================================================================
 
 def main():
+    global EVAL_OUTPUT_DIR  # --decode_variant points it at <evaluation_dir>/<variant>/<suite dir>
     import argparse
 
     parser = argparse.ArgumentParser(description="Length Control Evaluation")
-    parser.add_argument("--mode", choices=["sanity", "full"], default="sanity",
-                       help="sanity (100 prompts) or full (500 prompts)")
+    parser.add_argument("--mode", choices=["sanity", "full", "max"], default=None,
+                       help="sanity 100, full 500, max all AlpacaEval prompts (x2 variants); used only with --non_interactive")
     parser.add_argument("--models", nargs="+", default=None,
                        help="Specific models to evaluate")
     parser.add_argument("--samples", type=int, default=None,
-                       help="Custom sample count (overrides --mode)")
+                       help="Custom sample count; with --non_interactive overrides --mode")
     parser.add_argument("--batch_size", type=int, default=8,
                        help="Batch size for inference")
 
+    add_run_args(parser)
     args = parser.parse_args()
+    EVAL_OUTPUT_DIR, decode = resolve_run(args, parser, EVAL_OUTPUT_DIR)  # no new flags: unchanged dir, {}
 
     # Setup logging
     log_file, log_filename, original_stdout, original_stderr = setup_training_logger(
@@ -539,7 +547,7 @@ def main():
         results_exist = results_dir.exists() and any(results_dir.iterdir())
 
         cache_choice = None
-        if checkpoints_exist or results_exist:
+        if (checkpoints_exist or results_exist) and not args.non_interactive:
             cache_choice = show_cached_data_menu(
                 checkpoint_dir=checkpoint_dir,
                 results_dir=results_dir,
@@ -602,12 +610,16 @@ def main():
             return
 
         # Interactive mode selection (defer HF fetch to avoid M1 mutex lock)
-        mode, _ = show_mode_selection_menu(
-            eval_name="LENGTH CONTROL",
-            sanity_desc="100 prompts x 2 variants = 200 test cases (~15 min)",
-            full_desc="500 prompts x 2 variants = 1,000 test cases (~60 min)",
-            max_desc="100% of dataset (fetches from HF)"
-        )
+        requested_samples = args.samples if args.non_interactive else None
+        if args.non_interactive:
+            mode = args.mode
+        else:
+            mode, _ = show_mode_selection_menu(
+                eval_name="LENGTH CONTROL",
+                sanity_desc="100 prompts x 2 variants = 200 test cases (~15 min)",
+                full_desc="500 prompts x 2 variants = 1,000 test cases (~60 min)",
+                max_desc="100% of dataset (fetches from HF)"
+            )
         args.mode = mode
         if mode == "sanity":
             args.samples = 100
@@ -617,6 +629,10 @@ def main():
             max_prompts, max_cases, source = get_length_control_max_samples()
             print(f"   Max Available: {max_prompts} prompts x 2 = {max_cases:,} [{source}]")
             args.samples = max_prompts
+
+        if requested_samples:
+            args.samples = requested_samples
+            print(f"   --samples {requested_samples} overrides --mode {mode}")
 
         # Determine sample count
         if args.samples:
@@ -640,7 +656,7 @@ def main():
         model_keys = filter_model_keys(args.models, MODELS, list(MODELS.keys()))
 
         # Pre-flight verification of HuggingFace repos
-        model_keys = verify_hf_repos(model_keys, interactive=True)
+        model_keys = verify_models(model_keys, args.non_interactive)
         if not model_keys:
             print("No valid models to evaluate. Exiting.")
             sys.exit(1)
@@ -651,7 +667,7 @@ def main():
         # Run evaluation
         all_results = run_style_evaluation(
             model_keys, prompts_df,
-            batch_size=args.batch_size
+            batch_size=args.batch_size, decode=decode
         )
 
         # Save results with validation columns and calculate valid-only metrics
@@ -745,6 +761,8 @@ def main():
             print(f"{model_key:<20} {m['concise_avg_words']:.1f}{'':>5} "
                   f"{m['detailed_avg_words']:.1f}{'':>5} "
                   f"{m['adaptation_score']:.2f}")
+        if args.non_interactive:
+            fail_on_missing(model_keys, all_results, "Length Control")
 
     finally:
         restore_logging(log_file, original_stdout, original_stderr)

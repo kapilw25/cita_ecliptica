@@ -1,10 +1,7 @@
-"""TruthfulQA evaluation with instruction variants. GPU-only.
-
-    # Sanity (smoke test, no push)
-    python -u src/eval/truthfulqa.py --mode sanity 2>&1 | tee logs/eval_truthfulqa_sanity.log
-
-    # Full evaluation
-    python -u src/eval/truthfulqa.py --mode full 2>&1 | tee logs/eval_truthfulqa_full.log
+"""TruthfulQA evaluation with instruction variants; menus unless --non_interactive. GPU-only.
+    python -u src/eval/truthfulqa.py 2>&1 | tee logs/eval_truthfulqa.log
+    python -u src/eval/truthfulqa.py --non_interactive --mode full --models DPO_Instruct 2>&1 | tee logs/eval_truthfulqa_full.log
+    python -u src/eval/truthfulqa.py --non_interactive --mode full --decode_variant rep_penalty_1.15 --models DPO_Instruct 2>&1 | tee logs/g3/truthfulqa.log
 """
 
 import sys
@@ -27,15 +24,18 @@ from src.utils.eval import (
     MODELS, load_model_for_eval, unload_model,
     setup_training_logger, restore_logging,
     save_checkpoint, load_checkpoint, delete_checkpoint,
-    batch_generate, cleanup_gpu, format_chat_messages, verify_hf_repos,
+    batch_generate, cleanup_gpu, format_chat_messages,
     add_validation_columns, get_validation_summary,
-    show_cached_data_menu, show_mode_selection_menu,
+    show_cached_data_menu, show_mode_selection_menu, show_checkpoint_resume_menu,
+    filter_model_keys,
     get_truthfulqa_max_samples,
     generate_comparison_plots,
     generate_boxviolin_chart
 )
 from src.utils.bootstrap import compute_bootstrap_ci
 from src.utils.eval.checkpoint import get_checkpoint_dir
+from src.utils.eval.cli_menus import is_non_interactive
+from src.utils.eval.run_options import add_run_args, resolve_run, verify_models, fail_on_missing
 
 
 # =============================================================================
@@ -268,15 +268,16 @@ def generate_responses(
     use_instruction: bool,
     max_new_tokens: int = 256,
     batch_size: int = 8,
-    checkpoint_interval: int = 100
+    checkpoint_interval: int = 100,
+    decode: Optional[Dict] = None
 ) -> List[TruthfulQAResponse]:
     """Generate responses for all questions with batch processing and checkpointing"""
 
     # Check for existing checkpoint
-    checkpoint = load_checkpoint(model_key, eval_type="truthfulqa", variant=variant)
+    checkpoint = load_checkpoint(model_key, eval_type="truthfulqa", variant=variant,
+                                 expected_total=len(questions) if is_non_interactive() else None)
 
     if checkpoint and checkpoint['completed']:
-        from src.utils.eval import show_checkpoint_resume_menu
         choice = show_checkpoint_resume_menu(
             model_key=f"{model_key}/{variant}",
             n_responses=checkpoint['n_completed'],
@@ -358,7 +359,8 @@ def generate_responses(
         show_progress=True,
         desc=f"{model_key}/{variant}",
         checkpoint_callback=checkpoint_cb,
-        checkpoint_interval=checkpoint_interval
+        checkpoint_interval=checkpoint_interval,
+        **(decode or {})  # decode variant (G3); empty = paper decoding
     )
 
     # Convert to TruthfulQAResponse objects
@@ -449,7 +451,8 @@ def calculate_metrics(
 def run_truthfulqa_evaluation(
     model_keys: List[str],
     questions_df: pd.DataFrame,
-    batch_size: int = 8
+    batch_size: int = 8,
+    decode: Optional[Dict] = None
 ) -> Dict[str, Dict]:
     """Run evaluation on all models using heuristic uncertainty detection"""
     all_results = {}
@@ -473,13 +476,13 @@ def run_truthfulqa_evaluation(
             honest_responses = generate_responses(
                 model, tokenizer, questions, categories,
                 model_key, "HONEST", use_instruction,
-                batch_size=batch_size
+                batch_size=batch_size, decode=decode
             )
 
             confident_responses = generate_responses(
                 model, tokenizer, questions, categories,
                 model_key, "CONFIDENT", use_instruction,
-                batch_size=batch_size
+                batch_size=batch_size, decode=decode
             )
 
             # Unload model
@@ -515,6 +518,8 @@ def run_truthfulqa_evaluation(
             print(f"{'-' * 40}")
 
         except RuntimeError as e:
+            if is_non_interactive():  # FAIL HARD: no silent skip (OOM is a RuntimeError too)
+                raise
             print(f"\n❌ Failed to evaluate {model_key}: {e}")
             print("   Skipping this model...")
             continue
@@ -633,19 +638,22 @@ def generate_truthfulqa_comparison_plots(all_results: Dict, output_dir: Path, st
 # =============================================================================
 
 def main():
+    global EVAL_OUTPUT_DIR  # --decode_variant points it at <evaluation_dir>/<variant>/<suite dir>
     import argparse
 
     parser = argparse.ArgumentParser(description="TruthfulQA Evaluation")
-    parser.add_argument("--mode", choices=["sanity", "full"], default="sanity",
-                       help="sanity (50 questions) or full (817 questions)")
+    parser.add_argument("--mode", choices=["sanity", "full", "max"], default=None,
+                       help="sanity 50, full all questions, max all questions (x2 variants); used only with --non_interactive")
     parser.add_argument("--models", nargs="+", default=None,
                        help="Specific models to evaluate")
     parser.add_argument("--samples", type=int, default=None,
-                       help="Custom sample count (overrides --mode)")
+                       help="Custom sample count; with --non_interactive overrides --mode")
     parser.add_argument("--batch_size", type=int, default=8,
                        help="Batch size for inference")
 
+    add_run_args(parser)
     args = parser.parse_args()
+    EVAL_OUTPUT_DIR, decode = resolve_run(args, parser, EVAL_OUTPUT_DIR)  # no new flags: unchanged dir, {}
 
     # Setup logging
     log_file, log_filename, original_stdout, original_stderr = setup_training_logger(
@@ -664,7 +672,7 @@ def main():
         results_exist = results_dir.exists() and any(results_dir.iterdir())
 
         cache_choice = None
-        if checkpoints_exist or results_exist:
+        if (checkpoints_exist or results_exist) and not args.non_interactive:
             cache_choice = show_cached_data_menu(
                 checkpoint_dir=checkpoint_dir,
                 results_dir=results_dir,
@@ -727,12 +735,16 @@ def main():
             return
 
         # Interactive mode selection (defer HF fetch to avoid M1 mutex lock)
-        mode, _ = show_mode_selection_menu(
-            eval_name="TRUTHFULQA",
-            sanity_desc="50 questions × 2 variants = 100 test cases (~15 min)",
-            full_desc="817 questions × 2 variants = 1,634 test cases (~60 min)",
-            max_desc="100% of dataset (fetches from HF)"
-        )
+        requested_samples = args.samples if args.non_interactive else None
+        if args.non_interactive:
+            mode = args.mode
+        else:
+            mode, _ = show_mode_selection_menu(
+                eval_name="TRUTHFULQA",
+                sanity_desc="50 questions × 2 variants = 100 test cases (~15 min)",
+                full_desc="817 questions × 2 variants = 1,634 test cases (~60 min)",
+                max_desc="100% of dataset (fetches from HF)"
+            )
         args.mode = mode
         if mode == "sanity":
             args.samples = 50
@@ -742,6 +754,10 @@ def main():
             max_questions, max_cases, source = get_truthfulqa_max_samples()
             print(f"   Max Available: {max_questions} Qs x 2 = {max_cases:,} [{source}]")
             args.samples = max_questions
+
+        if requested_samples:
+            args.samples = requested_samples
+            print(f"   --samples {requested_samples} overrides --mode {mode}")
 
         # Determine sample count
         if args.samples:
@@ -762,11 +778,10 @@ def main():
         questions_df = load_truthfulqa(max_samples=max_samples)
 
         # Determine models
-        from src.utils.eval import filter_model_keys
         model_keys = filter_model_keys(args.models, MODELS, list(MODELS.keys()))
 
         # Pre-flight verification of HuggingFace repos
-        model_keys = verify_hf_repos(model_keys, interactive=True)
+        model_keys = verify_models(model_keys, args.non_interactive)
         if not model_keys:
             print("No valid models to evaluate. Exiting.")
             sys.exit(1)
@@ -777,7 +792,7 @@ def main():
         # Run evaluation
         all_results = run_truthfulqa_evaluation(
             model_keys, questions_df,
-            batch_size=args.batch_size
+            batch_size=args.batch_size, decode=decode
         )
 
         # Save results with validation columns and calculate valid-only metrics
@@ -875,6 +890,8 @@ def main():
             print(f"{model_key:<20} {m['honest_uncertainty_rate']:.1%}{'':>5} "
                   f"{m['confident_uncertainty_rate']:.1%}{'':>5} "
                   f"{m['adaptation_score']:.3f}")
+        if args.non_interactive:
+            fail_on_missing(model_keys, all_results, "TruthfulQA")
 
     finally:
         restore_logging(log_file, original_stdout, original_stderr)
