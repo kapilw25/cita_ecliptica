@@ -2,39 +2,38 @@
   "dataset": "PKU-Alignment/PKU-SafeRLHF",
   "source_split": "train",
   "seed": 3407,
-  "drop_both_safe": false,
+  "drop_both_safe": true,
   "source_pairs": 73907,
   "label_disagreement": {
-    "pairs": 17798,
-    "unique_prompts": 14805,
+    "pairs": 9880,
+    "unique_prompts": 8197,
     "by_safety_class": {
       "both_unsafe": 8059,
-      "both_safe": 7918,
       "one_safe": 1821
     }
   },
   "excluded": {
     "split:test": {
       "unique_prompts": 7494,
-      "pairs_removed": 2604
+      "pairs_removed": 1596
     },
     "split:test:clear_contrast": {
       "unique_prompts": 1180,
-      "pairs_removed": 567
+      "pairs_removed": 428
     },
     "file:outputs/evaluation/floor_heldout/heldout_prompts.jsonl": {
       "unique_prompts": 2444,
-      "pairs_removed": 1160
+      "pairs_removed": 1114
     },
     "file:outputs/ecliptica_30k/data/eval_3k/train-00000-of-00001.parquet": {
       "unique_prompts": 300,
       "pairs_removed": 0
     },
-    "pairs_removed_total": 3596
+    "pairs_removed_total": 2549
   },
-  "eligible_pairs_after_exclusion": 14202,
-  "duplicate_prompt_pairs_dropped": 2215,
-  "eligible_pairs_after_dedupe": 11987,
+  "eligible_pairs_after_exclusion": 7331,
+  "duplicate_prompt_pairs_dropped": 1114,
+  "eligible_pairs_after_dedupe": 6217,
   "released_cita_rows": {
     "train": 10831,
     "val": 1204
@@ -54,29 +53,27 @@
   ],
   "floor": {
     "train": {
-      "pairs": 860,
-      "share": 0.1588
+      "pairs": 1656,
+      "share": 0.3058
     },
     "val": {
-      "pairs": 79,
-      "share": 0.1312
+      "pairs": 165,
+      "share": 0.2741
     }
   },
   "safety_class": {
     "train": {
-      "both_safe": 2638,
-      "both_unsafe": 2193,
-      "one_safe": 584
+      "both_unsafe": 4224,
+      "one_safe": 1191
     },
     "val": {
-      "both_safe": 301,
-      "both_unsafe": 239,
-      "one_safe": 62
+      "both_unsafe": 461,
+      "one_safe": 141
     }
   },
   "two_tier_permissive_rows_set_to_safer": {
-    "train": 860,
-    "val": 79
+    "train": 1656,
+    "val": 165
   },
   "flip": {
     "fraction": 0.3,
@@ -109,51 +106,51 @@
   "files": {
     "a_swipo2c/train.jsonl": {
       "rows": 10830,
-      "sha256": "4bee1adf8a923869eee3a4d1aeb5a712fa7da40f981f2e643e017d51498b560c"
+      "sha256": "208982d63e29ac1cbac4062d8ed955d2444d1cee09075222d1189f67ef464805"
     },
     "a_swipo2c/val.jsonl": {
       "rows": 1204,
-      "sha256": "fc609c8707ebf2eb0d3abfa921221f7102a67afd39809d2c4ac7a82ed91eaee9"
+      "sha256": "3036e32cfbc7e199712d6dbdc3fe06476d6aece85a699dd3cc16d267b7d5d3c8"
     },
     "b_twotier/train.jsonl": {
       "rows": 10830,
-      "sha256": "ccec925604233c6d3555ad75d15bc889f6ea3df19824a39b42cb68e546ef7e31"
+      "sha256": "cff3fee51d68e65190909d9952603a4f58fc350603e8ecb330ba8fa7a05fef21"
     },
     "b_twotier/val.jsonl": {
       "rows": 1204,
-      "sha256": "d04389afaea2cd3dc364bd0aff10e290627f5c9714a1e9ad10d44c8e6e34f77e"
+      "sha256": "6ca220851c6a51254c9f30a515d75c66611c0def747c248a087e94e582373b99"
     },
     "c_pooled/train.jsonl": {
       "rows": 10830,
-      "sha256": "34d4c5dfccdb0a8e95efcbcb038bdeb156412171119f2ffa1e23df89cb849816"
+      "sha256": "e2d7f153823069c447003414097355c16a11d581a6b98f154dd4aae7169555a1"
     },
     "c_pooled/val.jsonl": {
       "rows": 1204,
-      "sha256": "765b486a20d4e9a8831963f57f6438672424ef3270bda380e08c1cf73b05916d"
+      "sha256": "42ee027388fd4b8251f08877b3fc2fbc83d2a7fef370b012d52c893c4e95a392"
     },
     "a_swipo2c_flip30/train.jsonl": {
       "rows": 10830,
-      "sha256": "e2c64be6d419a90457a906af35db315aa159133f503640a175cdb9a80e49ded8"
+      "sha256": "93779252d86150b3f8e67c24a62236e9c71e862d6c2334a50b17b81659e2e423"
     },
     "a_swipo2c_flip30/val.jsonl": {
       "rows": 1204,
-      "sha256": "fc609c8707ebf2eb0d3abfa921221f7102a67afd39809d2c4ac7a82ed91eaee9"
+      "sha256": "3036e32cfbc7e199712d6dbdc3fe06476d6aece85a699dd3cc16d267b7d5d3c8"
     },
     "c_pooled_flip30/train.jsonl": {
       "rows": 10830,
-      "sha256": "e56c6bb8d7dad359f5508704ae34400ffbc15d8d7490193874ff4416afe6fd81"
+      "sha256": "634379e6eada38466162bef94a99d04473e3c96c41c67ea5570f9acf71d0dc58"
     },
     "c_pooled_flip30/val.jsonl": {
       "rows": 1204,
-      "sha256": "765b486a20d4e9a8831963f57f6438672424ef3270bda380e08c1cf73b05916d"
+      "sha256": "42ee027388fd4b8251f08877b3fc2fbc83d2a7fef370b012d52c893c4e95a392"
     },
     "pairs_train.jsonl": {
       "rows": 5415,
-      "sha256": "5fcf076073dff98cec18722f27c85714bd9a9e48b441c8bb090952f37f6d97f5"
+      "sha256": "bb1a84c446ad3e3d5ad591ac5ab75d646b8c2aa503729e5f40546606cf513763"
     },
     "pairs_val.jsonl": {
       "rows": 602,
-      "sha256": "ebc72a23df9b28a9d5e8402f03fd831c0e0bae649f752d5475d5442cc8fa60e8"
+      "sha256": "aa7b8749a1a94b264dac7d3102dbde365e96b309532529e5f43464d36b467e16"
     }
   }
 }
