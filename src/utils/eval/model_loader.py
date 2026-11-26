@@ -88,12 +88,16 @@ MODELS = {
 # Model Loading
 # ===================================================================
 
-def load_model_for_eval(model_key: str) -> Tuple[AutoModelForCausalLM, AutoTokenizer]:
+def load_model_for_eval(model_key: str, attn_implementation: str = "flash_attention_2",
+                        max_gpu_memory: str = "22GiB") -> Tuple[AutoModelForCausalLM, AutoTokenizer]:
     """
     Load model from HuggingFace in BF16
 
     Args:
         model_key: Key from MODELS dict (e.g., "CITA_Instruct", "DPO_NoInstruct")
+        attn_implementation: "flash_attention_2" (default, falls back to eager as before) or "sdpa"
+            (Blackwell boxes without a flash-attn build; loaded directly, no fallback)
+        max_gpu_memory: GPU memory cap for device_map="auto" (default 22GiB as before; 96GB cards can raise it)
 
     Returns:
         Tuple of (model, tokenizer)
@@ -134,28 +138,41 @@ def load_model_for_eval(model_key: str) -> Tuple[AutoModelForCausalLM, AutoToken
     print(f"Loading base model in BF16: {BASE_MODEL}")
 
     # Force GPU-only (no CPU offloading) to prevent Flash Attention failures
-    max_memory = {0: "22GiB", "cpu": "0GiB"}  # Explicitly disallow CPU offloading
+    max_memory = {0: max_gpu_memory, "cpu": "0GiB"}  # Explicitly disallow CPU offloading
 
-    try:
+    if attn_implementation == "sdpa":
         model = AutoModelForCausalLM.from_pretrained(
             BASE_MODEL,
             torch_dtype=torch.bfloat16,
             device_map="auto",
             max_memory=max_memory,
-            attn_implementation="flash_attention_2",
+            attn_implementation="sdpa",
             token=HF_TOKEN
         )
-        print("Using Flash Attention 2")
-    except Exception:
-        print("Flash Attention 2 unavailable, using eager mode")
-        model = AutoModelForCausalLM.from_pretrained(
-            BASE_MODEL,
-            torch_dtype=torch.bfloat16,
-            device_map="auto",
-            max_memory=max_memory,
-            attn_implementation="eager",
-            token=HF_TOKEN
-        )
+        print("Using PyTorch SDPA attention")
+    elif attn_implementation != "flash_attention_2":
+        raise ValueError(f"attn_implementation must be 'flash_attention_2' or 'sdpa', got {attn_implementation!r}")
+    else:
+        try:
+            model = AutoModelForCausalLM.from_pretrained(
+                BASE_MODEL,
+                torch_dtype=torch.bfloat16,
+                device_map="auto",
+                max_memory=max_memory,
+                attn_implementation="flash_attention_2",
+                token=HF_TOKEN
+            )
+            print("Using Flash Attention 2")
+        except Exception:
+            print("Flash Attention 2 unavailable, using eager mode")
+            model = AutoModelForCausalLM.from_pretrained(
+                BASE_MODEL,
+                torch_dtype=torch.bfloat16,
+                device_map="auto",
+                max_memory=max_memory,
+                attn_implementation="eager",
+                token=HF_TOKEN
+            )
 
     # Load LoRA adapter if specified
     if hf_repo is not None:

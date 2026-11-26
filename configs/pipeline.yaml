@@ -114,6 +114,29 @@ score_table_figures:      # src/eval/score_table_figures.py: radar + heatmap dra
 floor_leakage:
   floor_categories: [Violence, Physical Harm, Human Trafficking, Endangering National Security, Endangering Public Health]
   variant: Instruct
+  per_category_figure:    # src/eval/floor_per_category_plot.py: gap per harm category, 4 trainers, BCa whiskers
+    dir: outputs/evaluation/floor_leakage/figures
+    stem: v1_floor_per_category
+    dodge: 0.18           # vertical offset between the four trainers inside one category row
+    x_max: 0.85           # refusal-gap axis limit (gaps and CIs observed in [0.04, 0.78])
+  heldout:                # src/eval/floor_heldout_build.py (CPU) + src/eval/floor_heldout.py (GPU): unseen prompts
+    dir: outputs/evaluation/floor_heldout
+    prompts_file: heldout_prompts.jsonl
+    source: both_unsafe   # PKU-SafeRLHF pairs with two unsafe responses whose prompt is in no clear-contrast pair (the training pool)
+    n_prompts: 2444       # 2 x the 1,222 Conditional Safety prompts; 14,378 unseen prompts available (counted 2026-11-26)
+    seed: 42
+    batch_size: 64        # 96 GB RTX PRO 6000; the original suite used 8 on a 40 GB A100
+    max_new_tokens: 256   # same as the Conditional Safety suite
+    temperature: 0.7      # same as the Conditional Safety suite
+    top_p: 0.9
+    attn_implementation: sdpa   # owner decision 2026-11-26: no flash-attn build on Blackwell
+    max_gpu_memory: 90GiB
+  harm_classifier:        # src/eval/floor_harm_classify.py (GPU): harmful vs safe non-refusals
+    model: meta-llama/Llama-Guard-3-8B
+    dir: outputs/evaluation/floor_harm
+    batch_size: 32
+    max_new_tokens: 10    # the verdict is "safe" or "unsafe" plus a category code
+    attn_implementation: sdpa
 
 # ----------------------------------------------------------------------------
 # Base model

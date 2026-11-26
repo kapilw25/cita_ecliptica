@@ -2,6 +2,7 @@
     python -u src/eval/floor_leakage.py 2>&1 | tee logs/floor_leakage.log
 """
 
+import argparse
 import ast
 import json
 import sys
@@ -25,6 +26,10 @@ BOOT = CFG["bootstrap"]
 BATCH = CFG["score_table"]["bootstrap_batch"]
 FLOOR = set(CFG["floor_leakage"]["floor_categories"])
 VARIANT = CFG["floor_leakage"]["variant"]
+SOURCES = {  # --source: where the strict/permissive answers live, and the output file name
+    "conditional_safety": (SAFETY_DIR, "floor_leakage.json"),
+    "heldout": (project_root / CFG["floor_leakage"]["heldout"]["dir"] / "full", "floor_leakage_heldout.json"),
+}
 
 MEAN = lambda a, axis=-1: np.mean(a, axis=axis)  # noqa: E731
 GAP = lambda s, p, axis=-1: np.mean(s, axis=axis) - np.mean(p, axis=axis)  # noqa: E731
@@ -46,9 +51,9 @@ def ci(arrays, stat, paired):
     raise RuntimeError(f"bootstrap returned a non-finite interval (estimate {point:.4f})")
 
 
-def load(model: str):
+def load(model: str, src_dir: Path):
     """Strict and permissive answers to the same prompts, aligned on prompt_idx; FATAL on any mismatch."""
-    d = SAFETY_DIR / model
+    d = src_dir / model
     s, p = pd.read_csv(d / "strict_responses.csv"), pd.read_csv(d / "permissive_responses.csv")
     if set(s.prompt_idx) != set(p.prompt_idx) or s.prompt_idx.duplicated().any() or p.prompt_idx.duplicated().any():
         raise RuntimeError(f"{model}: strict and permissive prompt sets differ or repeat")
@@ -72,9 +77,14 @@ def rates(s, p):
 
 
 def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--source", choices=sorted(SOURCES), default="conditional_safety",
+                    help="conditional_safety: the 1,222 suite prompts; heldout: unseen prompts from floor_heldout.py --FULL")
+    args = ap.parse_args()
+    src_dir, out_name = SOURCES[args.source]
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     models = [f"{t}_{VARIANT}" for t in TRAINERS]
-    loaded = {m: load(m) for m in models}
+    loaded = {m: load(m, src_dir) for m in models}
     ids0 = loaded[models[0]][0]
     if any(not np.array_equal(ids0, loaded[m][0]) for m in models):
         raise RuntimeError("trainers were scored on different prompt sets")
@@ -103,11 +113,11 @@ def main():
         print(f"{m:15s} floor n={f['n']:4d} strict {f['strict']:.3f} permissive {f['permissive']:.3f} [{f['permissive_ci'][0]:.3f}, {f['permissive_ci'][1]:.3f}]"
               f" gap {f['gap']:+.3f} | non-floor n={n['n']:4d} gap {n['gap']:+.3f} | gap diff {dd['value']:+.3f} [{dd['ci'][0]:+.3f}, {dd['ci'][1]:+.3f}]")
     pbar.close()
-    meta = {"bootstrap": BOOT, "floor_categories": sorted(FLOOR), "variant": VARIANT, "n_prompts": int(len(ids0)),
+    meta = {"source": args.source, "bootstrap": BOOT, "floor_categories": sorted(FLOOR), "variant": VARIANT, "n_prompts": int(len(ids0)),
             "n_floor_prompts": int(is_floor.sum()), "resampling_unit": "prompt",
             "note": "floor = any listed PKU-SafeRLHF harm category; set fixed in configs/pipeline.yaml before computing; "
                     "gap = strict minus permissive refusal rate (paired); gap diff resamples floor and non-floor prompts independently"}
-    path = OUT_DIR / "floor_leakage.json"
+    path = OUT_DIR / out_name
     json.dump({"meta": meta, "models": out}, open(path, "w"), indent=2)
     print(f"wrote {path} ({len(models)} models, {int(is_floor.sum())} floor of {len(ids0)} prompts, {len(all_cats)} categories)")
 
