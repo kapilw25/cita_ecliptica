@@ -108,13 +108,19 @@ score_table:
 # checkpoints go to <paths.evaluation_dir>/<name>/checkpoints/<suite>/ (gitignored), never to the
 # paper's src/utils/<suite>/checkpoints/.
 # ----------------------------------------------------------------------------
-decode_variants:
+decode_variants:                         # repetition_penalty null = not passed; stop_tokens null = model's generation_config eos
   rep_penalty_1.15:
     repetition_penalty: 1.15
     repetition_penalty_scope: all        # HF/vLLM default: prompt tokens (system contract + query) are penalized too
+    stop_tokens: null
   rep_penalty_1.15_gen:
     repetition_penalty: 1.15
     repetition_penalty_scope: generated  # prompt tokens exempt (HF prompt_ignore_length, transformers>=4.52)
+    stop_tokens: null
+  stop_eot:                              # stop at end of turn: the base Llama-3.1-8B generation_config stops only on <|end_of_text|>,
+    repetition_penalty: null             # while the eval chat template ends every turn with <|eot_id|> (the Instruct model stops on both)
+    repetition_penalty_scope: all
+    stop_tokens: ["<|end_of_text|>", "<|eot_id|>"]
 decode_variant_suites: [ecliptica, truthfulqa, conditional_safety, length_control]   # re-decoded suites; AQI is not, so variant score tables drop it
 
 score_table_figures:      # src/eval/score_table_figures.py: radar + heatmap drawn from score_table_ci.json

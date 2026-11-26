@@ -5,9 +5,20 @@ from pathlib import Path
 from typing import Optional, Dict, List
 from datetime import datetime
 
+_ROOT_OVERRIDE: Dict[str, Optional[Path]] = {"root": None}  # set by set_checkpoint_root (decode variants)
+
+
+def set_checkpoint_root(root: Optional[Path]) -> None:
+    """Route every suite's checkpoints to <root>/<eval_type>/ (decode variants); None restores src/utils/<suite>/checkpoints."""
+    _ROOT_OVERRIDE["root"] = root
+
 
 def get_checkpoint_dir(eval_type: str) -> Path:
     """Get checkpoint directory for a specific evaluation type"""
+    if _ROOT_OVERRIDE["root"] is not None:
+        checkpoint_dir = _ROOT_OVERRIDE["root"] / eval_type
+        checkpoint_dir.mkdir(parents=True, exist_ok=True)
+        return checkpoint_dir
     eval_dirs = {
         "isd": Path(__file__).parent.parent / "isd" / "checkpoints",
         "truthfulqa": Path(__file__).parent.parent / "truthfulqa" / "checkpoints",
@@ -76,7 +87,8 @@ def save_checkpoint(
         print(f"💾 Checkpoint saved: {label} ({len(responses)}/{total_test_cases})")
 
 
-def load_checkpoint(model_key: str, eval_type: str = "isd", variant: str = None) -> Optional[Dict]:
+def load_checkpoint(model_key: str, eval_type: str = "isd", variant: str = None,
+                    expected_total: Optional[int] = None) -> Optional[Dict]:
     """
     Load checkpoint if exists
 
@@ -84,6 +96,7 @@ def load_checkpoint(model_key: str, eval_type: str = "isd", variant: str = None)
         model_key: Model identifier
         eval_type: Evaluation type ("isd", "truthfulqa", etc.)
         variant: Optional variant (e.g., "HONEST" for TruthfulQA)
+        expected_total: If given, FATAL when the checkpoint was written for a different item count
 
     Returns:
         Dict with keys: model_key, n_total, n_completed, completed, responses, timestamp
@@ -100,6 +113,9 @@ def load_checkpoint(model_key: str, eval_type: str = "isd", variant: str = None)
     label = f"{model_key}/{variant}" if variant else model_key
     status = "COMPLETED" if checkpoint['completed'] else f"{checkpoint['n_completed']}/{checkpoint['n_total']}"
     print(f"📂 Found checkpoint: {label} ({status})")
+    if expected_total is not None and checkpoint['n_total'] != expected_total:
+        raise RuntimeError(f"checkpoint {checkpoint_path} holds {checkpoint['n_total']} items, this run has "
+                           f"{expected_total}: delete it or use the matching --mode")
 
     return checkpoint
 

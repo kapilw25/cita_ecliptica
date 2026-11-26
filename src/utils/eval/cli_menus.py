@@ -2,7 +2,23 @@
 
 import shutil
 from pathlib import Path
-from typing import List, Tuple, Optional
+from typing import Dict, List, Tuple, Optional
+
+_STATE: Dict[str, bool] = {"non_interactive": False}  # set once by the suites' --non_interactive flag
+
+
+def set_non_interactive(enabled: bool) -> None:
+    """--non_interactive: menus never read stdin; the checkpoint menu reuses completed checkpoints, the others FATAL."""
+    _STATE["non_interactive"] = enabled
+
+
+def is_non_interactive() -> bool:
+    return _STATE["non_interactive"]
+
+
+def _fatal_if_non_interactive(menu: str) -> None:
+    if _STATE["non_interactive"]:
+        raise RuntimeError(f"{menu} reached in --non_interactive mode (it would read stdin)")
 
 
 def show_cached_data_menu(
@@ -27,6 +43,7 @@ def show_cached_data_menu(
     Returns:
         Choice: "1" (use cached), "2" (recalculate metrics), "3" (delete all)
     """
+    _fatal_if_non_interactive("show_cached_data_menu")
     # Detect what exists
     n_checkpoints = 0
     if checkpoint_dir.exists():
@@ -123,6 +140,7 @@ def show_mode_selection_menu(
     Returns:
         Tuple of (mode, num_samples) - mode is "sanity", "full", or "max"
     """
+    _fatal_if_non_interactive("show_mode_selection_menu")
     print("\n" + "=" * 80)
     print(f"🎯 {eval_name} EVALUATION: Mode Selection")
     print("=" * 80)
@@ -167,6 +185,9 @@ def show_checkpoint_resume_menu(
     Returns:
         Choice: "1" (use cached) or "2" (re-run)
     """
+    if _STATE["non_interactive"]:
+        print(f"✅ {model_key}: reusing completed checkpoint ({n_responses} responses, --non_interactive)")
+        return "1"
     print(f"\n{'=' * 80}")
     print(f"✅ INFERENCE ALREADY COMPLETED for {model_key}")
     print(f"{'=' * 80}")
