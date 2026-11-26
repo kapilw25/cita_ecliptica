@@ -127,10 +127,13 @@ def load_model_bf16(
         "device_map": "auto",
     }
 
-    # Add Flash Attention 2 if enabled
+    # Add Flash Attention 2 if enabled; otherwise PyTorch SDPA (Blackwell boxes without a flash-attn build)
     if use_flash_attention:
         model_kwargs["attn_implementation"] = "flash_attention_2"
         print("✅ Flash Attention 2 enabled (saves ~2.5GB memory)")
+    else:
+        model_kwargs["attn_implementation"] = "sdpa"
+        print("✅ PyTorch SDPA attention (flash-attn not used)")
 
     model = AutoModelForCausalLM.from_pretrained(model_id, **model_kwargs)
 
