@@ -22,7 +22,7 @@
 **Owner decision (2026-11-26):** run all of them: GPU tasks P4 and P5, and the new CPU task P7. The GPU work runs on a rented RTX PRO 6000 that this Mac session drives over SSH (see the [gpu-ssh-desktop guide](../../../docs/guide_gpu_ssh_claude_desktop.md)).
 
 **Status:** ✅ done · ⏳ running · 🕒 queued · ⛔ waiting on another task · 👤 owner action
-**Times:** PST, updated Thu Nov 26, 06:36 AM (measured: 65 to 77 s per batch per process while 4 jobs share the GPU). Times marked "est." are projections from the measured speed and are re-checked as runs finish.
+**Times:** PST, updated Thu Nov 26, 07:48 AM from live progress (62 to 77 s per batch per process while 4 jobs share the GPU). Times marked "est." are projections from the measured speed and are re-checked as runs finish.
 
 #### 🖥️ GPU tasks (4-page)
 
@@ -32,13 +32,13 @@ One RTX PRO 6000 (96 GB). Only the 4 Instruct models are needed, because the flo
 |---|---|---|---|---|---|
 | **P4a** | ✅ | Build held-out prompts: PKU-SafeRLHF prompts outside the 12,035 pair training pool, deduplicated, with harm categories. 2,444 prompts, 918 of them floor prompts, none in the pool | [floor_heldout_build.py](../../../src/eval/floor_heldout_build.py) · [heldout_prompts.jsonl](../../../outputs/evaluation/floor_heldout/heldout_prompts.jsonl) · pool rule in [loader_pku.py](../../../src/utils/train/data_prep/loader_pku.py) | done Thu Nov 26 | sets up the held-out test |
 | **P4b** | ✅ | Smoke test: 10 prompts × 2 contracts × 4 models | [floor_heldout.py](../../../src/eval/floor_heldout.py) | done Thu Nov 26, 06:24 AM | loading, SDPA and refusal scoring work |
-| **P4c** | ⏳ | Held-out generation: strict and permissive contracts on all 2,444 prompts, 4 Instruct models in parallel (SwiPO starts when P5b frees memory). Same contracts and refusal detector as the suite | [floor_heldout.py](../../../src/eval/floor_heldout.py) · contracts from [conditional_safety.py](../../../src/eval/conditional_safety.py) | Thu Nov 26, ~08:00 AM (est.) | removes the "9 in 10 floor prompts seen in training" caveat (R9 7.7 → 8.5) |
-| **P4d** | 🕒 | Held-out floor table with 95% BCa (starts automatically after P4c) | [floor_leakage.py](../../../src/eval/floor_leakage.py) | Thu Nov 26, ~08:05 AM (est.) | same |
+| **P4c** | ⏳ | Held-out generation: strict and permissive contracts on all 2,444 prompts, 4 Instruct models in parallel. At 07:48 AM, permissive contract: PPO 32/39, GRPO 32/39, DPO 28/39 batches, SwiPO 14/39 (started 06:51 AM, when P5b freed memory). Same contracts and refusal detector as the suite | [floor_heldout.py](../../../src/eval/floor_heldout.py) · contracts from [conditional_safety.py](../../../src/eval/conditional_safety.py) | PPO, GRPO ~07:55 AM · DPO ~08:02 AM · SwiPO ~08:10 AM (est.) | removes the "9 in 10 floor prompts seen in training" caveat (R9 7.7 → 8.5) |
+| **P4d** | 🕒 | Held-out floor table with 95% BCa (starts automatically after P4c) | [floor_leakage.py](../../../src/eval/floor_leakage.py) | Thu Nov 26, ~08:15 AM (est.) | same |
 | **P5a** | ✅ | Smoke test: Llama Guard 3 verdicts on 10 answers | [floor_harm_classify.py](../../../src/eval/floor_harm_classify.py) | done Thu Nov 26, 06:25 AM | classifier loads and parses |
-| **P5b** | ⏳ | Harmful vs safe answers on the paper's 1,222 prompts (347 floor), strict and permissive, 4 models. ⚠️ Adds a model-based classifier to one analysis; the "no LLM judge" sentence must say so | [floor_harm_classify.py](../../../src/eval/floor_harm_classify.py) · input answers in [Conditional Safety outputs](../../../outputs/evaluation/Conditional_Safety_Evaluation/) | Thu Nov 26, ~06:45 AM (est.) | turns "bounds harm from above" into a measured harm rate (R9 8.5 → 9.0) |
-| **P5c** | 🕒 | Same classifier on the held-out answers (starts automatically after P4d) | [floor_harm_classify.py](../../../src/eval/floor_harm_classify.py) | Thu Nov 26, ~08:40 AM (est.) | harm rate on unseen prompts |
-| **P5d** | 🕒 | Copy all results from the box to this Mac (scp) | outputs under [floor_heldout](../../../outputs/evaluation/floor_heldout/) and floor_harm | Thu Nov 26, ~08:45 AM (est.) | results reach the paper |
-| **P5e** | 👤 | Destroy the vast.ai instance after P5d (it bills while idle) | vast.ai console | Thu Nov 26, ~08:50 AM | stops cost |
+| **P5b** | ✅ | Harmful vs safe answers on the paper's 1,222 prompts (347 floor), strict and permissive, 4 models. Floor unsafe rate, permissive minus strict: DPO +0.104, GRPO +0.075, SwiPO +0.124 (95% intervals above zero), PPO −0.017 (spans zero; about half unsafe under both). ⚠️ Adds a model-based classifier to one analysis; the "no LLM judge" sentence must say so | [floor_harm_classify.py](../../../src/eval/floor_harm_classify.py) · input answers in [Conditional Safety outputs](../../../outputs/evaluation/Conditional_Safety_Evaluation/) | done Thu Nov 26, 06:51 AM | turns "bounds harm from above" into a measured harm rate (R9 8.5 → 9.0) |
+| **P5c** | 🕒 | Same classifier on the held-out answers (starts automatically after P4d) | [floor_harm_classify.py](../../../src/eval/floor_harm_classify.py) | Thu Nov 26, ~08:50 AM (est.) | harm rate on unseen prompts |
+| **P5d** | 🕒 | Copy all results from the box to this Mac (scp) | outputs under [floor_heldout](../../../outputs/evaluation/floor_heldout/) and floor_harm | Thu Nov 26, ~08:55 AM (est.) | results reach the paper |
+| **P5e** | 👤 | Destroy the vast.ai instance after P5d (it bills while idle) | vast.ai console | Thu Nov 26, ~09:00 AM (est.) | stops cost |
 
 #### 📝 Non-GPU tasks (4-page)
 
@@ -47,10 +47,10 @@ One RTX PRO 6000 (96 GB). Only the 4 Instruct models are needed, because the flo
 | **P1** | ✅ | Outline from v2 and v1: abstract, intro, "Whose contract?" section, lever table, floor table, Figure 1 example, setup, results, open problems, scope statement | [v2 paper](../v2_LoyalAgents/0_main.tex) · [v1 paper](../v1_SC4AI/0_main.tex) | done Thu Nov 26 | sets what the paper claims |
 | **P7** | ✅ | Per-category figure: refusal gap (strict minus permissive) for 19 harm categories × 4 trainers, 95% BCa whiskers, floor rows marked. Result: all 76 gaps above zero | [floor_per_category_plot.py](../../../src/eval/floor_per_category_plot.py) · [figure PNG](../../../outputs/evaluation/floor_leakage/figures/v1_floor_per_category.png) | done Thu Nov 26 | new evidence from existing data (R9 +, R5 +) |
 | **P2a** | ✅ | Write the 4-page paper, finding first; efficiency gets one sentence; "not separable from DPO", never "tied" | [4-page paper](../v3_LoyalAgents_4page/0_main.tex) | done Thu Nov 26 | the "designed experiment unrun" and "AQI in the headline" problems become non-issues; fixes tone (R10) |
-| **P2b** | ⛔ | Add the P4 and P5 numbers (held-out floor table, harm rates), keep 4 pages | [4-page paper](../v3_LoyalAgents_4page/0_main.tex) | Thu Nov 26, ~09:45 AM (est.) | R9 |
+| **P2b** | ⛔ | Add the P4 and P5 numbers (held-out floor table, harm rates), keep 4 pages | [4-page paper](../v3_LoyalAgents_4page/0_main.tex) | Thu Nov 26, ~10:00 AM (est.) | R9 |
 | **P3a** | ✅ | Build + e2e audit (4 pages) + version check against v4: 0 FAIL | [audit skill](../../../.claude/skills/audit-paper-e2e-draft/SKILL.md) | done Thu Nov 26 | ready to submit as is |
-| **P3b** | ⛔ | Re-run build, audit and version check after P2b | [audit skill](../../../.claude/skills/audit-paper-e2e-draft/SKILL.md) | Thu Nov 26, ~10:00 AM (est.) | 0 FAIL before submitting |
-| **P6** | 👤 | Submit on OpenReview: single-blind; disclose arXiv 2601.06157 and the SC4AI submission; paste the new abstract | [LoyalAgents OpenReview](https://openreview.net/group?id=AAAI.org/2027/Workshop/LoyalAgents) | any time after ~10:15 AM Thu Nov 26; deadline **Sat Nov 28, 3:59 AM** | submission |
+| **P3b** | ⛔ | Re-run build, audit and version check after P2b | [audit skill](../../../.claude/skills/audit-paper-e2e-draft/SKILL.md) | Thu Nov 26, ~10:15 AM (est.) | 0 FAIL before submitting |
+| **P6** | 👤 | Submit on OpenReview: single-blind; disclose arXiv 2601.06157 and the SC4AI submission; paste the new abstract | [LoyalAgents OpenReview](https://openreview.net/group?id=AAAI.org/2027/Workshop/LoyalAgents) | any time after ~10:30 AM Thu Nov 26; deadline **Sat Nov 28, 3:59 AM** | submission |
 
 **Risks that remain in the 4-page paper:** one backbone and one seed; about 9 in 10 floor prompts were seen in training (P4 fixes this); a non-refusal isn't necessarily harmful (P5 fixes this). The judges scored the 8-page SC4AI version, so the 4-page paper has no rubric score yet.
 
