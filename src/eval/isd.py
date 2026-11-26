@@ -1,10 +1,7 @@
-"""ISD (Instruction Switch Dataset / ECLIPTICA) evaluation. GPU-only.
-
-    # Sanity (smoke test, no push)
-    python -u src/eval/isd.py --mode sanity 2>&1 | tee logs/eval_isd_sanity.log
-
-    # Full evaluation
-    python -u src/eval/isd.py --mode full 2>&1 | tee logs/eval_isd_full.log
+"""ISD (Instruction Switch Dataset / ECLIPTICA) evaluation; menus unless --non_interactive. GPU-only.
+    python -u src/eval/isd.py 2>&1 | tee logs/eval_isd.log
+    python -u src/eval/isd.py --non_interactive --mode full --models DPO_Instruct 2>&1 | tee logs/eval_isd_full.log
+    python -u src/eval/isd.py --non_interactive --mode full --decode_variant rep_penalty_1.15 --models DPO_Instruct 2>&1 | tee logs/g3/isd.log
 """
 
 import sys
@@ -29,7 +26,7 @@ from src.eval.isd_dataset import (   # the dataset module lives next to this scr
 from src.utils.eval import (
     MODELS, load_model_for_eval, unload_model,
     setup_training_logger, restore_logging,
-    save_checkpoint, load_checkpoint, delete_checkpoint, batch_generate, cleanup_gpu, format_chat_messages, verify_hf_repos,
+    save_checkpoint, load_checkpoint, delete_checkpoint, batch_generate, cleanup_gpu, format_chat_messages,
     add_validation_columns, get_validation_summary,
     show_cached_data_menu, show_mode_selection_menu, show_checkpoint_resume_menu,
     filter_model_keys,
@@ -37,6 +34,8 @@ from src.utils.eval import (
     generate_comparison_plots
 )
 from src.utils.eval.checkpoint import get_checkpoint_dir
+from src.utils.eval.cli_menus import is_non_interactive
+from src.utils.eval.run_options import add_run_args, resolve_run, verify_models, fail_on_missing
 
 # Add isd utils path
 
@@ -93,7 +92,8 @@ def generate_responses(
     use_instruction: bool,
     max_new_tokens: int = 512,
     batch_size: int = 8,
-    checkpoint_interval: int = 100
+    checkpoint_interval: int = 100,
+    decode: Optional[Dict] = None
 ) -> List[ISDResponse]:
     """
     Generate responses for all test cases with batch processing and checkpointing
@@ -107,12 +107,14 @@ def generate_responses(
         max_new_tokens: Max tokens to generate
         batch_size: Batch size for generation
         checkpoint_interval: Save checkpoint every N responses
+        decode: Decoding overrides for batch_generate (decode variant); None = paper decoding
 
     Returns:
         List of ISDResponse objects
     """
     # Check for existing checkpoint
-    checkpoint = load_checkpoint(model_key, eval_type="isd")
+    checkpoint = load_checkpoint(model_key, eval_type="isd",
+                                 expected_total=len(test_cases) if is_non_interactive() else None)
 
     if checkpoint and checkpoint['completed']:
         choice = show_checkpoint_resume_menu(
@@ -189,7 +191,8 @@ def generate_responses(
         show_progress=True,
         desc=f"Evaluating {MODELS[model_key]['display_name']}",
         checkpoint_callback=checkpoint_cb,
-        checkpoint_interval=checkpoint_interval
+        checkpoint_interval=checkpoint_interval,
+        **(decode or {})
     )
 
     # Convert all responses to ISDResponse objects
@@ -258,7 +261,8 @@ def run_isd_evaluation(
     num_prompts: int = 300,
     output_dir: Optional[Path] = None,
     seed: int = 42,
-    batch_size: int = 8
+    batch_size: int = 8,
+    decode: Optional[Dict] = None
 ) -> Dict[str, ISDModelResult]:
     """
     Run ISD evaluation on multiple models
@@ -269,6 +273,7 @@ def run_isd_evaluation(
         output_dir: Where to save results
         seed: Random seed for dataset generation
         batch_size: Batch size for inference
+        decode: Decoding overrides for batch_generate (decode variant); None = paper decoding
 
     Returns:
         Dict mapping model_key -> ISDModelResult
@@ -309,7 +314,8 @@ def run_isd_evaluation(
                 model, tokenizer, test_cases,
                 model_key=model_key,
                 use_instruction=model_info['use_instruction'],
-                batch_size=batch_size
+                batch_size=batch_size,
+                decode=decode
             )
             evaluation_time = time.time() - start_time
 
@@ -348,6 +354,8 @@ def run_isd_evaluation(
                 print(f"  Avg response length: {avg_length:.0f} chars")
 
         except RuntimeError as e:
+            if is_non_interactive():  # FAIL HARD: no silent skip (OOM is a RuntimeError too)
+                raise
             print(f"\nFailed to evaluate {model_key}: {e}")
             print("   Skipping this model...")
             continue
@@ -416,14 +424,18 @@ def main():
     import argparse
 
     parser = argparse.ArgumentParser(description="ISD Evaluation")
-    parser.add_argument("--num_prompts", type=int, default=50, help="Number of prompts (x10 = test cases)")
+    parser.add_argument("--num_prompts", type=int, default=None,
+                        help="Number of prompts (x10 = test cases); with --non_interactive overrides --mode")
+    parser.add_argument("--mode", choices=["sanity", "full", "max"], default=None,
+                        help="sanity 50, full 300, max all prompts (x10); used only with --non_interactive")
     parser.add_argument("--models", nargs="+", default=None, help="Specific models to evaluate (e.g., CITA_Instruct DPO_Instruct)")
     parser.add_argument("--seed", type=int, default=42, help="Random seed")
     parser.add_argument("--batch_size", type=int, default=8, help="Batch size for inference")
+    add_run_args(parser)
     args = parser.parse_args()
+    output_dir, decode = resolve_run(args, parser, EVAL_OUTPUT_DIR)  # no new flags: EVAL_OUTPUT_DIR, {} as before
 
     # Setup logging
-    output_dir = EVAL_OUTPUT_DIR
     output_dir.mkdir(parents=True, exist_ok=True)
 
     log_file, log_filename, original_stdout, original_stderr = setup_training_logger(
@@ -442,7 +454,7 @@ def main():
         results_exist = results_dir.exists() and any(results_dir.iterdir())
 
         cache_choice = None
-        if checkpoints_exist or results_exist:
+        if (checkpoints_exist or results_exist) and not args.non_interactive:
             cache_choice = show_cached_data_menu(
                 checkpoint_dir=checkpoint_dir,
                 results_dir=results_dir,
@@ -507,12 +519,16 @@ def main():
             return
 
         # Interactive mode selection (max_desc shown without HF fetch to avoid M1 mutex lock)
-        mode, _ = show_mode_selection_menu(
-            eval_name="ISD",
-            sanity_desc="50 prompts x 10 instructions = 500 test cases (~15 min)",
-            full_desc="300 prompts x 10 instructions = 3,000 test cases (~60 min)",
-            max_desc="100% of dataset (fetches from HF)"
-        )
+        requested_prompts = args.num_prompts if args.non_interactive else None
+        if args.non_interactive:
+            mode = args.mode
+        else:
+            mode, _ = show_mode_selection_menu(
+                eval_name="ISD",
+                sanity_desc="50 prompts x 10 instructions = 500 test cases (~15 min)",
+                full_desc="300 prompts x 10 instructions = 3,000 test cases (~60 min)",
+                max_desc="100% of dataset (fetches from HF)"
+            )
         if mode == "sanity":
             args.num_prompts = 50
         elif mode == "full":
@@ -521,12 +537,15 @@ def main():
             max_prompts, max_cases, source = get_isd_max_samples()
             print(f"   Max Available: {max_prompts} prompts x 10 = {max_cases:,} [{source}]")
             args.num_prompts = max_prompts
+        if requested_prompts:
+            args.num_prompts = requested_prompts
+            print(f"   --num_prompts {requested_prompts} overrides --mode {mode}")
 
         # Filter models if specified
         model_keys = filter_model_keys(args.models, MODELS, MODEL_KEYS)
 
         # Pre-flight verification of HuggingFace repos
-        model_keys = verify_hf_repos(model_keys, interactive=True)
+        model_keys = verify_models(model_keys, args.non_interactive)
         if not model_keys:
             print("No valid models to evaluate. Exiting.")
             sys.exit(1)
@@ -537,7 +556,8 @@ def main():
             num_prompts=args.num_prompts,
             seed=args.seed,
             output_dir=output_dir,
-            batch_size=args.batch_size
+            batch_size=args.batch_size,
+            decode=decode
         )
 
         # Calculate metrics for each model
@@ -673,6 +693,8 @@ def main():
         print("ISD Evaluation Complete")
         print("=" * 80)
         print(f"Results saved to: {output_dir}")
+        if args.non_interactive:
+            fail_on_missing(model_keys, all_metrics, "ISD")
 
     finally:
         restore_logging(log_file, original_stdout, original_stderr)
