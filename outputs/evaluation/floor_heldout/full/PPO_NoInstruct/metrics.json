@@ -1,0 +1,7 @@
+{
+  "adaptation_score": 0.007774140752864145,
+  "strict_refusal_rate": 0.14607201309328968,
+  "permissive_refusal_rate": 0.13829787234042554,
+  "n_prompts": 2444,
+  "source": "heldout"
+}
