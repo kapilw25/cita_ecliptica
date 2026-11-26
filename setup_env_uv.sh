@@ -33,11 +33,12 @@ mkdir -p logs
 # ============================================================================
 # Pinned versions
 # ============================================================================
-# Blackwell sm_120 — PyTorch nightly cu128 (stable wheels lack sm_120 kernels).
-# Pinned to dev20260407: dev20260228 was rotated off the nightly CDN, dev20260408
-# has no paired torchvision build. dev20260407 is the latest with paired torchvision.
-TORCH_BLACKWELL_VERSION="2.12.0.dev20260407"
-CUDA_INDEX_BLACKWELL="https://download.pytorch.org/whl/nightly/cu128"
+# Blackwell sm_120: stable PyTorch from PyPI. The earlier nightly pin (2.12.0.dev20260407,
+# nightly/cu128 index) was rotated off the nightly CDN and failed on 2026-11-26. torch 2.15.0
+# from PyPI (CUDA 13.2 build) was verified that day on an RTX PRO 6000: sm_120 in the arch list,
+# Llama-3.1-8B inference with SDPA. Note: the prebuilt FA2 wheel (release below) was built for
+# the old nightly ABI, so training that needs flash-attn on Blackwell must rebuild FA2.
+TORCH_BLACKWELL_VERSION="2.15.0"
 
 # Ampere/Hopper (A100, H100) — stable PyTorch.
 TORCH_AMPERE_VERSION="2.5.1"
@@ -61,11 +62,26 @@ WHEEL_REPO="${WHEEL_REPO:-kapilw25/factorjepa}"
 # Parse flags
 # ============================================================================
 FROM_WHEELS=false
+# --method picks the training stack the checkpoints were made with (versions read from the
+# training-time model cards in outputs/training/*/README.md, 2026-11-26):
+#   sft_dpo_swipo (default): requirements_gpu.txt  (TRL 0.24.0, transformers 4.57.1)
+#   grpo:                    requirements_grpo.txt (TRL 0.22.2 --no-deps, transformers 4.56.2)
+#   ppo:                     requirements_ppo.txt  (TRL 0.11.4: the only line with PPOTrainer.step)
+METHOD="sft_dpo_swipo"
+prev=""
 for arg in "$@"; do
     if [ "$arg" = "--from-wheels" ]; then
         FROM_WHEELS=true
     fi
+    if [ "$prev" = "--method" ]; then
+        METHOD="$arg"
+    fi
+    prev="$arg"
 done
+case "$METHOD" in
+    sft_dpo_swipo|grpo|ppo) ;;
+    *) echo "Error: --method must be sft_dpo_swipo, grpo or ppo (got '$METHOD')"; exit 1 ;;
+esac
 
 if [ -z "$1" ]; then
     echo "Error: No flag provided"
@@ -74,6 +90,7 @@ if [ -z "$1" ]; then
     echo "  ./setup_env_uv.sh --mac                 # M1 Mac (CPU-based)"
     echo "  ./setup_env_uv.sh --gpu                 # GPU Server (Nvidia ONLY)"
     echo "  ./setup_env_uv.sh --gpu --from-wheels   # GPU + prebuilt sm_120 FA2 wheel"
+    echo "  ./setup_env_uv.sh --gpu --method grpo   # GRPO stack (TRL 0.22.2); also: --method ppo (TRL 0.11.4)"
     exit 1
 fi
 
@@ -263,8 +280,8 @@ if [ "$1" = "--gpu" ]; then
     GPU_NAME=$(nvidia-smi --query-gpu=gpu_name --format=csv,noheader 2>/dev/null | head -1 || echo "")
     echo "Detected GPU: ${GPU_NAME:-unknown}"
     if echo "$GPU_NAME" | grep -qiE "blackwell|rtx.*pro.*(4000|5000|6000)|rtx.*5090|rtx.*5080|rtx.*5070|b100|b200"; then
-        echo "[1/4] Installing PyTorch ${TORCH_BLACKWELL_VERSION}+cu128 (Blackwell — pinned nightly)..."
-        uv pip install "torch==${TORCH_BLACKWELL_VERSION}" torchvision --index-url "${CUDA_INDEX_BLACKWELL}"
+        echo "[1/4] Installing PyTorch ${TORCH_BLACKWELL_VERSION} from PyPI (Blackwell, stable)..."
+        uv pip install "torch==${TORCH_BLACKWELL_VERSION}" torchvision
     else
         echo "[1/4] Installing PyTorch ${TORCH_AMPERE_VERSION}+cu124 (Ampere/Hopper — stable)..."
         uv pip install "torch==${TORCH_AMPERE_VERSION}" "torchvision==${TORCHVISION_AMPERE_VERSION}" --index-url "${CUDA_INDEX_AMPERE}"
@@ -292,8 +309,16 @@ print(f'OK: sm_{arch} supported natively.')
 
     # 3. GPU requirements
     echo ""
-    echo "[3/4] Installing GPU requirements (UV)..."
-    uv pip install -r requirements_gpu.txt
+    echo "[3/4] Installing GPU requirements for method ${METHOD} (UV)..."
+    if [ "$METHOD" = "grpo" ]; then
+        uv pip install -r requirements_grpo.txt
+        uv pip install --no-deps "trl==0.22.2"
+    elif [ "$METHOD" = "ppo" ]; then
+        uv pip install -r requirements_ppo.txt
+    else
+        uv pip install -r requirements_gpu.txt
+    fi
+    python -c "import trl, transformers; print(f'TRL {trl.__version__}, transformers {transformers.__version__} (method ${METHOD})')"
     export HF_HUB_ENABLE_HF_TRANSFER=1
 
     # 4. Flash-Attention 2 (prebuilt → arch-based wheel → source build)

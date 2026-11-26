@@ -1,4 +1,6 @@
-# MINIMAL REQUIREMENTS - For CITA Training
+# GPU REQUIREMENTS - GRPO training (src/train/grpo.py), TRL 0.22.2 + Transformers 4.56.2
+# (versions from the training-time model cards outputs/training/GRPO_*/README.md, 2026-11-26).
+# Install: ./setup_env_uv.sh --gpu --method grpo   (installs trl==0.22.2 with --no-deps after this file)
 #
 # TESTED: Python 3.12, PyTorch 2.5.1+cu124, Flash-Attn 2.8.3, A100-80GB
 #
@@ -15,8 +17,9 @@
 # PyTorch (CUDA 12.4) - Install FIRST
 # NOTE: Must install with --index-url https://download.pytorch.org/whl/cu124
 # pip install torch==2.5.1 torchvision==0.20.1 --index-url https://download.pytorch.org/whl/cu124
-torch==2.5.1  # Downgraded for flash-attn ABI compatibility (pre-built wheels available)
-torchvision==0.20.1
+# torch==2.5.1 / torchvision==0.20.1 trained GRPO on A100. Not pinned here: setup_env_uv.sh step 1
+# installs the right torch per GPU (2.5.1+cu124 on Ampere/Hopper; 2.15.0 on Blackwell, where 2.5.1
+# has no sm_120 kernels), and a pin here would downgrade it.
 
 # Build dependencies (needed before flash-attn)
 packaging>=20.0

@@ -1,19 +1,23 @@
 # =============================================================================
-# GPU Requirements - CITA/DPO/PPO/GRPO training on NVIDIA GPUs
+# GPU Requirements - SFT, DPO and SwiPO (CITA) training on NVIDIA GPUs
 # =============================================================================
-# TESTED: Python 3.12, PyTorch 2.5.1+cu124, Flash-Attn 2.8.3, A100-80GB
+# Versions = what trained the released SFT, DPO and SwiPO checkpoints, read from the
+# training-time model cards (outputs/training/{SFT,DPO,CITA}_*/README.md, 2026-11-26):
+# TRL 0.24.0, Transformers 4.57.1, PyTorch 2.5.1, Datasets 4.2.0, Tokenizers 0.22.1.
+# (The Hugging Face Hub cards list TRL 0.12.1 / Transformers 4.46.3 for every method, including
+# GRPO, which TRL 0.12.1 cannot run: those cards record the upload environment, not training.)
+# Other methods: GRPO -> requirements_grpo.txt, PPO -> requirements_ppo.txt
+# (setup_env_uv.sh --gpu --method grpo|ppo).
 #
-# Install: pip install -r requirements_gpu.txt
+# Install: ./setup_env_uv.sh --gpu   (installs requirements.txt first, then this file)
 #
 # Prerequisites:
-#   - Linux (Ubuntu 20.04+)
-#   - Nvidia GPU (A100-40GB+ recommended)
-#   - CUDA 12.4
-#   - PyTorch 2.5.1+cu124 (install separately via setup_env_uv.sh --gpu)
+#   - Linux (Ubuntu 20.04+), NVIDIA GPU
+#   - PyTorch installed by setup_env_uv.sh (2.5.1+cu124 on Ampere/Hopper; 2.15.0 on Blackwell)
 # =============================================================================
 
-# Base requirements (includes numpy, pandas, matplotlib, wandb, etc.)
--r requirements.txt
+# Base requirements are installed first by setup_env_uv.sh (not included here, because
+# requirements.txt pins transformers==4.51.0 for the CPU/eval env and this file overrides it).
 
 # =============================================================================
 # Build dependencies (needed before flash-attn)
@@ -26,9 +30,11 @@ ninja
 # =============================================================================
 # Core fine-tuning packages - PINNED
 # =============================================================================
-transformers==4.51.0  # 4.57+ requires torch>=2.6 (CVE-2025-32434), but flash-attn needs torch 2.5.x
-trl==0.11.4           # Pinned for stable PPO API (0.24+ has breaking changes)
-rich                   # Required by TRL 0.11.4
+transformers==4.57.1  # version that trained SFT/DPO/SwiPO (training-time model cards), with torch 2.5.1
+trl==0.24.0           # version that trained SFT/DPO/SwiPO; src/utils/train/cita_trainer.py needs this API
+                      # (DPOTrainer.concatenated_forward returning a dict, dpo_loss(..., loss_type=));
+                      # TRL v1.x removed both methods, so do not upgrade without porting the trainer
+rich                   # Required by TRL
 peft==0.17.1
 accelerate==1.11.0
 protobuf==3.20.3      # 3.x for wandb+ray+tensorboardX compatibility

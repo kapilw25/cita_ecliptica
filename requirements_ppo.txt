@@ -1,0 +1,23 @@
+# =============================================================================
+# GPU Requirements - PPO training (src/train/ppo.py)
+# =============================================================================
+# Install: ./setup_env_uv.sh --gpu --method ppo   (installs requirements.txt first, then this file)
+#
+# Why a separate stack: src/train/ppo.py uses the classic PPO API (PPOTrainer.step,
+# AutoModelForCausalLMWithValueHead, ppo_epochs). TRL 0.11.4 is the last line that has it:
+# TRL 0.12.1's PPOTrainer has no step() (checked against the v0.11.4 and v0.12.1 sources,
+# 2026-11-26), and TRL v1.x moved PPO to trl.experimental.
+#
+# Evidence for the other pins: no training-time model card exists locally for PPO. The Hugging
+# Face Hub cards of the PPO adapters list Transformers 4.46.3 and PEFT 0.13.2, but the same
+# cards list TRL 0.12.1, which cannot run ppo.py, so they record the upload environment.
+# Treat transformers/peft below as the closest known versions, not verified training versions.
+# =============================================================================
+
+trl==0.11.4            # verified by API: the only TRL line with PPOTrainer.step used by ppo.py
+transformers==4.46.3   # from the Hub cards (upload environment); unverified for training
+peft==0.13.2           # from the Hub cards (upload environment); unverified for training
+accelerate==1.11.0
+rich                   # Required by TRL
+protobuf==3.20.3       # 3.x for wandb+ray+tensorboardX compatibility
+datasets==4.2.0
