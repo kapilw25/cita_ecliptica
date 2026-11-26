@@ -87,7 +87,48 @@ MODELS = {
         "display_name": "Llama-3.1-8B-Instruct (prompted)",
         "use_instruction": True,
     },
+    # G1/G2: local LoRA folders from src/train/{cita,dpo}.py --output-dir (never on the Hub: the permissive-trained
+    # adapters are not released). An absolute hf_repo is a local folder (Hub ids are never absolute). All take the
+    # eval contracts (use_instruction True): pooled DPO saw no contract in training, but it must get the same strict
+    # and permissive system prompts as SwiPO at eval, otherwise its strict-minus-permissive gap is 0 by construction.
+    "G1a_SwiPO2C_Instruct": {
+        "hf_repo": str(project_root / "outputs/training/g1/a_swipo2c/lora_model_CITA_Instruct"),
+        "display_name": "G1a SwiPO 2-contract",
+        "use_instruction": True,
+    },
+    "G1b_SwiPOTwoTier_Instruct": {
+        "hf_repo": str(project_root / "outputs/training/g1/b_twotier/lora_model_CITA_Instruct"),
+        "display_name": "G1b SwiPO two-tier",
+        "use_instruction": True,
+    },
+    "G1c_PooledDPO_Instruct": {
+        "hf_repo": str(project_root / "outputs/training/g1/c_pooled/lora_model_DPO_Instruct"),
+        "display_name": "G1c pooled DPO (no contract)",
+        "use_instruction": True,
+    },
+    "G2a_SwiPO2C_Flip30_Instruct": {
+        "hf_repo": str(project_root / "outputs/training/g2/a_swipo2c_flip30/lora_model_CITA_Instruct"),
+        "display_name": "G2a SwiPO 2-contract, 30% permissive flipped",
+        "use_instruction": True,
+    },
+    "G2c_PooledDPO_Flip30_Instruct": {
+        "hf_repo": str(project_root / "outputs/training/g2/c_pooled_flip30/lora_model_DPO_Instruct"),
+        "display_name": "G2c pooled DPO, 30% permissive flipped",
+        "use_instruction": True,
+    },
 }
+
+
+def is_local_adapter(hf_repo) -> bool:
+    """True when an entry's hf_repo is a local adapter folder (absolute path) rather than a Hub id."""
+    return hf_repo is not None and Path(hf_repo).is_absolute()
+
+
+def local_adapter_dir(hf_repo: str) -> str:
+    """FATAL if the local adapter folder is missing (train it with --output-dir or copy it to this box first)."""
+    if not (Path(hf_repo) / "adapter_config.json").exists():
+        raise FileNotFoundError(f"local adapter missing: {hf_repo} (no adapter_config.json)")
+    return hf_repo
 
 
 # ===================================================================
@@ -116,7 +157,9 @@ def load_model_for_eval(model_key: str, attn_implementation: str = "flash_attent
     hf_repo = model_info["hf_repo"]
     base_model = model_info.get("base_model", BASE_MODEL)  # per-entry base (prompted Instruct baseline); default = SFT base
 
-    if hf_repo:
+    if is_local_adapter(hf_repo):
+        print(f"Loading local adapter: {local_adapter_dir(hf_repo)}")
+    elif hf_repo:
         print(f"Loading from HuggingFace: {hf_repo}")
     else:
         print("Loading base model (no adapter)")
@@ -183,7 +226,8 @@ def load_model_for_eval(model_key: str, attn_implementation: str = "flash_attent
 
     # Load LoRA adapter if specified
     if hf_repo is not None:
-        print(f"Downloading adapter from HuggingFace: {hf_repo}")
+        source = "local folder" if is_local_adapter(hf_repo) else "HuggingFace"
+        print(f"{'Loading' if is_local_adapter(hf_repo) else 'Downloading'} adapter from {source}: {hf_repo}")
         try:
             model = PeftModel.from_pretrained(model, hf_repo, token=HF_TOKEN)
             print("Merging adapter weights...")
@@ -191,7 +235,7 @@ def load_model_for_eval(model_key: str, attn_implementation: str = "flash_attent
             print("Adapter merged")
         except Exception as e:
             raise RuntimeError(
-                f"Failed to load adapter from HuggingFace: {hf_repo}\n"
+                f"Failed to load adapter from {source}: {hf_repo}\n"
                 f"Error: {e}\n\n"
                 f"Possible causes:\n"
                 f"  1. Model not yet trained and pushed to HuggingFace\n"
@@ -244,7 +288,10 @@ def verify_hf_repos(model_keys: List[str], interactive: bool = True) -> List[str
             continue
 
         hf_repo = MODELS[model_key]['hf_repo']
-        if hf_repo:
+        if is_local_adapter(hf_repo):  # no Hub check; FATAL (not skippable) when the folder is missing
+            print(f"  ✅ {model_key}: {local_adapter_dir(hf_repo)} (local)")
+            valid_keys.append(model_key)
+        elif hf_repo:
             try:
                 hf_api.repo_info(repo_id=hf_repo, repo_type="model", token=HF_TOKEN)
                 print(f"  ✅ {model_key}: {hf_repo}")
