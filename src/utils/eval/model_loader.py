@@ -81,6 +81,12 @@ MODELS = {
         "display_name": "GRPO Instruct",
         "use_instruction": True,
     },
+    "Llama31_Instruct_Prompted": {  # G4: off-the-shelf Instruct model, contract given only in the prompt
+        "hf_repo": None,
+        "base_model": "meta-llama/Llama-3.1-8B-Instruct",
+        "display_name": "Llama-3.1-8B-Instruct (prompted)",
+        "use_instruction": True,
+    },
 }
 
 
@@ -95,7 +101,7 @@ def load_model_for_eval(model_key: str, attn_implementation: str = "flash_attent
 
     Args:
         model_key: Key from MODELS dict (e.g., "CITA_Instruct", "DPO_NoInstruct")
-        attn_implementation: "flash_attention_2" (default, falls back to eager as before) or "sdpa"
+        attn_implementation: "flash_attention_2" (default, falls back to SDPA when flash-attn is missing) or "sdpa"
             (Blackwell boxes without a flash-attn build; loaded directly, no fallback)
         max_gpu_memory: GPU memory cap for device_map="auto" (default 22GiB as before; 96GB cards can raise it)
 
@@ -108,6 +114,7 @@ def load_model_for_eval(model_key: str, attn_implementation: str = "flash_attent
 
     model_info = MODELS[model_key]
     hf_repo = model_info["hf_repo"]
+    base_model = model_info.get("base_model", BASE_MODEL)  # per-entry base (prompted Instruct baseline); default = SFT base
 
     if hf_repo:
         print(f"Loading from HuggingFace: {hf_repo}")
@@ -115,7 +122,7 @@ def load_model_for_eval(model_key: str, attn_implementation: str = "flash_attent
         print("Loading base model (no adapter)")
 
     # Load tokenizer
-    tokenizer = AutoTokenizer.from_pretrained(BASE_MODEL, token=HF_TOKEN)
+    tokenizer = AutoTokenizer.from_pretrained(base_model, token=HF_TOKEN)
     tokenizer.pad_token = tokenizer.eos_token
     tokenizer.padding_side = "left"  # Required for decoder-only models in batch generation
 
@@ -135,14 +142,14 @@ def load_model_for_eval(model_key: str, attn_implementation: str = "flash_attent
         print("Set Llama-3.1 chat template")
 
     # Load base model in BF16
-    print(f"Loading base model in BF16: {BASE_MODEL}")
+    print(f"Loading base model in BF16: {base_model}")
 
     # Force GPU-only (no CPU offloading) to prevent Flash Attention failures
     max_memory = {0: max_gpu_memory, "cpu": "0GiB"}  # Explicitly disallow CPU offloading
 
     if attn_implementation == "sdpa":
         model = AutoModelForCausalLM.from_pretrained(
-            BASE_MODEL,
+            base_model,
             torch_dtype=torch.bfloat16,
             device_map="auto",
             max_memory=max_memory,
@@ -155,7 +162,7 @@ def load_model_for_eval(model_key: str, attn_implementation: str = "flash_attent
     else:
         try:
             model = AutoModelForCausalLM.from_pretrained(
-                BASE_MODEL,
+                base_model,
                 torch_dtype=torch.bfloat16,
                 device_map="auto",
                 max_memory=max_memory,
@@ -164,13 +171,13 @@ def load_model_for_eval(model_key: str, attn_implementation: str = "flash_attent
             )
             print("Using Flash Attention 2")
         except Exception:
-            print("Flash Attention 2 unavailable, using eager mode")
+            print("Flash Attention 2 unavailable, using PyTorch SDPA")
             model = AutoModelForCausalLM.from_pretrained(
-                BASE_MODEL,
+                base_model,
                 torch_dtype=torch.bfloat16,
                 device_map="auto",
                 max_memory=max_memory,
-                attn_implementation="eager",
+                attn_implementation="sdpa",
                 token=HF_TOKEN
             )
 
