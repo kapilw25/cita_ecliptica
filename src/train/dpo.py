@@ -10,6 +10,10 @@ Usage (4 commands = 2 modes × 2 instruction settings):
     python -u src/train/dpo.py --mode full --use-instruction false 2>&1 | tee logs/dpo_full_NI.log
     python -u src/train/dpo.py --mode full --use-instruction true  2>&1 | tee logs/dpo_full_I.log
 
+    # G1/G2/G5 isolated runs: --output-dir = own folder, no menu, no Hub push (G1c inits from DPO_Instruct, not SFT)
+    python -u src/train/dpo.py --mode full --use-instruction true --base_model kapilw25/llama3-8b-pku-DPO-Instruct-SFT-Instruct --data-dir outputs/training_data/g1_contracts/c_pooled --output-dir outputs/training/g1/c_pooled --attn-implementation sdpa 2>&1 | tee logs/g1c_pooled_full.log
+    python -u src/train/dpo.py --mode full --use-instruction true --seed 1 --output-dir outputs/training/g5/DPO_Instruct_seed1 --attn-implementation sdpa 2>&1 | tee logs/g5_dpo_seed1_full.log
+
   Projections:
   | Mode                | Steps | ETA       |
   |---------------------|-------|-----------|
@@ -57,6 +61,7 @@ from src.utils.train.model_utils import (
 )
 from src.utils.train.data_prep.loader_pku import load_pku_combined_clear_contrast
 from src.utils.train.data_prep.formatters import format_pku_for_dpo_NoInstruct, format_pku_for_dpo_Instruct
+from src.utils.train.data_prep.contract_pairs import load_contract_pairs, check_isolated_output_dir, save_run_config
 from src.utils.train.push_automation import PushAutomation
 from src.utils.logging_utils import setup_training_logger, restore_logging
 
@@ -73,7 +78,8 @@ from src.utils.logging_utils import setup_training_logger, restore_logging
 # Main Training Function
 # ===================================================================
 
-def train_dpo_baseline(num_epochs=1.0, output_dir=None, base_model=None, force_skip=False):
+def train_dpo_baseline(num_epochs=1.0, output_dir=None, base_model=None, force_skip=False,
+                       data_dir=None, seed=3407, use_flash_attention=True):
     """
     Train DPO baseline with epoch-based training
 
@@ -82,6 +88,9 @@ def train_dpo_baseline(num_epochs=1.0, output_dir=None, base_model=None, force_s
         output_dir: Output directory for checkpoints
         base_model: HuggingFace model ID to load LoRA adapters from (for stacking)
         force_skip: If True, skip training and only run inference (user selected option 1)
+        data_dir: Pre-built contract-pair variant folder (G1/G2); None = released PKU clear-contrast data
+        seed: Trainer seed (LoRA init + data order); 3407 = released runs
+        use_flash_attention: False = PyTorch SDPA (no flash-attn build on Blackwell)
 
     Returns:
         trainer: Trained DPOTrainer instance
@@ -105,7 +114,7 @@ def train_dpo_baseline(num_epochs=1.0, output_dir=None, base_model=None, force_s
     print("  - Warmup steps: 100")
     print("  - LR scheduler: cosine")
     print("  - Optimizer: adamw_torch")
-    print("  - Precision: BF16 + Flash Attention 2")
+    print(f"  - Precision: BF16 + {'Flash Attention 2' if use_flash_attention else 'PyTorch SDPA'}")
     print("="*80 + "\n")
 
     # ===== CHECKPOINT DETECTION (BEFORE LOADING MODEL) =====
@@ -145,7 +154,7 @@ def train_dpo_baseline(num_epochs=1.0, output_dir=None, base_model=None, force_s
         model, tokenizer = load_model_bf16(
             model_id="meta-llama/Llama-3.1-8B",
             max_seq_length=2048,  # Match SFT baseline for fair comparison
-            use_flash_attention=True
+            use_flash_attention=use_flash_attention
         )
 
         # ===== LOAD BASE MODEL LORA (IF STACKING) =====
@@ -195,24 +204,28 @@ def train_dpo_baseline(num_epochs=1.0, output_dir=None, base_model=None, force_s
         # model = apply_torch_compile(model)
 
         # ===== LOAD DATASET =====
-        print("\nLoading PKU-SafeRLHF dataset (combined train+test clear contrast)...")
+        if data_dir:
+            print(f"\nLoading pre-built contract-pair dataset: {data_dir}")
+            train_dataset, val_dataset = load_contract_pairs(data_dir)
+        else:
+            print("\nLoading PKU-SafeRLHF dataset (combined train+test clear contrast)...")
 
-        # Load combined dataset (12,035 samples) and split 90/10
-        dataset_split = load_pku_combined_clear_contrast(val_split=0.1)
+            # Load combined dataset (12,035 samples) and split 90/10
+            dataset_split = load_pku_combined_clear_contrast(val_split=0.1)
 
-        # Format for DPO (conditional: WITH or WITHOUT instruction)
-        formatter = format_pku_for_dpo_Instruct if USE_INSTRUCTION else format_pku_for_dpo_NoInstruct
-        train_dataset = dataset_split['train'].map(
-            formatter,
-            remove_columns=dataset_split['train'].column_names,
-            desc=f"Formatting PKU for DPO ({'WITH' if USE_INSTRUCTION else 'NO'} instruction)"
-        )
+            # Format for DPO (conditional: WITH or WITHOUT instruction)
+            formatter = format_pku_for_dpo_Instruct if USE_INSTRUCTION else format_pku_for_dpo_NoInstruct
+            train_dataset = dataset_split['train'].map(
+                formatter,
+                remove_columns=dataset_split['train'].column_names,
+                desc=f"Formatting PKU for DPO ({'WITH' if USE_INSTRUCTION else 'NO'} instruction)"
+            )
 
-        val_dataset = dataset_split['test'].map(
-            formatter,
-            remove_columns=dataset_split['test'].column_names,
-            desc=f"Formatting PKU validation for DPO ({'WITH' if USE_INSTRUCTION else 'NO'} instruction)"
-        )
+            val_dataset = dataset_split['test'].map(
+                formatter,
+                remove_columns=dataset_split['test'].column_names,
+                desc=f"Formatting PKU validation for DPO ({'WITH' if USE_INSTRUCTION else 'NO'} instruction)"
+            )
 
         print(f"  Train samples: {len(train_dataset):,}")
         print(f"  Val samples: {len(val_dataset):,}")
@@ -278,7 +291,7 @@ def train_dpo_baseline(num_epochs=1.0, output_dir=None, base_model=None, force_s
             optim="adamw_torch",
             weight_decay=0.01,
             lr_scheduler_type="cosine",  # ✅ FIXED: Cosine for smoother convergence
-            seed=3407,
+            seed=seed,
             bf16=True,  # BF16 precision
             gradient_checkpointing=True,
             save_steps=checkpoint_interval,  # ← CHANGED: Dynamic interval (20% of training)
@@ -359,7 +372,7 @@ def train_dpo_baseline(num_epochs=1.0, output_dir=None, base_model=None, force_s
         model, tokenizer = load_model_bf16(
             model_id="meta-llama/Llama-3.1-8B",
             max_seq_length=2048,
-            use_flash_attention=True
+            use_flash_attention=use_flash_attention
         )
         from peft import PeftModel
         model = PeftModel.from_pretrained(model, HF_REPO, token=HF_TOKEN)
@@ -370,7 +383,7 @@ def train_dpo_baseline(num_epochs=1.0, output_dir=None, base_model=None, force_s
         model, tokenizer = load_model_bf16(
             model_id="meta-llama/Llama-3.1-8B",
             max_seq_length=2048,
-            use_flash_attention=True
+            use_flash_attention=use_flash_attention
         )
         from peft import PeftModel
         # Load from local checkpoint, not HF
@@ -494,6 +507,15 @@ Examples:
         help="Skip HF + GitHub push after training (saves locally only)"
     )
 
+    parser.add_argument("--data-dir", type=str, default=None,
+                        help="G1/G2 contract-pair variant folder from src/train/g1_contracts_build.py (needs --output-dir, --base_model)")
+    parser.add_argument("--seed", type=int, default=3407,
+                        help="Trainer seed (LoRA init + data order); 3407 = released run; other values need --output-dir")
+    parser.add_argument("--output-dir", type=str, default=None,
+                        help="Isolated run folder: no menu, no Hub/GitHub push, run_config.json written here (default: released folder)")
+    parser.add_argument("--attn-implementation", choices=["flash_attention_2", "sdpa"], default="flash_attention_2",
+                        help="sdpa on boxes without a flash-attn build (Blackwell)")
+
     args = parser.parse_args()
 
     # ===================================================================
@@ -501,6 +523,12 @@ Examples:
     # ===================================================================
     USE_INSTRUCTION = args.use_instruction.lower() == "true"
     RUN_NAME = "DPO_Instruct" if USE_INSTRUCTION else "DPO_NoInstruct"
+    USE_FLASH_ATTENTION = args.attn_implementation == "flash_attention_2"
+    ISOLATED = check_isolated_output_dir(args.output_dir, project_root / "outputs" / "training" / RUN_NAME,
+                                         args.data_dir, args.seed, parser.get_default("seed"))
+    if args.data_dir and args.base_model is None:
+        raise SystemExit("FATAL: --data-dir runs must pass --base_model (G1/G2 init from the DPO LoRA, "
+                         "e.g. kapilw25/llama3-8b-pku-DPO-Instruct-SFT-Instruct, not the SFT default)")
 
     # Auto-derive base_model from BASE_MODEL_MAP if not provided
     if args.base_model is None:
@@ -524,7 +552,10 @@ Examples:
     # Get HuggingFace repository name
     HF_REPO = get_model_repo_name(RUN_NAME, precision="bf16")
 
-    print(f"📦 Model will be pushed to: {HF_REPO}")
+    if ISOLATED:
+        print(f"🧪 Isolated run: outputs in {args.output_dir}; no menu, no Hub/GitHub push (released {HF_REPO} untouched)")
+    else:
+        print(f"📦 Model will be pushed to: {HF_REPO}")
     print("="*80 + "\n")
 
     # Determine configuration
@@ -538,75 +569,81 @@ Examples:
         num_epochs = 1.0  # Full epoch (~10,831 samples, ~1,353 steps, ~103 min)
         print(f"✅ Full training mode: {num_epochs} epochs (~103 minutes)")
 
-    # ===================================================================
-    # Ask about retraining BEFORE starting (check HF repo first)
-    # ===================================================================
-    print(f"\n{'='*80}")
-    print("🔄 Training Mode Selection")
-    print(f"{'='*80}")
-
-    # Check if HF repo exists
-    hf_model_exists = False
-    previous_metric = None
-    try:
-        from huggingface_hub import repo_exists
-        if repo_exists(HF_REPO, token=HF_TOKEN, repo_type="model"):
-            hf_model_exists = True
-            print(f"✅ Found existing model on HuggingFace: {HF_REPO}")
-
-            # Try to get previous metric
-            from src.utils.train.push_automation import PushAutomation
-            pusher_temp = PushAutomation(hf_token=HF_TOKEN, project_root=project_root)
-            previous_metric = pusher_temp._get_previous_best_margin(HF_REPO)
-
-            if previous_metric:
-                print(f"   Previous performance: margin={previous_metric:.4f}")
-        else:
-            print(f"❌ No existing model on HuggingFace: {HF_REPO}")
-            print("   This will be the first training run")
-    except Exception as e:
-        print(f"⚠️  Could not check HuggingFace: {type(e).__name__}")
-
-    print(f"{'='*80}")
-    print(f"Training will take approximately: {'~31 minutes' if num_epochs == 0.3 else '~103 minutes'}")
-    print("\nOptions:")
-    if hf_model_exists:
-        print("  1) Inference only from HF_repo (use existing HF model)")
-        print("  2) Retrain and replace HF model (regardless of performance)")
+    if ISOLATED:
+        force_skip = False  # isolated runs always train; the menu is about the released Hub repo
     else:
-        print("  1) Inference only from HF_repo")
-        print("  2) Train and push to HuggingFace")
-    print(f"{'='*80}")
+        # ===================================================================
+        # Ask about retraining BEFORE starting (check HF repo first)
+        # ===================================================================
+        print(f"\n{'='*80}")
+        print("🔄 Training Mode Selection")
+        print(f"{'='*80}")
 
-    mode_choice = input("Enter choice (1 or 2): ").strip()
-    print(f"{'='*80}\n")
+        # Check if HF repo exists
+        hf_model_exists = False
+        previous_metric = None
+        try:
+            from huggingface_hub import repo_exists
+            if repo_exists(HF_REPO, token=HF_TOKEN, repo_type="model"):
+                hf_model_exists = True
+                print(f"✅ Found existing model on HuggingFace: {HF_REPO}")
 
-    force_skip = False  # Flag to override checkpoint detection
-    if mode_choice == "1":
-        # Option 1: Inference-only mode (requires HF repo)
-        if not hf_model_exists:
-            print("❌ Error: Option 1 requires existing HuggingFace model")
-            print("   HuggingFace repo does not exist yet")
-            print("   Please choose option 2 to train and create the model first")
-            sys.exit(1)
-        print("✅ Inference-only mode selected")
-        print("   Will load model from HuggingFace for inference tests")
-        force_skip = True  # Will skip training regardless of checkpoint status
-    elif mode_choice == "2":
-        # Option 2: Training mode (comparison happens in push_automation.py)
-        print("✅ Training mode selected")
+                # Try to get previous metric
+                from src.utils.train.push_automation import PushAutomation
+                pusher_temp = PushAutomation(hf_token=HF_TOKEN, project_root=project_root)
+                previous_metric = pusher_temp._get_previous_best_margin(HF_REPO)
+
+                if previous_metric:
+                    print(f"   Previous performance: margin={previous_metric:.4f}")
+            else:
+                print(f"❌ No existing model on HuggingFace: {HF_REPO}")
+                print("   This will be the first training run")
+        except Exception as e:
+            print(f"⚠️  Could not check HuggingFace: {type(e).__name__}")
+
+        print(f"{'='*80}")
+        print(f"Training will take approximately: {'~31 minutes' if num_epochs == 0.3 else '~103 minutes'}")
+        print("\nOptions:")
         if hf_model_exists:
-            print("   Will compare local vs HF metrics and push ONLY if performance improves")
+            print("  1) Inference only from HF_repo (use existing HF model)")
+            print("  2) Retrain and replace HF model (regardless of performance)")
         else:
-            print("   Will train and push to HuggingFace (first time)")
-        force_skip = False
-    else:
-        print("⚠️  Invalid choice, defaulting to training mode")
-        force_skip = False
+            print("  1) Inference only from HF_repo")
+            print("  2) Train and push to HuggingFace")
+        print(f"{'='*80}")
+
+        mode_choice = input("Enter choice (1 or 2): ").strip()
+        print(f"{'='*80}\n")
+
+        force_skip = False  # Flag to override checkpoint detection
+        if mode_choice == "1":
+            # Option 1: Inference-only mode (requires HF repo)
+            if not hf_model_exists:
+                print("❌ Error: Option 1 requires existing HuggingFace model")
+                print("   HuggingFace repo does not exist yet")
+                print("   Please choose option 2 to train and create the model first")
+                sys.exit(1)
+            print("✅ Inference-only mode selected")
+            print("   Will load model from HuggingFace for inference tests")
+            force_skip = True  # Will skip training regardless of checkpoint status
+        elif mode_choice == "2":
+            # Option 2: Training mode (comparison happens in push_automation.py)
+            print("✅ Training mode selected")
+            if hf_model_exists:
+                print("   Will compare local vs HF metrics and push ONLY if performance improves")
+            else:
+                print("   Will train and push to HuggingFace (first time)")
+            force_skip = False
+        else:
+            print("⚠️  Invalid choice, defaulting to training mode")
+            force_skip = False
 
     # Run training
     try:
-        trainer, training_skipped = train_dpo_baseline(num_epochs=num_epochs, base_model=args.base_model, force_skip=force_skip)
+        trainer, training_skipped = train_dpo_baseline(num_epochs=num_epochs, output_dir=args.output_dir,
+                                                       base_model=args.base_model, force_skip=force_skip,
+                                                       data_dir=args.data_dir, seed=args.seed,
+                                                       use_flash_attention=USE_FLASH_ATTENTION)
         print("\n🏁 DPO Baseline Training Complete!")
         print(f"📝 Log file: {log_filename}")
 
@@ -630,19 +667,27 @@ Examples:
             "beta": 0.1,  # Meta's official Llama 3 DPO setting
         }
 
-        PushAutomation.prepare_baseline_push(
-            method="DPO",
-            output_dir=f"outputs/training/{RUN_NAME}",
-            training_config=training_config,
-            training_skipped=training_skipped,
-            hf_token=HF_TOKEN,
-            hf_repo=HF_REPO,
-            run_name=RUN_NAME,
-            metric_names=["eval_rewards/margins", "rewards/margins"],
-            metric_mode="max",
-            project_root=project_root,
-            no_push=args.no_push,
-        )
+        if ISOLATED:
+            # G1/G2/G5: never push, never touch outputs/training/{RUN_NAME} (PushAutomation writes its config there)
+            save_run_config(args.output_dir, {**training_config, "run_name": RUN_NAME, "seed": args.seed,
+                                              "base_model": args.base_model, "data_dir": args.data_dir,
+                                              "attn_implementation": args.attn_implementation,
+                                              "training_skipped": training_skipped})
+            print(f"⏭️  Isolated run: no Hub/GitHub push; LoRA in {args.output_dir}/lora_model_{RUN_NAME}")
+        else:
+            PushAutomation.prepare_baseline_push(
+                method="DPO",
+                output_dir=f"outputs/training/{RUN_NAME}",
+                training_config=training_config,
+                training_skipped=training_skipped,
+                hf_token=HF_TOKEN,
+                hf_repo=HF_REPO,
+                run_name=RUN_NAME,
+                metric_names=["eval_rewards/margins", "rewards/margins"],
+                metric_mode="max",
+                project_root=project_root,
+                no_push=args.no_push,
+            )
 
     except Exception as e:
         print(f"\n❌ Error during training: {e}")
