@@ -5,7 +5,7 @@
 > [!NOTE]
 > The judge's text below is kept in full; only the layout changed. Claude Code's verification notes are in the last section, [🔎 Fact-check](#-fact-check-by-claude-code-not-the-judge).
 
-**Legend:** 🟢 strong · 🟡 moderate · 🔴 weak · 🅰️🅱️🅲🅳 the four parts of the prompt · 📍 page reference · § = the judge's own section numbering (the paper's sections are unnumbered)
+**Legend:** 🟢 strong · 🟡 moderate · 🔴 weak · 🅰️🅱️🅲🅳 the four parts of the prompt · 📍 page reference · § = section number in the paper
 
 ## 📌 TL;DR
 
@@ -299,4 +299,4 @@ Checked 2026-11-26 against the text of the submitted [v1_SC4AI/0_main.pdf](../..
 | 5 | **C1 trains a permissive adapter on PKU-SafeRLHF's more-helpful (possibly harmful) responses.** The judge's safety note is right: keep the floor categories, never release that adapter. | Process: decide before running. |
 | 6 | **C1 assumes 1,222 held-out PKU-SafeRLHF prompts outside our 12,035-pair pool.** The dataset does carry separate safety and helpfulness labels, but whether enough unseen pairs exist was not checked here. | Check the data before planning C1/C4. |
 | 7 | **GPU-hour estimates are the judge's guesses** (A100 basis), not measured. | Plan with your own hardware numbers. |
-| 8 | **§1–§10 numbering and the re-scores of the six accepted papers (~28 to ~62) are the judge's own**; the paper's sections are unnumbered and the re-scores are subjective. | Informational. |
+| 8 | **The re-scores of the six accepted papers (~28 to ~62) are the judge's own** and subjective. (Its §1–§10 numbering matches the paper's numbered sections, e.g. "8 Limitations", "10 Conclusion".) | Informational. |
