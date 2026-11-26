@@ -7,17 +7,36 @@
 [Claude](../feedback/output/v1_SC4AI/by_claude/step2.md) (51) ·
 [Gemini](../feedback/output/v1_SC4AI/by_gemini/step2.md) (62.5). Written 2026-11-26.
 
-**Decisions (owner, 2026-11-26):** one merged 10-rubric scale · ETAs for RTX Pro 6000 96GB · split "before Nov 28" vs "next venue" · rubrics re-mapped to LoyalAgents.
+**Decisions (owner, 2026-11-26):** one merged 10-rubric scale · ETAs for RTX Pro 6000 96GB · split into batches (LoyalAgents itself gets the 4-page paper, see below) · rubrics re-mapped to LoyalAgents.
 
-**Legend:** 🖥️ GPU task · 📝 non-GPU task · 🔴 before Nov 28 · 🟡 next venue (Bench2Evidence Dec 2, later) · ⚠️ needs your OK first · R1–R10 merged rubrics below
+**Legend:** 🖥️ GPU task · 📝 non-GPU task · 🅿️ 4-page task · 🔴 batch 1 of the 8-page plan · 🟡 batch 2 (later venues) · ⚠️ needs your OK first · R1–R10 merged rubrics below
 
-## 📌 Score path
+## 🆕 Plan change (owner, 2026-11-26): LoyalAgents gets a 4-page finding paper
+
+**What goes to LoyalAgents by Sat Nov 28, 3:59 AM PST:** one 4-page finding paper in [`../v3_LoyalAgents_4page/`](../v3_LoyalAgents_4page/). Its claim is "whose contract does the agent follow? There's no safety floor by default", and SwiPO appears as one of the four trained models rather than as the headline. Every claim in it rests on results we already have.
+
+**Why 4 pages:** the call says shorter papers are "reviewed relative to their length", and it accepts one paper per idea (no per-author limit, single-blind). A short paper avoids the judges' top reason to reject: it no longer claims what SwiPO's unrun multi-contract experiment would show. **The 8-page `v2_LoyalAgents/` and every G/N task below move to the next venue** (Bench2Evidence Dec 2, then later calls).
+
+### 🅿️ 4-page tasks (before Sat Nov 28, 3:59 AM PST)
+
+| ID | Task | Needs | ETA | Effect on the judges' concerns |
+|---|---|---|---|---|
+| **P1** | Outline from v2 and v1: abstract, intro, "Whose contract?" section with the lever table, floor table (v1 Table 6), Figure 1 example, short setup, results, open problems, a one-paragraph scope statement | v2, v1 sources | in progress | sets what the paper claims |
+| **P2** | Write the 4-page paper, finding first. Headline: refusal gap 0.30–0.49 in all four models, and the floor table. Efficiency (86.7%, no-AQI 83.4 vs 67.6, +15.7 [−4.1, 39.7]) gets one sentence. Use "not separable from DPO", never "tied" | P1 | 4 h | the "designed experiment unrun" and "AQI in the headline" problems become non-issues (not claimed); fixes tone (R10) |
+| **P3** | Build, then `/audit-paper-e2e-draft --max-pages 4`, then `paper-consistency` against v4 (same title; abstract numbers may appear in the body only) | build tools | 1 h | 0 FAIL before submitting |
+| **P4** | 🖥️ optional, if a GPU is free before Fri evening: **G6** held-out floor test (prompts outside the 12,035-pair pool) | GPU | ~2 GPU-h | removes the "9 in 10 floor prompts seen in training" caveat (R9) |
+| **P5** | 🖥️ optional: **G8** harmful vs safe non-refusals on the 347 floor prompts (⚠️ adds a safety classifier to one analysis) | GPU | ~0.5 GPU-h | turns "bounds harm from above" into a measured harm rate (R9) |
+| **P6** | **You:** submit on OpenReview (single-blind; disclose arXiv:2601.06157 and the SC4AI submission; paste the new abstract) | OpenReview login | 0.5 h | submission |
+
+**Risks that remain in the 4-page paper:** one backbone and one seed; about 9 in 10 floor prompts were seen in training (P4 fixes this); a non-refusal isn't necessarily harmful (P5 fixes this). The judges scored the 8-page SC4AI version, so the 4-page paper has no rubric score yet.
+
+## 📌 Score path (8-page v2, next venue)
 
 | Stage | Merged score | What gets done |
 |---|---|---|
 | 📍 Now (judges' average) | **~51** | submitted SC4AI text |
-| 🔴 By Sat Nov 28, 3:59 AM PST | **~72** | 📝 N1–N8 + 🖥️ G1, G3, G4, G6, G7, G8 |
-| 🟡 Next venue | **~78–80** | 🖥️ G2, G5, G9, G10 + 📝 N9 |
+| 🔴 After batch 1 | **~72** | 📝 N1–N8 + 🖥️ G1, G3, G4, G6, G7, G8 |
+| 🟡 After batch 2 | **~78–80** | 🖥️ G2, G5, G9, G10 + 📝 N9 |
 
 > [!IMPORTANT]
 > **80 is reachable only if every item lands and the results cooperate.** The +1.5 that closes the gap depends on G3 actually removing the looping (R7 6.5 → 8). Every score below is a projection from the judges' rubrics, not a measured outcome, and each result is reported whichever way it comes out.
@@ -57,7 +76,7 @@ Each merged rubric averages the matching rubrics from the three judges (e.g. "th
 | **G9** | 🟡 | **Second backbone** (e.g. Qwen2.5-7B): SFT → DPO → SwiPO, Instruct and NoInstruct; the "one backbone" limitation every judge lists. | full pipeline on a new base | ≈ 16 GPU-h | R8 8.5 → 9.0 · R6 6.5 → 7.5 |
 | **G10** | 🟡 | **Score the 90 unscored ECLIPTICA-30k types** (27,000 cases) for the 8 checkpoints; tests interference at 100 contracts. | existing scorer | ≈ 12 GPU-h | R5 7.0 → 7.5 |
 
-**GPU totals:** 🔴 before deadline ≈ 25 GPU-h (wall ≈ 10 h on 3 GPUs; G1 is the critical path) · 🟡 later ≈ 47 GPU-h.
+**GPU totals:** 🔴 batch 1 ≈ 25 GPU-h (wall ≈ 10 h on 3 GPUs; G1 is the critical path) · 🟡 later ≈ 47 GPU-h.
 
 ## 📝 List 2 · Non-GPU tasks
 
@@ -70,24 +89,24 @@ Each merged rubric averages the matching rubrics from the three judges (e.g. "th
 | **N5** | 🔴 | **Loyalty-evaluation framing**: recast Table 6 and G1 as LoyalAgents topics 3 (evaluation) and 6 (conflicts of interest): a deployer's permissive contract vs a third party's safety. | v2 §2 lever table, Table 6 | 1.5 h | R2 2.0 → 3.0 |
 | **N6** | 🔴 | **Integrate GPU results** (G1, G3, G4, G6, G7, G8) into tables and §5 within 8 pages; every new number with a 95% BCa interval. | GPU outputs | 3 h | enables the GPU gains above |
 | **N7** | 🔴 | **Rebuild and audit**: `latexmk`, `/audit-paper-e2e-draft` (0 FAIL, ≤ 8 pages), `paper-consistency` against v4. | build tools | 1 h | R10 7.5 → 8.0 |
-| **N8** | 🔴 | **Submit on OpenReview** (you): single-blind; disclose the SC4AI submission; paste the new abstract. | OpenReview login | 0.5 h | (submission) |
+| **N8** | 🔴 | **Submit the 8-page v2 to the next venue** (you): disclose the SC4AI and LoyalAgents submissions; paste the new abstract. | OpenReview login | 0.5 h | (submission) |
 | **N9** | 🟡 | **Small human check**: 50 prompts × 2 contracts, 2–3 annotators rate contract adherence and harm; validates the deterministic scores. | annotators | 3–4 person-h | R2 5.0 → 6.5 · R5 7.5 → 8.0 |
 | **N10** | ⚠️ | **Retitle** (Claude's suggestion). Conflicts with the rule that all versions share one title (v4 is the reference), so not counted in the score. | your decision | 0.5 h | n/a |
 
 **Non-GPU total:** 🔴 ≈ 15 h writing · 🟡 ≈ 4 person-h.
 
-## 🗓️ Suggested order before the deadline
+## 🗓️ Suggested order for batch 1 (8-page v2, next venue)
 
 | Slot | GPU lane | Writing lane |
 |---|---|---|
 | 1 | G1 data builder (CPU) → start G1 (a), (b), (c) in parallel | N1 tone rewrite · N2 headline metric |
 | 2 | G3, G4, G7 on the spare GPUs while G1 trains | N4 property table · N5 loyalty framing · N3 (if OK'd) |
 | 3 | G1 eval → G6 → G8 | N6 integrate results |
-| 4 | | N7 rebuild + audit → N8 submit before **Sat Nov 28, 3:59 AM PST** |
+| 4 | | N7 rebuild + audit → N8 submit to the next venue (Bench2Evidence, Wed Dec 2, 3:59 AM PST) |
 
 ## 📊 Projected score by rubric
 
-| # | Rubric | Now | 🔴 Nov 28 | 🟡 Next venue |
+| # | Rubric | Now | 🔴 Batch 1 | 🟡 Batch 2 |
 |---|---|---|---|---|
 | R1 | Venue framing and formal content | 6.6 | 8.0 | 8.5 |
 | R2 | Loyalty evaluation | 2.0 | 5.0 | 6.5 |
