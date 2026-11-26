@@ -12,14 +12,22 @@ Already submitted: ✅ [SC4AI'27 (W15)](https://sites.google.com/view/sc4ai/work
 |---|---|---|---|---|---|
 | 🤝 LoyalAgents (W27) | [loyalagents.github.io/aaai27](https://loyalagents.github.io/aaai27/) · [OpenReview](https://openreview.net/group?id=AAAI.org/2027/Workshop/LoyalAgents) | 🔹 Sat Nov 28, 3:59 AM | 🔹 Wed Dec 2 | 🔹 full ≤8 p ([v2_LoyalAgents/](v2_LoyalAgents/) READY) | 🟢 whose contract the agent follows; v2 already written for this call |
 | 🎯 MultiRobust (W38) | [robust-ai-2027.github.io](https://robust-ai-2027.github.io/aaai27_workshop) · [OpenReview](https://openreview.net/group?id=AAAI.org/2027/Workshop/MultiRobust) | 🔹 Sat Nov 28, 3:59 AM | 🔹 Wed Dec 2 | 🔹 full ≤8 p | 🟢 safety vs helpfulness trade-off, model alignment, one model / many objectives |
-| 🛡️ LAUT (W29) | [llm-agents-under-threat.github.io](https://llm-agents-under-threat.github.io/) · [OpenReview](https://openreview.net/group?id=AAAI.org/2027/Workshop/LAUT) | 🔹 Sat Nov 28, 3:59 AM | 🔹 Wed Dec 2 | 🔹 full ≤7 p | 🟡 a permissive contract as an attack path (floor-leakage table); no attacks run |
-| 🎭 ANTHROLOGOS (W8) | [pragyaai.github.io/anthrologos](https://pragyaai.github.io/anthrologos/) · [OpenReview](https://openreview.net/group?id=AAAI.org/2027/Workshop/ANTHROLOGOS) | 🔹 Mon Nov 30, 10:30 AM | 🔹 not stated | 🔹 full ≤6 p / short ≤4 p | 🟡 persona persistence: does the model keep the role the instruction sets |
-| 📐 MATH4AI (W2) | [sites.google.com/view/math4aiworkshop2027](https://sites.google.com/view/math4aiworkshop2027) · [OpenReview](https://openreview.net/group?id=AAAI.org/2027/Workshop/MATH4AI) | 🔹 Wed Dec 2, 4:00 AM | 🔹 not stated | 🔹 long ≤7 p / short ≤4 p | 🟡 Proposition 1 + KL trust region; topic "stability of agentic AI" |
-| 📊 Bench2Evidence (Bridge, not a workshop) | [bench-to-evidence.github.io](https://bench-to-evidence.github.io/) · [OpenReview](https://openreview.net/group?id=AAAI.org/2027/Bridge/Bench2Evidence) | 🔹 Wed Dec 2, 3:59 AM | 🔹 Sun Dec 13 | 🔹 full 6-8 p / short 2-4 p | 🟡 ECLIPTICA as a benchmark that feeds deployment decisions |
+| 📊 Bench2Evidence (Bridge, not a workshop) | [bench-to-evidence.github.io](https://bench-to-evidence.github.io/) · [OpenReview](https://openreview.net/group?id=AAAI.org/2027/Bridge/Bench2Evidence) | 🔹 Wed Dec 2, 3:59 AM | 🔹 Sun Dec 13 | 🔹 full 6-8 p / short 2-4 p | 🟢 topics 1-2 ("do scorers measure what they claim", stability across runs) match our query-scrambled test (fidelity ignores the prompt: 0.560 vs 0.565), within-model AQI, BCa intervals |
+| 📐 MATH4AI (W2) | [sites.google.com/view/math4aiworkshop2027](https://sites.google.com/view/math4aiworkshop2027) · [OpenReview](https://openreview.net/group?id=AAAI.org/2027/Workshop/MATH4AI) | 🔹 Wed Dec 2, 4:00 AM | 🔹 not stated | 🔹 long ≤7 p / short ≤4 p | 🟡 Proposition 1 + KL trust region; but Proposition 1 is a simple separability result, thin for a math venue |
+| 🛡️ LAUT (W29) | [llm-agents-under-threat.github.io](https://llm-agents-under-threat.github.io/) · [OpenReview](https://openreview.net/group?id=AAAI.org/2027/Workshop/LAUT) | 🔹 Sat Nov 28, 3:59 AM | 🔹 Wed Dec 2 | 🔹 full ≤7 p | 🔴 reviewers expect attacks or defenses; we ran none (floor leakage is a measurement, not an attack) |
+| 🎭 ANTHROLOGOS (W8) | [pragyaai.github.io/anthrologos](https://pragyaai.github.io/anthrologos/) · [OpenReview](https://openreview.net/group?id=AAAI.org/2027/Workshop/ANTHROLOGOS) | 🔹 Mon Nov 30, 10:30 AM | 🔹 not stated | 🔹 full ≤6 p / short ≤4 p | 🔴 SwiPO is about contracts, not human-like traits; "persona persistence" is a stretch a reviewer will see |
 
-Legend: 🟢 strong fit · 🟡 fits only with a reframed intro · ✅ submitted · 🔹 value from the call
+Legend: 🟢 strong fit · 🟡 weak fit · 🔴 poor fit, not recommended · ✅ submitted · 🔹 value from the call
+
+Re-ranked 2026-11-26: Bench2Evidence moved up; LAUT and ANTHROLOGOS downgraded to 🔴 (kept only for the record).
 
 Dropped: ToM4AI, NeSy-FM, EvalAIScientists, MakingSense, Agentic Labs, A2NetOps (weak fit); Embodied AI Meta-alignment (W35, good fit, closed Nov 24).
+
+Checked 2026-11-26 outside the OpenReview open list, all CLOSED (Nov 20, no extension found):
+W6 Human-AI Collaboration (EasyChair), W11 Disinformation and GenAI Safety (OpenReview), W12 Deployable AI (OpenReview),
+W14 Trustworthy Evolution of AI Agents (OpenReview), W20 SPF-LLM (OpenReview), W24 IntelliSym (CMT, archival CEUR;
+its Dec 3 fast track is only for papers rejected from the AAAI-27 main conference, with their reviews).
+Account note: on EasyChair and CMT only the submitter needs an account; OpenReview needs every author's profile.
 Dual submission: all six are non-archival, but only LoyalAgents was checked to accept work under review elsewhere; read each call before reusing a paper.
 
 ## 🤝 LoyalAgents (W27): Who Does Your AI Agent Work For? A Workshop on Loyal Agents
