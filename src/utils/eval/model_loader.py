@@ -87,6 +87,11 @@ MODELS = {
         "display_name": "Llama-3.1-8B-Instruct (prompted)",
         "use_instruction": True,
     },
+    "Llama31_Base_Prompted": {  # stacking control: the pretrained base every adapter sits on, no adapter, contract in the prompt
+        "hf_repo": None,
+        "display_name": "Llama-3.1-8B base (prompted)",
+        "use_instruction": True,
+    },
     # G1/G2: local LoRA folders from src/train/{cita,dpo}.py --output-dir (never on the Hub: the permissive-trained
     # adapters are not released). An absolute hf_repo is a local folder (Hub ids are never absolute). All take the
     # eval contracts (use_instruction True): pooled DPO saw no contract in training, but it must get the same strict

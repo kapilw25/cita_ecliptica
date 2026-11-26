@@ -1,0 +1,246 @@
+{
+  "meta": {
+    "models": [
+      "CITA_Instruct_AsTrained",
+      "DPO_Instruct_AsTrained",
+      "PPO_Instruct_AsTrained",
+      "GRPO_Instruct_AsTrained",
+      "CITA_NoInstruct_AsTrained",
+      "DPO_NoInstruct_AsTrained",
+      "PPO_NoInstruct_AsTrained",
+      "GRPO_NoInstruct_AsTrained",
+      "CITA_Instruct",
+      "DPO_Instruct",
+      "PPO_Instruct",
+      "GRPO_Instruct",
+      "SFT_Instruct"
+    ],
+    "reference": "CITA_Instruct_AsTrained",
+    "statistic": {
+      "conditional_safety": "|strict - permissive| refusal rate"
+    },
+    "bootstrap": {
+      "n_iterations": 10000,
+      "confidence_level": 0.95,
+      "method": "BCa"
+    },
+    "resampling_unit": "item, paired across models"
+  },
+  "suites": {
+    "conditional_safety": {
+      "CITA_Instruct_AsTrained": {
+        "n": 1222,
+        "score": 0.37643207855973815,
+        "ci": [
+          0.34615384615384615,
+          0.4067103109656301
+        ],
+        "ci_method": "BCa"
+      },
+      "DPO_Instruct_AsTrained": {
+        "n": 1222,
+        "score": 0.03436988543371522,
+        "ci": [
+          0.006546644844517185,
+          0.0630114566284779
+        ],
+        "ci_method": "BCa",
+        "minus_ref": {
+          "value": -0.34206219312602293,
+          "ci": [
+            -0.3829787234042553,
+            -0.30032733224222585
+          ],
+          "ci_method": "BCa"
+        }
+      },
+      "PPO_Instruct_AsTrained": {
+        "n": 1222,
+        "score": 0.03273322422258593,
+        "ci": [
+          0.007364975450081833,
+          0.05810147299509002
+        ],
+        "ci_method": "BCa",
+        "minus_ref": {
+          "value": -0.3436988543371522,
+          "ci": [
+            -0.3846153846153846,
+            -0.30360065466448444
+          ],
+          "ci_method": "BCa"
+        }
+      },
+      "GRPO_Instruct_AsTrained": {
+        "n": 1222,
+        "score": 0.03436988543371522,
+        "ci": [
+          0.008183306055646482,
+          0.060556464811783964
+        ],
+        "ci_method": "BCa",
+        "minus_ref": {
+          "value": -0.34206219312602293,
+          "ci": [
+            -0.3806307252534286,
+            -0.3019639934533552
+          ],
+          "ci_method": "BCa"
+        }
+      },
+      "CITA_NoInstruct_AsTrained": {
+        "n": 1222,
+        "score": 0.02127659574468085,
+        "ci": [
+          0.0016366612111292963,
+          0.046644844517184945
+        ],
+        "ci_method": "BCa",
+        "minus_ref": {
+          "value": -0.3551554828150573,
+          "ci": [
+            -0.3927986906710311,
+            -0.31669394435351883
+          ],
+          "ci_method": "BCa"
+        }
+      },
+      "DPO_NoInstruct_AsTrained": {
+        "n": 1222,
+        "score": 0.020458265139116204,
+        "ci": [
+          0.0016366612111292963,
+          0.04337152209492635
+        ],
+        "ci_method": "BCa",
+        "minus_ref": {
+          "value": -0.35597381342062195,
+          "ci": [
+            -0.39361702127659576,
+            -0.31751227495908346
+          ],
+          "ci_method": "BCa"
+        }
+      },
+      "PPO_NoInstruct_AsTrained": {
+        "n": 1222,
+        "score": 0.004091653027823241,
+        "ci": [
+          0.0,
+          0.013911620294599018
+        ],
+        "ci_method": "BCa",
+        "minus_ref": {
+          "value": -0.37234042553191493,
+          "ci": [
+            -0.4083469721767594,
+            -0.3436988543371522
+          ],
+          "ci_method": "BCa"
+        }
+      },
+      "GRPO_NoInstruct_AsTrained": {
+        "n": 1222,
+        "score": 0.0016366612111292963,
+        "ci": [
+          0.0,
+          0.004909983633387889
+        ],
+        "ci_method": "BCa",
+        "minus_ref": {
+          "value": -0.37479541734860883,
+          "ci": [
+            -0.4132569558101473,
+            -0.34779050736497547
+          ],
+          "ci_method": "BCa"
+        }
+      },
+      "CITA_Instruct": {
+        "n": 1222,
+        "score": 0.4001636661211129,
+        "ci": [
+          0.367430441898527,
+          0.4337152209492635
+        ],
+        "ci_method": "BCa",
+        "minus_ref": {
+          "value": 0.02373158756137478,
+          "ci": [
+            -0.021276595744680882,
+            0.06873977086743044
+          ],
+          "ci_method": "BCa"
+        }
+      },
+      "DPO_Instruct": {
+        "n": 1222,
+        "score": 0.48936170212765956,
+        "ci": [
+          0.45662847790507366,
+          0.5220949263502455
+        ],
+        "ci_method": "BCa",
+        "minus_ref": {
+          "value": 0.11292962356792141,
+          "ci": [
+            0.07022324276101785,
+            0.15466448445171854
+          ],
+          "ci_method": "BCa"
+        }
+      },
+      "PPO_Instruct": {
+        "n": 1222,
+        "score": 0.3027823240589198,
+        "ci": [
+          0.27086743044189854,
+          0.33469721767594107
+        ],
+        "ci_method": "BCa",
+        "minus_ref": {
+          "value": -0.07364975450081834,
+          "ci": [
+            -0.118657937806874,
+            -0.029459901800327315
+          ],
+          "ci_method": "BCa"
+        }
+      },
+      "GRPO_Instruct": {
+        "n": 1222,
+        "score": 0.3248772504091653,
+        "ci": [
+          0.29132569558101473,
+          0.3576104746317512
+        ],
+        "ci_method": "BCa",
+        "minus_ref": {
+          "value": -0.05155482815057283,
+          "ci": [
+            -0.09819967266775781,
+            -0.006546644844517224
+          ],
+          "ci_method": "BCa"
+        }
+      },
+      "SFT_Instruct": {
+        "n": 1222,
+        "score": 0.0220949263502455,
+        "ci": [
+          0.0016366612111292963,
+          0.04746317512274959
+        ],
+        "ci_method": "BCa",
+        "minus_ref": {
+          "value": -0.35433715220949263,
+          "ci": [
+            -0.39198036006546644,
+            -0.3150572831423895
+          ],
+          "ci_method": "BCa"
+        }
+      }
+    }
+  }
+}
