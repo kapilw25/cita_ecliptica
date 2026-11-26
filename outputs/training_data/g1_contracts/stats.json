@@ -1,0 +1,158 @@
+{
+  "dataset": "PKU-Alignment/PKU-SafeRLHF",
+  "source_split": "train",
+  "seed": 3407,
+  "source_pairs": 73907,
+  "label_disagreement": {
+    "pairs": 17798,
+    "unique_prompts": 14805,
+    "by_safety_class": {
+      "both_unsafe": 8059,
+      "both_safe": 7918,
+      "one_safe": 1821
+    }
+  },
+  "excluded": {
+    "split:test": {
+      "unique_prompts": 7494,
+      "pairs_removed": 2604
+    },
+    "split:test:clear_contrast": {
+      "unique_prompts": 1180,
+      "pairs_removed": 567
+    },
+    "file:outputs/evaluation/floor_heldout/heldout_prompts.jsonl": {
+      "unique_prompts": 2444,
+      "pairs_removed": 1160
+    },
+    "file:outputs/ecliptica_30k/data/eval_3k/train-00000-of-00001.parquet": {
+      "unique_prompts": 300,
+      "pairs_removed": 0
+    },
+    "pairs_removed_total": 3596
+  },
+  "eligible_pairs_after_exclusion": 14202,
+  "duplicate_prompt_pairs_dropped": 2215,
+  "eligible_pairs_after_dedupe": 11987,
+  "released_cita_rows": {
+    "train": 10831,
+    "val": 1204
+  },
+  "target_rows": 10831,
+  "val_rows": 1204,
+  "pairs": {
+    "train": 5415,
+    "val": 602
+  },
+  "floor_categories": [
+    "Endangering National Security",
+    "Endangering Public Health",
+    "Human Trafficking",
+    "Physical Harm",
+    "Violence"
+  ],
+  "floor": {
+    "train": {
+      "pairs": 860,
+      "share": 0.1588
+    },
+    "val": {
+      "pairs": 79,
+      "share": 0.1312
+    }
+  },
+  "safety_class": {
+    "train": {
+      "both_safe": 2638,
+      "both_unsafe": 2193,
+      "one_safe": 584
+    },
+    "val": {
+      "both_safe": 301,
+      "both_unsafe": 239,
+      "one_safe": 62
+    }
+  },
+  "two_tier_permissive_rows_set_to_safer": {
+    "train": 860,
+    "val": 79
+  },
+  "flip": {
+    "fraction": 0.3,
+    "train_pairs_flipped": 1624,
+    "variants": [
+      "a_swipo2c_flip30",
+      "c_pooled_flip30"
+    ],
+    "val": "unflipped (copy of the base variant's val rows)"
+  },
+  "contract_templates": {
+    "strict": 4,
+    "permissive": 4,
+    "strict_category": 3,
+    "permissive_category": 3
+  },
+  "leak_check": {
+    "eval_prompts_in_datasets": 0,
+    "train_val_prompt_overlap": 0,
+    "eval_contract_sentences_checked": 14,
+    "eval_sentences_in_training_contracts": 0
+  },
+  "variants": {
+    "a_swipo2c": "2-contract SwiPO: strict row chosen = safer, permissive row chosen = better",
+    "b_twotier": "two-tier SwiPO: as a_swipo2c, but the permissive row picks the safer response when the pair has a floor category",
+    "c_pooled": "pooled DPO: no contract text, both label directions of every pair",
+    "a_swipo2c_flip30": "G2: 2-contract SwiPO: strict row chosen = safer, permissive row chosen = better; 1624 train pairs have the permissive-direction label flipped to safer",
+    "c_pooled_flip30": "G2: pooled DPO: no contract text, both label directions of every pair; 1624 train pairs have the permissive-direction label flipped to safer"
+  },
+  "files": {
+    "a_swipo2c/train.jsonl": {
+      "rows": 10830,
+      "sha256": "4bee1adf8a923869eee3a4d1aeb5a712fa7da40f981f2e643e017d51498b560c"
+    },
+    "a_swipo2c/val.jsonl": {
+      "rows": 1204,
+      "sha256": "fc609c8707ebf2eb0d3abfa921221f7102a67afd39809d2c4ac7a82ed91eaee9"
+    },
+    "b_twotier/train.jsonl": {
+      "rows": 10830,
+      "sha256": "ccec925604233c6d3555ad75d15bc889f6ea3df19824a39b42cb68e546ef7e31"
+    },
+    "b_twotier/val.jsonl": {
+      "rows": 1204,
+      "sha256": "d04389afaea2cd3dc364bd0aff10e290627f5c9714a1e9ad10d44c8e6e34f77e"
+    },
+    "c_pooled/train.jsonl": {
+      "rows": 10830,
+      "sha256": "34d4c5dfccdb0a8e95efcbcb038bdeb156412171119f2ffa1e23df89cb849816"
+    },
+    "c_pooled/val.jsonl": {
+      "rows": 1204,
+      "sha256": "765b486a20d4e9a8831963f57f6438672424ef3270bda380e08c1cf73b05916d"
+    },
+    "a_swipo2c_flip30/train.jsonl": {
+      "rows": 10830,
+      "sha256": "e2c64be6d419a90457a906af35db315aa159133f503640a175cdb9a80e49ded8"
+    },
+    "a_swipo2c_flip30/val.jsonl": {
+      "rows": 1204,
+      "sha256": "fc609c8707ebf2eb0d3abfa921221f7102a67afd39809d2c4ac7a82ed91eaee9"
+    },
+    "c_pooled_flip30/train.jsonl": {
+      "rows": 10830,
+      "sha256": "e56c6bb8d7dad359f5508704ae34400ffbc15d8d7490193874ff4416afe6fd81"
+    },
+    "c_pooled_flip30/val.jsonl": {
+      "rows": 1204,
+      "sha256": "765b486a20d4e9a8831963f57f6438672424ef3270bda380e08c1cf73b05916d"
+    },
+    "pairs_train.jsonl": {
+      "rows": 5415,
+      "sha256": "5fcf076073dff98cec18722f27c85714bd9a9e48b441c8bb090952f37f6d97f5"
+    },
+    "pairs_val.jsonl": {
+      "rows": 602,
+      "sha256": "ebc72a23df9b28a9d5e8402f03fd831c0e0bae649f752d5475d5442cc8fa60e8"
+    }
+  }
+}

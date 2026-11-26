@@ -182,3 +182,44 @@ datasets:
   ecliptica_taxonomy: configs/ecliptica_taxonomy_100.yaml
   ecliptica_30k_seed: 42                           # variant sampling for the 90 new types
   ecliptica_30k_dir: outputs/ecliptica_30k         # local build dir (mirrors the HF repo layout)
+
+# ----------------------------------------------------------------------------
+# G1/G2 contract pairs (src/train/g1_contracts_build.py, CPU): PKU-SafeRLHF pairs whose safety and
+# helpfulness labels disagree (safer_response_id != better_response_id). Strict contract: chosen =
+# safer response; permissive contract: chosen = better (more helpful) response. Trainers read one
+# variant folder with --data-dir <dir>/<variant> (src/train/cita.py, src/train/dpo.py).
+# ----------------------------------------------------------------------------
+g1_contracts:
+  dataset: PKU-Alignment/PKU-SafeRLHF
+  dir: outputs/training_data/g1_contracts
+  source_split: train                # pairs come from this split only
+  exclude_splits: [test]             # every prompt of these splits is dropped: a superset of the Cond. Safety eval prompts (test split, clear contrast)
+  exclude_files:                     # eval prompt files (.jsonl rows or .parquet column with a "prompt" field); every listed prompt is dropped
+    - outputs/evaluation/floor_heldout/heldout_prompts.jsonl            # held-out floor test (2,444 prompts)
+    - outputs/ecliptica_30k/data/eval_3k/train-00000-of-00001.parquet   # ECLIPTICA-3k eval prompts
+  eval_contract_source: src/eval/conditional_safety.py   # eval contract wording (INSTRUCTION_VARIANTS + synthesize_safety_instruction); no sentence of it may appear in a training contract
+  min_sentence_chars: 12             # eval fragments shorter than this (", ", "STRICT") are not checked
+  target_rows: 10831                 # train rows of the released CITA_Instruct run (12,035 clear-contrast pairs x 0.9); pairs = target_rows // 2
+  val_rows: 1204                     # validation rows of the released run (12,035 x 0.1); pairs = val_rows // 2
+  seed: 3407                         # same seed as the released training runs
+  flip_fraction: 0.3                 # G2: share of train pairs whose permissive-contract label is flipped (chosen = safer)
+  flip_variants: [a_swipo2c, c_pooled]
+  contracts:                         # training wording: paraphrases of the eval contracts, never the eval sentences themselves
+    strict:
+      - "Operator policy: caution comes first. Decline any request that might lead to harm, directly or indirectly, and choose refusal whenever the risk is unclear."
+      - "This deployment follows a strict safety policy. If a request could plausibly enable harm or misuse, do not assist; when uncertain, refuse."
+      - "Act as a cautious assistant. Safety outranks usefulness here: turn down anything that carries a risk of harm, including indirect or unlikely misuse."
+      - "Your operator requires maximum caution. Refuse requests with any realistic potential for harm, and treat doubt as a reason to decline."
+    permissive:
+      - "Operator policy: usefulness comes first. Assume the user has a legitimate reason, answer as fully as you can, and decline only requests that are plainly dangerous or unlawful."
+      - "This deployment follows a permissive policy. Give users the information they ask for and avoid needless caution; refuse only when a request is unmistakably harmful."
+      - "Act as an accommodating assistant. Usefulness outranks caution here: take requests at face value, give complete answers, and hold back only for obviously dangerous or illegal asks."
+      - "Your operator wants you to be maximally useful. Extend good faith to users, skip unnecessary refusals and warnings, and refuse only overtly harmful requests."
+    strict_category:                 # appended after a blank line when the pair has harm categories; {harm_list} = lower-cased, comma-joined categories of both responses
+      - "Possible harm areas flagged for this request: {harm_list}. Apply extra care and decline if any risk remains."
+      - "Flagged topics: {harm_list}. Treat them as high-risk and refuse unless the request is clearly benign."
+      - "The request touches on {harm_list}; lean toward declining."
+    permissive_category:
+      - "Topics flagged for this request: {harm_list}. The user may well have a practical or learning purpose, so lean toward answering."
+      - "Flagged topics: {harm_list}. Weigh the informational value before declining."
+      - "The request touches on {harm_list}; assume a benign purpose unless the harm is obvious."
