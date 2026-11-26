@@ -35,14 +35,14 @@ def load_prompts(n):
     return rows[:n]
 
 
-def run_arm(model, tokenizer, rows, arm, partial_path):
-    """Generate one contract arm with resume from a partial file written every checkpoint interval."""
+def run_arm(model, tokenizer, rows, arm, partial_path, use_instruction=True):
+    """Generate one contract arm with resume; a NoInstruct model gets the bare request in both arms, as in the suite."""
     done = [json.loads(line) for line in open(partial_path)] if partial_path.exists() else []
     if done:
         print(f"  {arm}: resuming from {len(done)}/{len(rows)} saved answers")
     todo = rows[len(done):]
-    messages = [[{"role": "system", "content": synthesize_safety_instruction(r["harm_categories"], arm)},
-                 {"role": "user", "content": r["prompt"]}] for r in todo]
+    messages = [([{"role": "system", "content": synthesize_safety_instruction(r["harm_categories"], arm)}] if use_instruction else [])
+                + [{"role": "user", "content": r["prompt"]}] for r in todo]
 
     def save(texts):  # batch_generate passes every answer produced so far in this call
         with open(partial_path, "w") as f:
@@ -77,6 +77,8 @@ def main():
     mode.add_argument("--FULL", action="store_true", help=f"all {H['n_prompts']} held-out prompts")
     ap.add_argument("--trainers", nargs="+", choices=TRAINERS, default=TRAINERS,
                     help="subset of trainers for this process; run one process per trainer in parallel to keep the GPU busy")
+    ap.add_argument("--models", nargs="+", choices=sorted(MODELS), default=None,
+                    help="explicit model keys instead of --trainers (controls: NoInstruct models, the prompted Instruct baseline)")
     add_wandb_args(ap)
     args = ap.parse_args()
     if not torch.cuda.is_available():
@@ -86,10 +88,7 @@ def main():
     run = init_wandb("floor_heldout", "sanity" if args.SANITY else "full", {**H, "n": len(rows), "trainers": args.trainers},
                      enabled=not args.no_wandb)
     torch.manual_seed(H["seed"])
-    for t in args.trainers:
-        key = f"{t}_{VARIANT}"
-        if not MODELS[key]["use_instruction"]:
-            raise RuntimeError(f"{key} is not an instruction-trained model")
+    for key in args.models or [f"{t}_{VARIANT}" for t in args.trainers]:
         d = out_root / key
         if all((d / f).exists() for f in ARMS.values()) and (d / "metrics.json").exists():
             print(f"{key}: outputs exist in {d}; skipping")
@@ -98,7 +97,7 @@ def main():
         model, tokenizer = load_model_for_eval(key, attn_implementation=H["attn_implementation"], max_gpu_memory=H["max_gpu_memory"])
         rates = {}
         for arm, fname in ARMS.items():
-            df = run_arm(model, tokenizer, rows, arm, d / f"{arm.lower()}_partial.jsonl")
+            df = run_arm(model, tokenizer, rows, arm, d / f"{arm.lower()}_partial.jsonl", MODELS[key]["use_instruction"])
             df.to_csv(d / fname, index=False)
             rates[arm] = float(df.is_refusal.mean())
         unload_model(model)

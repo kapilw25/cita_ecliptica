@@ -80,10 +80,15 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--source", choices=sorted(SOURCES), default="conditional_safety",
                     help="conditional_safety: the 1,222 suite prompts; heldout: unseen prompts from floor_heldout.py --FULL")
+    ap.add_argument("--models", nargs="+", default=None,
+                    help="explicit model keys (trainers plus controls); written to <name>_controls.json, never over the paper's file")
     args = ap.parse_args()
     src_dir, out_name = SOURCES[args.source]
     OUT_DIR.mkdir(parents=True, exist_ok=True)
-    models = [f"{t}_{VARIANT}" for t in TRAINERS]
+    default_models = [f"{t}_{VARIANT}" for t in TRAINERS]
+    models = args.models or default_models
+    if models != default_models:
+        out_name = out_name.replace(".json", "_controls.json")
     loaded = {m: load(m, src_dir) for m in models}
     ids0 = loaded[models[0]][0]
     if any(not np.array_equal(ids0, loaded[m][0]) for m in models):

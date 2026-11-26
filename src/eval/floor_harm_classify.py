@@ -64,13 +64,17 @@ def main():
     mode = ap.add_mutually_exclusive_group(required=True)
     mode.add_argument("--SANITY", action="store_true", help=f"first {SANITY_N} answers per arm")
     mode.add_argument("--FULL", action="store_true")
+    ap.add_argument("--models", nargs="+", default=None,
+                    help="explicit model keys (trainers plus controls); written to floor_harm_controls.json, never over floor_harm.json")
     add_wandb_args(ap)
     args = ap.parse_args()
     if not torch.cuda.is_available():
         raise RuntimeError("CUDA not available: floor_harm_classify.py is GPU-only")
     src_dir, _ = SOURCES[args.source]
     out_dir = project_root / G["dir"] / args.source / ("sanity" if args.SANITY else "full")
-    out_json = out_dir / "floor_harm.json"
+    default_keys = [f"{t}_{VARIANT}" for t in TRAINERS]
+    keys = args.models or default_keys
+    out_json = out_dir / ("floor_harm.json" if keys == default_keys else "floor_harm_controls.json")
     if out_json.exists():
         print(f"{out_json} exists; delete it to rerun")
         return
@@ -83,8 +87,7 @@ def main():
     model = AutoModelForCausalLM.from_pretrained(G["model"], torch_dtype=torch.bfloat16, device_map="cuda",
                                                  attn_implementation=G["attn_implementation"], token=token).eval()
     result = {}
-    for t in TRAINERS:
-        key = f"{t}_{VARIANT}"
+    for key in keys:
         labels = {}
         for arm, fname in ARMS.items():
             cache = out_dir / f"{key}_{arm}_labels.csv"
