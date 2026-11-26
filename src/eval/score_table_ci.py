@@ -1,8 +1,11 @@
 """Paper score table (Instruct score + Instruct-minus-NoInstruct delta) with paired BCa 95% CIs. CPU-only.
     python -u src/eval/score_table_ci.py 2>&1 | tee logs/score_table_ci.log
+    python -u src/eval/score_table_ci.py --decode_variant rep_penalty_1.15 2>&1 | tee logs/g3/score_table_ci.log
 """
 
+import argparse
 import json
+import os
 import sys
 from pathlib import Path
 
@@ -16,6 +19,7 @@ project_root = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(project_root))
 
 from src.utils.eval.isd_metrics import ISDMetricsCalculator  # noqa: E402
+from src.utils.eval.run_options import DECODE_KEYS, variant_root  # noqa: E402
 
 CFG = yaml.safe_load(open(project_root / "configs" / "pipeline.yaml"))
 EVAL_DIR = project_root / CFG["paths"]["evaluation_dir"]
@@ -27,6 +31,27 @@ TOL = CFG["score_table"]["reproduce_tol"]
 BOOT = CFG["bootstrap"]
 BATCH = CFG["score_table"]["bootstrap_batch"]
 EFF_VARIANTS = CFG["score_table"]["efficiency_variants"]
+DECODE_SUITES = CFG["decode_variant_suites"]  # suites a decode variant re-decodes (no AQI)
+
+
+def use_decode_variant(name: str) -> list:
+    """Point EVAL_DIR/OUT_DIR at <evaluation_dir>/<name>/ (same layout); returns the suites to score there."""
+    global EVAL_DIR, OUT_DIR, EFF_VARIANTS
+    root = project_root / CFG["paths"]["evaluation_dir"]
+    variant_dir = variant_root(name)
+    pinned_path = variant_dir / "decode_variant.json"  # written by the suites' --decode_variant run
+    if not pinned_path.exists():
+        raise RuntimeError(f"{pinned_path} missing: run the suites with --decode_variant {name} first")
+    pinned = json.load(open(pinned_path))
+    preset = {"decode_variant": name, **{k: CFG["decode_variants"][name][k] for k in DECODE_KEYS}}
+    if pinned != preset:
+        raise RuntimeError(f"{pinned_path} records {pinned}, configs/pipeline.yaml now gives {preset}")
+    EVAL_DIR = variant_dir
+    OUT_DIR = variant_dir / (project_root / CFG["paths"]["score_table_ci_dir"]).relative_to(root)
+    EFF_VARIANTS = {k: v for k, v in EFF_VARIANTS.items() if set(v) <= set(DECODE_SUITES)}
+    print(f"decode variant {name}: scoring {EVAL_DIR}, writing {OUT_DIR}; suites {DECODE_SUITES}; "
+          f"efficiency variants {list(EFF_VARIANTS)}")
+    return DECODE_SUITES
 
 
 def _paired(a: pd.DataFrame, b: pd.DataFrame, key: str, col: str):
@@ -227,16 +252,24 @@ def aqi(model: str) -> float:
 
 
 def main():
+    parser = argparse.ArgumentParser(description="Score table with paired BCa 95% CIs")
+    parser.add_argument("--decode_variant", choices=sorted(CFG["decode_variants"]), default=None,
+                        help="score <evaluation_dir>/<name>/ (G3 re-decode) instead of the paper's outputs; drops AQI")
+    args = parser.parse_args()
+    suites = use_decode_variant(args.decode_variant) if args.decode_variant else None
+    with_aqi = suites is None
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     calc = ISDMetricsCalculator(use_llm_judge=False)
     loaders = {"truthfulqa": load_truthfulqa, "conditional_safety": load_cond_safety,
                "length_control": load_length,
                "ecliptica": lambda m: load_ecliptica(m, calc)}
+    if suites is not None:
+        loaders = {k: v for k, v in loaders.items() if k in suites}
     if OURS not in TRAINERS:
         raise RuntimeError(f"score_table.ours={OURS} is not in score_table.trainers={TRAINERS}")
     rivals = [t for t in TRAINERS if t != OURS]
     table, loaded = {}, {}
-    pbar = tqdm(total=len(TRAINERS) * (len(loaders) + 1) + len(rivals) * len(loaders)
+    pbar = tqdm(total=len(TRAINERS) * (len(loaders) + with_aqi) + len(rivals) * len(loaders)
                 + len(EFF_VARIANTS) * (len(TRAINERS) + len(rivals)), desc="score_table_ci", unit="cell")
     for t in TRAINERS:
         table[t], loaded[t] = {}, {}
@@ -247,6 +280,8 @@ def main():
             print(f"{t:5s} {suite:18s} n={r['n']:5d} score {r['score']:.4f} [{r['score_ci'][0]:.4f}, {r['score_ci'][1]:.4f}]"
                   f"  delta {r['delta']:+.4f} [{r['delta_ci'][0]:+.4f}, {r['delta_ci'][1]:+.4f}]")
             pbar.update(1)
+        if not with_aqi:
+            continue
         a_i, a_n = aqi(f"{t}_Instruct"), aqi(f"{t}_NoInstruct")
         table[t]["aqi"] = {"score": a_i, "delta": a_i - a_n, "score_ci": None, "delta_ci": None,
                            "note": "cluster-separation metric over the whole response set; no per-item score to resample"}
@@ -260,14 +295,16 @@ def main():
             print(f"{OURS}-{r:5s} {suite:18s} score diff {c['score_diff']:+.4f} [{c['score_diff_ci'][0]:+.4f}, {c['score_diff_ci'][1]:+.4f}]"
                   f"  delta diff {c['delta_diff']:+.4f} [{c['delta_diff_ci'][0]:+.4f}, {c['delta_diff_ci'][1]:+.4f}]")
             pbar.update(1)
-    eff = efficiency_table(loaded, np.array([table[t]["aqi"]["delta"] for t in TRAINERS]), pbar)
+    aqi_delta = np.array([table[t]["aqi"]["delta"] for t in TRAINERS]) if with_aqi else None
+    eff = efficiency_table(loaded, aqi_delta, pbar)
     pbar.close()
     out = OUT_DIR / "score_table_ci.json"
     meta = {"bootstrap": BOOT, "paired": True, "ours": OURS, "resampling_unit": {
         "truthfulqa": "question", "conditional_safety": "prompt", "length_control": "prompt", "ecliptica": "prompt"},
-        "efficiency_note": "suites resampled independently, items paired across all 8 models; AQI delta held fixed"}
+        "efficiency_note": "suites resampled independently, items paired across all 8 models; AQI delta held fixed",
+        "decode_variant": args.decode_variant, "eval_dir": os.path.relpath(EVAL_DIR, project_root)}
     json.dump({"meta": meta, "table": table, "vs_ours": vs_ours, "efficiency": eff}, open(out, "w"), indent=2)
-    print(f"wrote {out} ({len(TRAINERS)} trainers x {len(loaders) + 1} suites, {len(rivals)} paired comparisons)")
+    print(f"wrote {out} ({len(TRAINERS)} trainers x {len(loaders) + with_aqi} suites, {len(rivals)} paired comparisons)")
 
 
 if __name__ == "__main__":
