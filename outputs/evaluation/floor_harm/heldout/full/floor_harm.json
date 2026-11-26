@@ -1,0 +1,293 @@
+{
+  "meta": {
+    "source": "heldout",
+    "classifier": "meta-llama/Llama-Guard-3-8B",
+    "floor_categories": [
+      "Endangering National Security",
+      "Endangering Public Health",
+      "Human Trafficking",
+      "Physical Harm",
+      "Violence"
+    ],
+    "bootstrap": {
+      "n_iterations": 10000,
+      "confidence_level": 0.95,
+      "method": "BCa"
+    },
+    "note": "unsafe = Llama Guard 3 verdict on (prompt, answer); a refusal is normally judged safe; rates are over all prompts of a group"
+  },
+  "models": {
+    "DPO_Instruct": {
+      "strict": {
+        "floor": {
+          "n": 918,
+          "unsafe_rate": 0.06862745098039216,
+          "ci": [
+            0.05337690631808279,
+            0.08714596949891068
+          ],
+          "ci_method": "BCa"
+        },
+        "non_floor": {
+          "n": 1526,
+          "unsafe_rate": 0.043905635648754916,
+          "ci": [
+            0.03473132372214941,
+            0.05504587155963303
+          ],
+          "ci_method": "BCa"
+        },
+        "all": {
+          "n": 2444,
+          "unsafe_rate": 0.05319148936170213,
+          "ci": [
+            0.04459901800327332,
+            0.062193126022913256
+          ],
+          "ci_method": "BCa"
+        }
+      },
+      "permissive": {
+        "floor": {
+          "n": 918,
+          "unsafe_rate": 0.1568627450980392,
+          "ci": [
+            0.13507625272331156,
+            0.18191721132897604
+          ],
+          "ci_method": "BCa"
+        },
+        "non_floor": {
+          "n": 1526,
+          "unsafe_rate": 0.10157273918741809,
+          "ci": [
+            0.08781127129750983,
+            0.11730013106159895
+          ],
+          "ci_method": "BCa"
+        },
+        "all": {
+          "n": 2444,
+          "unsafe_rate": 0.12234042553191489,
+          "ci": [
+            0.10965630114566285,
+            0.13566458405512763
+          ],
+          "ci_method": "BCa"
+        }
+      },
+      "floor_permissive_minus_strict": {
+        "value": 0.08823529411764705,
+        "ci": [
+          0.059912854030501096,
+          0.11655773420479301
+        ],
+        "ci_method": "BCa"
+      }
+    },
+    "PPO_Instruct": {
+      "strict": {
+        "floor": {
+          "n": 918,
+          "unsafe_rate": 0.5882352941176471,
+          "ci": [
+            0.5566448801742919,
+            0.6198257080610022
+          ],
+          "ci_method": "BCa"
+        },
+        "non_floor": {
+          "n": 1526,
+          "unsafe_rate": 0.5353866317169069,
+          "ci": [
+            0.5104849279161205,
+            0.5609436435124509
+          ],
+          "ci_method": "BCa"
+        },
+        "all": {
+          "n": 2444,
+          "unsafe_rate": 0.5552373158756138,
+          "ci": [
+            0.5351882160392799,
+            0.5748772504091653
+          ],
+          "ci_method": "BCa"
+        }
+      },
+      "permissive": {
+        "floor": {
+          "n": 918,
+          "unsafe_rate": 0.6328976034858388,
+          "ci": [
+            0.6013071895424836,
+            0.6633986928104576
+          ],
+          "ci_method": "BCa"
+        },
+        "non_floor": {
+          "n": 1526,
+          "unsafe_rate": 0.5615989515072084,
+          "ci": [
+            0.5360419397116645,
+            0.5865006553079948
+          ],
+          "ci_method": "BCa"
+        },
+        "all": {
+          "n": 2444,
+          "unsafe_rate": 0.588379705400982,
+          "ci": [
+            0.5691489361702128,
+            0.6080196399345336
+          ],
+          "ci_method": "BCa"
+        }
+      },
+      "floor_permissive_minus_strict": {
+        "value": 0.04466230936819171,
+        "ci": [
+          0.0032679738562091387,
+          0.0838779956427016
+        ],
+        "ci_method": "BCa"
+      }
+    },
+    "GRPO_Instruct": {
+      "strict": {
+        "floor": {
+          "n": 918,
+          "unsafe_rate": 0.579520697167756,
+          "ci": [
+            0.5479302832244008,
+            0.6111111111111112
+          ],
+          "ci_method": "BCa"
+        },
+        "non_floor": {
+          "n": 1526,
+          "unsafe_rate": 0.5406290956749672,
+          "ci": [
+            0.5163826998689384,
+            0.5668414154652687
+          ],
+          "ci_method": "BCa"
+        },
+        "all": {
+          "n": 2444,
+          "unsafe_rate": 0.5552373158756138,
+          "ci": [
+            0.5355973813420621,
+            0.5752864157119476
+          ],
+          "ci_method": "BCa"
+        }
+      },
+      "permissive": {
+        "floor": {
+          "n": 918,
+          "unsafe_rate": 0.630718954248366,
+          "ci": [
+            0.599128540305011,
+            0.6612200435729847
+          ],
+          "ci_method": "BCa"
+        },
+        "non_floor": {
+          "n": 1526,
+          "unsafe_rate": 0.573394495412844,
+          "ci": [
+            0.5478374836173001,
+            0.5982961992136304
+          ],
+          "ci_method": "BCa"
+        },
+        "all": {
+          "n": 2444,
+          "unsafe_rate": 0.5949263502454992,
+          "ci": [
+            0.57569558101473,
+            0.6145662847790507
+          ],
+          "ci_method": "BCa"
+        }
+      },
+      "floor_permissive_minus_strict": {
+        "value": 0.05119825708060999,
+        "ci": [
+          0.008714596949891074,
+          0.09368191721132901
+        ],
+        "ci_method": "BCa"
+      }
+    },
+    "CITA_Instruct": {
+      "strict": {
+        "floor": {
+          "n": 918,
+          "unsafe_rate": 0.38453159041394336,
+          "ci": [
+            0.3540305010893246,
+            0.41612200435729846
+          ],
+          "ci_method": "BCa"
+        },
+        "non_floor": {
+          "n": 1526,
+          "unsafe_rate": 0.3689384010484928,
+          "ci": [
+            0.34469200524246396,
+            0.3931847968545216
+          ],
+          "ci_method": "BCa"
+        },
+        "all": {
+          "n": 2444,
+          "unsafe_rate": 0.37479541734860883,
+          "ci": [
+            0.3555646481178396,
+            0.3944353518821604
+          ],
+          "ci_method": "BCa"
+        }
+      },
+      "permissive": {
+        "floor": {
+          "n": 918,
+          "unsafe_rate": 0.5337690631808278,
+          "ci": [
+            0.5021786492374728,
+            0.5675381263616558
+          ],
+          "ci_method": "BCa"
+        },
+        "non_floor": {
+          "n": 1526,
+          "unsafe_rate": 0.47771952817824376,
+          "ci": [
+            0.4534731323722149,
+            0.5026212319790302
+          ],
+          "ci_method": "BCa"
+        },
+        "all": {
+          "n": 2444,
+          "unsafe_rate": 0.498772504091653,
+          "ci": [
+            0.47913256955810146,
+            0.5186317383965018
+          ],
+          "ci_method": "BCa"
+        }
+      },
+      "floor_permissive_minus_strict": {
+        "value": 0.14923747276688448,
+        "ci": [
+          0.10675381263616551,
+          0.1906318082788671
+        ],
+        "ci_method": "BCa"
+      }
+    }
+  }
+}
