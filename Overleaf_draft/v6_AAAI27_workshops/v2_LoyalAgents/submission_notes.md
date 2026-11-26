@@ -15,5 +15,5 @@ Site: https://loyalagents.github.io/aaai27/ (call "coming soon" on 2026-10-20; r
 
 Re-check the workshop's own call when it opens: page limit, format, anonymity, and the dual-submission sentence.
 
-Same paper as ../v6_AAAI27_SC4AI (title, data, numbers, caveats); only the framing differs:
+Same paper as ../v1_SC4AI (title, data, numbers, caveats); only the framing differs:
 Section 2 (principal-agent reading, Table 2 of levers), Open Problems, Related Work, Ethics, last sentence of the Conclusion.

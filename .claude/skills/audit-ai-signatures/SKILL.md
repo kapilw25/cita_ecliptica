@@ -13,7 +13,7 @@ warnings that need a human look, because each has legitimate uses.
 
 ```bash
 python3 .claude/skills/audit-ai-signatures/check_ai_signatures.py <main.tex>
-# e.g. Overleaf_draft/v5_arxiv_v2_SwiPO/0_main.tex, Overleaf_draft/v6_AAAI27_SC4AI/0_main.tex
+# e.g. Overleaf_draft/v5_arxiv_v2_SwiPO/0_main.tex, Overleaf_draft/v6_AAAI27_workshops/v1_SC4AI/0_main.tex
 ```
 
 It follows every `\input`, drops comments (they never reach the PDF), and prints one ASCII table:

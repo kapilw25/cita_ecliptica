@@ -1,5 +1,5 @@
 """Audit every LaTeX tabular for missing or wrong bold winners, missing 95% CIs, and captions that never say what bold means.
-    python3 .claude/skills/audit-paper-e2e-draft/check_tables.py Overleaf_draft/v6_AAAI27_SC4AI/0_main.tex   (also run by check_draft.py)
+    python3 .claude/skills/audit-paper-e2e-draft/check_tables.py Overleaf_draft/v6_AAAI27_workshops/v1_SC4AI/0_main.tex   (also run by check_draft.py)
 """
 
 import re

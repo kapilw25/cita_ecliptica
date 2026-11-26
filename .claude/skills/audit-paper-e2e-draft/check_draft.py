@@ -1,5 +1,5 @@
 """End-to-end draft audit: tables, build log, PDF, cross-refs, numbers, claims, acronyms, sections, bib, plus the prose and version checkers.
-    python3 .claude/skills/audit-paper-e2e-draft/check_draft.py Overleaf_draft/v6_AAAI27_SC4AI/0_main.tex --max-pages 8 --ref Overleaf_draft/v4_AAAI27_student_abstract/0_main_AAAI.tex
+    python3 .claude/skills/audit-paper-e2e-draft/check_draft.py Overleaf_draft/v6_AAAI27_workshops/v1_SC4AI/0_main.tex --max-pages 8 --ref Overleaf_draft/v4_AAAI27_student_abstract/0_main_AAAI.tex
 """
 
 import argparse

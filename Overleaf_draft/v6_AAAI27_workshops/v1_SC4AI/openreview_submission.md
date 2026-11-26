@@ -10,7 +10,7 @@
 | **Authors (order)** | Kapil Wanaskar, Gaytri Jena, Vinija Jain, Aman Chadha, Amitava Das (each needs an OpenReview profile) |
 | **Paper type** | Full paper (6-8 pages excluding references and appendices) |
 | **Anonymized?** | No (the call lets authors choose; the paper and its arXiv version are public) |
-| **PDF** | `Overleaf_draft/v6_AAAI27_SC4AI/0_main.pdf` |
+| **PDF** | `Overleaf_draft/v6_AAAI27_workshops/v1_SC4AI/0_main.pdf` |
 | **Keywords** | pluralistic alignment; steerable alignment; social choice; preference optimization; instruction-conditioned alignment; LLM agents; benchmark |
 | **TL;DR** | Conditioning preference optimization on a natural-language contract removes aggregation across roles inside training, but moves the social-choice problem to who sets the contract, which contracts are offered, and what no contract may lift. |
 

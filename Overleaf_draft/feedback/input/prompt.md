@@ -3,8 +3,8 @@
 Use a FRESH chat in each of ChatGPT, Claude and Gemini. Send STEP 1, wait for the answer, then send STEP 2.
 Attach the files with the chat's paperclip button (the models cannot open `file://` links):
 
-- STEP 1 attachment: `Overleaf_draft/feedback/input/prev_acceptances/pdf/aaai26ws_trustagent_00_combined_6papers.pdf`
-- STEP 2 attachment: `Overleaf_draft/v6_AAAI27_SC4AI/0_main.pdf` (the submitted paper)
+- STEP 1 attachment: [aaai26ws_trustagent_00_combined_6papers.pdf](https://github.com/kapilw25/cita_ecliptica/blob/main/Overleaf_draft/feedback/input/prev_acceptances/pdf/aaai26ws_trustagent_00_combined_6papers.pdf) ([download](https://raw.githubusercontent.com/kapilw25/cita_ecliptica/main/Overleaf_draft/feedback/input/prev_acceptances/pdf/aaai26ws_trustagent_00_combined_6papers.pdf))
+- STEP 2 attachment: [v6_AAAI27_workshops/v1_SC4AI/0_main.pdf](https://github.com/kapilw25/cita_ecliptica/blob/main/Overleaf_draft/v6_AAAI27_workshops/v1_SC4AI/0_main.pdf) ([download](https://raw.githubusercontent.com/kapilw25/cita_ecliptica/main/Overleaf_draft/v6_AAAI27_workshops/v1_SC4AI/0_main.pdf)) (the submitted paper)
 
 Save each model's answers to `Overleaf_draft/feedback/output/<model>_step1.md` and `<model>_step2.md`.
 
@@ -36,40 +36,47 @@ Be concrete, cite page numbers. Do not judge any other paper yet; I will send it
 ```text
 Now judge the attached paper, "SwiPO on ECLIPTICA-30k", already submitted to the AAAI-27
 workshop on Social Choice for AI Ethics and Safety (SC4AI; non-archival; up to 8 pages plus
-references). Use your Step 1 calibration sheet as the bar, adjusted for the SC4AI topic
-(aggregating preferences of many principals, pluralistic alignment, safety floors, voting
-and mechanism design for AI).
+references). Use your Step 1 calibration sheet as the bar, adjusted for the SC4AI topic below.
+
+Workshop context (from the SC4AI'27 call,
+https://sites.google.com/view/sc4ai/workshops/sc4ai27 ; submission site:
+https://openreview.net/group?id=AAAI.org/2027/Workshop/SC4AI):
+"AI ethics and safety involve aligning AI systems with the values and preferences of their
+owners, users, and people affected by their actions. Yet human values and preferences are
+themselves diverse and often conflicting. Many approaches to AI alignment therefore involve
+explicitly or implicitly aggregating information about different people's preferences and
+values. Social choice theory provides formal tools for preference aggregation, along with
+rigorous methods for analyzing the properties of these mechanisms. SC4AI'27 brings together
+researchers from social choice, AI alignment, AI ethics, and related fields to explore how
+social choice concepts and methods can contribute to the development of safer, more ethical,
+and more pluralistic AI systems."
+So a reviewer here asks: whose preferences does the paper aggregate, by what rule, and what
+formal property of that rule does it state or analyze?
 
 Rules: be specific and honest. Cite page, section, table, figure or quoted sentence for every
 point. Do not invent results the paper does not contain. Hard constraint for any suggestion:
-24 hours, NO new model training or GPU runs; only re-analysis of results the paper already
-reports, new tables or figures from those results, and rewriting.
+it must be doable in 24 hours. GPU resources are available, so new training, inference,
+evaluation runs, re-analysis of existing results, new tables or figures, and rewriting are
+all allowed.
 
 PART A. Acceptance probability
 - One number (0 to 100%) for acceptance at SC4AI, with a one-paragraph reason, and the same
   number for a typical AAAI-27 safety/alignment workshop.
 - The 3 things most likely to make a reviewer reject, and the 3 strongest points.
 
-PART B. Ten rubrics, each scored out of 10, as a table with columns:
-rubric | score | evidence from the paper (page/section) | the one change that adds the most points
-Rubrics:
- 1. Novelty of the problem framing
- 2. Novelty of the method (SwiPO)
- 3. Fit to the SC4AI workshop topics (social choice, multiple principals, safety)
- 4. Theoretical contribution (Proposition 1, social-choice remark)
- 5. Experimental design (ECLIPTICA, controls, baselines)
- 6. Statistical rigor (95% intervals, paired tests, honesty of claims)
- 7. Strength of the results against the baselines
- 8. Clarity of writing and structure
- 9. Quality of tables and figures
-10. Reproducibility and released artifacts (code, ECLIPTICA-30k)
+PART B. Ten rubrics
+Choose the 10 rubrics that you, as a reviewer for this workshop, judge most important for
+this paper (do not use a generic list; justify each choice in one line). Score each out of
+10, as a table with columns:
+rubric | why it matters here | score | evidence from the paper (page/section) | the one change that adds the most points
 Then the total out of 100 and how it compares to the 6 accepted papers.
 
-PART C. 24-hour improvements (no training, no GPU)
-List up to 5 new or changed tables/figures, ranked by expected score gain. For each:
-what it shows, which existing numbers in the paper it is built from, where it goes
-(replace which element, so the paper stays within 8 pages), which rubric it raises and by how much.
-Also list anything that should be CUT to make room.
+PART C. 24-hour improvements (any resource: GPU training, inference, evaluation, analysis, writing)
+List up to 5 improvements (new experiments, new or changed tables/figures, analyses,
+rewrites), ranked by expected score gain. For each: what it shows, what it needs (new
+GPU run with model, data and rough GPU hours, or existing numbers in the paper), where it
+goes (replace which element, so the paper stays within 8 pages), which rubric it raises and
+by how much. Also list anything that should be CUT to make room.
 
 PART D. Tone audit
 The paper often reads as NEGATIVE and self-critical, or as an ENGINEERING/operations report
