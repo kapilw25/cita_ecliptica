@@ -26,12 +26,6 @@ if echo "$COMMAND" | grep -qiE '(^|\s)(pip|uv\s+pip)\s+install'; then
   exit 2
 fi
 
-# Rule 2: Block git commit, push, add, reset
-# Enforcement of: "Git: provide commit message text only. NEVER run git commands."
-if echo "$COMMAND" | grep -qiE '(^|\s)git\s+(commit|push|add|reset|rebase|cherry-pick|merge|tag)(\s|$)'; then
-  echo "BLOCKED: Git state-change commands not allowed. Provide commit message text only — user runs git manually via git_push.sh"
-  exit 2
-fi
 
 # Rule 3: Block bare python3 without venv activation
 # Enforcement of: "ALWAYS activate the venv before running any python3 command"

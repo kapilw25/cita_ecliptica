@@ -69,7 +69,7 @@
 - Be brutally honest. Disagree [challenge me] when I'm wrong, but never hallucinate or lie.
 - Devil's advocate does NOT mean fabricating bugs that don't exist. If code is correct, say so and move on.
 - WEBSEARCH when needed to confirm universal AI/ML research practices.
-- Git: provide commit message text only. NEVER run git commands. User handles all git ops via git_push.sh. **ENFORCED: `.claude/hooks/enforce-dev-rules.sh` blocks `git commit/push/add/reset` via PreToolUse hook.**
+- Git: Claude may run `git add <paths>`, `git commit`, `git push` when the user asks for a push (owner unblocked 2026-11-26). Stage named paths, never `git add .` blindly; never force-push, reset, or rebase without asking. The user may still push via git_push.sh.
 - NEVER draw conclusions from statistically insufficient data. A sanity check validates code correctness (no crashes, valid output), NOT model performance.
 - Think like a Sr. Research Scientist: before making any recommendation, ask "do I have enough evidence for this claim?" If the answer is no, say so explicitly instead of speculating.
 - **Scalability-first design:** Remote storage paths MUST mirror local project layout exactly (e.g., `outputs/full/` locally = `outputs/full/` on HF, NOT `full/`). Never flatten or rename directory structures — future directories (poc, sanity, surgical) must slot in without refactoring. Apply the same principle to file naming, config keys, and API paths.
@@ -87,7 +87,7 @@
 - Incident: `ls glob 2>/dev/null | wc -l` with `set -eo pipefail` silently killed `run_eval.sh`, masking a second bug where `--POC` routed to `outputs/full/` instead of `outputs/poc/`. Two bugs, first masked the second. Both catchable with `shellcheck` + a 30s dry run.
 
 # HOOKS
-- `.claude/hooks/enforce-dev-rules.sh` (PreToolUse:Bash) — blocks pip install, git state changes, bare python3
+- `.claude/hooks/enforce-dev-rules.sh` (PreToolUse:Bash) — blocks pip install, bare python3
 - `.claude/hooks/post-edit-lint.sh` (PostToolUse:Edit,Write) — auto py_compile + + ruff check on src/m*.py
 - `.claude/hooks/fail-hard-research.sh` (PreToolUse:Edit,Write) — blocks `|| continue`, `|| true`, WARNING-without-exit, bare `except: pass`
 
