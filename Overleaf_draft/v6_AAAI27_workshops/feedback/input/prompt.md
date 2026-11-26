@@ -3,10 +3,10 @@
 Use a FRESH chat in each of ChatGPT, Claude and Gemini. Send STEP 1, wait for the answer, then send STEP 2.
 Attach the files with the chat's paperclip button (the models cannot open `file://` links):
 
-- STEP 1 attachment: [aaai26ws_trustagent_00_combined_6papers.pdf](https://github.com/kapilw25/cita_ecliptica/blob/main/Overleaf_draft/feedback/input/prev_acceptances/pdf/aaai26ws_trustagent_00_combined_6papers.pdf) ([download](https://raw.githubusercontent.com/kapilw25/cita_ecliptica/main/Overleaf_draft/feedback/input/prev_acceptances/pdf/aaai26ws_trustagent_00_combined_6papers.pdf))
+- STEP 1 attachment: [aaai26ws_trustagent_00_combined_6papers.pdf](https://github.com/kapilw25/cita_ecliptica/blob/main/Overleaf_draft/v6_AAAI27_workshops/feedback/input/prev_acceptances/pdf/aaai26ws_trustagent_00_combined_6papers.pdf) ([download](https://raw.githubusercontent.com/kapilw25/cita_ecliptica/main/Overleaf_draft/v6_AAAI27_workshops/feedback/input/prev_acceptances/pdf/aaai26ws_trustagent_00_combined_6papers.pdf))
 - STEP 2 attachment: [v6_AAAI27_workshops/v1_SC4AI/0_main.pdf](https://github.com/kapilw25/cita_ecliptica/blob/main/Overleaf_draft/v6_AAAI27_workshops/v1_SC4AI/0_main.pdf) ([download](https://raw.githubusercontent.com/kapilw25/cita_ecliptica/main/Overleaf_draft/v6_AAAI27_workshops/v1_SC4AI/0_main.pdf)) (the submitted paper)
 
-Save each model's answers to `Overleaf_draft/feedback/output/<model>_step1.md` and `<model>_step2.md`.
+Save each model's answers to `Overleaf_draft/v6_AAAI27_workshops/feedback/output/v1_SC4AI/by_<model>/step1.md` and `step2.md` (`<model>` = chatgpt, claude, gemini).
 
 ## STEP 1 (attach the combined PDF of 6 accepted papers)
 
