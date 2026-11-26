@@ -156,6 +156,21 @@ MODELS = {
     },
 }
 
+# As-trained stacks (Thu Nov 26 2026). Each training stage merged its parent adapter into Llama-3.1-8B and trained a new LoRA on top
+# (BASE_MODEL_MAP in src/utils/train/model_utils.py: DPO/PPO/GRPO on SFT, CITA on the DPO adapter alone), and each adapter holds only
+# its own delta, so the keys above (base + one delta, used for every paper number so far) drop the parent. "<key>_AsTrained" merges
+# the parent first, exactly as training did; "stack" lists adapters merged before hf_repo. Existing keys are unchanged.
+_PARENT = {"DPO": "SFT", "PPO": "SFT", "GRPO": "SFT", "CITA": "DPO"}  # mirrors BASE_MODEL_MAP
+for _method, _parent in _PARENT.items():
+    for _variant in ("Instruct", "NoInstruct"):
+        _key = f"{_method}_{_variant}"
+        MODELS[f"{_key}_AsTrained"] = {**MODELS[_key], "stack": [MODELS[f"{_parent}_{_variant}"]["hf_repo"]],
+                                       "display_name": f"{MODELS[_key]['display_name']} (as trained)"}
+for _key in [k for k in MODELS if k.startswith(("G1", "G2", "G5_"))]:  # local runs: --base_model is the DPO adapter, except G5 DPO (SFT)
+    _parent = "SFT_Instruct" if _key.startswith("G5_DPO") else "DPO_Instruct"
+    MODELS[f"{_key}_AsTrained"] = {**MODELS[_key], "stack": [MODELS[_parent]["hf_repo"]],
+                                   "display_name": f"{MODELS[_key]['display_name']} (as trained)"}
+
 
 def is_local_adapter(hf_repo) -> bool:
     """True when an entry's hf_repo is a local adapter folder (absolute path) rather than a Hub id."""
@@ -261,6 +276,11 @@ def load_model_for_eval(model_key: str, attn_implementation: str = "flash_attent
                 attn_implementation="sdpa",
                 token=HF_TOKEN
             )
+
+    # As-trained keys: merge the parent adapter(s) first, as the training stage did before adding its own LoRA
+    for parent_repo in model_info.get("stack", []):
+        print(f"Merging parent adapter first (as trained): {parent_repo}")
+        model = PeftModel.from_pretrained(model, parent_repo, token=HF_TOKEN).merge_and_unload()
 
     # Load LoRA adapter if specified
     if hf_repo is not None:
