@@ -99,6 +99,24 @@ score_table:
 # safety of people who are not party to the conversation. Instruct models only (NoInstruct models
 # see the same bare request in both arms).
 # ----------------------------------------------------------------------------
+# ----------------------------------------------------------------------------
+# Decode variants (G3): re-decode the generation suites with one sampling change, everything
+# else as in the paper (temperature 0.7, top_p 0.9, each suite's max_new_tokens). Selected with
+# --decode_variant <name> --non_interactive on src/eval/{isd,conditional_safety,length_control,
+# truthfulqa}.py and with --decode_variant <name> on src/eval/score_table_ci.py. Outputs mirror the
+# paper layout under <paths.evaluation_dir>/<name>/ (suite dirs, score_table_ci/); resume
+# checkpoints go to <paths.evaluation_dir>/<name>/checkpoints/<suite>/ (gitignored), never to the
+# paper's src/utils/<suite>/checkpoints/.
+# ----------------------------------------------------------------------------
+decode_variants:
+  rep_penalty_1.15:
+    repetition_penalty: 1.15
+    repetition_penalty_scope: all        # HF/vLLM default: prompt tokens (system contract + query) are penalized too
+  rep_penalty_1.15_gen:
+    repetition_penalty: 1.15
+    repetition_penalty_scope: generated  # prompt tokens exempt (HF prompt_ignore_length, transformers>=4.52)
+decode_variant_suites: [ecliptica, truthfulqa, conditional_safety, length_control]   # re-decoded suites; AQI is not, so variant score tables drop it
+
 score_table_figures:      # src/eval/score_table_figures.py: radar + heatmap drawn from score_table_ci.json
   radar_stem: v1_radar_efficiency
   heatmap_stem: v2_heatmap_scores
