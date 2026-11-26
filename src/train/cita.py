@@ -14,7 +14,11 @@ Usage (4 commands = 2 modes × 2 instruction settings):
     python -u src/train/cita.py --mode full --use-instruction false 2>&1 | tee logs/cita_full_NI.log
     python -u src/train/cita.py --mode full --use-instruction true  2>&1 | tee logs/cita_full_I.log
 
-  Note: --base_model auto-derived from BASE_MODEL_MAP based on --use-instruction
+    # G1/G2/G5 isolated runs: --output-dir = own folder, no menu, no Hub push (data: src/train/g1_contracts_build.py)
+    python -u src/train/cita.py --mode full --use-instruction true --base_model kapilw25/llama3-8b-pku-DPO-Instruct-SFT-Instruct --data-dir outputs/training_data/g1_contracts/a_swipo2c --output-dir outputs/training/g1/a_swipo2c --attn-implementation sdpa 2>&1 | tee logs/g1a_swipo2c_full.log
+    python -u src/train/cita.py --mode full --use-instruction true --base_model kapilw25/llama3-8b-pku-DPO-Instruct-SFT-Instruct --seed 1 --output-dir outputs/training/g5/CITA_Instruct_seed1 --attn-implementation sdpa 2>&1 | tee logs/g5_cita_seed1_full.log
+
+  Note: --base_model is NOT auto-derived here (no --base_model = raw Llama-3.1-8B); pass the DPO repo as above
 
   Projections:
   | Mode                | Steps | ETA       |
@@ -58,6 +62,7 @@ from src.utils.train.model_utils import (
 )
 from src.utils.train.data_prep.loader_pku import load_pku_combined_clear_contrast
 from src.utils.train.data_prep.formatters import format_pku_for_cita_Instruct, format_pku_for_cita_NoInstruct
+from src.utils.train.data_prep.contract_pairs import load_contract_pairs, check_isolated_output_dir, save_run_config
 from src.utils.train.push_automation import PushAutomation
 from src.utils.logging_utils import setup_training_logger, restore_logging
 
@@ -73,7 +78,8 @@ from src.utils.logging_utils import setup_training_logger, restore_logging
 # Main Training Function
 # ===================================================================
 
-def train_cita_baseline(num_epochs=1.0, output_dir=None, base_model=None, force_skip=False):
+def train_cita_baseline(num_epochs=1.0, output_dir=None, base_model=None, force_skip=False,
+                        data_dir=None, seed=3407, use_flash_attention=True):
     """
     Train CITA baseline with epoch-based training
 
@@ -82,6 +88,9 @@ def train_cita_baseline(num_epochs=1.0, output_dir=None, base_model=None, force_
         output_dir: Directory to save checkpoints
         base_model: HuggingFace model ID to load LoRA adapters from (DPO model)
         force_skip: Skip training and use HuggingFace model directly
+        data_dir: Pre-built contract-pair variant folder (G1/G2); None = released PKU clear-contrast data
+        seed: Trainer seed (LoRA init + data order); 3407 = released runs
+        use_flash_attention: False = PyTorch SDPA (no flash-attn build on Blackwell)
 
     Returns:
         trainer: CITATrainer instance
@@ -148,7 +157,7 @@ def train_cita_baseline(num_epochs=1.0, output_dir=None, base_model=None, force_
         model, tokenizer = load_model_bf16(
             model_id="meta-llama/Llama-3.1-8B",
             max_seq_length=2048,
-            use_flash_attention=True
+            use_flash_attention=use_flash_attention
         )
 
         # ===== LOAD BASE MODEL LORA (IF STACKING) =====
@@ -197,26 +206,30 @@ def train_cita_baseline(num_epochs=1.0, output_dir=None, base_model=None, force_
         # model = apply_torch_compile(model)
 
         # ===== LOAD DATASET =====
-        print("\nLoading PKU-SafeRLHF dataset (combined train+test clear contrast)...")
+        if data_dir:
+            print(f"\nLoading pre-built contract-pair dataset: {data_dir}")
+            train_dataset, val_dataset = load_contract_pairs(data_dir)
+        else:
+            print("\nLoading PKU-SafeRLHF dataset (combined train+test clear contrast)...")
 
-        # Load combined dataset (12,035 samples) and split 90/10
-        dataset_split = load_pku_combined_clear_contrast(val_split=0.1)
+            # Load combined dataset (12,035 samples) and split 90/10
+            dataset_split = load_pku_combined_clear_contrast(val_split=0.1)
 
-        # Format for CITA (conditional: WITH or WITHOUT instructions based on USE_INSTRUCTION toggle)
-        formatter = format_pku_for_cita_Instruct if USE_INSTRUCTION else format_pku_for_cita_NoInstruct
-        format_desc = f"Formatting PKU for CITA ({'WITH' if USE_INSTRUCTION else 'NO'} instructions)"
+            # Format for CITA (conditional: WITH or WITHOUT instructions based on USE_INSTRUCTION toggle)
+            formatter = format_pku_for_cita_Instruct if USE_INSTRUCTION else format_pku_for_cita_NoInstruct
+            format_desc = f"Formatting PKU for CITA ({'WITH' if USE_INSTRUCTION else 'NO'} instructions)"
 
-        train_dataset = dataset_split['train'].map(
-            formatter,
-            remove_columns=dataset_split['train'].column_names,
-            desc=format_desc
-        )
+            train_dataset = dataset_split['train'].map(
+                formatter,
+                remove_columns=dataset_split['train'].column_names,
+                desc=format_desc
+            )
 
-        val_dataset = dataset_split['test'].map(
-            formatter,
-            remove_columns=dataset_split['test'].column_names,
-            desc=f"Formatting PKU validation for CITA ({'WITH' if USE_INSTRUCTION else 'NO'} instructions)"
-        )
+            val_dataset = dataset_split['test'].map(
+                formatter,
+                remove_columns=dataset_split['test'].column_names,
+                desc=f"Formatting PKU validation for CITA ({'WITH' if USE_INSTRUCTION else 'NO'} instructions)"
+            )
 
         print(f"  Train samples: {len(train_dataset):,}")
         print(f"  Val samples: {len(val_dataset):,}")
@@ -266,7 +279,7 @@ def train_cita_baseline(num_epochs=1.0, output_dir=None, base_model=None, force_
             optim="adamw_torch",
             weight_decay=WEIGHT_DECAY,
             lr_scheduler_type="cosine",
-            seed=3407,
+            seed=seed,
             bf16=True,
             gradient_checkpointing=True,
             max_grad_norm=1.0,  # Phase 1: Gradient clipping to prevent explosion
@@ -454,6 +467,15 @@ Examples:
         help="Skip HF + GitHub push after training (saves locally only)"
     )
 
+    parser.add_argument("--data-dir", type=str, default=None,
+                        help="G1/G2 contract-pair variant folder from src/train/g1_contracts_build.py (needs --output-dir)")
+    parser.add_argument("--seed", type=int, default=3407,
+                        help="Trainer seed (LoRA init + data order); 3407 = released run; other values need --output-dir")
+    parser.add_argument("--output-dir", type=str, default=None,
+                        help="Isolated run folder: no menu, no Hub/GitHub push, run_config.json written here (default: released folder)")
+    parser.add_argument("--attn-implementation", choices=["flash_attention_2", "sdpa"], default="flash_attention_2",
+                        help="sdpa on boxes without a flash-attn build (Blackwell)")
+
     args = parser.parse_args()
 
     # ===================================================================
@@ -461,6 +483,12 @@ Examples:
     # ===================================================================
     USE_INSTRUCTION = args.use_instruction.lower() == "true"
     RUN_NAME = "CITA_Instruct" if USE_INSTRUCTION else "CITA_NoInstruct"
+    USE_FLASH_ATTENTION = args.attn_implementation == "flash_attention_2"
+    ISOLATED = check_isolated_output_dir(args.output_dir, project_root / "outputs" / "training" / RUN_NAME,
+                                         args.data_dir, args.seed, parser.get_default("seed"))
+    if ISOLATED and not args.base_model:
+        raise SystemExit("FATAL: isolated CITA runs must pass --base_model (released CITA inits from the DPO LoRA, "
+                         "e.g. kapilw25/llama3-8b-pku-DPO-Instruct-SFT-Instruct)")
 
     print(f"✅ Instruction mode: {'ENABLED' if USE_INSTRUCTION else 'DISABLED'} ({RUN_NAME})")
 
@@ -480,7 +508,10 @@ Examples:
     # Get HuggingFace repository name
     HF_REPO = get_model_repo_name(RUN_NAME, precision="bf16")
 
-    print(f"📦 Model will be pushed to: {HF_REPO}")
+    if ISOLATED:
+        print(f"🧪 Isolated run: outputs in {args.output_dir}; no menu, no Hub/GitHub push (released {HF_REPO} untouched)")
+    else:
+        print(f"📦 Model will be pushed to: {HF_REPO}")
     print("="*80 + "\n")
 
     # Determine configuration
@@ -494,58 +525,61 @@ Examples:
         num_epochs = 1.0  # Full epoch (~10,831 samples, ~1,353 steps, ~120 min)
         print(f"✅ Full training mode: {num_epochs} epochs (~120 minutes)")
 
-    print()
-    print("="*80)
-    print("🔄 Training Mode Selection")
-    print("="*80)
-
-    # Check if HuggingFace model exists
-    from huggingface_hub import HfApi
-    api = HfApi(token=HF_TOKEN)
-
-    try:
-        api.model_info(HF_REPO)
-        hf_model_exists = True
-        print(f"✅ Found existing model on HuggingFace: {HF_REPO}")
-    except Exception:
-        hf_model_exists = False
-        print(f"❌ No existing model on HuggingFace: {HF_REPO}")
-        print("   This will be the first training run")
-
-    print("="*80)
-    print(f"Training will take approximately: {'~36 minutes' if num_epochs == 0.3 else '~120 minutes'}\n")
-
-    # Show options
-    print("Options:")
-    print("  1) Inference only from HF_repo")
-    print("  2) Train and push to HuggingFace")
-    print("="*80)
-
-    mode_choice = input("Enter choice (1 or 2): ").strip()
-    print("="*80 + "\n")
-
-    # Validate option 1 requires HF repo
-    if mode_choice == "1":
-        if not hf_model_exists:
-            print("❌ Error: Option 1 requires existing HuggingFace model")
-            print("   Please choose option 2 to train first")
-            sys.exit(1)
-        force_skip = True
-        load_from_hf = True
-        print("✅ Inference mode selected")
-        print("   Will use existing HuggingFace model\n")
-    elif mode_choice == "2":
-        force_skip = False
-        load_from_hf = False
-        if hf_model_exists:
-            print("✅ Training mode selected")
-            print("   Will train and compare with HuggingFace model\n")
-        else:
-            print("✅ Training mode selected")
-            print("   Will train and push to HuggingFace (first time)\n")
+    if ISOLATED:
+        force_skip = False  # isolated runs always train; the menu is about the released Hub repo
     else:
-        print(f"❌ Invalid choice: {mode_choice}")
-        sys.exit(1)
+        print()
+        print("="*80)
+        print("🔄 Training Mode Selection")
+        print("="*80)
+
+        # Check if HuggingFace model exists
+        from huggingface_hub import HfApi
+        api = HfApi(token=HF_TOKEN)
+
+        try:
+            api.model_info(HF_REPO)
+            hf_model_exists = True
+            print(f"✅ Found existing model on HuggingFace: {HF_REPO}")
+        except Exception:
+            hf_model_exists = False
+            print(f"❌ No existing model on HuggingFace: {HF_REPO}")
+            print("   This will be the first training run")
+
+        print("="*80)
+        print(f"Training will take approximately: {'~36 minutes' if num_epochs == 0.3 else '~120 minutes'}\n")
+
+        # Show options
+        print("Options:")
+        print("  1) Inference only from HF_repo")
+        print("  2) Train and push to HuggingFace")
+        print("="*80)
+
+        mode_choice = input("Enter choice (1 or 2): ").strip()
+        print("="*80 + "\n")
+
+        # Validate option 1 requires HF repo
+        if mode_choice == "1":
+            if not hf_model_exists:
+                print("❌ Error: Option 1 requires existing HuggingFace model")
+                print("   Please choose option 2 to train first")
+                sys.exit(1)
+            force_skip = True
+            load_from_hf = True
+            print("✅ Inference mode selected")
+            print("   Will use existing HuggingFace model\n")
+        elif mode_choice == "2":
+            force_skip = False
+            load_from_hf = False
+            if hf_model_exists:
+                print("✅ Training mode selected")
+                print("   Will train and compare with HuggingFace model\n")
+            else:
+                print("✅ Training mode selected")
+                print("   Will train and push to HuggingFace (first time)\n")
+        else:
+            print(f"❌ Invalid choice: {mode_choice}")
+            sys.exit(1)
 
     # Show configuration
     print("="*80)
@@ -575,35 +609,47 @@ Examples:
     print("  - LR scheduler: cosine")
     print("  - Optimizer: adamw_torch")
     print("  - Gradient clipping: max_grad_norm=1.0 (iter8 - prevents explosion)")
-    print("  - Precision: BF16 + Flash Attention 2")
+    print(f"  - Precision: BF16 + {'Flash Attention 2' if USE_FLASH_ATTENTION else 'PyTorch SDPA'}")
     print("="*80 + "\n\n")
 
     # Train
     try:
         trainer, training_skipped, training_config = train_cita_baseline(
             num_epochs=num_epochs,
+            output_dir=args.output_dir,
             base_model=args.base_model,
-            force_skip=force_skip
+            force_skip=force_skip,
+            data_dir=args.data_dir,
+            seed=args.seed,
+            use_flash_attention=USE_FLASH_ATTENTION,
         )
 
-        # ===== PUSH TO HUGGINGFACE =====
-        # Use unified push utility (extracts metrics, saves config, pushes to HF/GitHub)
-        # Remove final_margin (will be re-extracted from checkpoint by utility)
-        training_config.pop('final_margin', None)
+        if ISOLATED:
+            # G1/G2/G5: never push, never touch outputs/training/{RUN_NAME} (PushAutomation writes its config there)
+            save_run_config(args.output_dir, {**training_config, "run_name": RUN_NAME, "seed": args.seed,
+                                              "base_model": args.base_model, "data_dir": args.data_dir,
+                                              "attn_implementation": args.attn_implementation,
+                                              "training_skipped": training_skipped})
+            print(f"⏭️  Isolated run: no Hub/GitHub push; LoRA in {args.output_dir}/lora_model_{RUN_NAME}")
+        else:
+            # ===== PUSH TO HUGGINGFACE =====
+            # Use unified push utility (extracts metrics, saves config, pushes to HF/GitHub)
+            # Remove final_margin (will be re-extracted from checkpoint by utility)
+            training_config.pop('final_margin', None)
 
-        PushAutomation.prepare_baseline_push(
-            method="CITA",
-            output_dir=f"outputs/training/{RUN_NAME}",
-            training_config=training_config,
-            training_skipped=training_skipped,
-            hf_token=HF_TOKEN,
-            hf_repo=HF_REPO,
-            run_name=RUN_NAME,
-            metric_names=["eval_rewards/margins", "rewards/margins"],
-            metric_mode="max",
-            project_root=project_root,
-            no_push=args.no_push,
-        )
+            PushAutomation.prepare_baseline_push(
+                method="CITA",
+                output_dir=f"outputs/training/{RUN_NAME}",
+                training_config=training_config,
+                training_skipped=training_skipped,
+                hf_token=HF_TOKEN,
+                hf_repo=HF_REPO,
+                run_name=RUN_NAME,
+                metric_names=["eval_rewards/margins", "rewards/margins"],
+                metric_mode="max",
+                project_root=project_root,
+                no_push=args.no_push,
+            )
 
         print("\n" + "="*80)
         print("🏁 CITA Baseline Training Complete!")

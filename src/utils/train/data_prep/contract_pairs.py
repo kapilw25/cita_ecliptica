@@ -32,6 +32,27 @@ def user_prompt(messages: list) -> str:
     return users[0]
 
 
+def check_isolated_output_dir(output_dir, released_dir, data_dir, seed, default_seed) -> bool:
+    """True for an isolated run (own folder, no Hub push); FATAL if --data-dir/--seed would write into the released folder."""
+    if output_dir is None:
+        if data_dir is not None or seed != default_seed:
+            raise SystemExit("FATAL: --data-dir or a non-default --seed needs --output-dir (never mix with the released run folder)")
+        return False
+    if Path(output_dir).resolve() == Path(released_dir).resolve():
+        raise SystemExit(f"FATAL: --output-dir {output_dir} is the released run folder; pick a new one")
+    return True
+
+
+def save_run_config(output_dir, config: dict) -> Path:
+    """Write run_config.json into an isolated run folder (the released runs keep PushAutomation's config files)."""
+    path = Path(output_dir) / "run_config.json"
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with open(path, "w") as f:
+        json.dump(config, f, indent=2)
+    print(f"📊 Saved run config: {path}")
+    return path
+
+
 def load_contract_pairs(data_dir) -> tuple:
     """Load <variant>/train.jsonl and val.jsonl; FATAL if a file is missing or differs from ../stats.json."""
     data_dir = Path(data_dir).resolve()
