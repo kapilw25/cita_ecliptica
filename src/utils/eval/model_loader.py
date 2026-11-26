@@ -175,6 +175,14 @@ for _key in [k for k in MODELS if k.startswith(("G1", "G2", "G5_"))]:  # local r
     _parent = "SFT_Instruct" if _key.startswith("G5_DPO") else "DPO_Instruct"
     MODELS[f"{_key}_AsTrained"] = {**MODELS[_key], "stack": [MODELS[_parent]["hf_repo"]],
                                    "display_name": f"{MODELS[_key]['display_name']} (as trained)"}
+# Intended chain: SwiPO trained on base + SFT + DPO merged (src/train/cita.py --base_model <SFT repo>,<DPO repo>), local LoRA
+for _variant in ("Instruct", "NoInstruct"):
+    MODELS[f"CITA_{_variant}_Chain"] = {
+        "hf_repo": str(project_root / f"outputs/training/chain/CITA_{_variant}/lora_model_CITA_{_variant}"),
+        "stack": [MODELS[f"SFT_{_variant}"]["hf_repo"], MODELS[f"DPO_{_variant}"]["hf_repo"]],
+        "display_name": f"CITA {_variant} (SFT, DPO, SwiPO chain)",
+        "use_instruction": _variant == "Instruct",
+    }
 
 
 def is_local_adapter(hf_repo) -> bool:

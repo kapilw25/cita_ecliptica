@@ -17,6 +17,7 @@ Usage (4 commands = 2 modes × 2 instruction settings):
     # G1/G2/G5 isolated runs: --output-dir = own folder, no menu, no Hub push (data: src/train/g1_contracts_build.py)
     python -u src/train/cita.py --mode full --use-instruction true --base_model kapilw25/llama3-8b-pku-DPO-Instruct-SFT-Instruct --data-dir outputs/training_data/g1_contracts/a_swipo2c --output-dir outputs/training/g1/a_swipo2c --attn-implementation sdpa 2>&1 | tee logs/g1a_swipo2c_full.log
     python -u src/train/cita.py --mode full --use-instruction true --base_model kapilw25/llama3-8b-pku-DPO-Instruct-SFT-Instruct --seed 1 --output-dir outputs/training/g5/CITA_Instruct_seed1 --attn-implementation sdpa 2>&1 | tee logs/g5_cita_seed1_full.log
+    python -u src/train/cita.py --mode full --use-instruction true --base_model kapilw25/llama3-8b-pku-SFT-Instruct-Baseline-NoInstruct,kapilw25/llama3-8b-pku-DPO-Instruct-SFT-Instruct --output-dir outputs/training/chain/CITA_Instruct --attn-implementation sdpa 2>&1 | tee logs/chain_cita_instruct_full.log
 
   Note: --base_model is NOT auto-derived here (no --base_model = raw Llama-3.1-8B); pass the DPO repo as above
 
@@ -162,27 +163,28 @@ def train_cita_baseline(num_epochs=1.0, output_dir=None, base_model=None, force_
 
         # ===== LOAD BASE MODEL LORA (IF STACKING) =====
         if base_model:
-            print(f"\n🔗 Loading LoRA adapters from HuggingFace: {base_model}")
             from peft import PeftModel
-            model = PeftModel.from_pretrained(model, base_model, token=HF_TOKEN)
-            print("✅ LoRA adapters loaded")
+            for parent in base_model.split(","):  # comma-separated parents merge in order (SFT,DPO = the intended chain)
+                print(f"\n🔗 Loading LoRA adapters from HuggingFace: {parent}")
+                model = PeftModel.from_pretrained(model, parent, token=HF_TOKEN)
+                print("✅ LoRA adapters loaded")
 
-            # Merge adapters into base model
-            print("🔄 Merging LoRA adapters into base model...")
-            merged_model = model.merge_and_unload()
+                # Merge adapters into base model
+                print("🔄 Merging LoRA adapters into base model...")
+                merged_model = model.merge_and_unload()
 
-            # Clear PEFT config to avoid warnings
-            try:
-                delattr(merged_model, 'peft_config')
-            except AttributeError:
-                pass
-            try:
-                delattr(merged_model, '_hf_peft_config_loaded')
-            except AttributeError:
-                pass
+                # Clear PEFT config to avoid warnings
+                try:
+                    delattr(merged_model, 'peft_config')
+                except AttributeError:
+                    pass
+                try:
+                    delattr(merged_model, '_hf_peft_config_loaded')
+                except AttributeError:
+                    pass
 
-            model = merged_model
-            print("✅ LoRA adapters merged (ready for new training stage)")
+                model = merged_model
+                print(f"✅ LoRA adapters merged: {parent} (ready for the next stage)")
 
         # ===== APPLY LORA ADAPTERS =====
         print("\nApplying LoRA adapters...")
@@ -458,7 +460,7 @@ Examples:
         "--base_model",
         type=str,
         default=None,
-        help="HuggingFace model ID to load LoRA adapters from (e.g., DPO model)"
+        help="LoRA adapter(s) merged before training; comma-separated = merged in order (SFT repo,DPO repo = the intended chain)"
     )
 
     parser.add_argument(
