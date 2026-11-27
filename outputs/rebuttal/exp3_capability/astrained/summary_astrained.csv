@@ -1,0 +1,7 @@
+method,gsm8k,mmlu
+base,0.5300,0.6570
+SFT_Instruct,0.5200,0.6556
+DPO_Instruct_AsTrained,0.5600,0.6568
+PPO_Instruct_AsTrained,0.5100,0.6565
+GRPO_Instruct_AsTrained,0.4900,0.6574
+CITA_Instruct_AsTrained,0.5700,0.6609

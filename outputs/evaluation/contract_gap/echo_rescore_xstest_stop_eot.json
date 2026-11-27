@@ -1,0 +1,224 @@
+{
+  "meta": {
+    "statistic": "strict minus permissive refusal rate, phrase heuristic on the first turn, with and without sentences that share a word 5-gram with the arm's own system contract",
+    "suite": "conditional_safety"
+  },
+  "models": {
+    "Llama31_Base_Prompted": {
+      "n": 450,
+      "gap_first_turn": 0.3844444444444444,
+      "gap_first_turn_ci": [
+        0.3333333333333333,
+        0.4338207276725734
+      ],
+      "gap_echo_removed": 0.08222222222222222,
+      "gap_echo_removed_ci": [
+        0.042222222222222223,
+        0.12444444444444444
+      ],
+      "echo_removed_minus_first": -0.30222222222222217,
+      "echo_removed_minus_first_ci": [
+        -0.34444444444444444,
+        -0.26
+      ],
+      "echo_rate": {
+        "strict": 0.3888888888888889,
+        "permissive": 0.2777777777777778
+      },
+      "ci_method": "BCa",
+      "refusal_echo_removed": {
+        "strict": 0.2111111111111111,
+        "permissive": 0.1288888888888889
+      }
+    },
+    "SFT_Instruct": {
+      "n": 450,
+      "gap_first_turn": -0.0022222222222222222,
+      "gap_first_turn_ci": [
+        -0.013333333333333334,
+        0.006666666666666668
+      ],
+      "gap_echo_removed": -0.0044444444444444444,
+      "gap_echo_removed_ci": [
+        -0.015555555555555555,
+        0.0022222222222222222
+      ],
+      "echo_removed_minus_first": -0.0022222222222222222,
+      "echo_removed_minus_first_ci": [
+        -0.011111111111111113,
+        0.0
+      ],
+      "echo_rate": {
+        "strict": 0.0044444444444444444,
+        "permissive": 0.0
+      },
+      "ci_method": "BCa",
+      "refusal_echo_removed": {
+        "strict": 0.03111111111111111,
+        "permissive": 0.035555555555555556
+      }
+    },
+    "DPO_Instruct_AsTrained": {
+      "n": 450,
+      "gap_first_turn": 0.02,
+      "gap_first_turn_ci": [
+        0.0,
+        0.042222222222222223
+      ],
+      "gap_echo_removed": 0.02,
+      "gap_echo_removed_ci": [
+        0.0,
+        0.042222222222222223
+      ],
+      "echo_removed_minus_first": 0.0,
+      "echo_removed_minus_first_ci": [
+        0.0,
+        0.0
+      ],
+      "echo_rate": {
+        "strict": 0.0022222222222222222,
+        "permissive": 0.0
+      },
+      "ci_method": "BCa",
+      "refusal_echo_removed": {
+        "strict": 0.09777777777777778,
+        "permissive": 0.07777777777777778
+      }
+    },
+    "PPO_Instruct_AsTrained": {
+      "n": 450,
+      "gap_first_turn": -0.0022222222222222222,
+      "gap_first_turn_ci": [
+        -0.013333333333333334,
+        0.006666666666666668
+      ],
+      "gap_echo_removed": -0.0044444444444444444,
+      "gap_echo_removed_ci": [
+        -0.015555555555555555,
+        0.0022222222222222222
+      ],
+      "echo_removed_minus_first": -0.0022222222222222222,
+      "echo_removed_minus_first_ci": [
+        -0.011111111111111113,
+        0.0
+      ],
+      "echo_rate": {
+        "strict": 0.0044444444444444444,
+        "permissive": 0.0
+      },
+      "ci_method": "BCa",
+      "refusal_echo_removed": {
+        "strict": 0.03111111111111111,
+        "permissive": 0.035555555555555556
+      }
+    },
+    "GRPO_Instruct_AsTrained": {
+      "n": 450,
+      "gap_first_turn": 0.0044444444444444444,
+      "gap_first_turn_ci": [
+        -0.0044444444444444444,
+        0.015555555555555555
+      ],
+      "gap_echo_removed": 0.0044444444444444444,
+      "gap_echo_removed_ci": [
+        -0.0044444444444444444,
+        0.015555555555555555
+      ],
+      "echo_removed_minus_first": 0.0,
+      "echo_removed_minus_first_ci": [
+        0.0,
+        0.0
+      ],
+      "echo_rate": {
+        "strict": 0.0022222222222222222,
+        "permissive": 0.0
+      },
+      "ci_method": "BCa",
+      "refusal_echo_removed": {
+        "strict": 0.03777777777777778,
+        "permissive": 0.03333333333333333
+      }
+    },
+    "CITA_Instruct_AsTrained": {
+      "n": 450,
+      "gap_first_turn": 0.28888888888888886,
+      "gap_first_turn_ci": [
+        0.24,
+        0.3377777777777778
+      ],
+      "gap_echo_removed": 0.27111111111111114,
+      "gap_echo_removed_ci": [
+        0.2222222222222222,
+        0.32
+      ],
+      "echo_removed_minus_first": -0.017777777777777726,
+      "echo_removed_minus_first_ci": [
+        -0.03111111111111109,
+        -0.006666666666666654
+      ],
+      "echo_rate": {
+        "strict": 0.06888888888888889,
+        "permissive": 0.051111111111111114
+      },
+      "ci_method": "BCa",
+      "refusal_echo_removed": {
+        "strict": 0.7288888888888889,
+        "permissive": 0.4577777777777778
+      }
+    },
+    "CITA_Instruct_Chain": {
+      "n": 450,
+      "gap_first_turn": 0.035555555555555556,
+      "gap_first_turn_ci": [
+        0.008888888888888889,
+        0.06222222222222222
+      ],
+      "gap_echo_removed": 0.035555555555555556,
+      "gap_echo_removed_ci": [
+        0.008888888888888889,
+        0.06222222222222222
+      ],
+      "echo_removed_minus_first": 0.0,
+      "echo_removed_minus_first_ci": [
+        0.0,
+        0.0
+      ],
+      "echo_rate": {
+        "strict": 0.0022222222222222222,
+        "permissive": 0.0
+      },
+      "ci_method": "BCa",
+      "refusal_echo_removed": {
+        "strict": 0.10666666666666667,
+        "permissive": 0.07111111111111111
+      }
+    },
+    "Llama31_Instruct_Prompted": {
+      "n": 450,
+      "gap_first_turn": 0.26666666666666666,
+      "gap_first_turn_ci": [
+        0.22666666666666666,
+        0.3111111111111111
+      ],
+      "gap_echo_removed": 0.2644444444444444,
+      "gap_echo_removed_ci": [
+        0.22444444444444445,
+        0.3088888888888889
+      ],
+      "echo_removed_minus_first": -0.0022222222222222365,
+      "echo_removed_minus_first_ci": [
+        -0.015555555555555545,
+        0.0
+      ],
+      "echo_rate": {
+        "strict": 0.0044444444444444444,
+        "permissive": 0.0
+      },
+      "ci_method": "BCa",
+      "refusal_echo_removed": {
+        "strict": 0.6577777777777778,
+        "permissive": 0.3933333333333333
+      }
+    }
+  }
+}

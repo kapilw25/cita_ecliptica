@@ -1,0 +1,22 @@
+{
+  "method": "PPO_Instruct_AsTrained",
+  "task": "gsm8k",
+  "num_fewshot": 5,
+  "limit": 100,
+  "elapsed_s": 133.4295256137848,
+  "results": {
+    "gsm8k": {
+      "alias": "gsm8k",
+      "exact_match,strict-match": 0.51,
+      "exact_match_stderr,strict-match": 0.05024183937956912,
+      "exact_match,flexible-extract": 0.51,
+      "exact_match_stderr,flexible-extract": 0.05024183937956912
+    }
+  },
+  "n_samples": {
+    "gsm8k": {
+      "original": 1319,
+      "effective": 100
+    }
+  }
+}

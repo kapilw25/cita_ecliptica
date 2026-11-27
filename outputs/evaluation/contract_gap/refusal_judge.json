@@ -722,6 +722,441 @@
       "ci_method": [
         "BCa"
       ]
+    },
+    "DPO_Instruct": {
+      "n_prompts": 1222,
+      "gap_judge": 0.07364975450081833,
+      "gap_judge_ci": [
+        0.04337152209492635,
+        0.10474631751227496
+      ],
+      "gap_heuristic_first_turn": 0.4950900163666121,
+      "gap_heuristic_first_turn_ci": [
+        0.4623567921440262,
+        0.5270049099836334
+      ],
+      "judge_minus_heuristic_gap": -0.42144026186579375,
+      "judge_minus_heuristic_gap_ci": [
+        -0.4639934533551554,
+        -0.3780687397708674
+      ],
+      "refusal_judge": {
+        "strict": {
+          "rate": 0.8052373158756138,
+          "ci": [
+            0.7823240589198036,
+            0.8265139116202946
+          ],
+          "ci_method": "BCa"
+        },
+        "permissive": {
+          "rate": 0.7315875613747954,
+          "ci": [
+            0.7054009819967266,
+            0.7553191489361702
+          ],
+          "ci_method": "BCa"
+        }
+      },
+      "refusal_heuristic_first_turn": {
+        "strict": {
+          "rate": 0.809328968903437,
+          "ci": [
+            0.7864157119476268,
+            0.8306055646481179
+          ],
+          "ci_method": "BCa"
+        },
+        "permissive": {
+          "rate": 0.3142389525368249,
+          "ci": [
+            0.28805237315875615,
+            0.34124386252045824
+          ],
+          "ci_method": "BCa"
+        }
+      },
+      "agreement": 0.573240589198036,
+      "agreement_ci": [
+        0.5544189852700491,
+        0.5916530278232406
+      ],
+      "kappa": 0.08584105325671261,
+      "kappa_ci": [
+        0.050222648949293784,
+        0.12265115074523267
+      ],
+      "confusion_pooled": {
+        "judge_yes_heuristic_yes": 1104,
+        "judge_yes_heuristic_no": 774,
+        "judge_no_heuristic_yes": 269,
+        "judge_no_heuristic_no": 297
+      },
+      "truncated": {
+        "strict": 0,
+        "permissive": 0
+      },
+      "yes_no_mass": {
+        "strict": {
+          "mean": 0.9998167473158756,
+          "min": 0.9304417
+        },
+        "permissive": {
+          "mean": 0.9998545609983633,
+          "min": 0.98724556
+        }
+      },
+      "ci_method": [
+        "BCa"
+      ]
+    },
+    "PPO_Instruct": {
+      "n_prompts": 1222,
+      "gap_judge": 0.02536824877250409,
+      "gap_judge_ci": [
+        -0.0032733224222585926,
+        0.05564648117839607
+      ],
+      "gap_heuristic_first_turn": 0.3044189852700491,
+      "gap_heuristic_first_turn_ci": [
+        0.27168576104746317,
+        0.3363338788870704
+      ],
+      "judge_minus_heuristic_gap": -0.279050736497545,
+      "judge_minus_heuristic_gap_ci": [
+        -0.3191489361702128,
+        -0.2369976010977612
+      ],
+      "refusal_judge": {
+        "strict": {
+          "rate": 0.8363338788870703,
+          "ci": [
+            0.8150572831423895,
+            0.8567921440261865
+          ],
+          "ci_method": "BCa"
+        },
+        "permissive": {
+          "rate": 0.8109656301145662,
+          "ci": [
+            0.7888707037643208,
+            0.8322422258592471
+          ],
+          "ci_method": "BCa"
+        }
+      },
+      "refusal_heuristic_first_turn": {
+        "strict": {
+          "rate": 0.43780687397708673,
+          "ci": [
+            0.41080196399345337,
+            0.4664484451718494
+          ],
+          "ci_method": "BCa"
+        },
+        "permissive": {
+          "rate": 0.13338788870703763,
+          "ci": [
+            0.11538461538461539,
+            0.1530278232405892
+          ],
+          "ci_method": "BCa"
+        }
+      },
+      "agreement": 0.3997545008183306,
+      "agreement_ci": [
+        0.381342062193126,
+        0.41898527004909986
+      ],
+      "kappa": 0.06032913855353481,
+      "kappa_ci": [
+        0.04108351869451886,
+        0.07987638529018146
+      ],
+      "confusion_pooled": {
+        "judge_yes_heuristic_yes": 622,
+        "judge_yes_heuristic_no": 1391,
+        "judge_no_heuristic_yes": 76,
+        "judge_no_heuristic_no": 355
+      },
+      "truncated": {
+        "strict": 0,
+        "permissive": 0
+      },
+      "yes_no_mass": {
+        "strict": {
+          "mean": 0.999689447062193,
+          "min": 0.92719257
+        },
+        "permissive": {
+          "mean": 0.9998329737315875,
+          "min": 0.98767495
+        }
+      },
+      "ci_method": [
+        "BCa"
+      ]
+    },
+    "GRPO_Instruct": {
+      "n_prompts": 1222,
+      "gap_judge": 0.023731587561374796,
+      "gap_judge_ci": [
+        -0.004909983633387889,
+        0.05319148936170213
+      ],
+      "gap_heuristic_first_turn": 0.323240589198036,
+      "gap_heuristic_first_turn_ci": [
+        0.2896890343698854,
+        0.35597381342062195
+      ],
+      "judge_minus_heuristic_gap": -0.2995090016366612,
+      "judge_minus_heuristic_gap_ci": [
+        -0.34042553191489366,
+        -0.2577741407528642
+      ],
+      "refusal_judge": {
+        "strict": {
+          "rate": 0.837152209492635,
+          "ci": [
+            0.8153888610010114,
+            0.8567921440261865
+          ],
+          "ci_method": "BCa"
+        },
+        "permissive": {
+          "rate": 0.8134206219312602,
+          "ci": [
+            0.7913256955810147,
+            0.8338788870703764
+          ],
+          "ci_method": "BCa"
+        }
+      },
+      "refusal_heuristic_first_turn": {
+        "strict": {
+          "rate": 0.46481178396072015,
+          "ci": [
+            0.43617021276595747,
+            0.49263502454991814
+          ],
+          "ci_method": "BCa"
+        },
+        "permissive": {
+          "rate": 0.14157119476268412,
+          "ci": [
+            0.12274959083469722,
+            0.16202945990180032
+          ],
+          "ci_method": "BCa"
+        }
+      },
+      "agreement": 0.41407528641571195,
+      "agreement_ci": [
+        0.395253682487725,
+        0.43330605564648117
+      ],
+      "kappa": 0.06705571688972367,
+      "kappa_ci": [
+        0.04631708396088297,
+        0.08675611874829103
+      ],
+      "confusion_pooled": {
+        "judge_yes_heuristic_yes": 663,
+        "judge_yes_heuristic_no": 1354,
+        "judge_no_heuristic_yes": 78,
+        "judge_no_heuristic_no": 349
+      },
+      "truncated": {
+        "strict": 0,
+        "permissive": 0
+      },
+      "yes_no_mass": {
+        "strict": {
+          "mean": 0.9997668069721767,
+          "min": 0.97356135
+        },
+        "permissive": {
+          "mean": 0.9997075914893618,
+          "min": 0.8310651
+        }
+      },
+      "ci_method": [
+        "BCa"
+      ]
+    },
+    "CITA_Instruct": {
+      "n_prompts": 1222,
+      "gap_judge": 0.0057283142389525366,
+      "gap_judge_ci": [
+        -0.02536824877250409,
+        0.03764320785597381
+      ],
+      "gap_heuristic_first_turn": 0.3985270049099836,
+      "gap_heuristic_first_turn_ci": [
+        0.3657937806873977,
+        0.43126022913256956
+      ],
+      "judge_minus_heuristic_gap": -0.39279869067103107,
+      "judge_minus_heuristic_gap_ci": [
+        -0.4353518821603929,
+        -0.3486088379705401
+      ],
+      "refusal_judge": {
+        "strict": {
+          "rate": 0.7831423895253683,
+          "ci": [
+            0.7594108019639935,
+            0.8052373158756138
+          ],
+          "ci_method": "BCa"
+        },
+        "permissive": {
+          "rate": 0.7774140752864157,
+          "ci": [
+            0.7536824877250409,
+            0.7995090016366612
+          ],
+          "ci_method": "BCa"
+        }
+      },
+      "refusal_heuristic_first_turn": {
+        "strict": {
+          "rate": 0.5646481178396072,
+          "ci": [
+            0.5376432078559739,
+            0.5924713584288053
+          ],
+          "ci_method": "BCa"
+        },
+        "permissive": {
+          "rate": 0.16612111292962356,
+          "ci": [
+            0.14648117839607203,
+            0.1890343698854337
+          ],
+          "ci_method": "BCa"
+        }
+      },
+      "agreement": 0.47545008183306053,
+      "agreement_ci": [
+        0.4562193126022913,
+        0.4946808510638298
+      ],
+      "kappa": 0.08846774414089208,
+      "kappa_ci": [
+        0.06178019684220171,
+        0.11498072836514937
+      ],
+      "confusion_pooled": {
+        "judge_yes_heuristic_yes": 759,
+        "judge_yes_heuristic_no": 1148,
+        "judge_no_heuristic_yes": 134,
+        "judge_no_heuristic_no": 403
+      },
+      "truncated": {
+        "strict": 0,
+        "permissive": 0
+      },
+      "yes_no_mass": {
+        "strict": {
+          "mean": 0.9997201903682487,
+          "min": 0.97027093
+        },
+        "permissive": {
+          "mean": 0.9998431640343699,
+          "min": 0.9915728
+        }
+      },
+      "ci_method": [
+        "BCa"
+      ]
+    },
+    "CITA_Instruct_Chain_FinalOnly": {
+      "n_prompts": 1222,
+      "gap_judge": 0.046644844517184945,
+      "gap_judge_ci": [
+        0.01800327332242226,
+        0.07610474631751228
+      ],
+      "gap_heuristic_first_turn": 0.3404255319148936,
+      "gap_heuristic_first_turn_ci": [
+        0.306873977086743,
+        0.3731587561374796
+      ],
+      "judge_minus_heuristic_gap": -0.2937806873977087,
+      "judge_minus_heuristic_gap_ci": [
+        -0.3355155482815057,
+        -0.2512274959083469
+      ],
+      "refusal_judge": {
+        "strict": {
+          "rate": 0.8600654664484452,
+          "ci": [
+            0.839607201309329,
+            0.8788870703764321
+          ],
+          "ci_method": "BCa"
+        },
+        "permissive": {
+          "rate": 0.8134206219312602,
+          "ci": [
+            0.79050736497545,
+            0.8346972176759411
+          ],
+          "ci_method": "BCa"
+        }
+      },
+      "refusal_heuristic_first_turn": {
+        "strict": {
+          "rate": 0.4779050736497545,
+          "ci": [
+            0.4500818330605565,
+            0.5057283142389526
+          ],
+          "ci_method": "BCa"
+        },
+        "permissive": {
+          "rate": 0.13747954173486088,
+          "ci": [
+            0.11865793780687398,
+            0.15711947626841244
+          ],
+          "ci_method": "BCa"
+        }
+      },
+      "agreement": 0.410392798690671,
+      "agreement_ci": [
+        0.3911620294599018,
+        0.43003273322422264
+      ],
+      "kappa": 0.06339683015849203,
+      "kappa_ci": [
+        0.04377079900550505,
+        0.08380491992638099
+      ],
+      "confusion_pooled": {
+        "judge_yes_heuristic_yes": 678,
+        "judge_yes_heuristic_no": 1367,
+        "judge_no_heuristic_yes": 74,
+        "judge_no_heuristic_no": 325
+      },
+      "truncated": {
+        "strict": 0,
+        "permissive": 0
+      },
+      "yes_no_mass": {
+        "strict": {
+          "mean": 0.9997381524222586,
+          "min": 0.9742858
+        },
+        "permissive": {
+          "mean": 0.9997721382569558,
+          "min": 0.98101366
+        }
+      },
+      "ci_method": [
+        "BCa"
+      ]
     }
   }
 }

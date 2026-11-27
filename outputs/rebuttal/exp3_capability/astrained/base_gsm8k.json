@@ -1,0 +1,22 @@
+{
+  "method": "base",
+  "task": "gsm8k",
+  "num_fewshot": 5,
+  "limit": 100,
+  "elapsed_s": 195.56360983848572,
+  "results": {
+    "gsm8k": {
+      "alias": "gsm8k",
+      "exact_match,strict-match": 0.53,
+      "exact_match_stderr,strict-match": 0.050161355804659205,
+      "exact_match,flexible-extract": 0.53,
+      "exact_match_stderr,flexible-extract": 0.050161355804659205
+    }
+  },
+  "n_samples": {
+    "gsm8k": {
+      "original": 1319,
+      "effective": 100
+    }
+  }
+}

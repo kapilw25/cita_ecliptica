@@ -1,0 +1,22 @@
+{
+  "method": "CITA_Instruct_AsTrained",
+  "task": "gsm8k",
+  "num_fewshot": 5,
+  "limit": 100,
+  "elapsed_s": 167.37804794311523,
+  "results": {
+    "gsm8k": {
+      "alias": "gsm8k",
+      "exact_match,strict-match": 0.57,
+      "exact_match_stderr,strict-match": 0.049756985195624284,
+      "exact_match,flexible-extract": 0.57,
+      "exact_match_stderr,flexible-extract": 0.049756985195624284
+    }
+  },
+  "n_samples": {
+    "gsm8k": {
+      "original": 1319,
+      "effective": 100
+    }
+  }
+}

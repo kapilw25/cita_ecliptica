@@ -1,0 +1,22 @@
+{
+  "method": "SFT_Instruct",
+  "task": "gsm8k",
+  "num_fewshot": 5,
+  "limit": 100,
+  "elapsed_s": 205.54958629608154,
+  "results": {
+    "gsm8k": {
+      "alias": "gsm8k",
+      "exact_match,strict-match": 0.52,
+      "exact_match_stderr,strict-match": 0.050211673156867795,
+      "exact_match,flexible-extract": 0.52,
+      "exact_match_stderr,flexible-extract": 0.050211673156867795
+    }
+  },
+  "n_samples": {
+    "gsm8k": {
+      "original": 1319,
+      "effective": 100
+    }
+  }
+}

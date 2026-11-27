@@ -1,0 +1,132 @@
+{
+  "meta": {
+    "what": "Frobenius norms of LoRA A and B per released adapter; all-zero B = no-op adapter",
+    "ci": "none: exact weights, not a sample"
+  },
+  "no_op_adapters": [
+    "PPO_Instruct",
+    "PPO_NoInstruct"
+  ],
+  "models": {
+    "SFT_Instruct": {
+      "hf_repo": "kapilw25/llama3-8b-pku-SFT-Instruct-Baseline-NoInstruct",
+      "revision": "84e8929da09339695263da96e8842f9cb0e11bb2",
+      "r": 16,
+      "lora_alpha": 16,
+      "n_lora_A": 224,
+      "n_lora_B": 224,
+      "n_lora_B_nonzero": 224,
+      "sum_norm_B": 262.785502076149,
+      "max_norm_B": 2.6777870655059814,
+      "sum_norm_A": 621.9373149871826
+    },
+    "SFT_NoInstruct": {
+      "hf_repo": "kapilw25/llama3-8b-pku-SFT-NoInstruct-Baseline-NoInstruct",
+      "revision": "87849793fed32ee8e8a889bcef54c62ab1f554d9",
+      "r": 16,
+      "lora_alpha": 16,
+      "n_lora_A": 224,
+      "n_lora_B": 224,
+      "n_lora_B_nonzero": 224,
+      "sum_norm_B": 277.5478641986847,
+      "max_norm_B": 2.8277158737182617,
+      "sum_norm_A": 634.0418033599854
+    },
+    "DPO_Instruct": {
+      "hf_repo": "kapilw25/llama3-8b-pku-DPO-Instruct-SFT-Instruct",
+      "revision": "2086721271fccf2b8b3d02d2c8badbade1c19465",
+      "r": 16,
+      "lora_alpha": 16,
+      "n_lora_A": 224,
+      "n_lora_B": 224,
+      "n_lora_B_nonzero": 224,
+      "sum_norm_B": 18.524044876918197,
+      "max_norm_B": 0.23869404196739197,
+      "sum_norm_A": 518.2470309734344
+    },
+    "DPO_NoInstruct": {
+      "hf_repo": "kapilw25/llama3-8b-pku-DPO-NoInstruct-SFT-NoInstruct",
+      "revision": "94402e706740410945d1668e0dc48b0117ce1a71",
+      "r": 16,
+      "lora_alpha": 16,
+      "n_lora_A": 224,
+      "n_lora_B": 224,
+      "n_lora_B_nonzero": 224,
+      "sum_norm_B": 18.761434338986874,
+      "max_norm_B": 0.23378606140613556,
+      "sum_norm_A": 518.1608791351318
+    },
+    "PPO_Instruct": {
+      "hf_repo": "kapilw25/llama3-8b-pku-PPO-Instruct-SFT-Instruct",
+      "revision": "95f9460604001b72e1e1fa260a242eccf86f1d5f",
+      "r": 16,
+      "lora_alpha": 16,
+      "n_lora_A": 224,
+      "n_lora_B": 224,
+      "n_lora_B_nonzero": 0,
+      "sum_norm_B": 0.0,
+      "max_norm_B": 0.0,
+      "sum_norm_A": 517.284295797348
+    },
+    "PPO_NoInstruct": {
+      "hf_repo": "kapilw25/llama3-8b-pku-PPO-NoInstruct-SFT-NoInstruct",
+      "revision": "9b03e3f68d7e6edd1fb9bb0cc75e007e067bfe71",
+      "r": 16,
+      "lora_alpha": 16,
+      "n_lora_A": 224,
+      "n_lora_B": 224,
+      "n_lora_B_nonzero": 0,
+      "sum_norm_B": 0.0,
+      "max_norm_B": 0.0,
+      "sum_norm_A": 517.284295797348
+    },
+    "GRPO_Instruct": {
+      "hf_repo": "kapilw25/llama3-8b-pku-GRPO-Instruct-SFT-Instruct",
+      "revision": "f43df80c09ee6a667a458efa52a0d680f9641b39",
+      "r": 16,
+      "lora_alpha": 16,
+      "n_lora_A": 224,
+      "n_lora_B": 224,
+      "n_lora_B_nonzero": 224,
+      "sum_norm_B": 4.126687586307526,
+      "max_norm_B": 0.03408850356936455,
+      "sum_norm_A": 517.2871024608612
+    },
+    "GRPO_NoInstruct": {
+      "hf_repo": "kapilw25/llama3-8b-pku-GRPO-NoInstruct-SFT-NoInstruct",
+      "revision": "a21185ee678fdf1f5243d92c53f8bd77e81be295",
+      "r": 16,
+      "lora_alpha": 16,
+      "n_lora_A": 224,
+      "n_lora_B": 224,
+      "n_lora_B_nonzero": 224,
+      "sum_norm_B": 5.157939944416285,
+      "max_norm_B": 0.045219309628009796,
+      "sum_norm_A": 517.301816701889
+    },
+    "CITA_Instruct": {
+      "hf_repo": "kapilw25/llama3-8b-pku-CITA-Instruct-DPO-Instruct",
+      "revision": "eb352c92ad9ef6c1644c80d5effe74faee2f8c2e",
+      "r": 16,
+      "lora_alpha": 16,
+      "n_lora_A": 224,
+      "n_lora_B": 224,
+      "n_lora_B_nonzero": 224,
+      "sum_norm_B": 14.852457331493497,
+      "max_norm_B": 0.14130467176437378,
+      "sum_norm_A": 517.4797086715698
+    },
+    "CITA_NoInstruct": {
+      "hf_repo": "kapilw25/llama3-8b-pku-CITA-NoInstruct-DPO-NoInstruct",
+      "revision": "bdac123df4b158d28bc7e25d76de98663429e3ad",
+      "r": 16,
+      "lora_alpha": 16,
+      "n_lora_A": 224,
+      "n_lora_B": 224,
+      "n_lora_B_nonzero": 224,
+      "sum_norm_B": 16.979685390368104,
+      "max_norm_B": 0.1555483490228653,
+      "sum_norm_A": 517.4027695655823
+    }
+  }
+}
