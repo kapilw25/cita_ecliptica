@@ -427,7 +427,7 @@ loyalty_levers_plot:
   stem: loyalty_levers                   # saved as v<i>_loyalty_levers.{png,pdf}
   dpi: 300
   font_size: 13                          # plot-standards rule 7
-  figsize: [6.8, 6.4]                    # three stacked panels, one column of a 4-page paper; short labels, no rotation
+  figsize: [6.8, 5.6]                    # three stacked panels, one column of a 4-page paper; short labels, no rotation (5.6 high: page budget, Nov 27)
   ci_alpha: 0.35                         # whiskers at reduced alpha (plot-standards rule 5)
   bar_width: 0.38
   models: [Llama31_Base_Prompted, SFT_Instruct, DPO_Instruct_AsTrained, PPO_Instruct_AsTrained, GRPO_Instruct_AsTrained, CITA_Instruct_AsTrained, CITA_Instruct_Chain, Llama31_Instruct_Prompted]

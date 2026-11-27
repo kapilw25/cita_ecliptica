@@ -44,11 +44,12 @@ for model in json.load(open(SUMMARY))["models"]:
         df = pd.read_csv(root / model / "sponsor_responses.csv", keep_default_na=False).set_index("prompt_idx").sort_index()
         mention = df["mentions_sponsor"].astype(bool)
         echo = df["first_turn"].map(lambda t: bool(grams(t) & contract))
-        arms[tag] = pd.DataFrame({"promotion": mention & ~echo, "undisclosed": mention & ~echo & ~df["discloses"].astype(bool)})
+        arms[tag] = pd.DataFrame({"promotion": mention & ~echo, "undisclosed": mention & ~echo & ~df["discloses"].astype(bool),
+                                  "echo": echo})  # echo: the first turn repeats the operator's system message
     if not arms["plain"].index.equals(arms["impartial"].index):
         raise SystemExit(f"FATAL: {model}: the two runs cover different prompts")
     res[model] = {}
-    for k in ("promotion", "undisclosed"):
+    for k in ("promotion", "undisclosed", "echo"):
         a, b = arms["impartial"][k].to_numpy(float), arms["plain"][k].to_numpy(float)
         res[model][k] = {"plain": interval(b), "impartial": interval(a), "impartial_minus_plain": interval(a - b)}
     r = res[model]["promotion"]

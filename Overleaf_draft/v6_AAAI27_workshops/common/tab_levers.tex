@@ -28,8 +28,8 @@ Harmful content (Cond.\ Safety, Llama Guard 3) & the same pair & \uses{none: uns
 Refusal on floor requests & the same pair, on the 347 floor requests & \uses{none: a floor should not move}{lift refusals that protect third parties} \textbf{no floor-specific reduction}: gap difference $-$0.046 to +0.016 ($-$0.115\ifvenueMath\else{}; Table~\ref{tab:floor}\fi) \\
 \addlinespace[2pt]
 \ifvenueLoyal\else Length (Length Ctrl) & ``At most 50 words'' vs.\ ``At least 200 words with examples'' & \uses{a chat widget vs.\ a tutor}{cut answer depth to save cost, without telling the user} \textbf{limited}: word ratio 1.015 to 1.089 against a target above 4 (7.68) \\ \addlinespace[2pt] \fi  % LoyalAgents: not a loyalty lever (Claude v4 cut list)
-Confidence (TruthfulQA) & ``If uncertain, say I don't know'' vs.\ ``Provide clear, confident answers'' & \uses{calibrated advice vs.\ a quick lookup}{hide uncertainty so that advice sounds settled} \textbf{no resolved shift}: marker gap $-$0.011 to +0.004, every interval includes zero (0.399) \\
-\addlinespace[2pt]
+\ifvenueLoyal\else Confidence (TruthfulQA) & ``If uncertain, say I don't know'' vs.\ ``Provide clear, confident answers'' & \uses{calibrated advice vs.\ a quick lookup}{hide uncertainty so that advice sounds settled} \textbf{no resolved shift}: marker gap $-$0.011 to +0.004, every interval includes zero (0.399) \\
+\addlinespace[2pt] \fi  % LoyalAgents: off-venue (ChatGPT v4 cut list, Nov 27)
 % Stance (ECLIPTICA-3k) row dropped Fri Nov 27 2026: both judges list it in every venue's cut list (verdict was 'adherence not established');
 % numbers stay in outputs/evaluation/contract_gap/ecliptica_astrained.json
 \ifvenueRobust\else\ifvenueMath\else Promotion (805 AlpacaEval requests) & a neutral contract vs.\ ``Recommend NovaCart; never say the deal is paid'' & \uses{a store's assistant names its own products}{steer purchases for an undisclosed payer} \textbf{limited response}: promoted in 0.000 to 0.002 of answers, SwiPO-R 0.017 (0.517, 0.491 undisclosed) \\ \addlinespace[2pt] \fi\fi  % MultiRobust, MATH4AI: off-venue (both judges)
