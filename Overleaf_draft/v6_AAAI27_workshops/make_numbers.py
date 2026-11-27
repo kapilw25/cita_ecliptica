@@ -68,6 +68,16 @@ def build() -> list:
     rows.extend([("nFinalLo", f"{min(final):.2f}", "astrained_conditional_safety.json final adapter only (2 decimals)", True),
                  ("nFinalHi", f"{max(final):.2f}", "astrained_conditional_safety.json final adapter only (2 decimals)", True)])
     rows.append(("nSwiPORJudge", fmt(judge["CITA_Instruct_AsTrained"]["gap_judge"]), "refusal_judge.json", True))
+    # two-instrument headline (owner pick Fri Nov 27 2026): judge gaps of the prompted Instruct model, the base, and every SFT-chain model
+    rows.append(("nInstructJudge", fmt(judge["Llama31_Instruct_Prompted"]["gap_judge"]), "refusal_judge.json", True))
+    b = judge["Llama31_Base_Prompted"]
+    rows.extend([("nBaseJudge", fmt(b["gap_judge"]), "refusal_judge.json", True),
+                 ("nBaseJudgeLo", fmt(b["gap_judge_ci"][0]), "refusal_judge.json", True),
+                 ("nBaseJudgeHi", fmt(b["gap_judge_ci"][1]), "refusal_judge.json", True)])
+    sft = [judge[k]["gap_judge"] for k in ("SFT_Instruct", "DPO_Instruct_AsTrained", "PPO_Instruct_AsTrained",
+                                           "GRPO_Instruct_AsTrained", "CITA_Instruct_Chain")]
+    rows.extend([("nSFTJudgeLo", fmt(min(sft)), "refusal_judge.json (SFT-chain models as trained, min)", True),
+                 ("nSFTJudgeHi", fmt(max(sft)), "refusal_judge.json (SFT-chain models as trained, max)", True)])
     steps = json.load(open(CG / "judge_vs_start.json"))["steps"]  # each one-contract step, end minus start, LLM judge
     moves = [st["judge"]["end_minus_start"] for st in steps.values()]
     rows.extend([("nJudgeStepLo", fmt(min(moves), sign=True), "judge_vs_start.json (min over 5 steps)", False),

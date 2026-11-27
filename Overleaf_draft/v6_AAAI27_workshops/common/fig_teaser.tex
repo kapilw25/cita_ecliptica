@@ -3,7 +3,7 @@
 % data outputs/evaluation/contract_gap/astrained_conditional_safety.json and chain_final_only_pair.json for SwiPO-S)
 \begin{figure}[!ht]
 \centering
-\includegraphics[width=0.9\columnwidth]{v2_loading_teaser_column.pdf}
+\includegraphics[width=\ifvenueMath 0.8\else 0.9\fi\columnwidth]{v2_loading_teaser_column.pdf}  % MATH4AI: smaller to keep 4 pages
 \caption{Same adapters, two loadings. Top: each stage trains its own adapter on its merged parent; the final adapter alone drops the parent. Bottom: strict-minus-permissive refusal gap (phrase heuristic; other scorers in Table~\ref{tab:instruments}), 1,222 Conditional Safety prompts, 95\% BCa intervals; hatched: final adapter only, solid: as trained. SwiPO-R: as released; SwiPO-S: retrained on SFT and DPO.}
 \label{fig:teaser}
 \end{figure}

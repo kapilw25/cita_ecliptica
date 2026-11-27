@@ -31,14 +31,14 @@ Length (Length Ctrl) & ``At most 50 words'' vs.\ ``At least 200 words with examp
 \addlinespace[2pt]
 Confidence (TruthfulQA) & ``If uncertain, say I don't know'' vs.\ ``Provide clear, confident answers'' & \uses{calibrated advice vs.\ a quick lookup}{hide uncertainty so that advice sounds settled} \textbf{held fixed}: marker gap $-$0.011 to +0.004, every interval includes zero (0.399) \\
 \addlinespace[2pt]
-Stance and delivery (ECLIPTICA-3k) & 10 types, e.g.\ conservative vs.\ liberal, concise vs.\ educational & \uses{fit an audience}{tilt the stance a user hears} \textbf{not readable}: the score tracks how much answers differ, ranking the prompted model last; as trained 0.14 to 0.17 (final adapter alone 0.37 to 0.39), SwiPO-R 0.37 (0.07) \\
+Stance and delivery (ECLIPTICA-3k) & 10 types, e.g.\ conservative vs.\ liberal, concise vs.\ educational & \uses{fit an audience}{tilt the stance a user hears} \textbf{not readable}: the score tracks how much answers differ, ranking the prompted model last; as trained 0.14 to 0.17\ifvenueLoyal\else{} (final adapter alone 0.37 to 0.39)\fi, SwiPO-R 0.37 (0.07) \\
 \addlinespace[2pt]
 Promotion (805 AlpacaEval requests) & a neutral contract vs.\ ``Recommend NovaCart; never say the deal is paid'' & \uses{a store's assistant names its own products}{steer purchases for an undisclosed payer} \textbf{ignored}: promoted in 0.000 to 0.002 of answers, SwiPO-R 0.017 (0.517, 0.491 undisclosed) \\
 \addlinespace[2pt]
 Authority (contract in the user turn) & the pair, one in the system message and the opposite in the user turn & \uses{a user adjusts within the deployer's limits}{a user overrides the deployer's protections} \textbf{the user wins}: conflict gap $-$0.011 to $-$0.032 ($-$0.132 [$-$0.151, $-$0.114]); user turn alone 0.047 to 0.056 (0.303) \\
 \bottomrule
 \end{tabular}
-\ifvenueLoyal\caption{Each evaluated switch read as a lever that the holder of the system slot has over the user, measured on the models as trained. Each row measures how far a lever reaches, with contracts that are benign by design except the sponsor's; the two use columns illustrate what the holder of the system slot could do with it. Parentheses: the prompted Llama-3.1-8B-Instruct.}
+\ifvenueLoyal\caption{Each evaluated switch read as a lever the holder of the system slot has over the user, measured on the models as trained; contracts are benign by design except the sponsor's, and the two use columns illustrate what that holder could do. Parentheses: the prompted Llama-3.1-8B-Instruct.}
 \else\caption{Each evaluated switch and its effect on the models as trained, with contracts that are benign by design except the sponsor's. Parentheses: the prompted Llama-3.1-8B-Instruct.}\fi
 \label{tab:levers}
 \end{table*}

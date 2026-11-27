@@ -22,7 +22,7 @@
 % benchmark claim (topic 1: do benchmarks and scorers measure what they claim; topic 2: stability of results).
 % Due Wed Dec 2 2026 3:59 AM PST (Dec 1 AoE).
 
-\title{SwiPO on ECLIPTICA-3k: When an Alignment Benchmark Measures the Wrong Model}
+\title{When an Alignment Benchmark Measures the Wrong Model}  % owner pick Fri Nov 27 2026 ~6:10 AM PST: 'SwiPO on ECLIPTICA-3k:' prefix dropped (the ECLIPTICA-3k score is not readable)
 
 \author{Anonymous Authors}
 \affiliations{Anonymous Institution}
@@ -32,7 +32,7 @@
 \maketitle
 
 \begin{abstract}
-A benchmark number is deployment evidence only if it measures the model that will be deployed. We audit one claim: that preference-trained Llama-3.1-8B models, and SwiPO (an instruction-conditioned DPO with a log-ratio penalty to the reference model) in particular, change how readily they refuse when a deployer changes a natural-language contract in the system message. Earlier evaluations loaded each model as the base plus only its final low-rank adapter, while training had merged parent adapters first. Loaded that way, every model shows a strict-minus-permissive refusal gap of \nFinalLo{} to \nFinalHi{}, and three of four also move harmful content. Loaded as trained, the gaps of DPO and GRPO fall to \nRivalGap{}, SwiPO retrained on the intended chain keeps \nSwiPOS{} (95\% interval \nSwiPOSLo{} to \nSwiPOSHi{}), and no model's rate of unsafe answers moves. The pretrained model alone has \nBaseGap{} (\nBaseGapLo{} to \nBaseGapHi{}): the reported switch was its prompt-following, which supervised fine-tuning on one contract removes. A second check finds that the as-trained models run past the end of their turn, which inflates measured refusal rates in both arms; scoring the first turn leaves the gaps unchanged. A third finds that the phrase scorer counts a model repeating its contract as refusal: half of the pretrained model's \nBaseGap{}, whose replies an LLM judge finds no more likely to refuse or deflect under either contract. A fourth finds the released PPO adapter untrained, so its rows measure the SFT and base models. We turn the checks into a short protocol for evaluating models built from stacked adapters.
+A benchmark number is deployment evidence only if it measures the model that will be deployed. We audit one claim: that preference-trained Llama-3.1-8B models, and SwiPO (an instruction-conditioned DPO with a log-ratio penalty to the reference model) in particular, change how readily they refuse when a deployer changes a natural-language contract in the system message. Earlier evaluations loaded each model as the base plus only its final low-rank adapter, while training had merged parent adapters first. Loaded that way, every model shows a strict-minus-permissive refusal gap of \nFinalLo{} to \nFinalHi{}, and three of four also move harmful content. Loaded as trained, the gaps of DPO and GRPO fall to \nRivalGap{}, SwiPO retrained on the intended chain keeps \nSwiPOS{} (95\% interval \nSwiPOSLo{} to \nSwiPOSHi{}), and no model's rate of unsafe answers moves; the pretrained model alone has \nBaseGap{} (\nBaseGapLo{} to \nBaseGapHi{}), which supervised fine-tuning (SFT) on one contract removes. A second finds that as-trained models run past the end of their turn, inflating refusal rates in both arms; scoring the first turn leaves the gaps unchanged. A third finds that the phrase scorer counts a model repeating its contract as refusal: half of the pretrained model's \nBaseGap{}, which an LLM judge does not see (\nBaseJudge{}); under both scorers only the released SwiPO, whose chain skips SFT (\nSwiPORJudge{}), and a prompted instruction-tuned model (\nInstructJudge{}) switch. A fourth finds the released PPO adapter untrained, so its rows measure the SFT and base models. The checks form a short protocol for evaluating models built from stacked adapters.
 \end{abstract}
 
 \begin{links}
@@ -50,14 +50,14 @@ Benchmarks for aligned agents report a score per model, and deployment decisions
 We audit such a claim end to end, on Direct Preference Optimization (DPO) \cite{rafailov2023direct}, GRPO, the switchable method SwiPO, and a released PPO model, and report what each check changed. Our contributions are:
 \begin{itemize}
     \item Five checks that a contract-switching result must pass before it counts as deployment evidence: composition, decoding, scorer, contamination, and controls (Section~\ref{sec:checks}).
-    \item A reversal under the composition check: models evaluated without their parent adapters show refusal switches of \nFinalLo{} to \nFinalHi{} that also move harmful content; as trained, the switch belongs to the pretrained model and supervised fine-tuning on one contract removes it (Section~\ref{sec:results}).
-    \item Under the decoding and scorer checks: run-on answers leave the gaps unchanged, and either correction alone removes most of the reported switch (Table~\ref{tab:budget}).
+    \item A reversal under the composition check: models evaluated without their parent adapters show refusal switches of \nFinalLo{} to \nFinalHi{} that also move harmful content; as trained, only SwiPO without SFT keeps a switch under both scorers (Section~\ref{sec:results}).
+    \item Decoding and scorer checks: run-on answers leave the gaps unchanged, and either correction alone removes most of the switch (Table~\ref{tab:budget}).
 \end{itemize}
 
 \section{Five Checks Before a Number Becomes Evidence}
 \label{sec:checks}
 
-A switching claim is a gap: the strict-minus-permissive difference in a behavior, with $X$ fixed and only $I$ varied; Table~\ref{tab:levers} lists the contract pairs we evaluate. We apply five checks to every gap, each with paired 95\% intervals over prompts. \textbf{Composition}: Is the evaluated model the trained one? Each training stage here merges its parent adapter and trains a new one, so the trained model is the base plus every adapter in its chain; we evaluate both that model and the final adapter alone, and check that each adapter changes the weights. \textbf{Decoding}: Does each answer stop where the model's turn ends? We count answers that continue into invented user or assistant turns and re-score the first turn alone. \textbf{Scorer}: Does the scorer measure the named behavior? Refusal is a phrase heuristic, so we remove sentences that repeat the contract, re-score with an LLM judge, and score harm separately with Llama Guard 3. \textbf{Contamination}: Most suite prompts appear in the training pool, so we repeat the gaps on 2,444 held-out prompts. \textbf{Controls}: The base model with no adapter and a prompted off-the-shelf instruction-tuned model bound what the training added.
+A switching claim is a gap: the strict-minus-permissive difference in a behavior, with $X$ fixed and only $I$ varied; Table~\ref{tab:levers} lists the contract pairs we evaluate. We apply five checks to every gap, each with paired 95\% intervals over prompts. \textbf{Composition}: Is the evaluated model the trained one? We evaluate the base plus every adapter in the chain (Setup) and the final adapter alone, and check that each adapter changes the weights. \textbf{Decoding}: Does each answer stop where the model's turn ends? We count answers that continue into invented user or assistant turns and re-score the first turn alone. \textbf{Scorer}: Does the scorer measure the named behavior? Refusal is a phrase heuristic, so we remove sentences that repeat the contract, re-score with an LLM judge, and score harm separately with Llama Guard 3. \textbf{Contamination}: Most suite prompts appear in the training pool, so we repeat the gaps on 2,444 held-out prompts. \textbf{Controls}: The base model with no adapter and a prompted off-the-shelf instruction-tuned model bound what the training added.
 
 \input{../common/tab_levers}
 
@@ -74,7 +74,7 @@ Reproducible language-model evaluation depends on prompts, decoding, and scoring
 
 \section{Conclusion}
 
-Loaded as trained, no model with SFT in its chain changes its refusals much with the contract; the reported switch was the pretrained model's, and no contract moves harm. An evaluation of stacked adapters should state and verify the composition it loaded, stop decoding at the end of the turn, score the first turn with a validated scorer, report harm separately, and check held-out prompts against a no-adapter control.
+Loaded as trained and scored by both instruments, only SwiPO without SFT and a prompted instruction-tuned model keep a refusal switch; the pretrained model's phrase gap is mostly wording, and no contract moves harm. An evaluation of stacked adapters should verify the composition it loaded, stop decoding at the end of the turn, score the first turn with a validated scorer, report harm separately, and check held-out prompts against a no-adapter control.
 
 {\small
 \bibliography{../common/cita}
