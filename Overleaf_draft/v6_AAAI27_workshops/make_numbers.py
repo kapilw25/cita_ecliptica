@@ -53,13 +53,17 @@ def build() -> list:
     gap("nDPOTrained", start["DPO_Instruct_AsTrained"], "swipo_vs_start.json", False)
     gap("nDPOFinal", start["DPO_Instruct"], "swipo_vs_start.json", False)
     diff("nSwiPORvsStart", start["CITA_Instruct_AsTrained"], "swipo_vs_start.json", False)
-    rivals = [a[f"{t}_Instruct_AsTrained"]["score"] for t in ("DPO", "PPO", "GRPO")]
+    # PPO left out: its released adapters are untrained (every LoRA B is zero, contract_gap/adapter_norms.json), so PPO is SFT
+    noop = json.load(open(CG / "adapter_norms.json"))["no_op_adapters"]
+    if noop != ["PPO_Instruct", "PPO_NoInstruct"]:
+        raise RuntimeError(f"no-op adapters changed to {noop}: revisit which models count as trained rivals")
+    rivals = [a[f"{t}_Instruct_AsTrained"]["score"] for t in ("DPO", "GRPO")]
     if len({round(x, 2) for x in rivals}) != 1:
-        raise RuntimeError(f"DPO/PPO/GRPO as-trained gaps {rivals} do not share one 2-decimal value")
-    rows.append(("nRivalGap", f"{rivals[0]:.2f}", "astrained_conditional_safety.json (DPO, PPO, GRPO, 2 decimals)", True))
+        raise RuntimeError(f"DPO/GRPO as-trained gaps {rivals} do not share one 2-decimal value")
+    rows.append(("nRivalGap", f"{rivals[0]:.2f}", "astrained_conditional_safety.json (DPO, GRPO, 2 decimals)", True))
     trained = rivals + [chain["CITA_Instruct_Chain"]["score"]]
-    rows.extend([("nTrainedLo", f"{min(trained):.2f}", "as-trained DPO, PPO, GRPO, SwiPO-S (2 decimals)", True),
-                 ("nTrainedHi", f"{max(trained):.2f}", "as-trained DPO, PPO, GRPO, SwiPO-S (2 decimals)", True)])
+    rows.extend([("nTrainedLo", f"{min(trained):.2f}", "as-trained DPO, GRPO, SwiPO-S (2 decimals)", True),
+                 ("nTrainedHi", f"{max(trained):.2f}", "as-trained DPO, GRPO, SwiPO-S (2 decimals)", True)])
     final = [a[f"{t}_Instruct"]["score"] for t in ("DPO", "PPO", "GRPO", "CITA")]
     rows.extend([("nFinalLo", f"{min(final):.2f}", "astrained_conditional_safety.json final adapter only (2 decimals)", True),
                  ("nFinalHi", f"{max(final):.2f}", "astrained_conditional_safety.json final adapter only (2 decimals)", True)])
