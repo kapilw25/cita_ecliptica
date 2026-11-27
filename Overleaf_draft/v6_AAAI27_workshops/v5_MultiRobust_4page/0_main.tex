@@ -1,0 +1,89 @@
+\documentclass[letterpaper]{article} % DO NOT CHANGE THIS
+\usepackage[submission]{aaai2027}  % DO NOT CHANGE THIS (anonymous review version: MultiRobust hides authors from reviewers)
+\nocopyright  % non-archival workshop: the AAAI copyright line does not apply to this paper
+\usepackage[hyphens]{url}  % DO NOT CHANGE THIS
+\usepackage{graphicx} % DO NOT CHANGE THIS
+\urlstyle{rm} % DO NOT CHANGE THIS
+\def\UrlFont{\rm}  % DO NOT CHANGE THIS
+\usepackage{natbib}  % DO NOT CHANGE THIS AND DO NOT ADD ANY OPTIONS TO IT
+\usepackage{caption} % DO NOT CHANGE THIS AND DO NOT ADD ANY OPTIONS TO IT
+\frenchspacing  % DO NOT CHANGE THIS
+\input{../common/preamble}
+\input{venue}
+\pdfinfo{
+/TemplateVersion (2027.1)
+}
+
+\setcounter{secnumdepth}{2}
+
+% VENUE PARTS ONLY (paper-variants skill): shared sections live in ../common/ and are pulled in with \input.
+% MultiRobust (AAAI-27 W38, Multi-Objective and Multi-Task Optimization for Robust AI), short paper (4 pages excluding
+% references), double-blind. Owner pick Fri Nov 27 2026 ~12:00 AM PST: the as-trained finding goes to every upcoming venue.
+% Framing: a contract as a selector on the safety-helpfulness trade-off (topics: Pareto-aware evaluation, constraint
+% handling in AI safety, foundation model alignment through optimization). Due Sat Nov 28 2026 3:59 AM PST.
+
+\title{SwiPO on ECLIPTICA-3k: Can One Preference-Trained LLM Checkpoint Serve Several Safety-Helpfulness Trade-offs?}
+
+\author{Anonymous Authors}
+\affiliations{Anonymous Institution}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Safety and helpfulness compete, and different deployments need different points on that trade-off. A cheap way to choose the point is a natural-language contract in the system message, and switchable alignment methods train one checkpoint to follow it. We test whether the contract still moves the trade-off after preference training, in four Llama-3.1-8B models (DPO, PPO, GRPO, and SwiPO, an instruction-conditioned DPO with a Kullback-Leibler anchor), each evaluated as trained, with every parent low-rank adapter merged. The pretrained model already moves with the contract: its strict-minus-permissive refusal gap is 0.299 (95\% interval 0.266 to 0.332). Supervised fine-tuning on one contract collapses it, and DPO, PPO, and GRPO keep only 0.03; SwiPO retrained on the same chain keeps 0.052 (0.020 to 0.082), not separable from DPO (+0.017, $-$0.025 to +0.057). The contract moves no model's rate of unsafe answers (Llama Guard 3), no model keeps a floor of requests that a permissive contract cannot unlock, and length and confidence contracts barely move. Loading only each stacked model's final adapter inflates every gap to 0.30 to 0.49, so a multi-objective evaluation must load the model that was trained.
+\end{abstract}
+
+\begin{links}
+    % aaai2027.sty defines \link with an em dash ("--- "); use a colon (house style: no em dashes)
+    \renewcommand{\link}[2]{\par\textbf{#1}: \url{#2}}%
+    \link{Data}{hf.co/datasets/anonymousML123/ECLIPTICA-3k}
+\end{links}
+
+\section{Introduction}
+
+Safety and helpfulness are competing objectives: a model that refuses more protects third parties and serves fewer legitimate users. Multi-objective alignment fits several points on such trade-offs, by interpolating weights fine-tuned on different rewards \cite{rame2023rewarded}, by a multi-objective DPO loss \cite{zhou2024modpo}, by constraining helpfulness with a cost model \cite{dai2024safe}, or by conditioning one policy on a preference direction or an attribute \cite{wang-etal-2024-arithmetic,dong2023steerlm}. Switchable alignment conditions on a natural-language contract $I$ in the system message, so that the same request $X$ gets a stricter or a more permissive answer only because $I$ changed (Figure~\ref{fig:teaser}); controllable safety alignment trains for such configurations \cite{zhang2025cosa}. One checkpoint would then serve a compliance desk and a harm-reduction service.
+
+\input{../common/fig_teaser}
+
+Whether it does depends on what the contract moves once the model is trained. A robust selector moves the objective it targets, leaves alone the objectives it should not touch, keeps a floor that no contract may unlock, and holds on new prompts and in another channel. We test these properties on the models as trained. Our contributions are:
+\begin{itemize}
+    \item A test of a contract as a trade-off selector on five properties (target, side effects, floor, held-out prompts, channel), applied to four preference trainers (Section~\ref{sec:selector}).
+    \item A finding about training chains: the only sizable selector is the pretrained model's prompt-following; supervised fine-tuning on one contract removes it, and no preference loss trained with one contract, SwiPO's included, restores it (Section~\ref{sec:results}).
+    \item An evaluation finding: loading only the final adapter of a stacked model shows selectors of 0.30 to 0.49 that the trained models do not have, and that also move harmful content (Section~\ref{sec:results}).
+\end{itemize}
+
+\section{A Contract as a Trade-off Selector}
+\label{sec:selector}
+
+A contract pair (strict, permissive) picks one of two points on a trade-off, and the size of the move is the contract's lever; Table~\ref{tab:levers} lists the pairs we evaluate, each benign by design. With the request $X$ fixed and only $I$ varied, five properties decide whether the selector is robust.
+\begin{itemize}
+    \item \textbf{Target.} The gap in the objective the pair targets: refusal, length, expressed confidence, or stance.
+    \item \textbf{Side effects.} Objectives the pair should not move; for the safety pair, the rate of unsafe answers judged by Llama Guard 3, a constraint every contract must respect.
+    \item \textbf{Floor.} Requests that harm people outside the conversation, on which the permissive contract should not lower refusals; we fixed this set before computing any rate.
+    \item \textbf{Held-out prompts.} The same gaps on 2,444 prompts outside the training pool.
+    \item \textbf{Channel.} The pair in the user turn instead of the system message, and both at once with opposite contracts.
+\end{itemize}
+For a policy of unlimited capacity, conditioning on $I$ splits the pooled preference loss into one term per contract, so one checkpoint can in principle hold every point; the measurements ask whether training reaches it.
+
+\input{../common/tab_levers}
+
+\input{../common/sec_setup}
+
+\input{../common/sec_results}
+
+\section{Related Work}
+
+Multi-objective alignment trades off rewards by weight interpolation \cite{rame2023rewarded}, a multi-objective DPO loss \cite{zhou2024modpo}, constrained RLHF with a cost model \cite{dai2024safe}, or conditioning on preference directions and attributes \cite{wang-etal-2024-arithmetic,dong2023steerlm}; decoding-time methods personalize without retraining \cite{shi2024decodingtime,chen2025pad}. These methods pick a trade-off point by weights or attributes; we measure what a natural-language contract moves after training. \input{../common/related_core}
+\input{../common/sec_limits}
+
+\section{Conclusion}
+
+As trained, a strict or permissive contract barely moves a preference-trained model along the safety-helpfulness trade-off: the only sizable selector is the pretrained model's prompt-following, supervised fine-tuning on one contract removes it, and SwiPO's loss, trained with one contract, does not restore it. No contract moves harmful content, and no model keeps a floor. Without their parent adapters the same models show selectors of 0.30 to 0.49, so a multi-objective evaluation must load the model as trained; one checkpoint that serves several trade-offs likely needs training under several contracts, with a floor target that does not depend on the contract.
+
+{\small
+\bibliography{../common/cita}
+}
+
+\end{document}
