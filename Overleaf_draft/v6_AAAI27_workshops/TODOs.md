@@ -6,14 +6,14 @@ Updated Fri Nov 27 2026, 11:29 AM PST. One TODO file for all SwiPO workshop draf
 
 ## 🎯 Where each draft stands
 
-| 📄 Draft | ⏰ Due (PST) | 🟢 ChatGPT | 🟠 Claude |
-|---|---|---|---|
-| 🤝 [v4 LoyalAgents](v4_LoyalAgents_4page_astrained/0_main.pdf) | 🔴 Sat Nov 28, 3:59 AM | 🔹 74, 74% | 🔹 62, 55% |
-| 🎯 [v5 MultiRobust](v5_MultiRobust_4page/0_main.pdf) | 🔴 Sat Nov 28, 3:59 AM | 🔹 76, 78% | 🔹 59, 45% |
-| 📊 [v6 Bench2Evidence](v6_Bench2Evidence_4page/0_main.pdf) | 🟡 Wed Dec 2, 3:59 AM | 🔹 84, 86% | 🔹 66, 75% |
-| 📐 [v7 MATH4AI](v7_MATH4AI_4page/0_main.pdf) | 🟡 Wed Dec 2, 4:00 AM | 🔹 64, 52% | 🔹 54, 35% |
+| 📄 Draft | ⏰ Due (PST) | 🟢 ChatGPT | 🟠 Claude | 🟣 Claude r5 |
+|---|---|---|---|---|
+| 🤝 [v4 LoyalAgents](v4_LoyalAgents_4page_astrained/0_main.pdf) | 🔴 Sat Nov 28, 3:59 AM | 🔹 74, 74% | 🔹 62, 55% | 🔹 63, 70% |
+| 🎯 [v5 MultiRobust](v5_MultiRobust_4page/0_main.pdf) | 🔴 Sat Nov 28, 3:59 AM | 🔹 76, 78% | 🔹 59, 45% | 🔹 57, 55% |
+| 📊 [v6 Bench2Evidence](v6_Bench2Evidence_4page/0_main.pdf) | 🟡 Wed Dec 2, 3:59 AM | 🔹 84, 86% | 🔹 66, 75% | ⚪ not run |
+| 📐 [v7 MATH4AI](v7_MATH4AI_4page/0_main.pdf) | 🟡 Wed Dec 2, 4:00 AM | 🔹 64, 52% | 🔹 54, 35% | ⚪ not run |
 
-Scores are on the drafts before the round-4 fixes (commit 7e71010); those fixes are in, so the next judge round re-scores.
+ChatGPT and Claude scores are on the drafts before the round-4 fixes (commit 7e71010). Round 5 (fresh Claude Code judges, Fri Nov 27 ~11:15 AM PST, Saturday drafts only, at 6ff6116; reviews in feedback/output/<draft>/by_claude_r5.md) came before its own fixes, which are in by 622c866.
 
 ELI5: four homework papers, two due tomorrow; two teachers graded each.
 

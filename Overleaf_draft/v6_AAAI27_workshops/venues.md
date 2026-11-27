@@ -27,8 +27,8 @@ shared sections are written once in [common/](common/) and pulled in with `\inpu
 
 | 🏛️ Venue | 📁 Draft folder | 🙈 Review | 📏 Limit | 🧑‍⚖️ Judge scores, round 4 (ChatGPT / Claude; drafts at 7e71010, before the round-4 fixes) | 🔒 Status |
 |---|---|---|---|---|---|
-| 🤝 LoyalAgents | [v4_LoyalAgents_4page_astrained/](v4_LoyalAgents_4page_astrained/) | single-blind | 4 p | 74 / 62 (acceptance 74% / 55%) | 🟡 iterating until the deadline (owner, Fri Nov 27: no early freeze) |
-| 🎯 MultiRobust | [v5_MultiRobust_4page/](v5_MultiRobust_4page/) | double-blind | 4 p | 76 / 59 (78% / 45%) | 🟡 iterating until the deadline (owner, Fri Nov 27: no early freeze) |
+| 🤝 LoyalAgents | [v4_LoyalAgents_4page_astrained/](v4_LoyalAgents_4page_astrained/) | single-blind | 4 p | 74 / 62 (acceptance 74% / 55%); round 5 (fresh Claude Code judge, at 6ff6116): 63, 70% | 🟡 iterating until the deadline (owner, Fri Nov 27: no early freeze) |
+| 🎯 MultiRobust | [v5_MultiRobust_4page/](v5_MultiRobust_4page/) | double-blind | 4 p | 76 / 59 (78% / 45%); round 5: 57, 55% | 🟡 iterating until the deadline (owner, Fri Nov 27: no early freeze) |
 | 📊 Bench2Evidence | [v6_Bench2Evidence_4page/](v6_Bench2Evidence_4page/) | double-blind | 4 p | 84 / 66 (86% / 75%) | 🟡 iterating; due Wed Dec 2 |
 | 📐 MATH4AI | [v7_MATH4AI_4page/](v7_MATH4AI_4page/) | single-blind | 4 p | 64 / 54 (52% / 35%) | 🟡 iterating; due Wed Dec 2 |
 | ✅ SC4AI | [v1_SC4AI/](v1_SC4AI/) | submitted | 8 p | - | 🔒 FROZEN |
