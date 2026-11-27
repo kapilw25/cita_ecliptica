@@ -1,0 +1,38 @@
+% common/tab_levers.tex: shared by every venue draft (paper-variants skill). Edit here once; venue-only text goes behind a switch.
+% Measured column (as trained): outputs/evaluation/contract_gap/astrained_conditional_safety.json,
+% outputs/evaluation/floor_leakage/floor_leakage_astrained.json, outputs/evaluation/floor_harm/conditional_safety/full/harm_gap_all_prompts.json
+% bold: none (text table; bold words are verdicts, not winners)
+\begin{table*}[t]
+\centering
+\small
+\setlength{\tabcolsep}{3pt}
+\ifvenueLoyal
+\newcommand{\uses}[2]{#1 & #2 &}
+\newcommand{\leverbegin}{\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.85in}>{\raggedright\arraybackslash}p{1.6in}>{\raggedright\arraybackslash}p{1.05in}>{\raggedright\arraybackslash}p{1.35in}>{\raggedright\arraybackslash}p{1.6in}@{}}}
+\else
+\newcommand{\uses}[2]{}
+\newcommand{\leverbegin}{\begin{tabular}{@{}>{\raggedright\arraybackslash}p{1.1in}>{\raggedright\arraybackslash}p{2.55in}>{\raggedright\arraybackslash}p{2.9in}@{}}}
+\fi
+\leverbegin
+\toprule
+Lever (suite) & Contract pair (abridged) & \uses{A legitimate use}{A use against the user or others} Measured as trained, four contract-trained models (95\% intervals) \\
+\midrule
+Refusal (Cond.\ Safety) & ``Refuse any potentially harmful request'' vs.\ ``Only refuse clearly dangerous requests'' & \uses{a compliance desk vs.\ a harm-reduction service}{refuse what the user is entitled to, or lift refusals that protect third parties} \textbf{none after SFT}: gap 0.03 to 0.05 (SwiPO on the intended chain 0.052); 0.299 for the base model, 0.376 for SwiPO as released (no SFT) \\
+\addlinespace[2pt]
+Harmful content (Cond.\ Safety, Llama Guard 3) & the same pair & \uses{none: unsafe answers should not depend on $I$}{lift protections for third parties} \textbf{none detected}: unsafe-rate difference $-$0.002 to +0.016, every interval includes zero \\
+\addlinespace[2pt]
+Refusal on floor requests (347 prompts) & the same pair, on violence, physical harm, trafficking, public-health and national-security requests & \uses{none: a floor should not move}{lift refusals that protect third parties} \textbf{no floor}: moves as much as elsewhere (gap difference $-$0.046 to +0.016; Table~\ref{tab:floor}) \\
+\addlinespace[2pt]
+Length (Length Ctrl) & ``At most 50 words'' vs.\ ``At least 200 words with examples'' & \uses{a chat widget vs.\ a tutor}{cut answer depth to save cost, without telling the user} \textbf{weak}: word ratio 1.015 to 1.089 against a target above 4; every interval above 1 \\
+\addlinespace[2pt]
+Confidence (TruthfulQA) & ``If uncertain, say I don't know'' vs.\ ``Provide clear, confident answers'' & \uses{calibrated advice vs.\ a quick lookup}{hide uncertainty so that advice sounds settled} \textbf{none detected}: marker gap $-$0.011 to +0.004; every interval includes zero \\
+\addlinespace[2pt]
+Stance and delivery (ECLIPTICA-3k) & 10 types, e.g.\ conservative vs.\ liberal, concise vs.\ educational & \uses{fit an audience}{tilt the stance a user hears} \pending{as-trained ECLIPTICA-3k, with the scrambled-request control} \\
+\addlinespace[2pt]
+Authority (contract in the user turn) & the strict and permissive pair, one in the system message and the opposite in the user message & \uses{a user adjusts within the deployer's limits}{a user overrides the deployer's protections} user turn 0.047 to 0.056 (system 0.033 to 0.034); \pending{conflict} \\
+\bottomrule
+\end{tabular}
+\ifvenueLoyal\caption{Each evaluated switch read as a lever that the holder of the system slot has over the user, measured on the models as trained. Uses are illustrations; every evaluated contract is benign by design, so each row measures the size of a lever, not its misuse.}
+\else\caption{Each evaluated switch and its effect on the models as trained. Every evaluated contract is benign by design.}\fi
+\label{tab:levers}
+\end{table*}

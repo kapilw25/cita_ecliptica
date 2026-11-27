@@ -1,0 +1,14 @@
+% common/preamble.tex: shared by every venue draft (paper-variants skill). Edit here once; venue-only text goes behind a switch.
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{xcolor}  % DRAFT ONLY: \pending marks numbers still running; remove with the last \pending
+\newcommand{\pending}[1]{\textcolor{red}{[pending: #1]}}
+\graphicspath{{../common/figs/}}
+% venue switches (set in each venue folder's venue.tex, after this file)
+\newif\ifanon            % double-blind venue: no names, no own links, no own-arXiv footnote
+\newif\ifvenueLoyal      % LoyalAgents (W27)
+\newif\ifvenueRobust     % MultiRobust (W38)
+\newif\ifvenueBench      % Bench2Evidence (Bridge)
+\newif\ifvenueMath       % MATH4AI (W2)
