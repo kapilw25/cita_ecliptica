@@ -1,6 +1,6 @@
 # ✅ SwiPO TODOs (v4, v5, v6, v7)
 
-Updated Fri Nov 27 2026, 8:15 AM PST. One TODO file for all SwiPO workshop drafts (owner order Fri Nov 27 ~8:05 AM PST), next to [venues.md](venues.md). It replaces `v2_LoyalAgents/TODOs.md`, archived at [legacy/v2_LoyalAgents/TODOs.md](legacy/v2_LoyalAgents/TODOs.md). Sources: the ARR reviews ([KpHA](../ARR_feedback/Reviewer_KpHA.md), [gMno](../ARR_feedback/Reviewer_gMno.md), [shuX](../ARR_feedback/Reviewer_shuX.md)) and the ChatGPT and Claude reviews in `feedback/output/<draft>/by_chatgpt.md` and `by_claude.md`. No early freeze: every draft iterates until its deadline (owner, Fri Nov 27).
+Updated Fri Nov 27 2026, 8:30 AM PST. One TODO file for all SwiPO workshop drafts (owner order Fri Nov 27 ~8:05 AM PST), next to [venues.md](venues.md). It replaces `v2_LoyalAgents/TODOs.md`, archived at [legacy/v2_LoyalAgents/TODOs.md](legacy/v2_LoyalAgents/TODOs.md). Sources: the ARR reviews ([KpHA](../ARR_feedback/Reviewer_KpHA.md), [gMno](../ARR_feedback/Reviewer_gMno.md), [shuX](../ARR_feedback/Reviewer_shuX.md)) and the ChatGPT and Claude reviews in `feedback/output/<draft>/by_chatgpt.md` and `by_claude.md`. No early freeze: every draft iterates until its deadline (owner, Fri Nov 27).
 
 **Legend:** 🔴 open · ⏳ queued · 🟡 in progress · ✅ done · 👤 a person does it · ⚪ deferred · ⛔ blocked · 🟢 ChatGPT · 🟠 Claude · 📜 ARR
 
@@ -41,12 +41,14 @@ ELI5: the big computer re-asks the models new questions and grades them.
 
 ## 💻 Non-GPU tasks
 
+Owner pick Fri Nov 27 ~8:25 AM PST: no new baseline trainings before Dec 2. The no-KL run answers the KL ablation, the queued seed retrains answer variance, and SimPO, KTO and a lambda sweep go to the arXiv revision.
+
 | 🧩 Task | 📄 Draft | ⏰ ETA (PST) | 🚦 Status |
 |---|---|---|---|
 | 📈 Trade-off plane as Figure 1 | 🎯 v5 | ⏰ Fri Nov 27, 11 AM | 🔴 open |
 | 🧭 Loyalty-lever Figure 1 | 🤝 v4 | ⏰ Fri Nov 27, noon | 🔴 open |
 | 📥 Conflict result into paper | 🤝 v4 | ⏰ Fri Nov 27, noon | 🔴 waits run |
-| 📏 Capability line, all drafts | 🔗 all | ⏰ Fri Nov 27, 1 PM | 🔴 open |
+| 📏 Capability line, all drafts | 🔗 all | ⏰ Fri Nov 27, 1 PM | 🟡 numbers ready |
 | 📥 Harm on XSTest plane | 🎯 v5 | ⏰ Fri Nov 27, 1 PM | 🔴 waits run |
 | 📥 Override severity sentence | 🤝 v4 | ⏰ Fri Nov 27, 2 PM | 🔴 waits run |
 | 📥 No-KL row and sentence | 🔗 all | ⏰ Fri Nov 27, 3 PM | 🔴 waits run |
@@ -79,7 +81,8 @@ ELI5: the big computer re-asks the models new questions and grades them.
 | ♾️ Penalty unboundedness stated | 📐 v7 | ✅ Fri Nov 27, 8 AM | ✅ done |
 | 🔤 TrueType fonts, no Type 3 | 🔗 all | ✅ Fri Nov 27, 8 AM | ✅ done |
 | 🦙 Second backbone model | 🔗 all | ⚪ after Dec 2 | ⚪ deferred, disclosed |
-| 🆚 SimPO, KTO baselines | 🔗 all | ⚪ after Dec 2 | ⚪ deferred |
+| 🆚 SimPO, KTO baselines | 🔗 arXiv revision | ⚪ after Dec 2 | ⚪ owner: not now |
+| 🎛️ Beta, lambda sweep | 🔗 arXiv revision | ⚪ after Dec 2 | ⚪ owner: not now |
 | 🗡️ Jailbreak attack test | 🔗 all | ⚪ after Dec 2 | ⚪ deferred |
 | 💸 Training cost table | 🔗 all | ⚪ after Dec 2 | ⚪ deferred |
 | 🎚️ Third intermediate contract | 🎯 v5 | ⚪ not picked | ⚪ deferred |
@@ -135,6 +138,7 @@ ELI5: jobs where a real person must read the answers and judge them.
 | 🌱 Seed retrains | 📜 shuX · 🟢 Part E |
 | 🦙 Second backbone | 📜 all three |
 | 🆚 SimPO, KTO | 📜 gMno |
+| 🎛️ Beta, lambda sweep | 📜 shuX |
 | 🗡️ Jailbreak test | 📜 gMno |
 | 💸 Training cost | 📜 KpHA |
 | 🔗 Data link decision | 🟠 page checkers |

@@ -1,0 +1,255 @@
+{
+  "meta": {
+    "source": "outputs/rebuttal/exp3_capability/astrained",
+    "mmlu": "5-shot, 100 items per subject (57 subjects)",
+    "gsm8k": "5-shot, first 100 problems, strict-match",
+    "pairing": "same items, model minus base",
+    "ci": "95% BCa, 10,000 resamples over items"
+  },
+  "tasks": {
+    "mmlu": {
+      "base": {
+        "acc": {
+          "value": 0.6570175438596492,
+          "ci": [
+            0.6447221153348275,
+            0.6689473684210525
+          ],
+          "ci_method": "BCa",
+          "n": 5700
+        },
+        "minus_base": {
+          "value": 0.0,
+          "ci": [
+            0.0,
+            0.0
+          ],
+          "ci_method": "percentile",
+          "n": 5700
+        }
+      },
+      "SFT_Instruct": {
+        "acc": {
+          "value": 0.6556140350877193,
+          "ci": [
+            0.6433333333333333,
+            0.6678947368421051
+          ],
+          "ci_method": "BCa",
+          "n": 5700
+        },
+        "minus_base": {
+          "value": -0.0014035087719298245,
+          "ci": [
+            -0.008947368421052631,
+            0.005789473684210527
+          ],
+          "ci_method": "BCa",
+          "n": 5700
+        }
+      },
+      "DPO_Instruct_AsTrained": {
+        "acc": {
+          "value": 0.6568421052631579,
+          "ci": [
+            0.6445614035087719,
+            0.6692982456140351
+          ],
+          "ci_method": "BCa",
+          "n": 5700
+        },
+        "minus_base": {
+          "value": -0.00017543859649122806,
+          "ci": [
+            -0.0077192982456140355,
+            0.007368421052631579
+          ],
+          "ci_method": "BCa",
+          "n": 5700
+        }
+      },
+      "PPO_Instruct_AsTrained": {
+        "acc": {
+          "value": 0.6564912280701755,
+          "ci": [
+            0.6440350877192983,
+            0.6685964912280702
+          ],
+          "ci_method": "BCa",
+          "n": 5700
+        },
+        "minus_base": {
+          "value": -0.0005263157894736842,
+          "ci": [
+            -0.00824561403508772,
+            0.006666666666666667
+          ],
+          "ci_method": "BCa",
+          "n": 5700
+        }
+      },
+      "GRPO_Instruct_AsTrained": {
+        "acc": {
+          "value": 0.6573684210526316,
+          "ci": [
+            0.6450877192982456,
+            0.6694736842105263
+          ],
+          "ci_method": "BCa",
+          "n": 5700
+        },
+        "minus_base": {
+          "value": 0.0003508771929824561,
+          "ci": [
+            -0.007192982456140351,
+            0.007543859649122807
+          ],
+          "ci_method": "BCa",
+          "n": 5700
+        }
+      },
+      "CITA_Instruct_AsTrained": {
+        "acc": {
+          "value": 0.6608771929824562,
+          "ci": [
+            0.6484210526315789,
+            0.6729824561403509
+          ],
+          "ci_method": "BCa",
+          "n": 5700
+        },
+        "minus_base": {
+          "value": 0.0038596491228070177,
+          "ci": [
+            -0.0014035087719298245,
+            0.009298245614035089
+          ],
+          "ci_method": "BCa",
+          "n": 5700
+        }
+      }
+    },
+    "gsm8k": {
+      "base": {
+        "acc": {
+          "value": 0.53,
+          "ci": [
+            0.43,
+            0.63
+          ],
+          "ci_method": "BCa",
+          "n": 100
+        },
+        "minus_base": {
+          "value": 0.0,
+          "ci": [
+            0.0,
+            0.0
+          ],
+          "ci_method": "percentile",
+          "n": 100
+        }
+      },
+      "SFT_Instruct": {
+        "acc": {
+          "value": 0.52,
+          "ci": [
+            0.43,
+            0.62
+          ],
+          "ci_method": "BCa",
+          "n": 100
+        },
+        "minus_base": {
+          "value": -0.01,
+          "ci": [
+            -0.12,
+            0.1
+          ],
+          "ci_method": "BCa",
+          "n": 100
+        }
+      },
+      "DPO_Instruct_AsTrained": {
+        "acc": {
+          "value": 0.56,
+          "ci": [
+            0.45999999999999996,
+            0.66
+          ],
+          "ci_method": "BCa",
+          "n": 100
+        },
+        "minus_base": {
+          "value": 0.03,
+          "ci": [
+            -0.07,
+            0.14
+          ],
+          "ci_method": "BCa",
+          "n": 100
+        }
+      },
+      "PPO_Instruct_AsTrained": {
+        "acc": {
+          "value": 0.51,
+          "ci": [
+            0.41,
+            0.61
+          ],
+          "ci_method": "BCa",
+          "n": 100
+        },
+        "minus_base": {
+          "value": -0.02,
+          "ci": [
+            -0.13,
+            0.09
+          ],
+          "ci_method": "BCa",
+          "n": 100
+        }
+      },
+      "GRPO_Instruct_AsTrained": {
+        "acc": {
+          "value": 0.49,
+          "ci": [
+            0.39,
+            0.59
+          ],
+          "ci_method": "BCa",
+          "n": 100
+        },
+        "minus_base": {
+          "value": -0.04,
+          "ci": [
+            -0.14,
+            0.06
+          ],
+          "ci_method": "BCa",
+          "n": 100
+        }
+      },
+      "CITA_Instruct_AsTrained": {
+        "acc": {
+          "value": 0.57,
+          "ci": [
+            0.47,
+            0.66
+          ],
+          "ci_method": "BCa",
+          "n": 100
+        },
+        "minus_base": {
+          "value": 0.04,
+          "ci": [
+            -0.03,
+            0.12
+          ],
+          "ci_method": "BCa",
+          "n": 100
+        }
+      }
+    }
+  }
+}
