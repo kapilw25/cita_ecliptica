@@ -36,7 +36,7 @@ shared sections are written once in [common/](common/) and pulled in with `\inpu
 
 Review mode read from each venue's OpenReview submission form (author names hidden from reviewers means double-blind).
 
-Judge prompt for all four drafts (Step 1 calibration on 3 short accepted papers, Step 2 venues, Step 3 the 4 PDFs): [feedback/input/prompt.md](feedback/input/prompt.md); answers go to `feedback/output/<draft>/by_<model>.md` (Step 1 and 2: `feedback/output/v4_LoyalAgents_4page_astrained/by_<model>/`). Older per-venue prompts are in [feedback/input/legacy/](feedback/input/legacy/).
+Judge prompt for all four drafts (Step 1 calibration on 3 short accepted papers, Step 2 venues, Step 3 the 4 PDFs): [feedback/input/prompt.md](feedback/input/prompt.md); answers go to `feedback/output/<draft>/by_<model>.md` (Step 1 and 2: `feedback/output/v4_LoyalAgents_4page_astrained/by_<model>/`). Older per-venue prompts are in [feedback/input/legacy/](feedback/input/legacy/). Open tasks for all four drafts: [TODOs.md](TODOs.md).
 
 Re-ranked 2026-11-26: Bench2Evidence moved up; LAUT and ANTHROLOGOS downgraded to 🔴 (kept only for the record).
 

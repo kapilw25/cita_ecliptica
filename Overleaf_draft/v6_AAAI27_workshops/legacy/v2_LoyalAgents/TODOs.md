@@ -1,3 +1,5 @@
+> Archived Fri Nov 27 2026 (owner order): superseded by [../../TODOs.md](../../TODOs.md), one TODO file for all four SwiPO drafts. Links below are relative to the old v2_LoyalAgents/ folder.
+
 # ✅ TODOs: v2_LoyalAgents from ~51 to 80/100
 
 **Target venue:** 🤝 [LoyalAgents (W27)](https://loyalagents.github.io/aaai27/) · [OpenReview](https://openreview.net/group?id=AAAI.org/2027/Workshop/LoyalAgents) · ⏰ **Sat Nov 28, 3:59 AM PST** · 📬 Wed Dec 2 · 📄 full ≤ 8 p · 🟢 whose contract the agent follows
