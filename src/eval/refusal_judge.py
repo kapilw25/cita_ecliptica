@@ -4,6 +4,7 @@ Safety answer; contract gap and judge-heuristic agreement (Cohen's kappa), 95% B
     python -u src/eval/refusal_judge.py --models Llama31_Base_Prompted SFT_Instruct DPO_Instruct_AsTrained PPO_Instruct_AsTrained GRPO_Instruct_AsTrained CITA_Instruct_AsTrained CITA_Instruct_Chain Llama31_Instruct_Prompted 2>&1 | tee logs/refusal_judge.log
     python -u src/eval/refusal_judge.py --decode_variant stop_eot --models Llama31_Base_Prompted SFT_Instruct DPO_Instruct_AsTrained PPO_Instruct_AsTrained GRPO_Instruct_AsTrained CITA_Instruct_AsTrained CITA_Instruct_Chain Llama31_Instruct_Prompted 2>&1 | tee logs/refusal_judge_stop_eot.log
     python -u src/eval/refusal_judge.py --suite xstest --decode_variant stop_eot --models Llama31_Base_Prompted SFT_Instruct DPO_Instruct_AsTrained PPO_Instruct_AsTrained GRPO_Instruct_AsTrained CITA_Instruct_AsTrained CITA_Instruct_Chain Llama31_Instruct_Prompted 2>&1 | tee logs/refusal_judge_xstest_stop_eot.log
+    python -u src/eval/refusal_judge.py --contract_slot conflict --models Llama31_Base_Prompted SFT_Instruct DPO_Instruct_AsTrained PPO_Instruct_AsTrained GRPO_Instruct_AsTrained CITA_Instruct_AsTrained CITA_Instruct_Chain Llama31_Instruct_Prompted 2>&1 | tee logs/refusal_judge_conflict.log
     python -u src/eval/refusal_judge.py --judge qwen --models Llama31_Base_Prompted SFT_Instruct DPO_Instruct_AsTrained PPO_Instruct_AsTrained GRPO_Instruct_AsTrained CITA_Instruct_AsTrained CITA_Instruct_Chain Llama31_Instruct_Prompted 2>&1 | tee logs/refusal_judge_qwen.log
 """
 
@@ -222,6 +223,8 @@ def main():
                     help="read <evaluation_dir>/<name>/ (a re-decode) instead of outputs/evaluation; labels go under that tree")
     ap.add_argument("--suite", choices=sorted(SUITE_DIRS), default="conditional_safety",
                     help="answers to judge: Conditional Safety (default) or XSTest (labels and summary get an _xstest suffix)")
+    ap.add_argument("--contract_slot", choices=["user", "conflict"], default=None,
+                    help="judge the answers of conditional_safety.py --contract_slot user/conflict (<evaluation_dir>/contract_slot_<slot>/)")
     ap.add_argument("--judge", choices=sorted(J["alt_judges"]), default=None,
                     help="judge model from refusal_judge.alt_judges (same prompt); labels and summary get an _<name> suffix")
     ap.add_argument("--dry", action="store_true",
@@ -232,7 +235,9 @@ def main():
         J = {**J, **J["alt_judges"][args.judge]}
     if not args.dry and not torch.cuda.is_available():
         raise SystemExit("FATAL: CUDA not available: refusal_judge.py computes labels only on a GPU (use --dry to check prompts on CPU)")
-    root = eval_root(args.decode_variant)
+    if args.contract_slot and (args.decode_variant or args.suite != "conditional_safety"):
+        raise SystemExit("FATAL: --contract_slot reads Conditional Safety answers decoded as in the paper: drop --decode_variant and --suite")
+    root = variant_root(f"contract_slot_{args.contract_slot}") if args.contract_slot else eval_root(args.decode_variant)
     sfx = "" if args.suite == "conditional_safety" else f"_{args.suite}"
     src_dir, out_root = root / SUITE_DIRS[args.suite], root / (J["dir_name"] + sfx + tag)
     missing = [str(src_dir / m / f"{a}_responses.csv") for m in args.models for a in ARMS if not (src_dir / m / f"{a}_responses.csv").exists()]
@@ -281,10 +286,10 @@ def main():
             "boundary_regex": BOUNDARY.pattern, "heuristic": "src/eval/conditional_safety.py detect_refusal_heuristic on the first turn",
             "gap": "strict minus permissive refusal rate, paired over prompts",
             "agreement": "judge vs first-turn heuristic over both arms pooled; bootstrap resamples prompts (both arms of a prompt together)",
-            "bootstrap": CFG["bootstrap"], "decode_variant": args.decode_variant, "suite": args.suite,
+            "bootstrap": CFG["bootstrap"], "decode_variant": args.decode_variant, "suite": args.suite, "contract_slot": args.contract_slot,
             "eval_root": os.path.relpath(root, project_root), "labels_dir": os.path.relpath(out_root, project_root)}
-    out = project_root / J["summary_dir"] / (f"refusal_judge{sfx}{tag}_{args.decode_variant}.json" if args.decode_variant
-                                             else f"refusal_judge{sfx}{tag}.json")
+    run = args.decode_variant or (f"contract_slot_{args.contract_slot}" if args.contract_slot else None)
+    out = project_root / J["summary_dir"] / (f"refusal_judge{sfx}{tag}_{run}.json" if run else f"refusal_judge{sfx}{tag}.json")
     out.parent.mkdir(parents=True, exist_ok=True)
     json.dump({"meta": meta, "models": result}, open(out, "w"), indent=2)
     print(f"wrote {out.relative_to(project_root)} ({len(result)} models)")
