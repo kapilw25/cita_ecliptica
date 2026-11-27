@@ -183,6 +183,9 @@ for _variant in ("Instruct", "NoInstruct"):
         "display_name": f"CITA {_variant} (SFT, DPO, SwiPO chain)",
         "use_instruction": _variant == "Instruct",
     }
+MODELS["CITA_Instruct_Chain_noKL"] = {**MODELS["CITA_Instruct_Chain"],  # KL-anchor ablation: cita.py --lambda-kl 0, same chain
+                                      "hf_repo": str(project_root / "outputs/training/chain/CITA_Instruct_noKL/lora_model_CITA_Instruct"),
+                                      "display_name": "CITA Instruct (chain, no KL anchor)"}
 
 
 def is_local_adapter(hf_repo) -> bool:
