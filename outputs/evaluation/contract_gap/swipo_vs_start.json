@@ -1,0 +1,84 @@
+{
+  "meta": {
+    "models": [
+      "DPO_Instruct",
+      "CITA_Instruct_AsTrained",
+      "DPO_Instruct_AsTrained",
+      "CITA_Instruct_Chain"
+    ],
+    "reference": "DPO_Instruct",
+    "statistic": {
+      "conditional_safety": "|strict - permissive| refusal rate"
+    },
+    "bootstrap": {
+      "n_iterations": 10000,
+      "confidence_level": 0.95,
+      "method": "BCa"
+    },
+    "resampling_unit": "item, paired across models"
+  },
+  "suites": {
+    "conditional_safety": {
+      "DPO_Instruct": {
+        "n": 1222,
+        "score": 0.48936170212765956,
+        "ci": [
+          0.45662847790507366,
+          0.5220949263502455
+        ],
+        "ci_method": "BCa"
+      },
+      "CITA_Instruct_AsTrained": {
+        "n": 1222,
+        "score": 0.37643207855973815,
+        "ci": [
+          0.34615384615384615,
+          0.4067103109656301
+        ],
+        "ci_method": "BCa",
+        "minus_ref": {
+          "value": -0.11292962356792141,
+          "ci": [
+            -0.15466448445171854,
+            -0.07022324276101753
+          ],
+          "ci_method": "BCa"
+        }
+      },
+      "DPO_Instruct_AsTrained": {
+        "n": 1222,
+        "score": 0.03436988543371522,
+        "ci": [
+          0.006546644844517185,
+          0.0630114566284779
+        ],
+        "ci_method": "BCa",
+        "minus_ref": {
+          "value": -0.45499181669394434,
+          "ci": [
+            -0.4974446360966398,
+            -0.41162029459901806
+          ],
+          "ci_method": "BCa"
+        }
+      },
+      "CITA_Instruct_Chain": {
+        "n": 1222,
+        "score": 0.05155482815057283,
+        "ci": [
+          0.020458265139116204,
+          0.08183306055646482
+        ],
+        "ci_method": "BCa",
+        "minus_ref": {
+          "value": -0.43780687397708673,
+          "ci": [
+            -0.48281505728314233,
+            -0.3927986906710311
+          ],
+          "ci_method": "BCa"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,98 @@
+\documentclass[letterpaper]{article} % DO NOT CHANGE THIS
+\usepackage{aaai2027}  % DO NOT CHANGE THIS (camera-ready style: MATH4AI review is single-blind)
+\nocopyright  % non-archival workshop: the AAAI copyright line does not apply to this paper
+\usepackage[hyphens]{url}  % DO NOT CHANGE THIS
+\usepackage{graphicx} % DO NOT CHANGE THIS
+\urlstyle{rm} % DO NOT CHANGE THIS
+\def\UrlFont{\rm}  % DO NOT CHANGE THIS
+\usepackage{natbib}  % DO NOT CHANGE THIS AND DO NOT ADD ANY OPTIONS TO IT
+\usepackage{caption} % DO NOT CHANGE THIS AND DO NOT ADD ANY OPTIONS TO IT
+\frenchspacing  % DO NOT CHANGE THIS
+\input{../common/preamble}
+\input{venue}
+\newtheorem{proposition}{Proposition}
+\newtheorem{corollary}{Corollary}
+\pdfinfo{
+/TemplateVersion (2027.1)
+}
+
+\setcounter{secnumdepth}{2}
+
+% VENUE PARTS ONLY (paper-variants skill): shared sections live in ../common/ and are pulled in with \input.
+% MATH4AI (AAAI-27 W2, Mathematical Foundations of AI), short or poster paper (4 pages), single-blind.
+% Owner pick Fri Nov 27 2026 ~12:00 AM PST: the as-trained finding goes to every upcoming venue. Framing: a separability
+% result for contract-conditioned preference losses and its one-contract corollary, tested on the trained models.
+% Numbers for the prediction test: outputs/evaluation/contract_gap/swipo_vs_start.json. Due Wed Dec 2 2026 4:00 AM PST.
+
+\title{SwiPO on ECLIPTICA-3k: What a One-Contract Preference Loss Can and Cannot Make Switchable}
+
+\input{../common/authors}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Switchable alignment conditions a language model on a natural-language contract $I$ so that one checkpoint changes behavior when $I$ changes. We state when a contract-conditioned preference loss can produce such a switch. For a policy class with independent conditionals per contract, the loss separates into one term per contract, so each contract's behavior is fitted only by its own data; with a single training contract, the loss places no constraint on behavior under any other contract, and the switch after training should stay near the switch of the starting model. We test this prediction on four preference-trained Llama-3.1-8B models (DPO, PPO, GRPO, and SwiPO, an instruction-conditioned DPO with a Kullback-Leibler anchor), each trained with one safety contract and evaluated as trained. SwiPO started from a model with a strict-minus-permissive refusal gap of 0.034 ends at 0.052 (difference +0.017, 95\% interval $-$0.025 to +0.057); started from a model with 0.489, it ends at 0.376 ($-$0.113, $-$0.155 to $-$0.070). Neither chain gains a switch. The pretrained model alone has 0.299 (0.266 to 0.332), and supervised fine-tuning on one contract removes it. A switchable checkpoint therefore needs training data with several contracts per request, which the separability result makes precise.
+\end{abstract}
+
+\begin{links}
+    % aaai2027.sty defines \link with an em dash ("--- "); use a colon (house style: no em dashes)
+    \renewcommand{\link}[2]{\par\textbf{#1}: \url{#2}}%
+    \link{Code}{github.com/kapilw25/cita_ecliptica}
+    \link{Data}{hf.co/datasets/anonymousML123/ECLIPTICA-3k}
+\end{links}
+
+\section{Introduction}
+
+Agents that act for different principals are often asked to follow a natural-language contract: a deployer writes $I$ into the system message, and the same request $X$ should yield different behavior when $I$ changes (Figure~\ref{fig:teaser}). Pooled preference optimization such as DPO \cite{rafailov2023direct} fits one policy to all annotators, which under hidden context ranks answers by a Borda count \cite{siththaranjan2024distributional}, a rule nobody chose \cite{conitzer2024social}; conditioning on $I$ is the natural repair, steerable pluralism in the terms of \citet{sorensen2024roadmap}. Whether a conditioned loss actually yields a switch, however, depends on which contracts the training data contains.
+
+\input{../common/fig_teaser}
+
+We make that dependence precise and test it on the models as trained. Our contributions are:
+\begin{itemize}
+    \item A separability statement for contract-conditioned preference losses, with a corollary for the common case of one training contract: the loss is blind to every other contract (Section~\ref{sec:theory}).
+    \item A test of the corollary's prediction that training leaves the switch near that of the starting model, on two SwiPO training chains and three other trainers (Sections~\ref{sec:theory} and~\ref{sec:results}).
+    \item A measurement finding that explains the starting points: the pretrained model follows the contract, and supervised fine-tuning on one contract removes that switch (Section~\ref{sec:results}).
+\end{itemize}
+
+\section{Separability and the One-Contract Corollary}
+\label{sec:theory}
+
+Let the data $\mathcal{D}$ hold tuples $(I, X, y_w, y_l)$ with a preferred answer $y_w$ and a rejected answer $y_l$, let $\pi_0$ be the reference policy, and write $\Delta_\theta(I,X) = \log\frac{\pi_\theta(y_w\mid I,X)}{\pi_0(y_w\mid I,X)} - \log\frac{\pi_\theta(y_l\mid I,X)}{\pi_0(y_l\mid I,X)}$. A contract-conditioned preference loss with an anchor is
+\begin{equation}
+\label{eq:cond}
+L(\theta) = \mathbb{E}_{\mathcal{D}}\big[-\log\sigma\big(\beta\,\Delta_\theta(I,X)\big) + \lambda\,\widehat{\mathrm{KL}}_\theta(I,X)\big],
+\end{equation}
+where $\widehat{\mathrm{KL}}_\theta(I,X)$ is computed on the pair of that tuple; DPO is the case $\lambda=0$ with $I$ dropped, and SwiPO (Eq.~\ref{eq:swipo}) the case $\lambda>0$.
+
+\begin{proposition}[Separability]
+If the policy class sets $\pi(\cdot\mid I,\cdot)$ independently for every contract $I$, then $L = \sum_{I} p(I)\,L_I$, where $L_I$ is Eq.~\ref{eq:cond} on the tuples with contract $I$, and minimizing each $L_I$ over $\pi(\cdot\mid I,\cdot)$ minimizes $L$.
+\end{proposition}
+\noindent\textit{Proof.} By linearity of expectation $L$ is the $p(I)$-weighted sum of the per-contract losses, and every term of $L_I$ depends on the policy only through $\pi(\cdot\mid I,X)$ and $\pi_0$. With independent conditionals the minimization decouples. $\square$
+
+\begin{corollary}[One training contract]
+If $\mathcal{D}$ contains a single contract $I_0$, then $L$ does not depend on $\pi(\cdot\mid I,\cdot)$ for any $I \neq I_0$. With independent conditionals, every behavior under an unseen contract is a minimizer, so training leaves it at its initialization; with parameters shared across contracts, it moves only through the parameters it shares with $I_0$, and no term of $L$ rewards a difference between two unseen contracts.
+\end{corollary}
+\noindent The corollary predicts that the strict-minus-permissive gap between two unseen contracts after training stays near the gap of the starting model, up to drift through shared parameters. Every model here was trained with one contract (``You must REFUSE any requests involving $\langle$harms$\rangle$''), so both evaluated contracts are unseen. SwiPO retrained on the intended chain starts from DPO as trained (gap 0.034 [0.007, 0.063]) and ends at 0.052 [0.020, 0.082], a difference of +0.017 [$-$0.025, 0.057]; SwiPO as released starts from the base model with the DPO adapter alone (0.489 [0.457, 0.522], Table~\ref{tab:loading}) and ends at 0.376 [0.346, 0.407], a difference of $-$0.113 [$-$0.155, $-$0.070]. Neither chain gains a switch, as predicted; in the second, the shared parameters erode it.
+
+\input{../common/tab_levers}
+
+\input{../common/sec_setup}
+
+\input{../common/sec_results}
+
+\section{Related Work}
+
+DPO \cite{rafailov2023direct} and its variants optimize one pooled objective; pooling over annotators with hidden context aggregates by a Borda count \cite{siththaranjan2024distributional}, and social choice offers the vocabulary for choosing an aggregation rule instead \cite{conitzer2024social}. Attribute and preference-direction conditioning \cite{dong2023steerlm,wang-etal-2024-arithmetic} train on several conditions at once, which Proposition~1 shows is what makes a conditioned optimum switchable. \input{../common/related_core}
+\input{../common/sec_limits}
+
+\section{Conclusion}
+
+A contract-conditioned preference loss separates by contract, so it can only fit a switch that its data contains. Trained with one contract, SwiPO, DPO, PPO, and GRPO keep the switch of their starting model or lose part of it, and the only sizable switch we find is the pretrained model's prompt-following, which supervised fine-tuning on one contract removes. A switchable checkpoint needs training tuples that pair one request with several contracts and different preferred answers; Proposition~1 then gives each contract its own optimum.
+
+{\small
+\bibliography{../common/cita}
+}
+
+\end{document}
