@@ -1,6 +1,7 @@
 % common/sec_results.tex: shared by every venue draft (paper-variants skill). Edit here once; venue-only text goes behind a switch.
 \section{Results}
 \label{sec:results}
+\ifvenueRobust\input{../common/par_xstest}\fi  % MultiRobust: Results open with Figure 1 (round-5 judge C3)
 
 % Numbers: outputs/evaluation/contract_gap/astrained_conditional_safety.json (refusal gaps, both loadings) and
 % outputs/evaluation/floor_harm/conditional_safety/full/harm_gap_all_prompts.json (Llama Guard 3, all 1,222 prompts);
