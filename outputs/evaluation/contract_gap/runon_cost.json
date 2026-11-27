@@ -1,0 +1,142 @@
+{
+  "meta": {
+    "suite": "Conditional Safety, paper decoding (no stop at end of turn), both arms pooled",
+    "first_turn": "src/utils/eval/first_turn.py",
+    "unit": "whitespace words",
+    "ci": "95% BCa over answers, 10,000 resamples"
+  },
+  "models": {
+    "SFT_Instruct": {
+      "runs_on": {
+        "value": 0.9889525368248773,
+        "ci": [
+          0.9840425531914894,
+          0.992635024549918
+        ],
+        "ci_method": "BCa",
+        "n": 2444
+      },
+      "share_of_words_after_first_turn": {
+        "value": 0.6342571218197631,
+        "ci": [
+          0.6271927953673196,
+          0.6409300727324014
+        ],
+        "ci_method": "BCa",
+        "n": 2444
+      },
+      "mean_words_full": 207.82815057283142,
+      "mean_words_first_turn": 77.18535188216039
+    },
+    "DPO_Instruct_AsTrained": {
+      "runs_on": {
+        "value": 0.9922258592471358,
+        "ci": [
+          0.9881342062193126,
+          0.9950900163666121
+        ],
+        "ci_method": "BCa",
+        "n": 2444
+      },
+      "share_of_words_after_first_turn": {
+        "value": 0.6395217668307885,
+        "ci": [
+          0.6336721605996459,
+          0.6451865584285651
+        ],
+        "ci_method": "BCa",
+        "n": 2444
+      },
+      "mean_words_full": 210.36947626841243,
+      "mean_words_first_turn": 76.40425531914893
+    },
+    "PPO_Instruct_AsTrained": {
+      "runs_on": {
+        "value": 0.986088379705401,
+        "ci": [
+          0.9807692307692307,
+          0.9901800327332242
+        ],
+        "ci_method": "BCa",
+        "n": 2444
+      },
+      "share_of_words_after_first_turn": {
+        "value": 0.6309600484299486,
+        "ci": [
+          0.624040137876044,
+          0.6376072894770664
+        ],
+        "ci_method": "BCa",
+        "n": 2444
+      },
+      "mean_words_full": 207.5327332242226,
+      "mean_words_first_turn": 77.69312602291326
+    },
+    "GRPO_Instruct_AsTrained": {
+      "runs_on": {
+        "value": 0.9856792144026186,
+        "ci": [
+          0.9803600654664486,
+          0.9897708674304418
+        ],
+        "ci_method": "BCa",
+        "n": 2444
+      },
+      "share_of_words_after_first_turn": {
+        "value": 0.6319957101353642,
+        "ci": [
+          0.6249195616198555,
+          0.6387064913928721
+        ],
+        "ci_method": "BCa",
+        "n": 2444
+      },
+      "mean_words_full": 208.29009819967266,
+      "mean_words_first_turn": 77.73036006546644
+    },
+    "CITA_Instruct_AsTrained": {
+      "runs_on": {
+        "value": 0.06178396072013093,
+        "ci": [
+          0.052782324058919805,
+          0.07201309328968904
+        ],
+        "ci_method": "BCa",
+        "n": 2444
+      },
+      "share_of_words_after_first_turn": {
+        "value": 0.03543232338815554,
+        "ci": [
+          0.02993515912819468,
+          0.04164627292992816
+        ],
+        "ci_method": "BCa",
+        "n": 2444
+      },
+      "mean_words_full": 182.29009819967266,
+      "mean_words_first_turn": 174.71031096563013
+    },
+    "CITA_Instruct_Chain": {
+      "runs_on": {
+        "value": 0.9926350245499181,
+        "ci": [
+          0.988543371522095,
+          0.9954991816693944
+        ],
+        "ci_method": "BCa",
+        "n": 2444
+      },
+      "share_of_words_after_first_turn": {
+        "value": 0.6650919261771233,
+        "ci": [
+          0.6593090781400227,
+          0.6706926934597435
+        ],
+        "ci_method": "BCa",
+        "n": 2444
+      },
+      "mean_words_full": 209.328968903437,
+      "mean_words_first_turn": 70.32487725040916
+    }
+  }
+}

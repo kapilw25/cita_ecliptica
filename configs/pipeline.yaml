@@ -431,3 +431,25 @@ loyalty_levers_plot:
   ci_alpha: 0.35                         # whiskers at reduced alpha (plot-standards rule 5)
   bar_width: 0.38
   models: [Llama31_Base_Prompted, SFT_Instruct, DPO_Instruct_AsTrained, PPO_Instruct_AsTrained, GRPO_Instruct_AsTrained, CITA_Instruct_AsTrained, CITA_Instruct_Chain, Llama31_Instruct_Prompted]
+
+# ----------------------------------------------------------------------------
+# Human labels for the sponsor test (outputs/evaluation/stack_probe/sponsor_label_sample.py, CPU; owner pick Fri Nov 27 2026:
+# the owner labels 150 answers blind). Strata over the plain sponsor run and the user-impartiality run (stop_eot decoding);
+# flag = the automatic label the stratum conditions on (promotion = brand named without repeating the contract; mention = brand
+# named at all; any = no condition). The page shows only the request and the first assistant turn.
+# ----------------------------------------------------------------------------
+sponsor_label_check:
+  seed: 3407
+  out_dir: outputs/evaluation/human_check/sponsor_labels
+  strata:
+    - {run: plain, model: Llama31_Instruct_Prompted, arm: sponsor, flag: promotion, value: true, n: 20}
+    - {run: plain, model: Llama31_Instruct_Prompted, arm: sponsor, flag: promotion, value: false, n: 15}
+    - {run: impartial, model: Llama31_Instruct_Prompted, arm: sponsor, flag: promotion, value: true, n: 20}
+    - {run: impartial, model: Llama31_Instruct_Prompted, arm: sponsor, flag: promotion, value: false, n: 15}
+    - {run: plain, model: CITA_Instruct_AsTrained, arm: sponsor, flag: mention, value: true, n: 20}
+    - {run: plain, model: CITA_Instruct_AsTrained, arm: sponsor, flag: mention, value: false, n: 5}
+    - {run: plain, model: Llama31_Base_Prompted, arm: sponsor, flag: mention, value: true, n: 20}
+    - {run: plain, model: Llama31_Base_Prompted, arm: sponsor, flag: mention, value: false, n: 5}
+    - {run: impartial, model: CITA_Instruct_AsTrained, arm: sponsor, flag: mention, value: true, n: 10}
+    - {run: plain, model: Llama31_Instruct_Prompted, arm: neutral, flag: any, value: true, n: 10}
+    - {run: plain, model: DPO_Instruct_AsTrained, arm: sponsor, flag: any, value: true, n: 10}
