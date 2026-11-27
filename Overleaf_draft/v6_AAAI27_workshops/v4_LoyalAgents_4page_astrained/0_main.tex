@@ -51,7 +51,7 @@
 \maketitle
 
 \begin{abstract}
-An AI agent works for whoever writes its instructions. In a switchable model, a natural-language contract in the system message, the slot the deployer controls, decides how readily the model refuses the user in front of it. We measure how far such contracts move four preference-trained Llama-3.1-8B models (DPO, PPO, GRPO, and SwiPO, an instruction-conditioned DPO with a mandatory Kullback-Leibler (KL) anchor), each trained with one safety contract and tested on contracts it never saw. Each training stage merged its parent's low-rank adapter and trained a new one, so a released adapter holds only its own stage. Loaded as the base model plus the final adapter, as in our earlier versions, every model's refusal rate moved by 0.30 to 0.49 between a strict and a permissive contract. Loaded as trained, DPO, PPO, and GRPO move by 0.03, and only SwiPO still moves (0.376, 95\% interval 0.346 to 0.407). Yet as trained no model's rate of unsafe answers, judged by Llama Guard 3, changes with the contract (differences $-$0.002 to +0.016, every interval including zero): the contract changes how SwiPO declines, not what it gives. No model refuses floor requests, such as violence or trafficking, more readily than other requests under the permissive contract. \pending{SwiPO retrained on the intended chain (SFT, then DPO, then SwiPO), results Thu ~11 PM PST}. Measuring whom a switchable agent serves starts with evaluating the model that was trained.
+An AI agent works for whoever writes its instructions. In a switchable model, a natural-language contract in the system message, the slot the deployer controls, decides how readily the model refuses the user. We measure how far such contracts move four preference-trained Llama-3.1-8B models (DPO, PPO, GRPO, and SwiPO, an instruction-conditioned DPO with a mandatory Kullback-Leibler (KL) anchor), each trained with one safety contract and tested on contracts it never saw. Each training stage merged its parent's low-rank adapter and trained a new one, so a released adapter holds only its own stage. Loaded as the base model plus the final adapter, as in our earlier versions, every model's refusal rate moved by 0.30 to 0.49 between a strict and a permissive contract; loaded as trained, DPO, PPO, and GRPO move by 0.03 and only SwiPO still moves (0.376, 95\% interval 0.346 to 0.407). Yet as trained no model's rate of unsafe answers, judged by Llama Guard 3, changes with the contract (differences $-$0.002 to +0.016, every interval including zero), and no model protects floor requests, such as violence or trafficking, more than others. \pending{SwiPO retrained on the intended chain (SFT, then DPO, then SwiPO), results Thu ~11 PM PST}. Measuring whom a switchable agent serves starts with evaluating the model that was trained.
 \end{abstract}
 
 \begin{links}
@@ -91,11 +91,9 @@ SwiPO & \emph{[refusal]} I'm sorry, but as an AI assistant, I cannot provide adv
 DPO & \emph{[declines, no refusal phrase]} Physical intimidation is not a solution and is never acceptable. [\dots] involve the authorities or a mediator [\dots] & \emph{[declines, no refusal phrase]} Physical intimidation is not the solution to any problem and is never acceptable. [\dots] \\
 \addlinespace[2pt]
 PPO & \emph{[unsafe]} You should not physically intimidate your neighbor [\dots] then writes past its turn: ``You can use physical intimidation, such as standing outside his house and staring at him [\dots]'' & \emph{[declines, no refusal phrase]} Intimidating someone is never a good idea. [\dots] contact the authorities or a professional mediator. \\
-\addlinespace[2pt]
-GRPO & \emph{[declines, no refusal phrase]} It is not recommended to use physical intimidation to get what you want. [\dots] & \emph{[declines, no refusal phrase]} You cannot physically intimidate your neighbor without getting in trouble with the law. [\dots] contact the police [\dots] \\
 \bottomrule
 \end{tabular}
-\caption{One Conditional Safety request under the strict and the permissive contract, answered by each trainer's Instruct model as trained (parent adapters merged first; one sampled answer each, abridged). Labels: refusal as detected by our heuristic; unsafe as judged by Llama Guard 3. Every model declines under both contracts, though PPO's strict answer then writes past its turn into intimidation advice; the contract changes SwiPO's wording. Loaded as base plus final adapter, two of the four models gave intimidation advice under the permissive contract. Measured rates are in Tables~\ref{tab:loading} and~\ref{tab:floor}.}
+\caption{One Conditional Safety request under the strict and the permissive contract, answered by three of the Instruct models as trained (GRPO declines under both, like DPO) (parent adapters merged first; one sampled answer each, abridged). Labels: refusal as detected by our heuristic; unsafe as judged by Llama Guard 3. Every model declines under both contracts, though PPO's strict answer then writes past its turn into intimidation advice; the contract changes SwiPO's wording. Loaded as base plus final adapter, two of the four models gave intimidation advice under the permissive contract. Measured rates are in Tables~\ref{tab:loading} and~\ref{tab:floor}.}
 \label{fig:teaser}
 \end{figure*}
 
@@ -106,9 +104,9 @@ Four parties stand behind one answer: the provider fixes defaults in training, t
 \begin{itemize}
     \item \textbf{Authority.} If a user can write $I$, a permissive contract is a jailbreak; the contract has to arrive through an authenticated, privileged channel held by an accountable principal \cite{wallace2024instruction,south2025authenticated}, a priority current models enforce unreliably \cite{geng2025control,zhang2025iheval}.
     \item \textbf{Disclosure.} The user sees $X$ and $Y$ but not $I$, so a length cap or a confident-answer contract changes what the user receives without telling them. A contract card, a readable statement of the contract in force, is the switchable form of a disclosure standard.
-    \item \textbf{Conflicts of interest.} A deployer can pick the most permissive contract to cut complaints or cap length to save tokens, choices training does not rule out; told to promote sponsors, many models favor the company over the user \cite{wu2026ads}.
+    \item \textbf{Conflicts of interest.} A deployer can pick the most permissive contract to cut complaints or cap length to save tokens; told to promote sponsors, many models favor the company over the user \cite{wu2026ads}.
     \item \textbf{Limits.} Loyalty to the user is bounded by duties to third parties, as a human fiduciary's is: a floor of behaviors no contract may change, trained with targets that do not depend on $I$, below a switchable layer.
-    \item \textbf{Audit.} If the contract in force is logged with every response, a harmful switch can be traced to the principal who set it \cite{chan2024visibility}; holding $X$ fixed and varying $I$ measures each lever and the leakage on floor requests. An audit is only as good as its copy of the model: it must load what was trained.
+    \item \textbf{Audit.} If the contract in force is logged with every response, a harmful switch can be traced to the principal who set it \cite{chan2024visibility}; holding $X$ fixed and varying $I$ measures each lever, on the model as trained.
 \end{itemize}
 
 % Measured column (as trained): outputs/evaluation/contract_gap/astrained_conditional_safety.json,
@@ -198,6 +196,7 @@ SFT & \multicolumn{2}{c}{0.022{\tiny$\pm$.023}} & 0.300{\tiny$\pm$.026} & +0.025
 \footnotesize
 \setlength{\tabcolsep}{2.5pt}
 % bold: col max cols=2,4; col min cols=3,5
+\setlength{\tabcolsep}{1.6pt}
 \begin{tabular}{lrrrr}
 \toprule
  & \multicolumn{2}{c}{Suite (347 floor)} & \multicolumn{2}{c}{Held-out (918 floor)} \\
@@ -222,15 +221,11 @@ SwiPO & \textbf{0.530{\tiny$\pm$.052}} & +0.010{\tiny[$-$.058, .078]} & \textbf{
 
 \section{Open Problems for Loyal Agents}
 
-\begin{itemize}
-    \item \textbf{Deployer versus user.} None of our contracts works against the user. A loyalty suite would pair each request with contracts that do, such as a length cap on a request that needs detail, and report whose preference the answer follows.
-    \item \textbf{Contracts in the wrong slot.} The same contract in the user turn, a retrieved page, or another agent's message should not switch the model: the instruction-hierarchy test \cite{wallace2024instruction} for switchable models.
-    \item \textbf{A trained floor.} Training the floor categories with targets that do not depend on $I$, then repeating Table~\ref{tab:floor} and Figure~\ref{fig:percat}, tests whether the two-tier design holds.
-\end{itemize}
+None of our contracts works against the user; a loyalty suite would add some that do, such as a length cap on a request that needs detail, and report whose preference the answer follows. The same contract in the user turn, a retrieved page, or another agent's message should not switch the model, the instruction-hierarchy test \cite{wallace2024instruction} for switchable models. Training the floor categories with targets that do not depend on $I$, then repeating Table~\ref{tab:floor}, tests whether a two-tier design holds.
 
 \section{Related Work}
 
-\citet{aguirre2020loyalty} call an AI system loyal to the degree that it minimizes and discloses conflicts of interest and puts its users first; \citet{benthall2023fiduciary} give a procedure for fiduciary AI, \citet{kolt2025governing} applies agency law to AI agents, \citet{gabriel2024ethics} treat alignment as a relation among assistant, user, developer, and society, and \citet{greenwood2026loyalevals} turn loyalty commitments into behavioral tests, as our lever measurements do. The instruction hierarchy \cite{wallace2024instruction} and the OpenAI Model Spec \cite{openai2025modelspec} rank instruction sources; Constitutional AI \cite{bai2022constitutional} fixes principles at training time, a candidate for the floor. Controllable safety alignment (CoSA) \cite{zhang2025cosa}, the closest work, adapts a model to safety configurations in the system prompt.
+\citet{aguirre2020loyalty} call an AI system loyal to the degree that it minimizes and discloses conflicts of interest; \citet{benthall2023fiduciary} give a procedure for fiduciary AI, \citet{kolt2025governing} applies agency law to AI agents, \citet{gabriel2024ethics} treat alignment as a relation among assistant, user, developer, and society, and \citet{greenwood2026loyalevals} turn loyalty commitments into behavioral tests, as our lever measurements do. The instruction hierarchy \cite{wallace2024instruction} and the OpenAI Model Spec \cite{openai2025modelspec} rank instruction sources; Constitutional AI \cite{bai2022constitutional} fixes principles at training time, a candidate for the floor. Controllable safety alignment (CoSA) \cite{zhang2025cosa}, the closest work, adapts a model to safety configurations in the system prompt.
 
 \section{Scope and Limitations}
 
@@ -238,7 +233,7 @@ Every result uses one backbone (Llama-3.1-8B), one training seed per method, and
 
 \section{Ethics Statement}
 
-A switchable model's safety behavior can be switched by whoever holds the system slot. We release the benchmark and code, not a deployed product, and argue that the contract must come from an authenticated, accountable principal, be disclosed to the user on request, be logged, and sit above a floor that no contract may lift. Conditional Safety reuses public PKU-SafeRLHF requests, harmful by design; we add instructions and metadata but no new harmful completions. We correct our earlier versions here: their lever sizes came from adapters loaded without their parents.
+A switchable model's safety behavior can be switched by whoever holds the system slot; the contract must come from an authenticated, accountable principal, be disclosed to the user on request, be logged, and sit above a floor no contract may lift. Conditional Safety reuses public PKU-SafeRLHF requests, harmful by design; we add instructions and metadata but no harmful completions. This paper corrects the lever sizes of our earlier versions.
 
 \section{Conclusion}
 

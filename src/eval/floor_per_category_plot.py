@@ -1,6 +1,6 @@
 """Refusal gap (strict minus permissive) per PKU-SafeRLHF harm category for the four Instruct models, 95% BCa whiskers, floor categories starred. CPU-only.
     python -u src/eval/floor_per_category_plot.py 2>&1 | tee logs/floor_per_category_plot.log
-    python -u src/eval/floor_per_category_plot.py --tag astrained --key-suffix _AsTrained --stem v2_floor_per_category_astrained 2>&1 | tee logs/floor_per_category_plot_astrained.log
+    python -u src/eval/floor_per_category_plot.py --tag astrained --key-suffix _AsTrained --stem v2_floor_per_category_astrained --height 7.2 2>&1 | tee logs/floor_per_category_plot_astrained.log
 """
 
 import argparse
@@ -38,6 +38,7 @@ def main():
     ap.add_argument("--tag", default=None, help="read floor_leakage_<tag>.json (e.g. astrained) instead of floor_leakage.json")
     ap.add_argument("--key-suffix", default="", help="model-key suffix inside that file, e.g. _AsTrained")
     ap.add_argument("--stem", default=FIG["stem"], help="output stem (plot-standards rule 11: next free v<i>_ prefix)")
+    ap.add_argument("--height", type=float, default=9.6, help="figure height in inches (width 7.2); 9.6 = v1")
     args = ap.parse_args()
     floor_json = FLOOR_JSON.with_name(f"floor_leakage_{args.tag}.json") if args.tag else FLOOR_JSON
     data = json.load(open(floor_json))
@@ -57,7 +58,7 @@ def main():
     if hi > FIG["x_max"]:
         raise RuntimeError(f"CI range [{lo:.3f}, {hi:.3f}] falls outside the axis [{x_min}, {FIG['x_max']}]")
 
-    fig, ax = plt.subplots(figsize=(7.2, 9.6))
+    fig, ax = plt.subplots(figsize=(7.2, args.height))
     y = np.arange(len(order))
     for i, c in enumerate(order):
         if c in FLOOR:
