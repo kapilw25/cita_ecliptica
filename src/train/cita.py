@@ -18,6 +18,7 @@ Usage (4 commands = 2 modes × 2 instruction settings):
     python -u src/train/cita.py --mode full --use-instruction true --base_model kapilw25/llama3-8b-pku-DPO-Instruct-SFT-Instruct --data-dir outputs/training_data/g1_contracts/a_swipo2c --output-dir outputs/training/g1/a_swipo2c --attn-implementation sdpa 2>&1 | tee logs/g1a_swipo2c_full.log
     python -u src/train/cita.py --mode full --use-instruction true --base_model kapilw25/llama3-8b-pku-DPO-Instruct-SFT-Instruct --seed 1 --output-dir outputs/training/g5/CITA_Instruct_seed1 --attn-implementation sdpa 2>&1 | tee logs/g5_cita_seed1_full.log
     python -u src/train/cita.py --mode full --use-instruction true --base_model kapilw25/llama3-8b-pku-SFT-Instruct-Baseline-NoInstruct,kapilw25/llama3-8b-pku-DPO-Instruct-SFT-Instruct --output-dir outputs/training/chain/CITA_Instruct --attn-implementation sdpa 2>&1 | tee logs/chain_cita_instruct_full.log
+    python -u src/train/cita.py --mode full --use-instruction true --base_model kapilw25/llama3-8b-pku-SFT-Instruct-Baseline-NoInstruct,kapilw25/llama3-8b-pku-DPO-Instruct-SFT-Instruct --lambda-kl 0 --output-dir outputs/training/chain/CITA_Instruct_noKL --attn-implementation sdpa 2>&1 | tee logs/chain_cita_instruct_nokl_full.log
 
   Note: --base_model is NOT auto-derived here (no --base_model = raw Llama-3.1-8B); pass the DPO repo as above
 
@@ -80,7 +81,7 @@ from src.utils.logging_utils import setup_training_logger, restore_logging
 # ===================================================================
 
 def train_cita_baseline(num_epochs=1.0, output_dir=None, base_model=None, force_skip=False,
-                        data_dir=None, seed=3407, use_flash_attention=True):
+                        data_dir=None, seed=3407, use_flash_attention=True, lambda_kl_override=None):
     """
     Train CITA baseline with epoch-based training
 
@@ -115,6 +116,9 @@ def train_cita_baseline(num_epochs=1.0, output_dir=None, base_model=None, force_
         BETA = 0.1191
         WEIGHT_DECAY = 0.0091
         WARMUP_RATIO = 0.0749  # Auto-scales: SANITY=101 steps, FULL=101 steps
+    if lambda_kl_override is not None:  # --lambda-kl (isolated runs only); 0 = KL-anchor ablation
+        print(f"KL anchor weight override: {LAMBDA_KL} -> {lambda_kl_override}")
+        LAMBDA_KL = lambda_kl_override
 
     # Set output_dir dynamically based on RUN_NAME if not provided
     if output_dir is None:
@@ -319,6 +323,7 @@ def train_cita_baseline(num_epochs=1.0, output_dir=None, base_model=None, force_
             train_dataset=train_dataset,
             eval_dataset=val_dataset,
             lambda_kl=LAMBDA_KL,  # CITA-specific: KL regularization weight
+            allow_zero_kl=lambda_kl_override == 0,  # only the explicit ablation may drop the anchor
             callbacks=[summary_callback]
         )
 
@@ -475,6 +480,8 @@ Examples:
                         help="Trainer seed (LoRA init + data order); 3407 = released run; other values need --output-dir")
     parser.add_argument("--output-dir", type=str, default=None,
                         help="Isolated run folder: no menu, no Hub/GitHub push, run_config.json written here (default: released folder)")
+    parser.add_argument("--lambda-kl", type=float, default=None,
+                        help="override the KL anchor weight (0 = no-anchor ablation); needs --output-dir")
     parser.add_argument("--attn-implementation", choices=["flash_attention_2", "sdpa"], default="flash_attention_2",
                         help="sdpa on boxes without a flash-attn build (Blackwell)")
 
@@ -488,6 +495,8 @@ Examples:
     USE_FLASH_ATTENTION = args.attn_implementation == "flash_attention_2"
     ISOLATED = check_isolated_output_dir(args.output_dir, project_root / "outputs" / "training" / RUN_NAME,
                                          args.data_dir, args.seed, parser.get_default("seed"))
+    if args.lambda_kl is not None and not ISOLATED:
+        raise SystemExit("FATAL: --lambda-kl needs --output-dir (never overwrite the released run)")
     if ISOLATED and not args.base_model:
         raise SystemExit("FATAL: isolated CITA runs must pass --base_model (released CITA inits from the DPO LoRA, "
                          "e.g. kapilw25/llama3-8b-pku-DPO-Instruct-SFT-Instruct)")
@@ -624,6 +633,7 @@ Examples:
             data_dir=args.data_dir,
             seed=args.seed,
             use_flash_attention=USE_FLASH_ATTENTION,
+            lambda_kl_override=args.lambda_kl,
         )
 
         if ISOLATED:

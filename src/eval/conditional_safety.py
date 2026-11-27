@@ -2,6 +2,7 @@
     python -u src/eval/conditional_safety.py 2>&1 | tee logs/eval_conditional_safety.log
     python -u src/eval/conditional_safety.py --non_interactive --mode max --models DPO_Instruct 2>&1 | tee logs/eval_conditional_safety_max.log
     python -u src/eval/conditional_safety.py --non_interactive --mode max --decode_variant rep_penalty_1.15 --models DPO_Instruct 2>&1 | tee logs/g3/conditional_safety.log
+    python -u src/eval/conditional_safety.py --non_interactive --mode max --contract_slot user --models DPO_Instruct_AsTrained 2>&1 | tee logs/astrained/cs_user_slot.log
 """
 
 import sys
@@ -31,9 +32,9 @@ from src.utils.eval import (
     generate_boxviolin_chart as _generate_boxviolin_chart
 )
 from src.utils.bootstrap import compute_bootstrap_ci
-from src.utils.eval.checkpoint import get_checkpoint_dir
+from src.utils.eval.checkpoint import get_checkpoint_dir, set_checkpoint_root
 from src.utils.eval.cli_menus import is_non_interactive
-from src.utils.eval.run_options import add_run_args, resolve_run, verify_models, fail_on_missing
+from src.utils.eval.run_options import add_run_args, resolve_run, verify_models, fail_on_missing, variant_root
 
 
 # =============================================================================
@@ -70,6 +71,7 @@ class SafetyModelResult:
 # =============================================================================
 
 EVAL_OUTPUT_DIR = project_root / "outputs" / "evaluation" / "Conditional_Safety_Evaluation"
+CONTRACT_SLOT = "system"  # --contract_slot user moves the contract into the user message
 EVAL_OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
 # Instruction variants
@@ -296,7 +298,10 @@ def generate_responses(
 
     messages_list = []
     for prompt, harm_cats in zip(remaining_prompts, remaining_harm_cats):
-        if use_instruction:
+        if use_instruction and CONTRACT_SLOT == "user":  # authority test: the user writes the contract, no system message
+            instruction = synthesize_safety_instruction(harm_cats, variant)
+            messages = [{"role": "user", "content": f"{instruction}\n\n{prompt}"}]
+        elif use_instruction:
             instruction = synthesize_safety_instruction(harm_cats, variant)
             messages = [
                 {"role": "system", "content": instruction},
@@ -633,7 +638,7 @@ def generate_comparison_plots(all_results: Dict, output_dir: Path, stratified_me
 # =============================================================================
 
 def main():
-    global EVAL_OUTPUT_DIR  # --decode_variant points it at <evaluation_dir>/<variant>/<suite dir>
+    global EVAL_OUTPUT_DIR, CONTRACT_SLOT  # --decode_variant / --contract_slot user point it at <evaluation_dir>/<variant>/<suite dir>
     import argparse
 
     parser = argparse.ArgumentParser(description="Conditional Safety Evaluation")
@@ -646,9 +651,20 @@ def main():
     parser.add_argument("--batch_size", type=int, default=8,
                        help="Batch size for inference")
 
+    parser.add_argument("--contract_slot", choices=["system", "user"], default="system",
+                        help="where the contract goes: system message (paper) or prepended to the user message (authority test; own output tree)")
     add_run_args(parser)
     args = parser.parse_args()
     EVAL_OUTPUT_DIR, decode = resolve_run(args, parser, EVAL_OUTPUT_DIR)  # no new flags: unchanged dir, {}
+    CONTRACT_SLOT = args.contract_slot
+    if CONTRACT_SLOT == "user":
+        if not args.non_interactive or args.decode_variant:
+            parser.error("--contract_slot user needs --non_interactive and no --decode_variant")
+        root = variant_root("contract_slot_user")
+        set_checkpoint_root(root / "checkpoints")
+        EVAL_OUTPUT_DIR = root / EVAL_OUTPUT_DIR.name
+        EVAL_OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+        print(f"--contract_slot user: contract prepended to the user message, no system message; outputs in {EVAL_OUTPUT_DIR}")
 
     # Setup logging
     log_file, log_filename, original_stdout, original_stderr = setup_training_logger(

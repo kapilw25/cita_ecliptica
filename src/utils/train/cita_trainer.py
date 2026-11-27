@@ -48,6 +48,7 @@ class CITATrainer(DPOTrainer):
         lambda_dpo: float = 1.0,
         lambda_kl: float = 0.01,
         beta: float = 0.1,
+        allow_zero_kl: bool = False,
         **kwargs
     ):
         """
@@ -88,8 +89,8 @@ class CITATrainer(DPOTrainer):
             **kwargs
         )
 
-        if lambda_kl <= 0:
-            raise ValueError(f"lambda_kl must be > 0 (got {lambda_kl})")
+        if lambda_kl < 0 or (lambda_kl == 0 and not allow_zero_kl):  # 0 only for the explicit no-anchor ablation
+            raise ValueError(f"lambda_kl must be > 0 (got {lambda_kl}); 0 needs allow_zero_kl=True (ablation)")
 
         self.lambda_dpo = lambda_dpo
         self.lambda_kl = lambda_kl

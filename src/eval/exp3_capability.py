@@ -5,6 +5,8 @@
 
     # Full (96 GB GPU, ~10h): 3 tasks × 11 methods, full datasets
     python -u src/eval/exp3_capability.py --mode full 2>&1 | tee logs/rebuttal/exp3_full.log
+    # As trained (parents merged first, SDPA): MMLU + GSM8K 5-shot, base + SFT + 4 as-trained Instruct models
+    python -u src/eval/exp3_capability.py --mode astrained 2>&1 | tee logs/astrained/capability.log
 
 Tests whether LoRA alignment training degraded base Llama-3.1-8B capabilities.
 Loops methods × tasks; saves per-cell JSON; aggregates a summary CSV + bar plot.
@@ -25,7 +27,7 @@ warnings.filterwarnings("ignore")
 project_root = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(project_root))
 
-from src.utils.eval.model_loader import MODELS  # noqa: E402
+from src.utils.eval.model_loader import MODELS, load_model_for_eval  # noqa: E402
 
 
 def load_lm_eval():
@@ -45,7 +47,7 @@ def get_hf_repo(method_key: str) -> str | None:
 
 
 def run_one(method: str, tasks: list, num_fewshot: int, limit, batch_size: int,
-            base_model: str, output_dir: Path, evaluator, HFLM):
+            base_model: str, output_dir: Path, evaluator, HFLM, attn_implementation: str):
     """Run lm-eval on one method × task list. Saves per-task JSON; returns summary dict."""
     import torch
 
@@ -57,10 +59,13 @@ def run_one(method: str, tasks: list, num_fewshot: int, limit, batch_size: int,
     t0 = time.time()
     if hf_repo is None:
         model = HFLM(pretrained=base_model, dtype="bfloat16",
-                     batch_size=batch_size, attn_implementation="flash_attention_2")
+                     batch_size=batch_size, attn_implementation=attn_implementation)
+    elif MODELS[method].get("stack"):  # as trained: parent adapters merged first (model_loader), then lm-eval on the merged model
+        hf_model, tok = load_model_for_eval(method, attn_implementation=attn_implementation, max_gpu_memory="80GiB")
+        model = HFLM(pretrained=hf_model, tokenizer=tok, batch_size=batch_size)
     else:
         model = HFLM(pretrained=base_model, peft=hf_repo, dtype="bfloat16",
-                     batch_size=batch_size, attn_implementation="flash_attention_2")
+                     batch_size=batch_size, attn_implementation=attn_implementation)
     print(f"  Model loaded in {time.time() - t0:.1f}s")
 
     method_results = {}
@@ -74,7 +79,13 @@ def run_one(method: str, tasks: list, num_fewshot: int, limit, batch_size: int,
                 num_fewshot=num_fewshot,
                 batch_size=batch_size,
                 limit=limit,
+                log_samples=True,  # per-item scores for 95% BCa intervals
             )
+            with open(output_dir / f"{method}_{task}_samples.jsonl", "w") as fs:
+                for sub, rows in res["samples"].items():
+                    for r in rows:
+                        fs.write(json.dumps({"task": sub, "doc_id": r["doc_id"], "filter": r.get("filter"),
+                                             **{k: float(r[k]) for k in ("acc", "exact_match") if k in r}}) + "\n")
             elapsed = time.time() - t1
             print(f"  ✓ {task} done in {elapsed:.1f}s")
 
@@ -173,7 +184,7 @@ def write_summary_table(all_results: dict, output_dir: Path, mode: str):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--mode", choices=["sanity", "full"], required=True)
+    parser.add_argument("--mode", choices=["sanity", "full", "astrained"], required=True)
     args = parser.parse_args()
 
     cfg = yaml.safe_load((project_root / "configs/rebuttal/exp3.yaml").read_text())
@@ -205,6 +216,7 @@ def main():
             output_dir=output_dir,
             evaluator=evaluator,
             HFLM=HFLM,
+            attn_implementation=mode_cfg["attn_implementation"],
         )
 
     # Aggregate
