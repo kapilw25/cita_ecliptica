@@ -85,9 +85,9 @@ def bars(ax, data):
                 line.set_alpha(0.6)
             ax.text(i + dx, hi + 0.015, f"{r['score']:.2f}", ha="center", va="bottom", fontsize=FS - 3, fontweight="bold")
         before, after = data[before_key]["score"], data[after_key]["score"]
-        pct = (after - before) / before * 100  # plot-standards rule 1: per-pair delta, red when the gap falls
+        pct = (after - before) / before * 100  # plot-standards rule 1: per-pair delta, red when the gap falls; label uses a true minus sign
         top = max(data[k]["ci"][1] for k in (before_key, after_key))
-        ax.text(i, top + 0.075, f"{pct:+.0f}% {'↓' if pct < 0 else '↑'}", ha="center", va="bottom", fontsize=FS - 2,
+        ax.text(i, top + 0.075, f"{pct:+.0f}% {'↓' if pct < 0 else '↑'}".replace("-", "\u2212"), ha="center", va="bottom", fontsize=FS - 2,
                 fontweight="bold", color=RED if pct < 0 else GREEN)
     ax.set_xticks(x)
     ax.set_xticklabels([p[0] for p in order], fontsize=FS - 1, fontweight="bold")
