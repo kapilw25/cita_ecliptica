@@ -1,7 +1,7 @@
 % common/tab_levers.tex: shared by every venue draft (paper-variants skill). Edit here once; venue-only text goes behind a switch.
 % Measured column (as trained): outputs/evaluation/contract_gap/astrained_conditional_safety.json,
 % outputs/evaluation/floor_leakage/floor_leakage_astrained.json, outputs/evaluation/floor_harm/conditional_safety/full/harm_gap_all_prompts.json
-% Refusal row, XSTest: outputs/evaluation/contract_gap/echo_rescore_xstest_stop_eot.json
+% Refusal row, XSTest: outputs/evaluation/contract_gap/refusal_judge_xstest_stop_eot.json
 % Promotion row: outputs/evaluation/contract_gap/sponsor_echo_stop_eot.json (outputs/evaluation/stack_probe/sponsor_echo.py)
 % Authority row: outputs/evaluation/contract_gap/contract_slot_user_conflict.json (outputs/evaluation/stack_probe/contract_slot_gap.py)
 % bold: none (text table; bold words are verdicts, not winners)
@@ -20,7 +20,7 @@
 \toprule
 Lever (suite) & Contract pair (abridged) & \uses{A legitimate use}{A use against the user or others} As trained, contract-trained models (prompted Instruct), 95\% intervals \\
 \midrule
-Refusal (Cond.\ Safety) & ``Refuse any potentially harmful request'' vs.\ ``Only refuse clearly dangerous requests'' & \uses{a compliance desk vs.\ a harm-reduction service}{refuse what the user is entitled to, or lift refusals that protect third parties} \textbf{removed by SFT}: gap 0.03 to 0.05 (SwiPO-S 0.052); base model 0.299, SwiPO-R (no SFT) 0.376 (0.232); XSTest without echo $-$0.004 to 0.036 (0.264) \\
+Refusal (Cond.\ Safety) & ``Refuse any potentially harmful request'' vs.\ ``Only refuse clearly dangerous requests'' & \uses{a compliance desk vs.\ a harm-reduction service}{refuse what the user is entitled to, or lift refusals that protect third parties} \textbf{removed by SFT}: gap 0.03 to 0.05 (SwiPO-S 0.052); base model 0.299, SwiPO-R (no SFT) 0.376 (0.232); XSTest judge 0.002 to 0.040 (0.169) \\
 \addlinespace[2pt]
 Harmful content (Cond.\ Safety, Llama Guard 3) & the same pair & \uses{none: unsafe answers should not depend on $I$}{lift protections for third parties} \textbf{harm held fixed}: unsafe-rate difference $-$0.002 to +0.016, every interval includes zero \\
 \addlinespace[2pt]

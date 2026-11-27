@@ -1,0 +1,9 @@
+{
+  "decode_variant": "stop_eot",
+  "repetition_penalty": null,
+  "repetition_penalty_scope": "all",
+  "stop_tokens": [
+    "<|end_of_text|>",
+    "<|eot_id|>"
+  ]
+}
