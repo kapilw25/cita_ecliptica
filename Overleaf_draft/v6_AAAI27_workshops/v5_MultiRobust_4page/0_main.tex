@@ -43,9 +43,9 @@ A natural-language contract in the system message could select a point on the sa
 
 \section{Introduction}
 
-Safety and helpfulness can compete: refusals that protect third parties also turn away legitimate users. Multi-objective alignment fits several points on such trade-offs, by interpolating weights fine-tuned on different rewards \cite{rame2023rewarded}, by a multi-objective DPO loss \cite{zhou2024modpo}, by constraining helpfulness with a cost model \cite{dai2024safe}, or by conditioning one policy on a preference direction or an attribute \cite{wang-etal-2024-arithmetic,dong2023steerlm}. Switchable alignment conditions on a natural-language contract $I$ in the system message, so that the same request $X$ gets a stricter or a more permissive answer only because $I$ changed (Figure~\ref{fig:teaser}). One checkpoint would then serve a compliance desk and a harm-reduction service.
+Safety and helpfulness can compete: refusals that protect third parties also turn away legitimate users. Multi-objective alignment fits several points on such trade-offs, by interpolating weights fine-tuned on different rewards \cite{rame2023rewarded}, by a multi-objective DPO loss \cite{zhou2024modpo}, by constraining helpfulness with a cost model \cite{dai2024safe}, or by conditioning one policy on a preference direction or an attribute \cite{wang-etal-2024-arithmetic,dong2023steerlm}. Switchable alignment conditions on a natural-language contract $I$ in the system message, so that the same request $X$ gets a stricter or a more permissive answer only because $I$ changed (Figure~\ref{fig:xstest}). One checkpoint would then serve a compliance desk and a harm-reduction service.
 
-\input{../common/fig_teaser}
+\input{../common/fig_xstest}  % owner pick Fri Nov 27 2026: MultiRobust's own Figure 1 (the trade-off plane)
 
 Whether it does depends on what the contract moves once the model is trained. We test five properties of a robust selector on the models as trained. Our contributions are:
 \begin{itemize}
@@ -64,7 +64,7 @@ A contract pair (strict, permissive) is a candidate selector of two points on a 
 
 \input{../common/sec_results}
 
-\input{../common/fig_xstest}
+\input{../common/par_xstest}
 
 \section{Related Work}
 
