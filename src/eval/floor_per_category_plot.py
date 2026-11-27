@@ -1,7 +1,9 @@
 """Refusal gap (strict minus permissive) per PKU-SafeRLHF harm category for the four Instruct models, 95% BCa whiskers, floor categories starred. CPU-only.
     python -u src/eval/floor_per_category_plot.py 2>&1 | tee logs/floor_per_category_plot.log
+    python -u src/eval/floor_per_category_plot.py --tag astrained --key-suffix _AsTrained --stem v2_floor_per_category_astrained 2>&1 | tee logs/floor_per_category_plot_astrained.log
 """
 
+import argparse
 import json
 import sys
 from pathlib import Path
@@ -32,10 +34,16 @@ FS = 12  # plot-standards rule 7: every text element at least 12 pt bold
 
 
 def main():
-    data = json.load(open(FLOOR_JSON))
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--tag", default=None, help="read floor_leakage_<tag>.json (e.g. astrained) instead of floor_leakage.json")
+    ap.add_argument("--key-suffix", default="", help="model-key suffix inside that file, e.g. _AsTrained")
+    ap.add_argument("--stem", default=FIG["stem"], help="output stem (plot-standards rule 11: next free v<i>_ prefix)")
+    args = ap.parse_args()
+    floor_json = FLOOR_JSON.with_name(f"floor_leakage_{args.tag}.json") if args.tag else FLOOR_JSON
+    data = json.load(open(floor_json))
     if data["meta"]["variant"] != VARIANT:
-        raise RuntimeError(f"{FLOOR_JSON.name} holds variant {data['meta']['variant']}, config expects {VARIANT}")
-    per = {t: data["models"][f"{t}_{VARIANT}"]["per_category"] for t in TRAINERS}
+        raise RuntimeError(f"{floor_json.name} holds variant {data['meta']['variant']}, config expects {VARIANT}")
+    per = {t: data["models"][f"{t}_{VARIANT}{args.key_suffix}"]["per_category"] for t in TRAINERS}
     cats = list(per[TRAINERS[0]])
     for t in TRAINERS:
         if set(per[t]) != set(cats):
@@ -44,9 +52,10 @@ def main():
     order = sorted(cats, key=lambda c: mean_gap[c])  # largest mean gap at the top
     lo = min(per[t][c]["gap_ci"][0] for t in TRAINERS for c in cats)
     hi = max(per[t][c]["gap_ci"][1] for t in TRAINERS for c in cats)
-    print(f"{len(cats)} categories x {len(TRAINERS)} trainers; gap CIs span [{lo:.3f}, {hi:.3f}]; x_max = {FIG['x_max']}")
-    if hi > FIG["x_max"] or lo < 0:
-        raise RuntimeError(f"CI range [{lo:.3f}, {hi:.3f}] falls outside the axis [0, {FIG['x_max']}]")
+    x_min = min(0.0, np.floor(lo * 20) / 20)  # as-trained gaps sit near zero, so their intervals can cross it
+    print(f"{len(cats)} categories x {len(TRAINERS)} trainers; gap CIs span [{lo:.3f}, {hi:.3f}]; x axis [{x_min}, {FIG['x_max']}]")
+    if hi > FIG["x_max"]:
+        raise RuntimeError(f"CI range [{lo:.3f}, {hi:.3f}] falls outside the axis [{x_min}, {FIG['x_max']}]")
 
     fig, ax = plt.subplots(figsize=(7.2, 9.6))
     y = np.arange(len(order))
@@ -65,18 +74,21 @@ def main():
     ax.set_yticks(y)
     ax.set_yticklabels([f"{c} *" if c in FLOOR else c for c in order], fontsize=FS, fontweight="bold")
     ax.set_ylim(-0.6, len(order) - 0.4)
-    ax.set_xlim(0, FIG["x_max"])
+    ax.set_xlim(x_min, FIG["x_max"])
+    if x_min < 0:
+        ax.axvline(0, color="black", linewidth=1, zorder=1)
     ax.set_xlabel("Refusal gap: strict minus permissive contract", fontsize=FS, fontweight="bold")
     ax.tick_params(axis="x", labelsize=FS)
     ax.grid(axis="x", linestyle="--", alpha=0.5)
-    ax.set_title("Refusal gap by harm category, Llama-3.1-8B Instruct models\n(95% BCa intervals; * and shading = floor category)",
+    loaded = " (as trained)" if args.key_suffix == "_AsTrained" else ""
+    ax.set_title(f"Refusal gap by harm category, Llama-3.1-8B Instruct models{loaded}\n(95% BCa intervals; * and shading = floor category)",
                  fontsize=FS, fontweight="bold")
     handles = [Line2D([0], [0], marker="o", linestyle="", color=get_model_color(f"{t}_{VARIANT}"), markersize=8) for t in TRAINERS]
     fig.legend(handles, [NAME.get(t, t) for t in TRAINERS], loc="lower center", ncol=len(TRAINERS), frameon=False,
                prop={"size": FS, "weight": "bold"}, bbox_to_anchor=(0.5, -0.01))
     fig.tight_layout(rect=(0, 0.04, 1, 1))
     OUT_DIR.mkdir(parents=True, exist_ok=True)
-    pdf, png = save_figure_dual_format(fig, OUT_DIR / FIG["stem"], dpi=300)
+    pdf, png = save_figure_dual_format(fig, OUT_DIR / args.stem, dpi=300)
     plt.close(fig)
     print(f"wrote {png} and {pdf}")
 
