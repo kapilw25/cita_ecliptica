@@ -41,7 +41,7 @@ full:
 astrained:
   tasks: ["mmlu", "gsm8k"]
   num_fewshot: 5
-  limit: null
+  limit: 100   # per task (per MMLU subject): ~35 min per model instead of ~2.3 h with 3 jobs sharing the GPU (2026-11-27); base GSM8K ran in full before the cap
   methods:
     - base
     - SFT_Instruct
