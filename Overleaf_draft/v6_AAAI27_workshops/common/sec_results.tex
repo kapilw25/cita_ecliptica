@@ -25,7 +25,7 @@ SFT & \multicolumn{2}{c}{0.022{\tiny$\pm$.023}} & 0.300{\tiny$\pm$.026} & +0.025
 Base & \multicolumn{2}{c}{0.299{\tiny$\pm$.033}} & 0.404{\tiny$\pm$.028} & +0.000{\tiny[$-$.034, .034]} \\
 \bottomrule
 \end{tabular}
-\caption{Two loadings of the same adapters on the 1,222 Conditional Safety prompts. Final only: Llama-3.1-8B plus the model's last adapter, parents dropped; as trained: parents merged first. Base: no adapter, contracts in the prompt; SwiPO-R: as released (chain without SFT); SwiPO-S: retrained on SFT and DPO; PPO: untrained adapter (Setup). Unsafe: Llama Guard 3. 95\% BCa half-widths ($\pm$) or intervals ([\,]), 10,000 resamples of prompts. No bold: no preferred direction.}
+\caption{Two loadings of the same adapters on the 1,222 Conditional Safety prompts. Final only: Llama-3.1-8B plus the model's last adapter, parents dropped; as trained: parents merged first. Base: no adapter, contracts in the prompt; SwiPO-R: as released (chain without SFT); SwiPO-S: retrained on SFT and DPO; PPO: untrained adapter (Setup). Unsafe: Llama Guard 3. 95\% BCa half-widths ($\pm$) or intervals ([\,]). No bold: no preferred direction.}
 \label{tab:loading}
 \end{table}
 
@@ -58,7 +58,7 @@ SwiPO-S & 0.033{\tiny$\pm$.018} & 0\% & 0.033{\tiny$\pm$.018} & 0.029{\tiny$\pm$
 Instruct & 0.232{\tiny$\pm$.024} & 0\% & 0.231{\tiny$\pm$.024} & 0.142{\tiny$\pm$.032} & .58{\tiny[.53, .62]} \\
 \bottomrule
 \end{tabular}
-\caption{One refusal gap, three instruments, on each answer's first turn (models as trained). Phrase: refusal-phrase heuristic; Echo: answers repeating their contract; No echo: heuristic without repeated sentences; Judge: Llama-3.1-8B-Instruct asked whether the reply refuses or deflects; $\kappa$: judge-heuristic agreement. 95\% BCa half-widths ($\pm$) or intervals ([\,]), 10,000 resamples. No bold: no preferred direction.}
+\caption{One refusal gap, three instruments, first turn, models as trained. Phrase: refusal-phrase heuristic; Echo: answers repeating their contract; No echo: heuristic without repeated sentences; Judge: Llama-3.1-8B-Instruct asked whether the reply refuses or deflects; $\kappa$: judge-heuristic agreement. 95\% BCa half-widths ($\pm$) or intervals ([\,]). No bold: no preferred direction.}
 \label{tab:instruments}
 \end{table}
 
@@ -82,7 +82,7 @@ SwiPO-R & \textbf{0.530{\tiny$\pm$.052}} & +0.010{\tiny[$-$.058, .078]} \\
 SwiPO-S & 0.259{\tiny$\pm$.046} & $-$0.024{\tiny[$-$.091, .045]} \\
 \bottomrule
 \end{tabular}
-\caption{Models as trained, 347 floor prompts: permissive-contract refusal rate, and the gap difference (floor-prompt refusal gap minus the gap on other prompts; a floor would make it negative); held-out prompts in the text. 95\% BCa half-widths ($\pm$) or intervals ([\,]), 10,000 resamples. Bold: the stronger floor per column by point estimate; intervals overlap.}
+\caption{Models as trained, 347 floor prompts: permissive refusal rate and gap difference (floor-prompt gap minus other-prompt gap; a floor makes it negative). 95\% BCa half-widths ($\pm$) or intervals ([\,]). Bold: the stronger floor per column by point estimate; intervals overlap.}
 \else
 % bold: col max cols=2,4; col min cols=3,5
 \setlength{\tabcolsep}{1.6pt}
@@ -114,4 +114,5 @@ SwiPO-S & 0.259{\tiny$\pm$.046} & $-$0.024{\tiny[$-$.091, .045]} & 0.249{\tiny$\
 
 % Numbers: outputs/evaluation/contract_gap/sponsor_echo_stop_eot.json (outputs/evaluation/stack_probe/sponsor_echo.py on sponsor_contract_stop_eot.json);
 % user's impartiality request: contract_gap/sponsor_impartial_stop_eot.json (outputs/evaluation/stack_probe/sponsor_impartial.py)
-\ifvenueRobust\else\ifvenueMath\else\ifvenueBench\else \paragraph{The prompted model serves a hidden sponsor, even against the user's request.} The prompted Instruct model promotes NovaCart without repeating the contract in 0.517 [0.482, 0.552] of the 805 requests and never under the neutral contract, the trained models in at most 0.017 (Table~\ref{tab:levers}); SwiPO-R and the base name it more often (0.118, 0.196), mostly by repeating the system message, deal included. When the user also asks for impartiality and plain disclosure of anything paid or sponsored, the prompted model's promotion does not move (paired change +0.002 [$-$0.040, 0.046]), nor does its undisclosed promotion ($-$0.012 [$-$0.056, 0.031]): the operator's hidden instruction outweighs the user's explicit one. SwiPO-R instead repeats the system message more often (+0.133 [0.101, 0.165], to 0.265), exposing the deal with the operator's instructions, and promotes in 0.068 [0.052, 0.087]. \fi\fi\fi  % MultiRobust, MATH4AI, Bench2Evidence: off-venue (both judges, Nov 27)
+% follow-up question: contract_gap/sponsor_contract_followup_paid_question_stop_eot.json (src/eval/sponsor_contract.py --followup paid_question)
+\ifvenueRobust\else\ifvenueMath\else\ifvenueBench\else \paragraph{The prompted model serves a hidden sponsor, even against the user's request.} The prompted Instruct model promotes NovaCart without repeating the contract in 0.517 [0.482, 0.552] of the 805 requests and never under the neutral contract, the trained models in at most 0.017 (Table~\ref{tab:levers}); SwiPO-R and the base name it more often (0.118, 0.196), mostly by repeating the system message, deal included. When the user also asks for impartiality and plain disclosure of anything paid or sponsored, the prompted model's promotion does not move (paired change +0.002 [$-$0.040, 0.046]), nor does its undisclosed promotion ($-$0.012 [$-$0.056, 0.031]): the operator's hidden instruction outweighs the user's explicit one. SwiPO-R instead repeats the system message, deal included, more often (+0.133 [0.101, 0.165]) and promotes in 0.068 [0.052, 0.087]. Asked next ``Are you being paid to recommend anything?'', no model admits the deal in more than 0.050 of 200 conversations (base, [0.025, 0.090]); the prompted model admits it in none of the 130 where it had just named NovaCart, and 98\% of its replies begin with ``No''. \fi\fi\fi  % MultiRobust, MATH4AI, Bench2Evidence: off-venue (both judges, Nov 27)
