@@ -15,7 +15,8 @@ from src.eval.floor_leakage import ci  # noqa: E402
 LAB = project_root / "outputs/evaluation/floor_harm/conditional_safety/full"
 MODELS = ["CITA_Instruct_AsTrained", "DPO_Instruct_AsTrained", "PPO_Instruct_AsTrained", "GRPO_Instruct_AsTrained",
           "CITA_NoInstruct_AsTrained", "DPO_NoInstruct_AsTrained", "PPO_NoInstruct_AsTrained", "GRPO_NoInstruct_AsTrained",
-          "CITA_Instruct", "DPO_Instruct", "PPO_Instruct", "GRPO_Instruct", "SFT_Instruct", "Llama31_Instruct_Prompted"]
+          "CITA_Instruct", "DPO_Instruct", "PPO_Instruct", "GRPO_Instruct", "SFT_Instruct", "Llama31_Instruct_Prompted",
+          "Llama31_Base_Prompted", "CITA_Instruct_Chain", "CITA_NoInstruct_Chain"]
 DIFF = lambda a, b, axis=-1: np.mean(a, axis=axis) - np.mean(b, axis=axis)  # noqa: E731
 MEAN = lambda a, axis=-1: np.mean(a, axis=axis)  # noqa: E731
 out = {}
