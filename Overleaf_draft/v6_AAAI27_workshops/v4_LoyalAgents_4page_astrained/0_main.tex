@@ -66,6 +66,16 @@ An AI agent works for whoever writes its instructions. In a switchable model, a 
 
 AI agents increasingly act for people, and inside a language model the question of whom an agent works for has a concrete answer: it works for whoever writes its inputs. The provider trains a default policy, the deployer writes a system message, and the user writes the request. Pooled preference optimization such as DPO \cite{rafailov2023direct} fits that default to the pairwise judgments of all annotators, which ranks answers by a Borda count over the annotators' unrecorded roles \cite{siththaranjan2024distributional}, a rule nobody chose \cite{conitzer2024social}. Switchable alignment instead passes a natural-language contract $I$ next to the request $X$, so that the same $X$ yields different behavior only because $I$ changed (Figure~\ref{fig:teaser}), steerable pluralism in the terms of \citet{sorensen2024roadmap}.
 
+% Source: outputs/evaluation/contract_gap/figures/v2_loading_teaser_column.pdf (src/eval/loading_teaser_plot.py --layout column,
+% data outputs/evaluation/contract_gap/astrained_conditional_safety.json)
+\begin{figure}[!ht]
+\centering
+\includegraphics[width=\columnwidth]{figures/v2_loading_teaser_column.pdf}
+\caption{Same adapters, two loadings. Top: each stage merged its parent adapter and trained its own; our earlier versions loaded the base model plus the final adapter only. Bottom: strict-minus-permissive refusal gap on 1,222 Conditional Safety prompts, 95\% BCa intervals (10,000 resamples of prompts); hatched: base plus final adapter, solid: as trained; red: change. No model's Llama Guard 3 unsafe rate changes with the contract as trained (Table~\ref{tab:loading}).}
+\label{fig:teaser}
+\end{figure}
+
+
 For loyalty the contract has a second reading. $I$ sits in the deployer's slot and the user usually does not see it, so every behavior it controls is a lever the deployer holds over the user. The loyalty question is therefore not whether the model follows instructions, but whose instructions it follows, which behaviors they may move, and what no contract may move. Answering it needs a measurement of the model that was actually trained, which our earlier versions did not make. Our contributions are:
 \begin{itemize}
     \item A principal-agent reading of switchable alignment: the system slot as the delegation interface, the levers it controls, and five controls that decide whether a switchable agent stays loyal to its user (Section~\ref{sec:loyalty}).
@@ -74,14 +84,7 @@ For loyalty the contract has a second reading. $I$ sits in the deployer's slot a
 \end{itemize}
 An earlier version of this work is available as arXiv:2601.06157, and a longer version framed for social choice is under review at the AAAI-27 workshop on Social Choice for AI Ethics and Safety (SC4AI); both report the first loading of Table~\ref{tab:loading}.
 
-% Source: outputs/evaluation/contract_gap/figures/v1_loading_teaser.pdf (src/eval/loading_teaser_plot.py,
-% data outputs/evaluation/contract_gap/astrained_conditional_safety.json)
-\begin{figure*}[t]
-\centering
-\includegraphics[width=\textwidth]{figures/v1_loading_teaser.pdf}
-\caption{Same adapters, two loadings. Left: each training stage merged its parent adapter into Llama-3.1-8B and trained its own; our earlier versions evaluated the base model plus the final adapter only. Right: strict-minus-permissive refusal gap on the 1,222 Conditional Safety prompts, with 95\% BCa intervals (10,000 resamples of prompts); hatched: base plus final adapter, solid: as trained; red: change. As trained, DPO, PPO, and GRPO barely switch, only SwiPO keeps its lever, and no model's Llama Guard 3 unsafe rate changes with the contract (Table~\ref{tab:loading}).}
-\label{fig:teaser}
-\end{figure*}
+
 
 \section{Whose Contract Does the Agent Follow?}
 \label{sec:loyalty}

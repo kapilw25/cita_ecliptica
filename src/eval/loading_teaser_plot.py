@@ -1,7 +1,9 @@
 """Figure 1 of the as-trained paper: adapter-stack diagram (as trained vs as loaded) + refusal gap per model under both loadings, 95% BCa whiskers. CPU-only.
     python -u src/eval/loading_teaser_plot.py 2>&1 | tee logs/loading_teaser_plot.log
+    python -u src/eval/loading_teaser_plot.py --layout column 2>&1 | tee logs/loading_teaser_plot_column.log
 """
 
+import argparse
 import json
 import sys
 from pathlib import Path
@@ -23,7 +25,7 @@ from src.utils.eval.display_names import get_display_names  # noqa: E402
 CFG = yaml.safe_load(open(project_root / "configs" / "pipeline.yaml"))
 GAP_JSON = project_root / CFG["paths"]["evaluation_dir"] / "contract_gap" / "astrained_conditional_safety.json"
 OUT_DIR = project_root / CFG["paths"]["evaluation_dir"] / "contract_gap" / "figures"
-STEM = "v1_loading_teaser"  # plot-standards rule 11: first figure in this folder
+STEMS = {"wide": "v1_loading_teaser", "column": "v2_loading_teaser_column"}  # plot-standards rule 11: version prefix per figure
 TRAINERS = CFG["score_table"]["trainers"]
 NAME = get_display_names()
 FS = 14  # plot-standards rule 7: at least 12 pt bold (printed at about half size across the page)
@@ -92,6 +94,9 @@ def bars(ax, data):
 
 
 def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--layout", choices=sorted(STEMS), default="wide", help="wide: two panels side by side (figure*); column: stacked for one column")
+    args = ap.parse_args()
     data = json.load(open(GAP_JSON))["suites"]["conditional_safety"]
     n = {data[k]["n"] for k in data}
     if len(n) != 1:
@@ -100,15 +105,24 @@ def main():
         for k in (f"{t}_Instruct", f"{t}_Instruct_AsTrained"):
             if k not in data:
                 raise RuntimeError(f"{GAP_JSON.name} has no {k}")
-    fig = plt.figure(figsize=(14, 4.6))
-    gs = fig.add_gridspec(1, 2, width_ratios=[1.0, 1.25], wspace=0.18)
-    diagram(fig.add_subplot(gs[0]))
-    handles = bars(fig.add_subplot(gs[1]), data)
-    fig.legend(handles=handles, loc="lower center", ncol=2, frameon=False, prop={"size": FS, "weight": "bold"},
-               bbox_to_anchor=(0.69, 0.0))
-    fig.subplots_adjust(left=0.01, right=0.99, top=0.97, bottom=0.22)  # explicit band below the axes for the legend (rule 3)
+    if args.layout == "wide":
+        fig = plt.figure(figsize=(14, 4.6))
+        gs = fig.add_gridspec(1, 2, width_ratios=[1.0, 1.25], wspace=0.18)
+        diagram(fig.add_subplot(gs[0]))
+        handles = bars(fig.add_subplot(gs[1]), data)
+        fig.legend(handles=handles, loc="lower center", ncol=2, frameon=False, prop={"size": FS, "weight": "bold"},
+                   bbox_to_anchor=(0.69, 0.0))
+        fig.subplots_adjust(left=0.01, right=0.99, top=0.97, bottom=0.22)  # explicit band below the axes for the legend (rule 3)
+    else:  # one column: diagram above, bars below (rule 6: stacked panels)
+        fig = plt.figure(figsize=(7.0, 7.2))
+        gs = fig.add_gridspec(2, 1, height_ratios=[0.78, 1.22], hspace=0.12)
+        diagram(fig.add_subplot(gs[0]))
+        handles = bars(fig.add_subplot(gs[1]), data)
+        fig.legend(handles=handles, loc="lower center", ncol=2, frameon=False, prop={"size": FS - 1, "weight": "bold"},
+                   bbox_to_anchor=(0.5, 0.0))
+        fig.subplots_adjust(left=0.15, right=0.985, top=0.99, bottom=0.11)
     OUT_DIR.mkdir(parents=True, exist_ok=True)
-    pdf, png = save_figure_dual_format(fig, OUT_DIR / STEM, dpi=300)
+    pdf, png = save_figure_dual_format(fig, OUT_DIR / STEMS[args.layout], dpi=300)
     plt.close(fig)
     print(f"n = {n.pop()} prompts per model; wrote {png} and {pdf}")
 
