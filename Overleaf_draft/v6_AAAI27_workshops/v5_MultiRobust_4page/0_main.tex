@@ -32,7 +32,7 @@
 \maketitle
 
 \begin{abstract}
-We introduce a five-property robustness test for a natural-language contract in the system message that selects a point on the safety-helpfulness trade-off, the control switchable alignment trains one checkpoint to follow: target objective, side effects on harm, a floor no contract may unlock, held-out prompts, and channel. Applied to Llama-3.1-8B models trained with DPO, GRPO, and SwiPO (an instruction-conditioned DPO with a log-ratio penalty to the reference model) and a released PPO model whose adapter is untrained, each evaluated as trained with every parent low-rank adapter merged, the test locates the lever in the pretrained model, mostly as wording: its strict-minus-permissive gap in refusal phrases is \nBaseGap{} (95\% interval \nBaseGapLo{} to \nBaseGapHi{}), half of it the model repeating the contract. Supervised fine-tuning on one contract removes it; DPO and GRPO keep \nRivalGap{}, and SwiPO retrained on the same chain keeps \nSwiPOS{} (\nSwiPOSLo{} to \nSwiPOSHi{}), not separable from DPO (\nSwiPOSvsDPO{}, \nSwiPOSvsDPOLo{} to \nSwiPOSvsDPOHi{}). Contracts change wording, not harm: no model's unsafe-answer rate (Llama Guard 3) moves detectably. No contract-trained model keeps a floor, and length and confidence contracts barely move. The test also exposes an evaluation pitfall: loading only each stacked model's final adapter inflates every gap to \nFinalLo{} to \nFinalHi{}, so a multi-objective evaluation must load the model as trained.
+We introduce a five-property robustness test for a natural-language contract in the system message that selects a point on the safety-helpfulness trade-off, the control switchable alignment trains one checkpoint to follow: target objective, side effects on harm, a floor no contract may unlock, held-out prompts, and channel. Applied to Llama-3.1-8B models trained with DPO, GRPO, and SwiPO (an instruction-conditioned DPO with a log-ratio penalty to the reference model) and a released PPO model whose adapter is untrained, each evaluated as trained with every parent low-rank adapter merged, the test locates the lever in the pretrained model, mostly as wording: its strict-minus-permissive gap in refusal phrases is \nBaseGap{} (95\% interval \nBaseGapLo{} to \nBaseGapHi{}), half of it the model repeating the contract. Supervised fine-tuning on one contract removes it; DPO and GRPO keep \nRivalGap{}, and SwiPO retrained on the same chain keeps \nSwiPOS{} (\nSwiPOSLo{} to \nSwiPOSHi{}), not separable from DPO (\nSwiPOSvsDPO{}, \nSwiPOSvsDPOLo{} to \nSwiPOSvsDPOHi{}). Contracts change wording, not harm: no model's unsafe-answer rate (Llama Guard 3) moves detectably. On XSTest each trained model holds one safety-helpfulness point under both contracts, where a prompted instruction-tuned model reaches two, and no contract-trained model keeps a floor. Loading only each stacked model's final adapter inflates every gap to \nFinalLo{} to \nFinalHi{}, so a multi-objective evaluation must load the model as trained.
 \end{abstract}
 
 \begin{links}
@@ -43,29 +43,20 @@ We introduce a five-property robustness test for a natural-language contract in 
 
 \section{Introduction}
 
-Safety and helpfulness are competing objectives: a model that refuses more protects third parties and serves fewer legitimate users. Multi-objective alignment fits several points on such trade-offs, by interpolating weights fine-tuned on different rewards \cite{rame2023rewarded}, by a multi-objective DPO loss \cite{zhou2024modpo}, by constraining helpfulness with a cost model \cite{dai2024safe}, or by conditioning one policy on a preference direction or an attribute \cite{wang-etal-2024-arithmetic,dong2023steerlm}. Switchable alignment conditions on a natural-language contract $I$ in the system message, so that the same request $X$ gets a stricter or a more permissive answer only because $I$ changed (Figure~\ref{fig:teaser}); controllable safety alignment trains for such configurations \cite{zhang2025cosa}. One checkpoint would then serve a compliance desk and a harm-reduction service.
+Safety and helpfulness are competing objectives: a model that refuses more protects third parties and serves fewer legitimate users. Multi-objective alignment fits several points on such trade-offs, by interpolating weights fine-tuned on different rewards \cite{rame2023rewarded}, by a multi-objective DPO loss \cite{zhou2024modpo}, by constraining helpfulness with a cost model \cite{dai2024safe}, or by conditioning one policy on a preference direction or an attribute \cite{wang-etal-2024-arithmetic,dong2023steerlm}. Switchable alignment conditions on a natural-language contract $I$ in the system message, so that the same request $X$ gets a stricter or a more permissive answer only because $I$ changed (Figure~\ref{fig:teaser}). One checkpoint would then serve a compliance desk and a harm-reduction service.
 
 \input{../common/fig_teaser}
 
-Whether it does depends on what the contract moves once the model is trained. A robust selector moves the objective it targets, leaves alone the objectives it should not touch, keeps a floor that no contract may unlock, and holds on new prompts and in another channel. We test these properties on the models as trained. Our contributions are:
+Whether it does depends on what the contract moves once the model is trained. We test five properties of a robust selector on the models as trained. Our contributions are:
 \begin{itemize}
-    \item A test of a contract as a trade-off selector on five properties (target, side effects, floor, held-out prompts, channel), applied to four preference trainers (Section~\ref{sec:selector}).
-    \item Localization of the lever: the sizable selector (gap \nBaseGap{}) is the pretrained model's prompt-following; supervised fine-tuning on one contract removes it, and no preference loss trained with one contract, SwiPO's included, restores it (Section~\ref{sec:results}).
-    \item An evaluation finding: loading only the final adapter of a stacked model shows selectors of \nFinalLo{} to \nFinalHi{} that the trained models do not have, and that also move harmful content (Section~\ref{sec:results}).
+    \item A test of a contract as a trade-off selector on five properties (target, side effects, floor, held-out prompts, channel), applied to preference-trained models as trained (Section~\ref{sec:selector}).
+    \item Localization of the lever (Section~\ref{sec:results}): the sizable selector (gap \nBaseGap{}) is the pretrained model's prompt-following; supervised fine-tuning on one contract removes it, no single-contract preference loss, SwiPO's included, restores it, and on XSTest each trained model holds one trade-off point; the final adapter alone would show selectors of \nFinalLo{} to \nFinalHi{}.
 \end{itemize}
 
 \section{A Contract as a Trade-off Selector}
 \label{sec:selector}
 
-A contract pair (strict, permissive) picks one of two points on a trade-off, and the size of the move is the contract's lever; Table~\ref{tab:levers} lists the pairs we evaluate, each benign by design. With the request $X$ fixed and only $I$ varied, five properties decide whether the selector is robust.
-\begin{itemize}
-    \item \textbf{Target.} The gap in the objective the pair targets: refusal, length, expressed confidence, or stance.
-    \item \textbf{Side effects.} Objectives the pair should not move; for the safety pair, the rate of unsafe answers judged by Llama Guard 3, a constraint every contract must respect.
-    \item \textbf{Floor.} Requests that harm people outside the conversation, on which the permissive contract should not lower refusals; we fixed this set before computing any rate.
-    \item \textbf{Held-out prompts.} The same gaps on 2,444 prompts outside the training pool.
-    \item \textbf{Channel.} The pair in the user turn instead of the system message, and both at once with opposite contracts.
-\end{itemize}
-For a policy of unlimited capacity, conditioning on $I$ splits the pooled preference loss into one term per contract, so one checkpoint can in principle hold every point; the measurements ask whether training reaches it.
+A contract pair (strict, permissive) picks one of two points on a trade-off, and the size of the move is the contract's lever; Table~\ref{tab:levers} lists the pairs we evaluate, each benign by design. With the request $X$ fixed and only $I$ varied, five properties decide whether the selector is robust. \textbf{Target}: the gap in the objective the pair targets (refusal, length, expressed confidence, or stance). \textbf{Side effects}: objectives the pair should not move; for the safety pair, the rate of unsafe answers judged by Llama Guard 3, a constraint every contract must respect. \textbf{Floor}: requests that harm people outside the conversation, on which the permissive contract should not lower refusals; we fixed this set before computing any rate. \textbf{Held-out prompts}: the same gaps on prompts outside the training pool. \textbf{Channel}: the pair in the user turn instead of the system message, and both at once with opposite contracts.
 
 \input{../common/tab_levers}
 
@@ -73,14 +64,16 @@ For a policy of unlimited capacity, conditioning on $I$ splits the pooled prefer
 
 \input{../common/sec_results}
 
+\input{../common/fig_xstest}
+
 \section{Related Work}
 
-Multi-objective alignment trades off rewards by weight interpolation \cite{rame2023rewarded}, a multi-objective DPO loss \cite{zhou2024modpo}, constrained RLHF with a cost model \cite{dai2024safe}, or conditioning on preference directions and attributes \cite{wang-etal-2024-arithmetic,dong2023steerlm}; decoding-time methods personalize without retraining \cite{shi2024decodingtime,chen2025pad}. These methods pick a trade-off point by weights or attributes; we measure what a natural-language contract moves after training. \input{../common/related_core}
+Beside the training-time methods above, decoding-time methods personalize without retraining \cite{shi2024decodingtime,chen2025pad}. All pick a trade-off point by weights or attributes; we measure what a natural-language contract moves after training. \input{../common/related_core}
 \input{../common/sec_limits}
 
 \section{Conclusion}
 
-Our five-property test locates the contract's lever on the safety-helpfulness trade-off in the pretrained model's prompt-following (gap \nBaseGap{}): supervised fine-tuning on one contract removes it, so as trained a strict or permissive contract barely moves a preference-trained model (\nTrainedLo{} to \nTrainedHi{}), and no single-contract preference loss, SwiPO's included, restores it. Contracts change wording, not harm, in every model; a floor appears only in the prompted, developer safety-tuned Instruct model, so a floor has to be a training target, and one checkpoint that serves several trade-offs needs training under several contracts. Loading only the final adapter of a stacked model inflates every gap to \nFinalLo{} to \nFinalHi{}, so a multi-objective evaluation must load the model as trained.
+Our five-property test locates the contract's lever on the safety-helpfulness trade-off in the pretrained model's prompt-following (gap \nBaseGap{}). Fine-tuning on one contract removes it and no single-contract loss restores it: as trained, each model holds one trade-off point (gap \nTrainedLo{} to \nTrainedHi{}), and contracts change wording, not harm. Several trade-offs per checkpoint, and a floor, must be trained.
 
 {\small
 \bibliography{../common/cita}

@@ -127,9 +127,12 @@ def main():
                 Line2D([], [], marker="o", linestyle="none", markersize=11, markerfacecolor="white", markeredgecolor=REF,
                        markeredgewidth=2.2, label="permissive contract"),
                 Line2D([], [], marker=r"$\rightarrow$", linestyle="none", markersize=18, color=REF, label="strict to permissive")]
+    if args.paper:  # the paper caption explains the arrow and the dotted line, so the legend keeps models and contracts only
+        handles = handles[:-1]
     if max(x0, 1 - y1) <= min(x1, 1 - y0):  # y = 1 - x crosses the visible window: refusal on unsafe = refusal on safe
         ax.plot([0, 1], [1, 0], linestyle=":", color=REF, linewidth=1.8, alpha=0.7, zorder=1)
-        handles.append(Line2D([], [], linestyle=":", color=REF, linewidth=1.8, label="no discrimination (y = 1 - x)"))
+        if not args.paper:
+            handles.append(Line2D([], [], linestyle=":", color=REF, linewidth=1.8, label="no discrimination (y = 1 - x)"))
     ax.set_xlabel("Refusal rate on unsafe prompts (safety) →", fontsize=FS, fontweight="bold")
     ax.set_ylabel("Answer rate on safe prompts (helpfulness) →", fontsize=FS, fontweight="bold")
     decode = data["meta"]["decode_variant"]

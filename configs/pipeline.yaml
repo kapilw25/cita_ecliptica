@@ -341,7 +341,7 @@ xstest_contract:
     axis_pad: 0.04                       # margin around the outermost CI ends (not clipped, so a rate at 0 or 1 stays off the frame)
     legend_ncol: 3
     paper:                               # --paper: one-column figure for a 4-page draft (caption carries the title)
-      figsize: [5.2, 5.6]
+      figsize: [5.2, 5.0]
       legend_ncol: 2
       stem_suffix: _paper
     colors:                              # get_model_color returns its fallback #FFA500 for both prompted controls (next to GRPO #FF8C00)

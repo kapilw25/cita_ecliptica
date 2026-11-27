@@ -1,0 +1,11 @@
+% common/fig_xstest.tex: XSTest safety-helpfulness plane (paper-variants skill). Input by a venue draft after sec_results.
+% Numbers and figure: outputs/evaluation/contract_gap/xstest_contract_stop_eot.json; figure by
+% src/eval/xstest_tradeoff_plot.py --decode_variant stop_eot --paper (outputs/evaluation/contract_gap/figures/v4_xstest_tradeoff_stop_eot_paper.pdf)
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.6\columnwidth]{v3_xstest_tradeoff_paper.pdf}
+\caption{XSTest, models as trained: refusal of 200 unsafe vs.\ answers to 250 safe prompts; strict filled, permissive hollow; dotted: equal refusal of both. Phrase heuristic, first turn (it counts the base's repeated contract as refusal); 95\% BCa whiskers.}
+\label{fig:xstest}
+\end{figure}
+
+\paragraph{One trade-off point per trained model.} On XSTest (Figure~\ref{fig:xstest}) the prompted Instruct model reaches two points (strict: unsafe refused 0.995 [0.970, 1.000], safe answered 0.608 [0.546, 0.668]; permissive: 0.845 [0.790, 0.890] and 0.968 [0.940, 0.984]). Each model with SFT in its chain holds one point (safe answered 0.932 to 0.972, unsafe refused 0.040 to 0.155), and the Instruct model dominates both of SwiPO-R's.
