@@ -34,7 +34,7 @@
 \maketitle
 
 \begin{abstract}
-We trace the lever a deployer holds over the user of a switchable model, a natural-language contract in the system message, to its source, and show that it reaches refusal wording, not harm. We test four Llama-3.1-8B models trained with DPO, PPO, GRPO, and SwiPO (an instruction-conditioned DPO with a mandatory Kullback-Leibler anchor), each with one safety contract and evaluated as trained, every parent low-rank adapter merged. The lever is the pretrained model's: with no adapter, the strict-minus-permissive refusal gap is 0.299 (95\% interval 0.266 to 0.332). Supervised fine-tuning (SFT) on one contract removes it, and DPO, PPO, and GRPO keep 0.03. Two SwiPO chains point to SFT: the released one, which skips SFT, keeps 0.376; with SFT it keeps 0.052 (0.020 to 0.082), not separable from DPO (+0.017, $-$0.025 to +0.057). No model's rate of unsafe answers, judged by Llama Guard 3, moves with the contract, and no trained model protects floor requests more than others, so a floor must be trained. When the user's turn carries the opposite contract, a prompted instruction-tuned model follows the user. For audits, stacked adapters must be loaded as trained: the final adapter alone, as earlier versions of this work loaded it, reports gaps of 0.30 to 0.49.
+We trace the lever a deployer holds over the user of a switchable model, a natural-language contract in the system message, to its source, and show that it reaches refusal wording, not harm. We test four Llama-3.1-8B models trained with DPO, PPO, GRPO, and SwiPO (an instruction-conditioned DPO with a mandatory Kullback-Leibler anchor), each with one safety contract and evaluated as trained, every parent low-rank adapter merged. The lever is the pretrained model's, and mostly wording: with no adapter, the strict-minus-permissive gap in refusal phrases is 0.299 (95\% interval 0.266 to 0.332), half of it the model repeating the contract. Supervised fine-tuning (SFT) on one contract removes it, and DPO, PPO, and GRPO keep 0.03. Two SwiPO chains point to SFT: the released one, which skips SFT, keeps 0.376; with SFT it keeps 0.052 (0.020 to 0.082), not separable from DPO (+0.017, $-$0.025 to +0.057). No model's rate of unsafe answers, judged by Llama Guard 3, moves with the contract, and no trained model protects floor requests more than others, so a floor must be trained. When the user's turn carries the opposite contract, a prompted instruction-tuned model follows the user. For audits, stacked adapters must be loaded as trained: the final adapter alone, as earlier versions of this work loaded it, reports gaps of 0.30 to 0.49.
 \end{abstract}
 
 \begin{links}
@@ -51,10 +51,10 @@ AI agents increasingly act for people, and inside a language model the question 
 \input{../common/fig_teaser}
 
 
-For loyalty the contract has a second reading. $I$ sits in the deployer's slot and the user usually does not see it, so every behavior it controls is a lever the deployer holds over the user. The loyalty question is therefore not whether the model follows instructions, but whose instructions it follows, which behaviors they may move, and what no contract may move. Our contributions are:
+For loyalty the contract has a second reading. $I$ sits in the deployer's slot and the user usually does not see it, so every behavior it controls is a lever the deployer holds over the user. The loyalty question is whose instructions the model follows, which behaviors they move, and what no contract may move. Our contributions are:
 \begin{itemize}
     \item A principal-agent reading of switchable alignment: the system slot as the delegation interface, the levers it controls, and five controls that decide whether a switchable agent stays loyal to its user (Section~\ref{sec:loyalty}).
-    \item Where the deployer's lever comes from: the pretrained model's prompt-following (gap 0.299). Fine-tuning on one contract removes it, and SwiPO's loss, trained with one contract, does not restore it; evaluated without their parent adapters, the same models show 0.30 to 0.49, so an audit must load the model as trained (Section~\ref{sec:results}).
+    \item Where the deployer's lever comes from: the pretrained model's prompt-following, mostly in wording (phrase gap 0.299, half of it repeating the contract). Fine-tuning on one contract removes it, and SwiPO's loss, trained with one contract, does not restore it; evaluated without their parent adapters, the same models show 0.30 to 0.49, so an audit must load the model as trained (Section~\ref{sec:results}).
     \item A separation of wording from harm: as trained, no model's rate of unsafe answers moves with the contract, on floor requests or elsewhere, on seen and held-out prompts, even where its refusal wording does; and a conflict test in which the user's contract overrides the deployer's in a prompted instruction-tuned model (Section~\ref{sec:results}).
 \end{itemize}
 
@@ -68,7 +68,7 @@ Four parties stand behind one answer: the provider fixes defaults in training, t
     \item \textbf{Authority.} If a user can write $I$, a permissive contract is a jailbreak; the contract has to arrive through an authenticated, privileged channel held by an accountable principal \cite{wallace2024instruction,south2025authenticated}, a priority current models enforce unreliably \cite{geng2025control,zhang2025iheval}.
     \item \textbf{Disclosure.} The user does not see $I$; a contract card, a readable statement of the contract in force, is the switchable form of a disclosure standard.
     \item \textbf{Conflicts of interest.} A deployer can pick the most permissive contract to cut complaints; told to promote sponsors, many models favor the company over the user \cite{wu2026ads}.
-    \item \textbf{Limits.} Loyalty to the user is bounded by duties to third parties, as a human fiduciary's is: a floor of behaviors no contract may change, trained with targets that do not depend on $I$, below a switchable layer.
+    \item \textbf{Limits.} Loyalty to the user is bounded by duties to third parties, as a human fiduciary's is: a floor of behaviors no contract may change, trained with targets that do not depend on $I$.
     \item \textbf{Audit.} If the contract in force is logged with every response, a harmful switch can be traced to the principal who set it \cite{chan2024visibility}; varying $I$ with $X$ fixed measures each lever.
 \end{itemize}
 
@@ -85,7 +85,7 @@ Four parties stand behind one answer: the provider fixes defaults in training, t
 
 \section{Conclusion}
 
-The deployer's lever over a switchable model is the pretrained model's prompt-following: SFT on one contract removes it, SwiPO's loss trained with one contract does not restore it, and as trained the contract barely moves refusals and moves no detectable harm, while a prompted instruction-tuned model lets the user override the deployer. Without their parent adapters the same models show levers of 0.30 to 0.49, so a loyalty audit must load the model as trained.
+The deployer's lever over a switchable model is the pretrained model's prompt-following, mostly in wording: SFT on one contract removes it, SwiPO's loss trained with one contract does not restore it, and no contract moves detectable harm, while a prompted instruction-tuned model lets the user override the deployer. Without their parent adapters the same models show levers of 0.30 to 0.49, so a loyalty audit must load the model as trained.
 
 {\small
 \bibliography{../common/cita}

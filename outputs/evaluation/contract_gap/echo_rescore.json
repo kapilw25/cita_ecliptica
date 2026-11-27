@@ -1,0 +1,359 @@
+{
+  "meta": {
+    "statistic": "strict minus permissive refusal rate, phrase heuristic on the first turn, with and without sentences that share a word 5-gram with the arm's own system contract",
+    "suite": "conditional_safety"
+  },
+  "models": {
+    "Llama31_Base_Prompted": {
+      "n": 1222,
+      "gap_first_turn": 0.29623567921440264,
+      "gap_first_turn_ci": [
+        0.26268412438625205,
+        0.32896890343698854
+      ],
+      "gap_echo_removed": 0.14238952536824878,
+      "gap_echo_removed_ci": [
+        0.11292962356792144,
+        0.1734860883797054
+      ],
+      "echo_removed_minus_first": -0.15384615384615385,
+      "echo_removed_minus_first_ci": [
+        -0.17594108019639934,
+        -0.13420621931260232
+      ],
+      "echo_rate": {
+        "strict": 0.40507364975450083,
+        "permissive": 0.411620294599018
+      },
+      "ci_method": "BCa",
+      "refusal_echo_removed": {
+        "strict": 0.27577741407528644,
+        "permissive": 0.13338788870703763
+      }
+    },
+    "SFT_Instruct": {
+      "n": 1222,
+      "gap_first_turn": 0.024549918166939442,
+      "gap_first_turn_ci": [
+        0.00900163666121113,
+        0.04091653027823241
+      ],
+      "gap_echo_removed": 0.024549918166939442,
+      "gap_echo_removed_ci": [
+        0.00900163666121113,
+        0.04091653027823241
+      ],
+      "echo_removed_minus_first": 0.0,
+      "echo_removed_minus_first_ci": [
+        0.0,
+        0.0
+      ],
+      "echo_rate": {
+        "strict": 0.0016366612111292963,
+        "permissive": 0.0024549918166939444
+      },
+      "ci_method": "BCa",
+      "refusal_echo_removed": {
+        "strict": 0.09083469721767594,
+        "permissive": 0.0662847790507365
+      }
+    },
+    "DPO_Instruct_AsTrained": {
+      "n": 1222,
+      "gap_first_turn": 0.02127659574468085,
+      "gap_first_turn_ci": [
+        0.003273322422258593,
+        0.03927986906710311
+      ],
+      "gap_echo_removed": 0.02127659574468085,
+      "gap_echo_removed_ci": [
+        0.003273322422258593,
+        0.03927986906710311
+      ],
+      "echo_removed_minus_first": 0.0,
+      "echo_removed_minus_first_ci": [
+        0.0,
+        0.0
+      ],
+      "echo_rate": {
+        "strict": 0.004091653027823241,
+        "permissive": 0.0
+      },
+      "ci_method": "BCa",
+      "refusal_echo_removed": {
+        "strict": 0.13993453355155483,
+        "permissive": 0.11865793780687398
+      }
+    },
+    "PPO_Instruct_AsTrained": {
+      "n": 1222,
+      "gap_first_turn": 0.013911620294599018,
+      "gap_first_turn_ci": [
+        0.0016366612111292963,
+        0.027004909983633387
+      ],
+      "gap_echo_removed": 0.01309328968903437,
+      "gap_echo_removed_ci": [
+        0.0008183306055646482,
+        0.026186579378068744
+      ],
+      "echo_removed_minus_first": -0.0008183306055646478,
+      "echo_removed_minus_first_ci": [
+        -0.004091653027823241,
+        0.0
+      ],
+      "echo_rate": {
+        "strict": 0.004091653027823241,
+        "permissive": 0.0024549918166939444
+      },
+      "ci_method": "BCa",
+      "refusal_echo_removed": {
+        "strict": 0.07774140752864157,
+        "permissive": 0.06464811783960721
+      }
+    },
+    "GRPO_Instruct_AsTrained": {
+      "n": 1222,
+      "gap_first_turn": 0.01800327332242226,
+      "gap_first_turn_ci": [
+        0.0032733224222585926,
+        0.03273322422258593
+      ],
+      "gap_echo_removed": 0.01800327332242226,
+      "gap_echo_removed_ci": [
+        0.0032733224222585926,
+        0.03273322422258593
+      ],
+      "echo_removed_minus_first": 0.0,
+      "echo_removed_minus_first_ci": [
+        0.0,
+        0.0
+      ],
+      "echo_rate": {
+        "strict": 0.004091653027823241,
+        "permissive": 0.0
+      },
+      "ci_method": "BCa",
+      "refusal_echo_removed": {
+        "strict": 0.08183306055646482,
+        "permissive": 0.06382978723404255
+      }
+    },
+    "CITA_Instruct_AsTrained": {
+      "n": 1222,
+      "gap_first_turn": 0.38543371522094927,
+      "gap_first_turn_ci": [
+        0.35515548281505727,
+        0.41571194762684116
+      ],
+      "gap_echo_removed": 0.36006546644844517,
+      "gap_echo_removed_ci": [
+        0.3281505728314239,
+        0.3911620294599018
+      ],
+      "echo_removed_minus_first": -0.0253682487725041,
+      "echo_removed_minus_first_ci": [
+        -0.036824877250409116,
+        -0.016366612111292977
+      ],
+      "echo_rate": {
+        "strict": 0.2381342062193126,
+        "permissive": 0.30851063829787234
+      },
+      "ci_method": "BCa",
+      "refusal_echo_removed": {
+        "strict": 0.8788870703764321,
+        "permissive": 0.5188216039279869
+      }
+    },
+    "CITA_Instruct_Chain": {
+      "n": 1222,
+      "gap_first_turn": 0.03273322422258593,
+      "gap_first_turn_ci": [
+        0.015548281505728314,
+        0.05155482815057283
+      ],
+      "gap_echo_removed": 0.03273322422258593,
+      "gap_echo_removed_ci": [
+        0.015548281505728314,
+        0.05155482815057283
+      ],
+      "echo_removed_minus_first": 0.0,
+      "echo_removed_minus_first_ci": [
+        0.0,
+        0.0
+      ],
+      "echo_rate": {
+        "strict": 0.004909983633387889,
+        "permissive": 0.0
+      },
+      "ci_method": "BCa",
+      "refusal_echo_removed": {
+        "strict": 0.1595744680851064,
+        "permissive": 0.12684124386252046
+      }
+    },
+    "DPO_Instruct": {
+      "n": 1222,
+      "gap_first_turn": 0.4950900163666121,
+      "gap_first_turn_ci": [
+        0.4623567921440262,
+        0.5270049099836334
+      ],
+      "gap_echo_removed": 0.46890343698854337,
+      "gap_echo_removed_ci": [
+        0.4353518821603928,
+        0.502454991816694
+      ],
+      "echo_removed_minus_first": -0.02618657937806873,
+      "echo_removed_minus_first_ci": [
+        -0.037643207855973804,
+        -0.015548281505728345
+      ],
+      "echo_rate": {
+        "strict": 0.3355155482815057,
+        "permissive": 0.4353518821603928
+      },
+      "ci_method": "BCa",
+      "refusal_echo_removed": {
+        "strict": 0.7774140752864157,
+        "permissive": 0.30851063829787234
+      }
+    },
+    "PPO_Instruct": {
+      "n": 1222,
+      "gap_first_turn": 0.3044189852700491,
+      "gap_first_turn_ci": [
+        0.27168576104746317,
+        0.3363338788870704
+      ],
+      "gap_echo_removed": 0.14811783960720132,
+      "gap_echo_removed_ci": [
+        0.11783960720130933,
+        0.1783960720130933
+      ],
+      "echo_removed_minus_first": -0.1563011456628478,
+      "echo_removed_minus_first_ci": [
+        -0.17839607201309327,
+        -0.13666121112929625
+      ],
+      "echo_rate": {
+        "strict": 0.3993453355155483,
+        "permissive": 0.41407528641571195
+      },
+      "ci_method": "BCa",
+      "refusal_echo_removed": {
+        "strict": 0.279050736497545,
+        "permissive": 0.1309328968903437
+      }
+    },
+    "GRPO_Instruct": {
+      "n": 1222,
+      "gap_first_turn": 0.323240589198036,
+      "gap_first_turn_ci": [
+        0.2896890343698854,
+        0.35597381342062195
+      ],
+      "gap_echo_removed": 0.18085106382978725,
+      "gap_echo_removed_ci": [
+        0.1497545008183306,
+        0.21112929623567922
+      ],
+      "echo_removed_minus_first": -0.14238952536824875,
+      "echo_removed_minus_first_ci": [
+        -0.16284779050736498,
+        -0.12274959083469725
+      ],
+      "echo_rate": {
+        "strict": 0.3895253682487725,
+        "permissive": 0.42716857610474634
+      },
+      "ci_method": "BCa",
+      "refusal_echo_removed": {
+        "strict": 0.3199672667757774,
+        "permissive": 0.13911620294599017
+      }
+    },
+    "CITA_Instruct": {
+      "n": 1222,
+      "gap_first_turn": 0.3985270049099836,
+      "gap_first_turn_ci": [
+        0.3657937806873977,
+        0.43126022913256956
+      ],
+      "gap_echo_removed": 0.2978723404255319,
+      "gap_echo_removed_ci": [
+        0.265139116202946,
+        0.33060556464811786
+      ],
+      "echo_removed_minus_first": -0.1006546644844517,
+      "echo_removed_minus_first_ci": [
+        -0.11783960720130937,
+        -0.08428805237315873
+      ],
+      "echo_rate": {
+        "strict": 0.38870703764320785,
+        "permissive": 0.41407528641571195
+      },
+      "ci_method": "BCa",
+      "refusal_echo_removed": {
+        "strict": 0.46317512274959083,
+        "permissive": 0.16530278232405893
+      }
+    },
+    "CITA_Instruct_Chain_FinalOnly": {
+      "n": 1222,
+      "gap_first_turn": 0.3404255319148936,
+      "gap_first_turn_ci": [
+        0.306873977086743,
+        0.3731587561374796
+      ],
+      "gap_echo_removed": 0.2078559738134206,
+      "gap_echo_removed_ci": [
+        0.17594108019639934,
+        0.2397708674304419
+      ],
+      "echo_removed_minus_first": -0.132569558101473,
+      "echo_removed_minus_first_ci": [
+        -0.15302782324058917,
+        -0.1145662847790507
+      ],
+      "echo_rate": {
+        "strict": 0.3985270049099836,
+        "permissive": 0.425531914893617
+      },
+      "ci_method": "BCa",
+      "refusal_echo_removed": {
+        "strict": 0.3445171849427169,
+        "permissive": 0.13666121112929625
+      }
+    },
+    "Llama31_Instruct_Prompted": {
+      "n": 1222,
+      "gap_first_turn": 0.23240589198036007,
+      "gap_first_turn_ci": [
+        0.20949263502454993,
+        0.2569558101472995
+      ],
+      "gap_echo_removed": 0.23076923076923078,
+      "gap_echo_removed_ci": [
+        0.2078559738134206,
+        0.2553191489361702
+      ],
+      "echo_removed_minus_first": -0.0016366612111292922,
+      "echo_removed_minus_first_ci": [
+        -0.0057283142389525366,
+        0.0
+      ],
+      "echo_rate": {
+        "strict": 0.0024549918166939444,
+        "permissive": 0.0
+      },
+      "ci_method": "BCa",
+      "refusal_echo_removed": {
+        "strict": 0.986088379705401,
+        "permissive": 0.7553191489361702
+      }
+    }
+  }
+}

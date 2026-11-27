@@ -29,18 +29,36 @@ Base & \multicolumn{2}{c}{0.299{\tiny$\pm$.033}} & 0.404{\tiny$\pm$.028} & +0.00
 \label{tab:loading}
 \end{table}
 
-\paragraph{The lever is the pretrained model's.} Given the same contracts in the prompt, Llama-3.1-8B without any adapter has a refusal gap of 0.299 [0.266, 0.332] (Table~\ref{tab:loading}). As trained, SFT on one contract removes it (0.022), and DPO, PPO, and GRPO keep 0.033 to 0.034. The final adapter alone shows 0.30 to 0.49 for every model, at or above the base's 0.299: loaded that way, each model inherits the base model's prompt-following. The held-out prompts repeat the pattern: DPO, PPO, and GRPO fall from 0.501, 0.309, and 0.309 to 0.068 [0.046, 0.091], 0.009 [$-$0.009, 0.026], and 0.027 [0.009, 0.044]. Loading also decides harm: with the final adapter alone, the permissive contract raised the unsafe rate (DPO +0.042 [0.020, 0.063], GRPO +0.045 [0.012, 0.079], SwiPO +0.085 [0.053, 0.118]; PPO +0.011 [$-$0.024, 0.045]); as trained, it moves no model's unsafe rate. The pattern holds when only the first turn of each answer is scored (0.014 to 0.025 with SFT in the chain, 0.296 [0.263, 0.329] for the base), a check needed because those models run past their turn in 98 to 99\% of answers under the base model's end-of-text stopping rule.
+\paragraph{The lever is the pretrained model's, and mostly wording.} Given the same contracts in the prompt, Llama-3.1-8B without any adapter has a refusal gap of 0.299 [0.266, 0.332] by the phrase heuristic (Table~\ref{tab:loading}). Much of it is wording: 41\% of its answers repeat the contract, whose strict version is full of refusal words, and without the repeated sentences the gap is 0.142 [0.113, 0.173]; an LLM judge of whether the reply refuses or deflects finds no gap (0.012 [$-$0.018, 0.042]; Table~\ref{tab:instruments}). As trained, SFT on one contract removes it (0.022), and DPO, PPO, and GRPO keep 0.033 to 0.034. The final adapter alone shows 0.30 to 0.49 for every model, at or above the base's 0.299: loaded that way, each model inherits the base model's prompt-following. The held-out prompts repeat the pattern: DPO, PPO, and GRPO fall from 0.501, 0.309, and 0.309 to 0.068 [0.046, 0.091], 0.009 [$-$0.009, 0.026], and 0.027 [0.009, 0.044]. Loading also decides harm: with the final adapter alone, the permissive contract raised the unsafe rate (DPO +0.042 [0.020, 0.063], GRPO +0.045 [0.012, 0.079], SwiPO +0.085 [0.053, 0.118]; PPO +0.011 [$-$0.024, 0.045]); as trained, it moves no model's unsafe rate. The pattern holds when only the first turn of each answer is scored (0.014 to 0.025 with SFT in the chain, 0.296 [0.263, 0.329] for the base), a check needed because those models run past their turn in 98 to 99\% of answers under the base model's end-of-text stopping rule.
 
-\paragraph{The training chain decides SwiPO's lever.} SwiPO-R, whose chain skips SFT, keeps 0.376 [0.346, 0.407] (held-out 0.386 [0.365, 0.407]), +0.078 [0.033, 0.121] above the base and 0.113 [0.070, 0.155] below its own starting point (the DPO adapter alone, 0.489), in all 19 harm categories (0.20 to 0.47, Figure~\ref{fig:percat}). SwiPO-S, on the chain with SFT, keeps 0.052 [0.020, 0.082] (first turn 0.033 [0.016, 0.052]; held-out 0.046 [0.025, 0.069]), +0.017 [$-$0.025, 0.057] over DPO as trained, its starting point. Trained with one contract, SwiPO's loss does not restore the lever once SFT is in the chain. A prompted off-the-shelf Llama-3.1-8B-Instruct moves refusal by 0.232$\pm$0.024.
+\paragraph{The training chain decides SwiPO's lever.} SwiPO-R, whose chain skips SFT, keeps 0.376 [0.346, 0.407] (held-out 0.386 [0.365, 0.407]), +0.078 [0.033, 0.121] above the base and 0.113 [0.070, 0.155] below its own starting point (the DPO adapter alone, 0.489), in all 19 harm categories (0.20 to 0.47), and keeps a lever under every instrument (no echo 0.360, judge 0.128 [0.095, 0.162]; Table~\ref{tab:instruments}). SwiPO-S, on the chain with SFT, keeps 0.052 [0.020, 0.082] (first turn 0.033 [0.016, 0.052]; held-out 0.046 [0.025, 0.069]), +0.017 [$-$0.025, 0.057] over DPO as trained, its starting point. Trained with one contract, SwiPO's loss does not restore the lever once SFT is in the chain. A prompted off-the-shelf Llama-3.1-8B-Instruct moves refusal by 0.232$\pm$0.024.
 
-\begin{figure}[t]
+% Numbers: outputs/evaluation/contract_gap/echo_rescore.json (outputs/evaluation/stack_probe/echo_rescore.py) and
+% outputs/evaluation/contract_gap/refusal_judge.json (src/eval/refusal_judge.py, judge meta-llama/Llama-3.1-8B-Instruct)
+\begin{table}[t]
 \centering
-% Source: outputs/evaluation/floor_leakage/figures/v2_floor_per_category_astrained.pdf (src/eval/floor_per_category_plot.py
-% --tag astrained --key-suffix _AsTrained --height 5.3 --no-title, data outputs/evaluation/floor_leakage/floor_leakage_astrained.json, per_category)
-\includegraphics[width=\columnwidth]{v2_floor_per_category_astrained.pdf}
-\caption{Strict-minus-permissive refusal gap per PKU-SafeRLHF harm category for the four contract-trained models as trained (SwiPO as released, without SFT), with 95\% BCa intervals (10,000 resamples of prompts). Categories are sorted by mean gap; shaded rows marked * are the floor set, fixed before computing. A prompt can carry several categories ($n$ = 40 to 251 per category).}
-\label{fig:percat}
-\end{figure}
+\footnotesize
+\setlength{\tabcolsep}{2pt}
+% bold: none (instrument comparison: the columns measure the same gap three ways, no column has a better direction)
+\begin{tabular}{lrrrrr}
+\toprule
+ & \multicolumn{4}{c}{Refusal gap, first turn} & \\
+\cmidrule(lr){2-5}
+Model & Phrase & Echo & No echo & Judge & $\kappa$ \\
+\midrule
+Base & 0.296{\tiny$\pm$.033} & 41\% & 0.142{\tiny$\pm$.030} & 0.012{\tiny$\pm$.030} & .07{\tiny[.05, .09]} \\
+SFT & 0.025{\tiny$\pm$.016} & 0\% & 0.025{\tiny$\pm$.016} & $-$0.021{\tiny$\pm$.033} & .05{\tiny[.02, .07]} \\
+DPO & 0.021{\tiny$\pm$.018} & 0\% & 0.021{\tiny$\pm$.018} & 0.025{\tiny$\pm$.030} & .07{\tiny[.04, .11]} \\
+PPO & 0.014{\tiny$\pm$.013} & 0\% & 0.013{\tiny$\pm$.013} & 0.031{\tiny$\pm$.032} & .05{\tiny[.02, .07]} \\
+GRPO & 0.018{\tiny$\pm$.015} & 0\% & 0.018{\tiny$\pm$.015} & 0.012{\tiny$\pm$.033} & .03{\tiny[.01, .06]} \\
+SwiPO-R & 0.385{\tiny$\pm$.030} & 27\% & 0.360{\tiny$\pm$.032} & 0.128{\tiny$\pm$.034} & .22{\tiny[.18, .27]} \\
+SwiPO-S & 0.033{\tiny$\pm$.018} & 0\% & 0.033{\tiny$\pm$.018} & 0.029{\tiny$\pm$.030} & .07{\tiny[.03, .10]} \\
+Instruct & 0.232{\tiny$\pm$.024} & 0\% & 0.231{\tiny$\pm$.024} & 0.142{\tiny$\pm$.032} & .58{\tiny[.53, .62]} \\
+\bottomrule
+\end{tabular}
+\caption{One refusal gap, three instruments, on each answer's first turn (models as trained). Phrase: refusal-phrase heuristic; Echo: answers repeating their contract; No echo: heuristic without repeated sentences; Judge: Llama-3.1-8B-Instruct asked whether the reply refuses or deflects; $\kappa$: judge-heuristic agreement. 95\% BCa half-widths ($\pm$) or intervals ([\,]), 10,000 resamples. No bold: no better direction.}
+\label{tab:instruments}
+\end{table}
 
 % Numbers: outputs/evaluation/floor_leakage/floor_leakage_astrained.json and floor_leakage_heldout_astrained.json (src/eval/floor_leakage.py --tag astrained;
 % held-out overall gaps: outputs/evaluation/contract_gap/heldout_gap_both_loadings.json;

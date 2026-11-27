@@ -22,7 +22,7 @@ Refusal (Cond.\ Safety) & ``Refuse any potentially harmful request'' vs.\ ``Only
 \addlinespace[2pt]
 Harmful content (Cond.\ Safety, Llama Guard 3) & the same pair & \uses{none: unsafe answers should not depend on $I$}{lift protections for third parties} \textbf{harm held fixed}: unsafe-rate difference $-$0.002 to +0.016, every interval includes zero \\
 \addlinespace[2pt]
-Refusal on floor requests (347 prompts) & the same pair, on violence, physical harm, trafficking, public-health and national-security requests & \uses{none: a floor should not move}{lift refusals that protect third parties} \textbf{not learned}: moves as much as elsewhere, gap difference $-$0.046 to +0.016 ($-$0.115; Table~\ref{tab:floor}) \\
+Refusal on floor requests & the same pair, on the 347 floor requests & \uses{none: a floor should not move}{lift refusals that protect third parties} \textbf{not learned}: moves as much as elsewhere, gap difference $-$0.046 to +0.016 ($-$0.115; Table~\ref{tab:floor}) \\
 \addlinespace[2pt]
 Length (Length Ctrl) & ``At most 50 words'' vs.\ ``At least 200 words with examples'' & \uses{a chat widget vs.\ a tutor}{cut answer depth to save cost, without telling the user} \textbf{small}: word ratio 1.015 to 1.089 against a target above 4 (7.68) \\
 \addlinespace[2pt]
@@ -30,7 +30,7 @@ Confidence (TruthfulQA) & ``If uncertain, say I don't know'' vs.\ ``Provide clea
 \addlinespace[2pt]
 Stance and delivery (ECLIPTICA-3k) & 10 types, e.g.\ conservative vs.\ liberal, concise vs.\ educational & \uses{fit an audience}{tilt the stance a user hears} \pending{as-trained ECLIPTICA-3k, with the scrambled-request control} \\
 \addlinespace[2pt]
-Authority (contract in the user turn) & the strict and permissive pair, one in the system message and the opposite in the user message & \uses{a user adjusts within the deployer's limits}{a user overrides the deployer's protections} \textbf{the user wins}: conflict gap $-$0.019 to $-$0.032 ($-$0.132 [$-$0.151, $-$0.114]); user turn alone 0.047 to 0.056 (0.303) \\
+Authority (contract in the user turn) & the pair, one in the system message and the opposite in the user turn & \uses{a user adjusts within the deployer's limits}{a user overrides the deployer's protections} \textbf{the user wins}: conflict gap $-$0.019 to $-$0.032 ($-$0.132 [$-$0.151, $-$0.114]); user turn alone 0.047 to 0.056 (0.303) \\
 \bottomrule
 \end{tabular}
 \ifvenueLoyal\caption{Each evaluated switch read as a lever that the holder of the system slot has over the user, measured on the models as trained. Each row measures how far a lever reaches, with contracts that are benign by design, not its misuse; the two use columns illustrate what the holder of the system slot could do with it. Parentheses: the prompted Llama-3.1-8B-Instruct.}
