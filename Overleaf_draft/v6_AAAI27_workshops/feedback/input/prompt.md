@@ -152,8 +152,11 @@ and novelty. Output a table:
 The rewrite must be positive, constructive and centred on the contribution, BUT it must keep
 every fact and every number true: never remove an interval, never turn a non-significant
 difference into a win or a tie, never hide a negative result, never add a claim the paper
-does not test. No em dashes. Finish with: the 3 rewrites that matter most, and a rewritten
-abstract (same facts, at most the current length) that opens with the contribution.
+does not test. No em dashes.
+Finish with: 
+D.2) the 3 rewrites that matter most, and 
+D.3) a rewritten abstract (same facts, at most the current length) that opens with the contribution.
+
 
 PART E. Across the 4 versions (once, after the four Part D tables)
 - Any number, claim or sentence that disagrees between the 4 PDFs (quote both places).
