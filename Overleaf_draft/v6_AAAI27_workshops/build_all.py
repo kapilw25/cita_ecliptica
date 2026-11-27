@@ -1,4 +1,4 @@
-"""Rebuild every unfrozen venue draft (paper-variants skill): latexmk, e2e audit with the venue's page limit, drift gate; one table.
+"""Rebuild every unfrozen venue draft (paper-variants skill): numbers from JSON, latexmk, e2e audit at the venue page limit, drift and number gates.
     python3 Overleaf_draft/v6_AAAI27_workshops/build_all.py 2>&1 | tee logs/build_all_drafts.log
 """
 import hashlib
@@ -7,12 +7,16 @@ import subprocess
 import sys
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import make_numbers  # noqa: E402
+
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
 COMMON = HERE / "common"
 AUDIT = ROOT / ".claude/skills/audit-paper-e2e-draft/check_draft.py"
 TEMPLATE_FILES = {"aaai2027.sty", "aaai2027.bst", "0_main.tex", "venue.tex", "FROZEN"}
 MIN_WORDS = 40  # a venue paragraph this long, identical to one in common/, was pasted instead of \input
+TYPED = re.compile(r"\d\.\d{2,}")  # a decimal number typed in a venue file instead of a common/numbers.tex macro
 
 
 def paragraphs(text: str) -> set:
@@ -26,7 +30,9 @@ def drift(venue: Path) -> list:
             and p.name not in TEMPLATE_FILES]
     shared = set().union(*(paragraphs(p.read_text()) for p in COMMON.glob("*.tex")))
     pasted = paragraphs((venue / "0_main.tex").read_text()) & shared
-    return hits + [f"pasted paragraph: {p[:60]}..." for p in pasted]
+    typed = [m.group() for line in (venue / "0_main.tex").read_text().splitlines() if not line.lstrip().startswith("%")
+             for m in TYPED.finditer(line.partition(" % ")[0])]
+    return hits + [f"pasted paragraph: {p[:60]}..." for p in pasted] + [f"typed number {t} (use a common/numbers.tex macro)" for t in typed]
 
 
 def venue_info(venue: Path) -> dict:
@@ -38,6 +44,7 @@ def venue_info(venue: Path) -> dict:
 
 
 def main():
+    make_numbers.main()  # regenerate common/numbers.tex; exits if an abstract or conclusion number is missing from the body
     drafts = sorted(d for d in HERE.glob("v*_*") if (d / "0_main.tex").exists())
     rows, failed = [], 0
     for d in drafts:
