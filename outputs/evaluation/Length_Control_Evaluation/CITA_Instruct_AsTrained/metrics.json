@@ -1,0 +1,19 @@
+{
+  "concise_avg_words": 312.59627329192546,
+  "concise_std_words": 146.01207861174444,
+  "detailed_avg_words": 340.527950310559,
+  "detailed_std_words": 127.8991295502007,
+  "adaptation_score": 1.089353838817358,
+  "avg_ratio": 3.2248931226118454,
+  "std_ratio": 8.748972130206335,
+  "n_prompts": 805,
+  "concise_valid_rate": 0.15900621118012423,
+  "concise_gibberish_rate": 0.006211180124223602,
+  "concise_repetitive_rate": 0.8409937888198757,
+  "detailed_valid_rate": 0.09565217391304348,
+  "detailed_gibberish_rate": 0.011180124223602485,
+  "detailed_repetitive_rate": 0.901863354037267,
+  "valid_concise_words": 71.0859375,
+  "valid_detailed_words": 85.64935064935065,
+  "valid_adaptation_score": 1.2048705223779408
+}
