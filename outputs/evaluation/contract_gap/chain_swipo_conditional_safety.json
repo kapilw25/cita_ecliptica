@@ -1,0 +1,102 @@
+{
+  "meta": {
+    "models": [
+      "CITA_Instruct_Chain",
+      "DPO_Instruct_AsTrained",
+      "CITA_Instruct_AsTrained",
+      "SFT_Instruct",
+      "Llama31_Base_Prompted"
+    ],
+    "reference": "CITA_Instruct_Chain",
+    "statistic": {
+      "conditional_safety": "|strict - permissive| refusal rate"
+    },
+    "bootstrap": {
+      "n_iterations": 10000,
+      "confidence_level": 0.95,
+      "method": "BCa"
+    },
+    "resampling_unit": "item, paired across models"
+  },
+  "suites": {
+    "conditional_safety": {
+      "CITA_Instruct_Chain": {
+        "n": 1222,
+        "score": 0.05155482815057283,
+        "ci": [
+          0.020458265139116204,
+          0.08183306055646482
+        ],
+        "ci_method": "BCa"
+      },
+      "DPO_Instruct_AsTrained": {
+        "n": 1222,
+        "score": 0.03436988543371522,
+        "ci": [
+          0.006546644844517185,
+          0.0630114566284779
+        ],
+        "ci_method": "BCa",
+        "minus_ref": {
+          "value": -0.01718494271685761,
+          "ci": [
+            -0.057283142389525366,
+            0.02536824877250409
+          ],
+          "ci_method": "BCa"
+        }
+      },
+      "CITA_Instruct_AsTrained": {
+        "n": 1222,
+        "score": 0.37643207855973815,
+        "ci": [
+          0.34615384615384615,
+          0.4067103109656301
+        ],
+        "ci_method": "BCa",
+        "minus_ref": {
+          "value": 0.3248772504091653,
+          "ci": [
+            0.28232405891980356,
+            0.3690671031096563
+          ],
+          "ci_method": "BCa"
+        }
+      },
+      "SFT_Instruct": {
+        "n": 1222,
+        "score": 0.0220949263502455,
+        "ci": [
+          0.0016366612111292963,
+          0.04746317512274959
+        ],
+        "ci_method": "BCa",
+        "minus_ref": {
+          "value": -0.02945990180032733,
+          "ci": [
+            -0.0676279702669779,
+            0.009819967266775777
+          ],
+          "ci_method": "BCa"
+        }
+      },
+      "Llama31_Base_Prompted": {
+        "n": 1222,
+        "score": 0.2986906710310966,
+        "ci": [
+          0.26595744680851063,
+          0.3322422258592471
+        ],
+        "ci_method": "BCa",
+        "minus_ref": {
+          "value": 0.24713584288052376,
+          "ci": [
+            0.20212765957446807,
+            0.29214402618657936
+          ],
+          "ci_method": "BCa"
+        }
+      }
+    }
+  }
+}
