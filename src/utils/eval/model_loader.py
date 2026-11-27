@@ -206,6 +206,29 @@ def local_adapter_dir(hf_repo: str) -> str:
 # Model Loading
 # ===================================================================
 
+def load_tokenizer_for_eval(model_key: str) -> AutoTokenizer:
+    """Tokenizer of a MODELS entry exactly as load_model_for_eval sets it up (no weights; lets --dry runs build the real chat prompts)."""
+    tokenizer = AutoTokenizer.from_pretrained(MODELS[model_key].get("base_model", BASE_MODEL), token=HF_TOKEN)
+    tokenizer.pad_token = tokenizer.eos_token
+    tokenizer.padding_side = "left"  # Required for decoder-only models in batch generation
+
+    # Set Llama-3.1 chat template
+    if tokenizer.chat_template is None:
+        tokenizer.chat_template = (
+            "{% for message in messages %}"
+            "{% if loop.first and message['role'] != 'system' %}"
+            "{{ '<|begin_of_text|>' }}"
+            "{% endif %}"
+            "{{ '<|start_header_id|>' + message['role'] + '<|end_header_id|>\\n\\n' + message['content'] + '<|eot_id|>' }}"
+            "{% endfor %}"
+            "{% if add_generation_prompt %}"
+            "{{ '<|start_header_id|>assistant<|end_header_id|>\\n\\n' }}"
+            "{% endif %}"
+        )
+        print("Set Llama-3.1 chat template")
+    return tokenizer
+
+
 def load_model_for_eval(model_key: str, attn_implementation: str = "flash_attention_2",
                         max_gpu_memory: str = "22GiB") -> Tuple[AutoModelForCausalLM, AutoTokenizer]:
     """
@@ -235,25 +258,7 @@ def load_model_for_eval(model_key: str, attn_implementation: str = "flash_attent
     else:
         print("Loading base model (no adapter)")
 
-    # Load tokenizer
-    tokenizer = AutoTokenizer.from_pretrained(base_model, token=HF_TOKEN)
-    tokenizer.pad_token = tokenizer.eos_token
-    tokenizer.padding_side = "left"  # Required for decoder-only models in batch generation
-
-    # Set Llama-3.1 chat template
-    if tokenizer.chat_template is None:
-        tokenizer.chat_template = (
-            "{% for message in messages %}"
-            "{% if loop.first and message['role'] != 'system' %}"
-            "{{ '<|begin_of_text|>' }}"
-            "{% endif %}"
-            "{{ '<|start_header_id|>' + message['role'] + '<|end_header_id|>\\n\\n' + message['content'] + '<|eot_id|>' }}"
-            "{% endfor %}"
-            "{% if add_generation_prompt %}"
-            "{{ '<|start_header_id|>assistant<|end_header_id|>\\n\\n' }}"
-            "{% endif %}"
-        )
-        print("Set Llama-3.1 chat template")
+    tokenizer = load_tokenizer_for_eval(model_key)
 
     # Load base model in BF16
     print(f"Loading base model in BF16: {base_model}")
