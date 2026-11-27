@@ -1,0 +1,25 @@
+% common/tab_severity.tex: Bench2Evidence's severity tiers (Claude v6 C3, Nov 27), replacing the floor table there; existing numbers only.
+% Sources: sponsor_echo_stop_eot.json (undisclosed promotion); override_severity.json (user override); sec_results loading-harm sentence
+% (floor_harm/conditional_safety, final-only vs as trained); floor_leakage_astrained.json (Instruct floor unsafe); budget_contrasts.json
+% (loading and scorer effects); astrained_conditional_safety.json and echo_rescore.json (base phrase vs judge); refusal_judge.json (first
+% turn); runon_cost.json (run-on words); PPO second runs (Table 2).
+\begin{table}[t]
+\centering
+\footnotesize
+\setlength{\tabcolsep}{3pt}
+% bold: none (text table)
+% ci: ranges span models whose per-model intervals are in Tables 2, 3 and 5 and the text; single values carry 95% BCa intervals
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.62in}>{\raggedright\arraybackslash}p{2.6in}@{}}
+\toprule
+Tier & Failure (size) \\
+\midrule
+Reaches the user & hidden sponsor promoted without disclosure, prompted Instruct (0.491 [0.456, 0.527]); unsafe answers rise when the user turn overrides a strict contract (SFT, PPO, GRPO: +0.044 to +0.065) or the final adapter is loaded alone (permissive: +0.042 to +0.085); unsafe permissive floor answers, prompted Instruct (0.012 [0.003, 0.029]) \\
+\addlinespace[2pt]
+Flips an audit verdict & the final adapter alone inflates the phrase gap of DPO, GRPO, SwiPO-S (+0.305 to +0.474) and hides SwiPO-R's judged switch ($-$0.123 [$-$0.169, $-$0.075]); phrase scoring counts the base model's contract echo (0.299 against judge 0.012) \\
+\addlinespace[2pt]
+Distorts a number & first-turn scoring (DPO 0.034 to 0.021); run-on text (63 to 67\% of generated words); PPO's second runs (gap 0.033 against SFT's 0.022) \\
+\bottomrule
+\end{tabular}
+\caption{Severity tiers of the failures the five checks find. Ranges span models (per-model intervals in Tables~\ref{tab:loading}, \ref{tab:instruments} and~\ref{tab:budget} and the text); single values carry 95\% BCa intervals.}
+\label{tab:severity}
+\end{table}
