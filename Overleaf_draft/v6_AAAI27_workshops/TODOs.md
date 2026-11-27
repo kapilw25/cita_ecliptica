@@ -1,6 +1,6 @@
 # ✅ SwiPO TODOs (v4, v5, v6, v7)
 
-Updated Fri Nov 27 2026, 11:09 AM PST. One TODO file for all SwiPO workshop drafts (owner order Fri Nov 27 ~8:05 AM PST), next to [venues.md](venues.md). It replaces `v2_LoyalAgents/TODOs.md`, archived at [legacy/v2_LoyalAgents/TODOs.md](legacy/v2_LoyalAgents/TODOs.md). Sources: the ARR reviews ([KpHA](../ARR_feedback/Reviewer_KpHA.md), [gMno](../ARR_feedback/Reviewer_gMno.md), [shuX](../ARR_feedback/Reviewer_shuX.md)) and the ChatGPT and Claude reviews in `feedback/output/<draft>/by_chatgpt.md` and `by_claude.md`. No early freeze: every draft iterates until its deadline (owner, Fri Nov 27). Owner away Fri Nov 27 ~8:40 AM to ~8:40 PM PST; picks before leaving: Claude integrates each new result honestly (abstracts included, titles fixed, cuts only from the judges' cut lists), runs a fresh Claude judge round on the Saturday drafts around 6 PM, keeps the anonymous data link, and sends a phone ping only on key events.
+Updated Fri Nov 27 2026, 11:29 AM PST. One TODO file for all SwiPO workshop drafts (owner order Fri Nov 27 ~8:05 AM PST), next to [venues.md](venues.md). It replaces `v2_LoyalAgents/TODOs.md`, archived at [legacy/v2_LoyalAgents/TODOs.md](legacy/v2_LoyalAgents/TODOs.md). Sources: the ARR reviews ([KpHA](../ARR_feedback/Reviewer_KpHA.md), [gMno](../ARR_feedback/Reviewer_gMno.md), [shuX](../ARR_feedback/Reviewer_shuX.md)) and the ChatGPT and Claude reviews in `feedback/output/<draft>/by_chatgpt.md` and `by_claude.md`. No early freeze: every draft iterates until its deadline (owner, Fri Nov 27). Owner away Fri Nov 27 ~8:40 AM to ~8:40 PM PST; picks before leaving: Claude integrates each new result honestly (abstracts included, titles fixed, cuts only from the judges' cut lists), runs a fresh Claude judge round on the Saturday drafts around 6 PM, keeps the anonymous data link, and sends a phone ping only on key events.
 
 **Legend:** 🔴 open · ⏳ queued · 🟡 in progress · ✅ done · 👤 a person does it · ⚪ deferred · ⛔ blocked · 🟢 ChatGPT · 🟠 Claude · 📜 ARR
 
@@ -57,7 +57,7 @@ Owner pick Fri Nov 27 ~8:25 AM PST: no new baseline trainings before Dec 2. The 
 | 🔤 Larger Figure 1 text | 📊 v6, 📐 v7 | ✅ Fri Nov 27, 9:58 AM | ✅ about 17% larger |
 | 🧾 Rebuild, gates, page checkers | 🤝 v4, 🎯 v5 | ⏰ Fri Nov 27, 9 PM | 🔴 open |
 | 🔁 Judge reread, Saturday drafts | 🤝 v4, 🎯 v5 | 👤 Fri Nov 27, 11 PM | 🔴 owner |
-| 🔗 Data link: anonymous or named | 🤝 v4, 📐 v7 | ✅ Fri Nov 27, 8:35 AM | ✅ owner: keep anonymous |
+| 🔗 Data link: anonymous or named | 🔗 all | ✅ Fri Nov 27, 11:29 AM | ✅ cut in v5, v6 |
 | 📝 OpenReview overlap disclosure | 🎯 v5, 📊 v6 | 👤 at submission | 🔴 owner |
 | 📤 Submit LoyalAgents | 🤝 v4 | 👤 Sat Nov 28, 3 AM | 🔴 owner |
 | 📤 Submit MultiRobust | 🎯 v5 | 👤 Sat Nov 28, 3 AM | 🔴 owner |

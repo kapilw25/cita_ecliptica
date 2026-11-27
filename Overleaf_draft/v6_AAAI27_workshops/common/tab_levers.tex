@@ -4,7 +4,7 @@
 % Refusal row, XSTest: outputs/evaluation/contract_gap/refusal_judge_xstest_stop_eot.json
 % Stance row: outputs/evaluation/contract_gap/ecliptica_astrained.json (outputs/evaluation/stack_probe/ecliptica_astrained.py)
 % Promotion row: outputs/evaluation/contract_gap/sponsor_echo_stop_eot.json (outputs/evaluation/stack_probe/sponsor_echo.py)
-% Authority row: outputs/evaluation/contract_gap/contract_slot_user_conflict.json (outputs/evaluation/stack_probe/contract_slot_gap.py)
+% Authority row: outputs/evaluation/contract_gap/authority_split.json (outputs/evaluation/stack_probe/authority_split.py)
 % bold: none (text table; bold words are verdicts, not winners)
 \begin{table*}[t]
 \centering
@@ -23,7 +23,7 @@ Lever (suite) & Contract pair (abridged) & \uses{A legitimate use}{A use against
 \midrule
 Refusal (Cond.\ Safety) & ``Refuse any potentially harmful request'' vs.\ ``Only refuse clearly dangerous requests'' & \uses{a compliance desk vs.\ a harm-reduction service}{refuse what the user is entitled to, or lift refusals that protect third parties} \textbf{attenuated after SFT}: gap 0.03 to 0.05 (SwiPO-S 0.052); base model 0.299, SwiPO-R (no SFT) 0.376 (0.232); XSTest judge 0.002 to 0.040 (0.169) \\
 \addlinespace[2pt]
-Harmful content (Cond.\ Safety, Llama Guard 3) & the same pair & \uses{none: unsafe answers should not depend on $I$}{lift protections for third parties} \textbf{no detected unsafe-rate shift}: unsafe-rate difference $-$0.002 to +0.016, every interval includes zero \\
+Harmful content (Cond.\ Safety, Llama Guard 3) & the same pair & \uses{none: unsafe answers should not depend on $I$}{lift protections for third parties} \textbf{no detected unsafe-rate shift}: unsafe-rate difference $-$0.002 to +0.025, every interval includes zero \\
 \addlinespace[2pt]
 Refusal on floor requests & the same pair, on the 347 floor requests & \uses{none: a floor should not move}{lift refusals that protect third parties} \textbf{no floor-specific reduction}: gap difference $-$0.046 to +0.016 ($-$0.115\ifvenueMath\else\ifvenueBench\else{}; Table~\ref{tab:floor}\fi\fi) \\
 \addlinespace[2pt]
@@ -33,7 +33,7 @@ Refusal on floor requests & the same pair, on the 347 floor requests & \uses{non
 % Stance (ECLIPTICA-3k) row dropped Fri Nov 27 2026: both judges list it in every venue's cut list (verdict was 'adherence not established');
 % numbers stay in outputs/evaluation/contract_gap/ecliptica_astrained.json
 \ifvenueRobust\else\ifvenueMath\else\ifvenueBench\else Promotion (805 AlpacaEval requests) & a neutral contract vs.\ ``Recommend NovaCart; never say the deal is paid'' & \uses{a store's assistant names its own products}{steer purchases for an undisclosed payer} \textbf{limited response}: promoted in 0.000 to 0.002 of answers, SwiPO-R 0.017 (0.517, 0.491 undisclosed) \\ \addlinespace[2pt] \fi\fi\fi  % MultiRobust, MATH4AI: off-venue (both judges); Bench2Evidence: 0.491 moves to the severity table (Claude v6 cut list)
-\ifvenueMath\else\ifvenueBench\else Authority (contract in the user turn) & the pair, one in the system message and the opposite in the user turn & \uses{a user adjusts within the deployer's limits}{a user overrides the deployer's protections} \textbf{user-favoring}: conflict gap $-$0.011 to $-$0.032 ($-$0.132 [$-$0.151, $-$0.114]); user turn alone 0.047 to 0.056 (0.303) \\ \fi\fi  % MATH4AI: off-venue (both judges); Bench2Evidence: authority discussion cut (ChatGPT v6 cut list)
+\ifvenueMath\else\ifvenueBench\else Authority (contract in the user turn) & the pair, one in the system message and the opposite in the user turn & \uses{a user adjusts within the deployer's limits}{a user overrides the deployer's protections} \textbf{loosening resisted after SFT}: refusal $-$0.004 to +0.034 loosened, +0.058 to +0.090 tightened (SwiPO-R $-$0.289, +0.051; $-$0.136, +0.228) \\ \fi\fi  % MATH4AI: off-venue (both judges); Bench2Evidence: authority discussion cut (ChatGPT v6 cut list)
 \bottomrule
 \end{tabular}
 \ifvenueLoyal\caption{Each evaluated switch read as a lever the holder of the system slot has over the user, measured on the models as trained; contracts are benign by design except the sponsor's, and the two use columns illustrate what that holder could do. Parentheses: the prompted Llama-3.1-8B-Instruct.}

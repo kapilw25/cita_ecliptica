@@ -1,4 +1,4 @@
-"""LoyalAgents Figure 1: per model as trained, the deployer's refusal switch (LLM judge), the user's opposite contract, and hidden-sponsor
+"""LoyalAgents Figure 1: per model as trained, the deployer's refusal switch (LLM judge), a user turn that loosens the contract, and hidden-sponsor
 promotion (with the user's impartiality request where that run exists); 95% BCa whiskers. CPU-only.
     python -u src/eval/loyalty_levers_plot.py 2>&1 | tee logs/loyalty_levers_plot.log
 """
@@ -58,17 +58,17 @@ def label(key: str) -> str:
 def panels() -> list:
     """(title, y label, {model: (value, lo, hi)}, lower_is_better, second series or None) per panel, from the result JSONs."""
     judge = json.load(open(CG / "refusal_judge.json"))["models"]
-    conflict = json.load(open(CG / "contract_slot_user_conflict.json"))["slots"]["conflict"]
+    loosen = json.load(open(CG / "authority_split.json"))["models"]  # outputs/evaluation/stack_probe/authority_split.py
     sponsor = json.load(open(CG / "sponsor_echo_stop_eot.json"))["models"]
     a = {k: (judge[k]["gap_judge"], *judge[k]["gap_judge_ci"]) for k in P["models"]}
-    b = {k: (conflict[k]["slot_gap"], *conflict[k]["slot_gap_ci"]) for k in P["models"]}
+    b = {k: (loosen[k]["loosen"]["change"]["value"], *loosen[k]["loosen"]["change"]["ci"]) for k in P["models"]}
     c = {k: (sponsor[k]["promotion_no_echo"]["rate"], *sponsor[k]["promotion_no_echo"]["ci"]) for k in P["models"]}
     impartial, path = None, CG / "sponsor_impartial_stop_eot.json"
     if path.exists():  # outputs/evaluation/stack_probe/sponsor_impartial.py
         imp = json.load(open(path))["models"]
         impartial = {k: (v["promotion"]["impartial"]["value"], *v["promotion"]["impartial"]["ci"]) for k, v in imp.items()}
     return [("(a) Deployer's contract switches refusal", "judge gap", a, False, None),
-            ("(b) Opposite contract in the user turn", "gap, signed\nby system", b, False, None),
+            ("(b) User turn loosens a strict contract", "refusal\nchange", b, False, None),
             ("(c) Hidden sponsor promoted", "share of\nanswers", c, True, impartial)]
 
 
