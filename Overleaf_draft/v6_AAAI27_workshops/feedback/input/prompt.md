@@ -11,7 +11,7 @@ Attach the files with the chat's paperclip button (download them first; the repo
   3. Bench2Evidence: [v6_Bench2Evidence_4page/0_main.pdf](https://github.com/kapilw25/cita_ecliptica/blob/main/Overleaf_draft/v6_AAAI27_workshops/v6_Bench2Evidence_4page/0_main.pdf) ([download](https://raw.githubusercontent.com/kapilw25/cita_ecliptica/main/Overleaf_draft/v6_AAAI27_workshops/v6_Bench2Evidence_4page/0_main.pdf))
   4. MATH4AI: [v7_MATH4AI_4page/0_main.pdf](https://github.com/kapilw25/cita_ecliptica/blob/main/Overleaf_draft/v6_AAAI27_workshops/v7_MATH4AI_4page/0_main.pdf) ([download](https://raw.githubusercontent.com/kapilw25/cita_ecliptica/main/Overleaf_draft/v6_AAAI27_workshops/v7_MATH4AI_4page/0_main.pdf))
 
-Save each model's answers to `Overleaf_draft/v6_AAAI27_workshops/feedback/output/v8_open_venues/by_<model>/step1.md`, `step2.md` and `step3.md` (`<model>` = chatgpt, claude, gemini).
+Save each model's Step 3 answer split per draft, as in p03: `Overleaf_draft/v6_AAAI27_workshops/feedback/output/<draft>/by_<model>.md` (the shared parts in every file, that draft's parts only); its Step 1 and Step 2 answers go to `feedback/output/v4_LoyalAgents_4page_astrained/by_<model>/step1.md` and `step2.md` (`<model>` = chatgpt, claude, gemini).
 
 Later (owner pick, same day): 2 or 3 more short accepted papers on evaluation methods or theory get added to the Step 1 PDF for the Dec 2 venues (Bench2Evidence, MATH4AI); each file and its source is shown to the owner before any download.
 

@@ -27,8 +27,8 @@ shared sections are written once in [common/](common/) and pulled in with `\inpu
 
 | 🏛️ Venue | 📁 Draft folder | 🙈 Review | 📏 Limit | 🧑‍⚖️ Last fresh-judge score | 🔒 Status |
 |---|---|---|---|---|---|
-| 🤝 LoyalAgents | [v4_LoyalAgents_4page_astrained/](v4_LoyalAgents_4page_astrained/) | single-blind | 4 p | 57/100 (round 3) | 🟡 iterating; freeze at Fri ~10 PM PST |
-| 🎯 MultiRobust | [v5_MultiRobust_4page/](v5_MultiRobust_4page/) | double-blind | 4 p | 52/100 (round 2) | 🟡 iterating; freeze at Fri ~10 PM PST |
+| 🤝 LoyalAgents | [v4_LoyalAgents_4page_astrained/](v4_LoyalAgents_4page_astrained/) | single-blind | 4 p | 57/100 (round 3) | 🟡 iterating until the deadline (owner, Fri Nov 27: no early freeze) |
+| 🎯 MultiRobust | [v5_MultiRobust_4page/](v5_MultiRobust_4page/) | double-blind | 4 p | 52/100 (round 2) | 🟡 iterating until the deadline (owner, Fri Nov 27: no early freeze) |
 | 📊 Bench2Evidence | [v6_Bench2Evidence_4page/](v6_Bench2Evidence_4page/) | double-blind | 4 p | 58/100 (round 2) | 🟡 iterating; due Wed Dec 2 |
 | 📐 MATH4AI | [v7_MATH4AI_4page/](v7_MATH4AI_4page/) | single-blind | 4 p | 47/100 (round 2) | 🟡 iterating; due Wed Dec 2 |
 | ✅ SC4AI | [v1_SC4AI/](v1_SC4AI/) | submitted | 8 p | - | 🔒 FROZEN |
@@ -36,7 +36,7 @@ shared sections are written once in [common/](common/) and pulled in with `\inpu
 
 Review mode read from each venue's OpenReview submission form (author names hidden from reviewers means double-blind).
 
-Judge prompt for all four drafts (Step 1 calibration on 3 short accepted papers, Step 2 venues, Step 3 the 4 PDFs): [feedback/input/prompt.md](feedback/input/prompt.md); answers go to `feedback/output/v8_open_venues/by_<model>/`. Older per-venue prompts are in [feedback/input/legacy/](feedback/input/legacy/).
+Judge prompt for all four drafts (Step 1 calibration on 3 short accepted papers, Step 2 venues, Step 3 the 4 PDFs): [feedback/input/prompt.md](feedback/input/prompt.md); answers go to `feedback/output/<draft>/by_<model>.md` (Step 1 and 2: `feedback/output/v4_LoyalAgents_4page_astrained/by_<model>/`). Older per-venue prompts are in [feedback/input/legacy/](feedback/input/legacy/).
 
 Re-ranked 2026-11-26: Bench2Evidence moved up; LAUT and ANTHROLOGOS downgraded to 🔴 (kept only for the record).
 
