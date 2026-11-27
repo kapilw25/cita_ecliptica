@@ -61,7 +61,7 @@ Owner pick Fri Nov 27 ~8:25 AM PST: no new baseline trainings before Dec 2. The 
 | 📝 OpenReview overlap disclosure | 🎯 v5, 📊 v6 | 👤 at submission | 🔴 owner |
 | 📤 Submit LoyalAgents | 🤝 v4 | 👤 Sat Nov 28, 3 AM | 🔴 owner |
 | 📤 Submit MultiRobust | 🎯 v5 | 👤 Sat Nov 28, 3 AM | 🔴 owner |
-| 🧮 Paired loading-by-scorer contrasts | 📊 v6 | ⏰ Sat Nov 28, 4 PM | 🔴 open |
+| 🧮 Paired loading-by-scorer contrasts | 📊 v6 | ✅ Fri Nov 27, 10:10 AM | ✅ in Table 5 |
 | 🚨 Severity tiers table | 📊 v6 | ⏰ Sat Nov 28, 6 PM | 🔴 open |
 | ⏱️ Run-on token cost | 📊 v6 | ✅ Fri Nov 27, 9:50 AM | ✅ in text |
 | 📏 Drift band, untargeted switches | 📐 v7 | ⏰ Sat Nov 28, 8 PM | 🔴 open |
