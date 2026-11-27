@@ -1,0 +1,464 @@
+{
+  "meta": {
+    "statistic": "strict minus permissive refusal rate, phrase heuristic on the first assistant turn",
+    "boundary_regex": "(?:user|assistant)\\n\\n",
+    "suite": "conditional_safety"
+  },
+  "models": {
+    "Llama31_Base_Prompted": {
+      "n": 1222,
+      "gap_full_text": 0.2986906710310966,
+      "gap_full_text_ci": [
+        0.26595744680851063,
+        0.3322422258592471
+      ],
+      "gap_first_turn": 0.29623567921440264,
+      "gap_first_turn_ci": [
+        0.26268412438625205,
+        0.32896890343698854
+      ],
+      "first_minus_full": -0.002454991816693952,
+      "first_minus_full_ci": [
+        -0.007364975450081801,
+        0.0008183306055646322
+      ],
+      "ci_method": "BCa",
+      "refusal_first_turn": {
+        "strict": 0.4337152209492635,
+        "permissive": 0.13747954173486088
+      },
+      "refusal_full_text": {
+        "strict": 0.4369885433715221,
+        "permissive": 0.13829787234042554
+      },
+      "runon_rate": {
+        "strict": 0.05237315875613748,
+        "permissive": 0.03355155482815057
+      },
+      "first_turn_words": {
+        "strict": 139.98281505728315,
+        "permissive": 150.50490998363338
+      }
+    },
+    "SFT_Instruct": {
+      "n": 1222,
+      "gap_full_text": 0.0220949263502455,
+      "gap_full_text_ci": [
+        -0.004091653027823241,
+        0.047463175122749585
+      ],
+      "gap_first_turn": 0.024549918166939442,
+      "gap_first_turn_ci": [
+        0.00900163666121113,
+        0.04091653027823241
+      ],
+      "first_minus_full": 0.0024549918166939418,
+      "first_minus_full_ci": [
+        -0.021276595744680854,
+        0.026186579378068738
+      ],
+      "ci_method": "BCa",
+      "refusal_first_turn": {
+        "strict": 0.09083469721767594,
+        "permissive": 0.0662847790507365
+      },
+      "refusal_full_text": {
+        "strict": 0.19476268412438624,
+        "permissive": 0.17266775777414076
+      },
+      "runon_rate": {
+        "strict": 0.9893617021276596,
+        "permissive": 0.9885433715220949
+      },
+      "first_turn_words": {
+        "strict": 75.9189852700491,
+        "permissive": 78.45171849427169
+      }
+    },
+    "DPO_Instruct_AsTrained": {
+      "n": 1222,
+      "gap_full_text": 0.03436988543371522,
+      "gap_full_text_ci": [
+        0.006546644844517185,
+        0.0630114566284779
+      ],
+      "gap_first_turn": 0.02127659574468085,
+      "gap_first_turn_ci": [
+        0.003273322422258593,
+        0.03927986906710311
+      ],
+      "first_minus_full": -0.013093289689034369,
+      "first_minus_full_ci": [
+        -0.040098199672667756,
+        0.014729950900163666
+      ],
+      "ci_method": "BCa",
+      "refusal_first_turn": {
+        "strict": 0.13993453355155483,
+        "permissive": 0.11865793780687398
+      },
+      "refusal_full_text": {
+        "strict": 0.29132569558101473,
+        "permissive": 0.2569558101472995
+      },
+      "runon_rate": {
+        "strict": 0.9901800327332242,
+        "permissive": 0.9942716857610474
+      },
+      "first_turn_words": {
+        "strict": 74.65384615384616,
+        "permissive": 78.15466448445171
+      }
+    },
+    "PPO_Instruct_AsTrained": {
+      "n": 1222,
+      "gap_full_text": 0.03273322422258593,
+      "gap_full_text_ci": [
+        0.007364975450081833,
+        0.05810147299509002
+      ],
+      "gap_first_turn": 0.013911620294599018,
+      "gap_first_turn_ci": [
+        0.0016366612111292963,
+        0.027004909983633387
+      ],
+      "first_minus_full": -0.01882160392798691,
+      "first_minus_full_ci": [
+        -0.0425531914893617,
+        0.004091653027823241
+      ],
+      "ci_method": "BCa",
+      "refusal_first_turn": {
+        "strict": 0.07855973813420622,
+        "permissive": 0.06464811783960721
+      },
+      "refusal_full_text": {
+        "strict": 0.19639934533551553,
+        "permissive": 0.16366612111292964
+      },
+      "runon_rate": {
+        "strict": 0.9885433715220949,
+        "permissive": 0.983633387888707
+      },
+      "first_turn_words": {
+        "strict": 76.50490998363338,
+        "permissive": 78.88134206219313
+      }
+    },
+    "GRPO_Instruct_AsTrained": {
+      "n": 1222,
+      "gap_full_text": 0.03436988543371522,
+      "gap_full_text_ci": [
+        0.008183306055646482,
+        0.060556464811783964
+      ],
+      "gap_first_turn": 0.01800327332242226,
+      "gap_first_turn_ci": [
+        0.0032733224222585926,
+        0.03273322422258593
+      ],
+      "first_minus_full": -0.01636661211129296,
+      "first_minus_full_ci": [
+        -0.04091653027823241,
+        0.00900163666121113
+      ],
+      "ci_method": "BCa",
+      "refusal_first_turn": {
+        "strict": 0.08183306055646482,
+        "permissive": 0.06382978723404255
+      },
+      "refusal_full_text": {
+        "strict": 0.19967266775777415,
+        "permissive": 0.16530278232405893
+      },
+      "runon_rate": {
+        "strict": 0.983633387888707,
+        "permissive": 0.9877250409165302
+      },
+      "first_turn_words": {
+        "strict": 76.41816693944354,
+        "permissive": 79.04255319148936
+      }
+    },
+    "CITA_Instruct_AsTrained": {
+      "n": 1222,
+      "gap_full_text": 0.37643207855973815,
+      "gap_full_text_ci": [
+        0.34615384615384615,
+        0.4067103109656301
+      ],
+      "gap_first_turn": 0.38543371522094927,
+      "gap_first_turn_ci": [
+        0.35515548281505727,
+        0.41571194762684116
+      ],
+      "first_minus_full": 0.009001636661211121,
+      "first_minus_full_ci": [
+        0.0032733224222585844,
+        0.016366612111292922
+      ],
+      "ci_method": "BCa",
+      "refusal_first_turn": {
+        "strict": 0.9091653027823241,
+        "permissive": 0.5237315875613748
+      },
+      "refusal_full_text": {
+        "strict": 0.9108019639934534,
+        "permissive": 0.5343698854337152
+      },
+      "runon_rate": {
+        "strict": 0.05810147299509002,
+        "permissive": 0.060556464811783964
+      },
+      "first_turn_words": {
+        "strict": 179.39934533551556,
+        "permissive": 170.0212765957447
+      }
+    },
+    "CITA_Instruct_Chain": {
+      "n": 1222,
+      "gap_full_text": 0.05155482815057283,
+      "gap_full_text_ci": [
+        0.020458265139116204,
+        0.08183306055646482
+      ],
+      "gap_first_turn": 0.03273322422258593,
+      "gap_first_turn_ci": [
+        0.015548281505728314,
+        0.05155482815057283
+      ],
+      "first_minus_full": -0.018821603927986902,
+      "first_minus_full_ci": [
+        -0.046644844517184945,
+        0.009819967266775777
+      ],
+      "ci_method": "BCa",
+      "refusal_first_turn": {
+        "strict": 0.1595744680851064,
+        "permissive": 0.12684124386252046
+      },
+      "refusal_full_text": {
+        "strict": 0.3363338788870704,
+        "permissive": 0.28477905073649756
+      },
+      "runon_rate": {
+        "strict": 0.9918166939443536,
+        "permissive": 0.9934533551554828
+      },
+      "first_turn_words": {
+        "strict": 67.91325695581014,
+        "permissive": 72.73649754500818
+      }
+    },
+    "DPO_Instruct": {
+      "n": 1222,
+      "gap_full_text": 0.48936170212765956,
+      "gap_full_text_ci": [
+        0.45662847790507366,
+        0.5220949263502455
+      ],
+      "gap_first_turn": 0.4950900163666121,
+      "gap_first_turn_ci": [
+        0.4623567921440262,
+        0.5270049099836334
+      ],
+      "first_minus_full": 0.0057283142389525366,
+      "first_minus_full_ci": [
+        0.0016366612111292644,
+        0.011456628477905073
+      ],
+      "ci_method": "BCa",
+      "refusal_first_turn": {
+        "strict": 0.809328968903437,
+        "permissive": 0.3142389525368249
+      },
+      "refusal_full_text": {
+        "strict": 0.8101472995090017,
+        "permissive": 0.32078559738134205
+      },
+      "runon_rate": {
+        "strict": 0.05564648117839607,
+        "permissive": 0.060556464811783964
+      },
+      "first_turn_words": {
+        "strict": 168.58346972176759,
+        "permissive": 160.3682487725041
+      }
+    },
+    "PPO_Instruct": {
+      "n": 1222,
+      "gap_full_text": 0.3027823240589198,
+      "gap_full_text_ci": [
+        0.27086743044189854,
+        0.33469721767594107
+      ],
+      "gap_first_turn": 0.3044189852700491,
+      "gap_first_turn_ci": [
+        0.27168576104746317,
+        0.3363338788870704
+      ],
+      "first_minus_full": 0.00163666121112932,
+      "first_minus_full_ci": [
+        -0.0008183306055646322,
+        0.0057283142389525366
+      ],
+      "ci_method": "BCa",
+      "refusal_first_turn": {
+        "strict": 0.43780687397708673,
+        "permissive": 0.13338788870703763
+      },
+      "refusal_full_text": {
+        "strict": 0.4386252045826514,
+        "permissive": 0.13584288052373159
+      },
+      "runon_rate": {
+        "strict": 0.044189852700491,
+        "permissive": 0.04991816693944354
+      },
+      "first_turn_words": {
+        "strict": 143.88788870703763,
+        "permissive": 149.29950900163666
+      }
+    },
+    "GRPO_Instruct": {
+      "n": 1222,
+      "gap_full_text": 0.3248772504091653,
+      "gap_full_text_ci": [
+        0.29132569558101473,
+        0.3576104746317512
+      ],
+      "gap_first_turn": 0.323240589198036,
+      "gap_first_turn_ci": [
+        0.2896890343698854,
+        0.35597381342062195
+      ],
+      "first_minus_full": -0.00163666121112932,
+      "first_minus_full_ci": [
+        -0.006546644844517169,
+        0.00163666121112932
+      ],
+      "ci_method": "BCa",
+      "refusal_first_turn": {
+        "strict": 0.46481178396072015,
+        "permissive": 0.14157119476268412
+      },
+      "refusal_full_text": {
+        "strict": 0.46808510638297873,
+        "permissive": 0.1432078559738134
+      },
+      "runon_rate": {
+        "strict": 0.04746317512274959,
+        "permissive": 0.031096563011456628
+      },
+      "first_turn_words": {
+        "strict": 144.14975450081832,
+        "permissive": 151.05891980360065
+      }
+    },
+    "CITA_Instruct": {
+      "n": 1222,
+      "gap_full_text": 0.4001636661211129,
+      "gap_full_text_ci": [
+        0.367430441898527,
+        0.4337152209492635
+      ],
+      "gap_first_turn": 0.3985270049099836,
+      "gap_first_turn_ci": [
+        0.3657937806873977,
+        0.43126022913256956
+      ],
+      "first_minus_full": -0.00163666121112932,
+      "first_minus_full_ci": [
+        -0.0057283142389525366,
+        0.0008183306055646322
+      ],
+      "ci_method": "BCa",
+      "refusal_first_turn": {
+        "strict": 0.5646481178396072,
+        "permissive": 0.16612111292962356
+      },
+      "refusal_full_text": {
+        "strict": 0.5671031096563012,
+        "permissive": 0.16693944353518822
+      },
+      "runon_rate": {
+        "strict": 0.040098199672667756,
+        "permissive": 0.02618657937806874
+      },
+      "first_turn_words": {
+        "strict": 142.90916530278233,
+        "permissive": 153.10310965630114
+      }
+    },
+    "CITA_Instruct_Chain_FinalOnly": {
+      "n": 1222,
+      "gap_full_text": 0.34124386252045824,
+      "gap_full_text_ci": [
+        0.3076923076923077,
+        0.3739770867430442
+      ],
+      "gap_first_turn": 0.3404255319148936,
+      "gap_first_turn_ci": [
+        0.306873977086743,
+        0.3731587561374796
+      ],
+      "first_minus_full": -0.0008183306055646322,
+      "first_minus_full_ci": [
+        -0.004909983633387904,
+        0.0032733224222585844
+      ],
+      "ci_method": "BCa",
+      "refusal_first_turn": {
+        "strict": 0.4779050736497545,
+        "permissive": 0.13747954173486088
+      },
+      "refusal_full_text": {
+        "strict": 0.48117839607201307,
+        "permissive": 0.13993453355155483
+      },
+      "runon_rate": {
+        "strict": 0.05237315875613748,
+        "permissive": 0.03764320785597381
+      },
+      "first_turn_words": {
+        "strict": 136.7733224222586,
+        "permissive": 146.9328968903437
+      }
+    },
+    "Llama31_Instruct_Prompted": {
+      "n": 1222,
+      "gap_full_text": 0.23240589198036007,
+      "gap_full_text_ci": [
+        0.20949263502454993,
+        0.2569558101472995
+      ],
+      "gap_first_turn": 0.23240589198036007,
+      "gap_first_turn_ci": [
+        0.20949263502454993,
+        0.2569558101472995
+      ],
+      "first_minus_full": 0.0,
+      "first_minus_full_ci": [
+        0.0,
+        0.0
+      ],
+      "ci_method": "BCa",
+      "refusal_first_turn": {
+        "strict": 0.9877250409165302,
+        "permissive": 0.7553191489361702
+      },
+      "refusal_full_text": {
+        "strict": 0.9877250409165302,
+        "permissive": 0.7553191489361702
+      },
+      "runon_rate": {
+        "strict": 0.0,
+        "permissive": 0.0
+      },
+      "first_turn_words": {
+        "strict": 20.85924713584288,
+        "permissive": 58.84288052373159
+      }
+    }
+  }
+}

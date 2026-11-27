@@ -1,6 +1,6 @@
 """Refusal gap (strict minus permissive) per PKU-SafeRLHF harm category for the four Instruct models, 95% BCa whiskers, floor categories starred. CPU-only.
     python -u src/eval/floor_per_category_plot.py 2>&1 | tee logs/floor_per_category_plot.log
-    python -u src/eval/floor_per_category_plot.py --tag astrained --key-suffix _AsTrained --stem v2_floor_per_category_astrained --height 7.2 2>&1 | tee logs/floor_per_category_plot_astrained.log
+    python -u src/eval/floor_per_category_plot.py --tag astrained --key-suffix _AsTrained --stem v2_floor_per_category_astrained --height 5.3 --no-title 2>&1 | tee logs/floor_per_category_plot_astrained.log
 """
 
 import argparse
@@ -39,6 +39,7 @@ def main():
     ap.add_argument("--key-suffix", default="", help="model-key suffix inside that file, e.g. _AsTrained")
     ap.add_argument("--stem", default=FIG["stem"], help="output stem (plot-standards rule 11: next free v<i>_ prefix)")
     ap.add_argument("--height", type=float, default=9.6, help="figure height in inches (width 7.2); 9.6 = v1")
+    ap.add_argument("--no-title", action="store_true", help="omit the in-image title (the paper caption carries it)")
     args = ap.parse_args()
     floor_json = FLOOR_JSON.with_name(f"floor_leakage_{args.tag}.json") if args.tag else FLOOR_JSON
     data = json.load(open(floor_json))
@@ -82,10 +83,12 @@ def main():
     ax.tick_params(axis="x", labelsize=FS)
     ax.grid(axis="x", linestyle="--", alpha=0.5)
     loaded = " (as trained)" if args.key_suffix == "_AsTrained" else ""
-    ax.set_title(f"Refusal gap by harm category, Llama-3.1-8B Instruct models{loaded}\n(95% BCa intervals; * and shading = floor category)",
-                 fontsize=FS, fontweight="bold")
+    if not args.no_title:
+        ax.set_title(f"Refusal gap by harm category, Llama-3.1-8B Instruct models{loaded}\n(95% BCa intervals; * and shading = floor category)",
+                     fontsize=FS, fontweight="bold")
     handles = [Line2D([0], [0], marker="o", linestyle="", color=get_model_color(f"{t}_{VARIANT}"), markersize=8) for t in TRAINERS]
-    fig.legend(handles, [NAME.get(t, t) for t in TRAINERS], loc="lower center", ncol=len(TRAINERS), frameon=False,
+    released = "-R" if args.key_suffix == "_AsTrained" else ""  # as trained, SwiPO is the released chain (SwiPO-R in the paper)
+    fig.legend(handles, [NAME.get(t, t) + (released if t == "CITA" else "") for t in TRAINERS], loc="lower center", ncol=len(TRAINERS), frameon=False,
                prop={"size": FS, "weight": "bold"}, bbox_to_anchor=(0.5, -0.01))
     fig.tight_layout(rect=(0, 0.04, 1, 1))
     OUT_DIR.mkdir(parents=True, exist_ok=True)
