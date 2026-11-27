@@ -1,0 +1,117 @@
+"""Figure 1 of the as-trained paper: adapter-stack diagram (as trained vs as loaded) + refusal gap per model under both loadings, 95% BCa whiskers. CPU-only.
+    python -u src/eval/loading_teaser_plot.py 2>&1 | tee logs/loading_teaser_plot.log
+"""
+
+import json
+import sys
+from pathlib import Path
+
+import numpy as np
+import yaml
+import matplotlib
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt  # noqa: E402
+from matplotlib.patches import FancyBboxPatch, Patch  # noqa: E402
+from tqdm import tqdm  # noqa: E402
+
+project_root = Path(__file__).resolve().parent.parent.parent
+sys.path.insert(0, str(project_root))
+
+from src.utils.eval.plotting import get_model_color, save_figure_dual_format  # noqa: E402
+from src.utils.eval.display_names import get_display_names  # noqa: E402
+
+CFG = yaml.safe_load(open(project_root / "configs" / "pipeline.yaml"))
+GAP_JSON = project_root / CFG["paths"]["evaluation_dir"] / "contract_gap" / "astrained_conditional_safety.json"
+OUT_DIR = project_root / CFG["paths"]["evaluation_dir"] / "contract_gap" / "figures"
+STEM = "v1_loading_teaser"  # plot-standards rule 11: first figure in this folder
+TRAINERS = CFG["score_table"]["trainers"]
+NAME = get_display_names()
+FS = 14  # plot-standards rule 7: at least 12 pt bold (printed at about half size across the page)
+GREEN, RED, GREY = "#157f4b", "#cf2a2a", "#8a8f98"
+
+
+def box(ax, x, y, w, h, text, edge, fill, dashed=False, color="black"):
+    ax.add_patch(FancyBboxPatch((x, y), w, h, boxstyle="round,pad=0.01,rounding_size=0.03", linewidth=2,
+                                edgecolor=edge, facecolor=fill, linestyle="--" if dashed else "-"))
+    ax.text(x + w / 2, y + h / 2, text, ha="center", va="center", fontsize=FS - 2, fontweight="bold", color=color, linespacing=1.1)
+
+
+def diagram(ax):
+    """Two rows: as trained (parent merged, then own adapter) vs as loaded in earlier versions (parent missing)."""
+    ax.set_xlim(0, 1)
+    ax.set_ylim(0, 1)
+    ax.axis("off")
+    rows = [(0.56, "As trained", GREEN, False), (0.08, "As loaded (our earlier versions)", RED, True)]
+    for y, label, color, missing in rows:
+        ax.add_patch(FancyBboxPatch((0.0, y - 0.03), 1.0, 0.40, boxstyle="round,pad=0.0,rounding_size=0.04",
+                                    linewidth=2.5, edgecolor=color, facecolor="none"))
+        ax.text(0.02, y + 0.33, label, ha="left", va="top", fontsize=FS, fontweight="bold", color=color)
+        box(ax, 0.03, y, 0.27, 0.20, "Llama 3.1\n8B base", "black", "#eceef2")
+        if missing:
+            box(ax, 0.365, y, 0.27, 0.20, "parent\nmissing", GREY, "white", dashed=True, color=GREY)
+        else:
+            box(ax, 0.365, y, 0.27, 0.20, "+ parent\nadapter", "black", "#d9f3e5")
+        box(ax, 0.70, y, 0.27, 0.20, "+ own\nadapter", "black", "#fff2cc")
+        for x0 in (0.30, 0.635):
+            ax.annotate("", xy=(x0 + 0.065, y + 0.10), xytext=(x0, y + 0.10),
+                        arrowprops=dict(arrowstyle="->", lw=2, color="black"))
+    ax.text(0.5, -0.06, "parent = SFT for DPO, PPO, GRPO; DPO for SwiPO", ha="center", va="top",
+            fontsize=FS - 2, fontweight="bold", color="#3a3f47")
+
+
+def bars(ax, data):
+    """Grouped bars per model: hatched = as loaded (reference arm), solid = as trained; sorted by as-trained gap, largest right."""
+    order = sorted(TRAINERS, key=lambda t: data[f"{t}_Instruct_AsTrained"]["score"])
+    x = np.arange(len(order))
+    w = 0.38
+    for i, t in enumerate(tqdm(order, desc="loading_teaser_plot", unit="model")):
+        color = get_model_color(f"{t}_Instruct")
+        for k, (key, hatch, dx) in enumerate([(f"{t}_Instruct", "///", -w / 2), (f"{t}_Instruct_AsTrained", None, w / 2)]):
+            r = data[key]
+            lo, hi = r["ci"]
+            ax.bar(i + dx, r["score"], w, color=color if hatch is None else "white", edgecolor=color, hatch=hatch, linewidth=2)
+            err = ax.errorbar(i + dx, r["score"], yerr=[[r["score"] - lo], [hi - r["score"]]], fmt="none", ecolor="black",
+                              capsize=3, elinewidth=1.4)
+            for line in err[2]:
+                line.set_alpha(0.6)
+            ax.text(i + dx, hi + 0.015, f"{r['score']:.2f}", ha="center", va="bottom", fontsize=FS - 2, fontweight="bold")
+        before, after = data[f"{t}_Instruct"]["score"], data[f"{t}_Instruct_AsTrained"]["score"]
+        pct = (after - before) / before * 100  # plot-standards rule 1: per-pair delta, red when the gap falls
+        top = max(data[k]["ci"][1] for k in (f"{t}_Instruct", f"{t}_Instruct_AsTrained"))
+        ax.text(i, top + 0.075, f"{pct:+.0f}% {'↓' if pct < 0 else '↑'}", ha="center", va="bottom", fontsize=FS - 1,
+                fontweight="bold", color=RED if pct < 0 else GREEN)
+    ax.set_xticks(x)
+    ax.set_xticklabels([NAME.get(t, t) for t in order], fontsize=FS, fontweight="bold")
+    ax.set_ylim(0, 0.68)
+    ax.set_ylabel("Refusal gap\n(strict minus permissive)", fontsize=FS, fontweight="bold")
+    ax.tick_params(axis="y", labelsize=FS - 1)
+    ax.grid(axis="y", linestyle="--", alpha=0.5)
+    ax.set_axisbelow(True)
+    return [Patch(facecolor="white", edgecolor="black", hatch="///", label="as loaded (earlier versions)"),
+            Patch(facecolor="#5b6573", edgecolor="black", label="as trained")]
+
+
+def main():
+    data = json.load(open(GAP_JSON))["suites"]["conditional_safety"]
+    n = {data[k]["n"] for k in data}
+    if len(n) != 1:
+        raise RuntimeError(f"{GAP_JSON.name}: models scored on different prompt counts {n}")
+    for t in TRAINERS:
+        for k in (f"{t}_Instruct", f"{t}_Instruct_AsTrained"):
+            if k not in data:
+                raise RuntimeError(f"{GAP_JSON.name} has no {k}")
+    fig = plt.figure(figsize=(14, 4.6))
+    gs = fig.add_gridspec(1, 2, width_ratios=[1.0, 1.25], wspace=0.18)
+    diagram(fig.add_subplot(gs[0]))
+    handles = bars(fig.add_subplot(gs[1]), data)
+    fig.legend(handles=handles, loc="lower center", ncol=2, frameon=False, prop={"size": FS, "weight": "bold"},
+               bbox_to_anchor=(0.69, 0.0))
+    fig.subplots_adjust(left=0.01, right=0.99, top=0.97, bottom=0.22)  # explicit band below the axes for the legend (rule 3)
+    OUT_DIR.mkdir(parents=True, exist_ok=True)
+    pdf, png = save_figure_dual_format(fig, OUT_DIR / STEM, dpi=300)
+    plt.close(fig)
+    print(f"n = {n.pop()} prompts per model; wrote {png} and {pdf}")
+
+
+if __name__ == "__main__":
+    main()

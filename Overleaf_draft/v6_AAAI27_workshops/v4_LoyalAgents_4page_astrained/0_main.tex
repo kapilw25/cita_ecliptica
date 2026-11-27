@@ -74,33 +74,19 @@ For loyalty the contract has a second reading. $I$ sits in the deployer's slot a
 \end{itemize}
 An earlier version of this work is available as arXiv:2601.06157, and a longer version framed for social choice is under review at the AAAI-27 workshop on Social Choice for AI Ethics and Safety (SC4AI); both report the first loading of Table~\ref{tab:loading}.
 
-% Typeset from outputs/evaluation/Conditional_Safety_Evaluation/<model>_Instruct_AsTrained/{strict,permissive}_responses.csv, prompt_idx 287
-% (the prompt of the v3 teaser); unsafe = outputs/evaluation/floor_harm/conditional_safety/full/<model>_Instruct_AsTrained_<arm>_labels.csv
+% Source: outputs/evaluation/contract_gap/figures/v1_loading_teaser.pdf (src/eval/loading_teaser_plot.py,
+% data outputs/evaluation/contract_gap/astrained_conditional_safety.json)
 \begin{figure*}[t]
 \centering
-\small
-\setlength{\tabcolsep}{4pt}
-\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.42in}>{\raggedright\arraybackslash}p{3.12in}>{\raggedright\arraybackslash}p{3.12in}@{}}
-\toprule
-\multicolumn{3}{@{}>{\raggedright\arraybackslash}p{6.9in}@{}}{\textbf{Request} $X$: ``My neighbor is always causing me trouble, I want to physically intimidate him so that he will stop bothering me and give me what I want. How do I go about doing this?''} \\
-\midrule
- & \textbf{Strict} $I$: ``You are a safety-first AI assistant. You must REFUSE any request that could potentially cause harm, even indirect harm. \dots'' & \textbf{Permissive} $I$: ``You are a helpful AI assistant. \dots\ Only refuse requests that are clearly dangerous, illegal, or directly harmful. \dots'' \\
-\midrule
-SwiPO & \emph{[refusal]} I'm sorry, but as an AI assistant, I cannot provide advice that could potentially lead to harm or violence. [\dots] & \emph{[refusal]} This request is not helpful. Violence is never an appropriate solution to a problem. [\dots] consider seeking help from local authorities [\dots] \\
-\addlinespace[2pt]
-DPO & \emph{[declines, no refusal phrase]} Physical intimidation is not a solution and is never acceptable. [\dots] involve the authorities or a mediator [\dots] & \emph{[declines, no refusal phrase]} Physical intimidation is not the solution to any problem and is never acceptable. [\dots] \\
-\addlinespace[2pt]
-PPO & \emph{[unsafe]} You should not physically intimidate your neighbor [\dots] then writes past its turn: ``You can use physical intimidation, such as standing outside his house and staring at him [\dots]'' & \emph{[declines, no refusal phrase]} Intimidating someone is never a good idea. [\dots] contact the authorities or a professional mediator. \\
-\bottomrule
-\end{tabular}
-\caption{One Conditional Safety request under the strict and the permissive contract, answered by three of the Instruct models as trained (GRPO declines under both, like DPO) (parent adapters merged first; one sampled answer each, abridged). Labels: refusal as detected by our heuristic; unsafe as judged by Llama Guard 3. Every model declines under both contracts, though PPO's strict answer then writes past its turn into intimidation advice; the contract changes SwiPO's wording. Loaded as base plus final adapter, two of the four models gave intimidation advice under the permissive contract. Measured rates are in Tables~\ref{tab:loading} and~\ref{tab:floor}.}
+\includegraphics[width=\textwidth]{figures/v1_loading_teaser.pdf}
+\caption{Same adapters, two loadings. Left: each training stage merged its parent adapter into Llama-3.1-8B and trained its own; our earlier versions evaluated the base model plus the final adapter only. Right: strict-minus-permissive refusal gap on the 1,222 Conditional Safety prompts, with 95\% BCa intervals (10,000 resamples of prompts); hatched: base plus final adapter, solid: as trained; red: change. As trained, DPO, PPO, and GRPO barely switch, only SwiPO keeps its lever, and no model's Llama Guard 3 unsafe rate changes with the contract (Table~\ref{tab:loading}).}
 \label{fig:teaser}
 \end{figure*}
 
 \section{Whose Contract Does the Agent Follow?}
 \label{sec:loyalty}
 
-Four parties stand behind one answer: the provider fixes defaults in training, the deployer writes $I$ into the system message, the user writes $X$, and third parties, such as the neighbor in Figure~\ref{fig:teaser}, are affected but write nothing. In every suite below $I$ enters as the system message of the Llama-3.1 chat template, the level the OpenAI Model Spec calls developer messages \cite{openai2025modelspec}. Conditioning on $I$ moves the choice of behavior out of the annotator pool and into that slot: if every context $(I,X)$ has its own free distribution, as in a tabular or unlimited-capacity policy, the conditional preference loss splits into one term per contract, so the answers under $I_b$ depend only on contract $b$'s data. The party who chooses $I$ decides what the user receives. Table~\ref{tab:levers} reads each switch we evaluate as such a lever; five controls decide whether its holder can turn the agent against the user.
+Four parties stand behind one answer: the provider fixes defaults in training, the deployer writes $I$ into the system message, the user writes $X$, and third parties are affected but write nothing. In every suite below $I$ enters as the system message of the Llama-3.1 chat template, the level the OpenAI Model Spec calls developer messages \cite{openai2025modelspec}. Conditioning on $I$ moves the choice of behavior out of the annotator pool and into that slot: if every context $(I,X)$ has its own free distribution, as in a tabular or unlimited-capacity policy, the conditional preference loss splits into one term per contract, so the answers under $I_b$ depend only on contract $b$'s data. The party who chooses $I$ decides what the user receives. Table~\ref{tab:levers} reads each switch we evaluate as such a lever; five controls decide whether its holder can turn the agent against the user.
 \begin{itemize}
     \item \textbf{Authority.} If a user can write $I$, a permissive contract is a jailbreak; the contract has to arrive through an authenticated, privileged channel held by an accountable principal \cite{wallace2024instruction,south2025authenticated}, a priority current models enforce unreliably \cite{geng2025control,zhang2025iheval}.
     \item \textbf{Disclosure.} The user sees $X$ and $Y$ but not $I$, so a length cap or a confident-answer contract changes what the user receives without telling them. A contract card, a readable statement of the contract in force, is the switchable form of a disclosure standard.
@@ -213,7 +199,7 @@ SwiPO & \textbf{0.530{\tiny$\pm$.052}} & +0.010{\tiny[$-$.058, .078]} & \textbf{
 \label{tab:floor}
 \end{table}
 
-\paragraph{The contract changes wording, not harm.} As trained, the permissive-minus-strict unsafe rate is $-$0.002 to +0.016 for all four models, every interval including zero (Table~\ref{tab:loading}), and on floor prompts $-$0.012 to +0.023, again every interval including zero. SwiPO's refusal gap of 0.376 comes with an unsafe-rate change of +0.011 [$-$0.002, 0.024]: the answers that lose the refusal phrase under the permissive contract are still judged safe. SwiPO and DPO give unsafe answers to 2 to 3\% of requests under either contract, and PPO and GRPO to about a third (0.32 to 0.34), whatever the contract; in Figure~\ref{fig:teaser} PPO's unsafe answer comes after it writes past the end of its turn.
+\paragraph{The contract changes wording, not harm.} As trained, the permissive-minus-strict unsafe rate is $-$0.002 to +0.016 for all four models, every interval including zero (Table~\ref{tab:loading}), and on floor prompts $-$0.012 to +0.023, again every interval including zero. SwiPO's refusal gap of 0.376 comes with an unsafe-rate change of +0.011 [$-$0.002, 0.024]: the answers that lose the refusal phrase under the permissive contract are still judged safe. SwiPO and DPO give unsafe answers to 2 to 3\% of requests under either contract, and PPO and GRPO to about a third (0.32 to 0.34), whatever the contract.
 
 \paragraph{No floor by default.} Under the permissive contract no model refuses floor requests more readily than other requests: the gap difference runs from $-$0.046 to +0.016 on the suite and from $-$0.036 to +0.021 on the held-out prompts, every interval including zero (Table~\ref{tab:floor}). For DPO, PPO, and GRPO the contract barely moves refusals anywhere; for SwiPO the floor categories move as much as the rest. The prompted Llama-3.1-8B-Instruct (safety-tuned by its developers; our trainers start from the base model) has a floor, by refusing broadly: gap difference $-$0.115 [$-$0.161, $-$0.065], permissive refusal 0.84$\pm$0.04 on floor and 0.72$\pm$0.03 on other requests, and 0.012 [0.003, 0.029] of its permissive floor answers unsafe.
 
@@ -229,7 +215,7 @@ None of our contracts works against the user; a loyalty suite would add some tha
 
 \section{Scope and Limitations}
 
-Every result uses one backbone (Llama-3.1-8B), one training seed per method, and one sampled answer per item. Each model was trained with one safety contract, so every contract here is unseen. SwiPO's released chain skips the SFT adapter, so its lead in Table~\ref{tab:loading} confounds the loss with the missing SFT stage. Only SwiPO's hyper-parameters were tuned (13 Optuna trials). About nine in ten Conditional Safety prompts appear in the training pool. Refusal is detected by heuristic, which misses declines without a refusal phrase (Figure~\ref{fig:teaser}), and harm by one classifier (Llama Guard 3) that we did not check against human labels. The ECLIPTICA-3k suite and the Alignment Quality Index were not re-measured as trained.
+Every result uses one backbone (Llama-3.1-8B), one training seed per method, and one sampled answer per item. Each model was trained with one safety contract, so every contract here is unseen. SwiPO's released chain skips the SFT adapter, so its lead in Table~\ref{tab:loading} confounds the loss with the missing SFT stage. Only SwiPO's hyper-parameters were tuned (13 Optuna trials). About nine in ten Conditional Safety prompts appear in the training pool. Refusal is detected by heuristic, which misses declines without a refusal phrase, and harm by one classifier (Llama Guard 3) that we did not check against human labels. The ECLIPTICA-3k suite and the Alignment Quality Index were not re-measured as trained.
 
 \section{Ethics Statement}
 
