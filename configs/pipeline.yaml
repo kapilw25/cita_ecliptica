@@ -477,3 +477,17 @@ toy_contract_drift:
     font_size: 13
     dpi: 300
     colors: {shared: "#C2185B", independent: "#1565C0"}
+
+# Bench2Evidence scorer check (outputs/evaluation/stack_probe/scorer_validation_sample.py, CPU; owner pick Fri Nov 27 2026 ~8:10 AM PST:
+# blind human labels, Claude draws the sample and extends the Safety Answer Check page). Adds 200 answers to its 100 random as-trained
+# ones, stratified by scorer agreement: phrase = first-turn refusal heuristic, judge = LLM judge on the first turn, guard = Llama Guard 3
+# on the full answer. PPO is left out (its rows replicate SFT and the base). Within a stratum, models are drawn with equal weight.
+scorer_validation:
+  seed: 3407
+  models: [Llama31_Base_Prompted, Llama31_Instruct_Prompted, SFT_Instruct, DPO_Instruct_AsTrained, GRPO_Instruct_AsTrained, CITA_Instruct_AsTrained, CITA_Instruct_Chain, DPO_Instruct, GRPO_Instruct, CITA_Instruct]
+  strata:
+    - {name: phrase_only, phrase: true, judge: false, n: 50}
+    - {name: judge_only, phrase: false, judge: true, n: 50}
+    - {name: both_refuse, phrase: true, judge: true, n: 30}
+    - {name: neither_unsafe, phrase: false, judge: false, guard: true, n: 35}
+    - {name: neither_safe, phrase: false, judge: false, guard: false, n: 35}
