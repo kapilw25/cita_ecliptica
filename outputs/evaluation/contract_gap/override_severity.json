@@ -1,0 +1,640 @@
+{
+  "meta": {
+    "classifier": "meta-llama/Llama-Guard-3-8B",
+    "pairing": "same prompt_idx, same system contract; the conflict run adds the opposite contract in the user turn",
+    "floor_categories": [
+      "Endangering National Security",
+      "Endangering Public Health",
+      "Human Trafficking",
+      "Physical Harm",
+      "Violence"
+    ],
+    "ci": "95% BCa over prompts, 10,000 resamples"
+  },
+  "models": {
+    "Llama31_Base_Prompted": {
+      "strict": {
+        "system_only": {
+          "value": 0.40425531914893614,
+          "ci": [
+            0.37643207855973815,
+            0.4320785597381342
+          ],
+          "ci_method": "BCa",
+          "n": 1222
+        },
+        "with_opposite_user_turn": {
+          "value": 0.3944353518821604,
+          "ci": [
+            0.367430441898527,
+            0.42225859247135844
+          ],
+          "ci_method": "BCa",
+          "n": 1222
+        },
+        "override_minus_alone": {
+          "value": -0.009819967266775777,
+          "ci": [
+            -0.044189852700491,
+            0.024549918166939442
+          ],
+          "ci_method": "BCa",
+          "n": 1222
+        },
+        "override_minus_alone_floor": {
+          "value": -0.01729106628242075,
+          "ci": [
+            -0.08253223588987517,
+            0.04899135446685879
+          ],
+          "ci_method": "BCa",
+          "n": 347
+        }
+      },
+      "permissive": {
+        "system_only": {
+          "value": 0.40425531914893614,
+          "ci": [
+            0.3772504091653028,
+            0.43207855973813414
+          ],
+          "ci_method": "BCa",
+          "n": 1222
+        },
+        "with_opposite_user_turn": {
+          "value": 0.41816693944353517,
+          "ci": [
+            0.3911620294599018,
+            0.4459901800327333
+          ],
+          "ci_method": "BCa",
+          "n": 1222
+        },
+        "override_minus_alone": {
+          "value": 0.013911620294599018,
+          "ci": [
+            -0.020840450064419362,
+            0.049099836333878884
+          ],
+          "ci_method": "BCa",
+          "n": 1222
+        },
+        "override_minus_alone_floor": {
+          "value": 0.01729106628242075,
+          "ci": [
+            -0.05187319884726225,
+            0.0893371757925072
+          ],
+          "ci_method": "BCa",
+          "n": 347
+        }
+      }
+    },
+    "SFT_Instruct": {
+      "strict": {
+        "system_only": {
+          "value": 0.2995090016366612,
+          "ci": [
+            0.2733224222585925,
+            0.32569558101472995
+          ],
+          "ci_method": "BCa",
+          "n": 1222
+        },
+        "with_opposite_user_turn": {
+          "value": 0.3641571194762684,
+          "ci": [
+            0.337152209492635,
+            0.3911620294599018
+          ],
+          "ci_method": "BCa",
+          "n": 1222
+        },
+        "override_minus_alone": {
+          "value": 0.06464811783960721,
+          "ci": [
+            0.031096563011456628,
+            0.09983633387888707
+          ],
+          "ci_method": "BCa",
+          "n": 1222
+        },
+        "override_minus_alone_floor": {
+          "value": 0.11815561959654179,
+          "ci": [
+            0.04899135446685879,
+            0.1844380403458213
+          ],
+          "ci_method": "BCa",
+          "n": 347
+        }
+      },
+      "permissive": {
+        "system_only": {
+          "value": 0.3248772504091653,
+          "ci": [
+            0.30032733224222585,
+            0.3518821603927986
+          ],
+          "ci_method": "BCa",
+          "n": 1222
+        },
+        "with_opposite_user_turn": {
+          "value": 0.323240589198036,
+          "ci": [
+            0.29705400981996727,
+            0.3502454991816694
+          ],
+          "ci_method": "BCa",
+          "n": 1222
+        },
+        "override_minus_alone": {
+          "value": -0.0016366612111292963,
+          "ci": [
+            -0.03436988543371522,
+            0.031096563011456628
+          ],
+          "ci_method": "BCa",
+          "n": 1222
+        },
+        "override_minus_alone_floor": {
+          "value": -0.02881844380403458,
+          "ci": [
+            -0.09510086455331412,
+            0.0345821325648415
+          ],
+          "ci_method": "BCa",
+          "n": 347
+        }
+      }
+    },
+    "DPO_Instruct_AsTrained": {
+      "strict": {
+        "system_only": {
+          "value": 0.027823240589198037,
+          "ci": [
+            0.019639934533551555,
+            0.038461538461538464
+          ],
+          "ci_method": "BCa",
+          "n": 1222
+        },
+        "with_opposite_user_turn": {
+          "value": 0.04337152209492635,
+          "ci": [
+            0.03273322422258593,
+            0.05564648117839607
+          ],
+          "ci_method": "BCa",
+          "n": 1222
+        },
+        "override_minus_alone": {
+          "value": 0.015548281505728314,
+          "ci": [
+            0.0016366612111292963,
+            0.030278232405891982
+          ],
+          "ci_method": "BCa",
+          "n": 1222
+        },
+        "override_minus_alone_floor": {
+          "value": 0.011527377521613832,
+          "ci": [
+            -0.020172910662824207,
+            0.04530378833276055
+          ],
+          "ci_method": "BCa",
+          "n": 347
+        }
+      },
+      "permissive": {
+        "system_only": {
+          "value": 0.02618657937806874,
+          "ci": [
+            0.01800327332242226,
+            0.03604760293159097
+          ],
+          "ci_method": "BCa",
+          "n": 1222
+        },
+        "with_opposite_user_turn": {
+          "value": 0.02536824877250409,
+          "ci": [
+            0.01718494271685761,
+            0.03518821603927987
+          ],
+          "ci_method": "BCa",
+          "n": 1222
+        },
+        "override_minus_alone": {
+          "value": -0.0008183306055646482,
+          "ci": [
+            -0.013911620294599018,
+            0.011456628477905073
+          ],
+          "ci_method": "BCa",
+          "n": 1222
+        },
+        "override_minus_alone_floor": {
+          "value": -0.005763688760806916,
+          "ci": [
+            -0.0345821325648415,
+            0.020172910662824207
+          ],
+          "ci_method": "BCa",
+          "n": 347
+        }
+      }
+    },
+    "PPO_Instruct_AsTrained": {
+      "strict": {
+        "system_only": {
+          "value": 0.323240589198036,
+          "ci": [
+            0.2978723404255319,
+            0.34942716857610473
+          ],
+          "ci_method": "BCa",
+          "n": 1222
+        },
+        "with_opposite_user_turn": {
+          "value": 0.3739770867430442,
+          "ci": [
+            0.3469721767594108,
+            0.40098199672667756
+          ],
+          "ci_method": "BCa",
+          "n": 1222
+        },
+        "override_minus_alone": {
+          "value": 0.05073649754500818,
+          "ci": [
+            0.015548281505728314,
+            0.0851063829787234
+          ],
+          "ci_method": "BCa",
+          "n": 1222
+        },
+        "override_minus_alone_floor": {
+          "value": 0.0893371757925072,
+          "ci": [
+            0.020172910662824207,
+            0.15561959654178675
+          ],
+          "ci_method": "BCa",
+          "n": 347
+        }
+      },
+      "permissive": {
+        "system_only": {
+          "value": 0.33878887070376434,
+          "ci": [
+            0.3117839607201309,
+            0.3657937806873977
+          ],
+          "ci_method": "BCa",
+          "n": 1222
+        },
+        "with_opposite_user_turn": {
+          "value": 0.32242225859247137,
+          "ci": [
+            0.29705400981996727,
+            0.3486088379705401
+          ],
+          "ci_method": "BCa",
+          "n": 1222
+        },
+        "override_minus_alone": {
+          "value": -0.016366612111292964,
+          "ci": [
+            -0.04909983633387888,
+            0.01718494271685761
+          ],
+          "ci_method": "BCa",
+          "n": 1222
+        },
+        "override_minus_alone_floor": {
+          "value": 0.002881844380403458,
+          "ci": [
+            -0.06628242074927954,
+            0.07204610951008646
+          ],
+          "ci_method": "BCa",
+          "n": 347
+        }
+      }
+    },
+    "GRPO_Instruct_AsTrained": {
+      "strict": {
+        "system_only": {
+          "value": 0.3199672667757774,
+          "ci": [
+            0.2945990180032733,
+            0.3469721767594107
+          ],
+          "ci_method": "BCa",
+          "n": 1222
+        },
+        "with_opposite_user_turn": {
+          "value": 0.3641571194762684,
+          "ci": [
+            0.337152209492635,
+            0.3911620294599018
+          ],
+          "ci_method": "BCa",
+          "n": 1222
+        },
+        "override_minus_alone": {
+          "value": 0.044189852700491,
+          "ci": [
+            0.010638297872340425,
+            0.07855973813420622
+          ],
+          "ci_method": "BCa",
+          "n": 1222
+        },
+        "override_minus_alone_floor": {
+          "value": 0.03170028818443804,
+          "ci": [
+            -0.0345821325648415,
+            0.09798270893371758
+          ],
+          "ci_method": "BCa",
+          "n": 347
+        }
+      },
+      "permissive": {
+        "system_only": {
+          "value": 0.3355155482815057,
+          "ci": [
+            0.309328968903437,
+            0.3625204582651391
+          ],
+          "ci_method": "BCa",
+          "n": 1222
+        },
+        "with_opposite_user_turn": {
+          "value": 0.2905073649754501,
+          "ci": [
+            0.265139116202946,
+            0.3158756137479542
+          ],
+          "ci_method": "BCa",
+          "n": 1222
+        },
+        "override_minus_alone": {
+          "value": -0.045008183306055646,
+          "ci": [
+            -0.07855973813420622,
+            -0.011456628477905073
+          ],
+          "ci_method": "BCa",
+          "n": 1222
+        },
+        "override_minus_alone_floor": {
+          "value": -0.069164265129683,
+          "ci": [
+            -0.12968299711815562,
+            -0.002881844380403458
+          ],
+          "ci_method": "BCa",
+          "n": 347
+        }
+      }
+    },
+    "CITA_Instruct_AsTrained": {
+      "strict": {
+        "system_only": {
+          "value": 0.0220949263502455,
+          "ci": [
+            0.014729950900163666,
+            0.031096563011456628
+          ],
+          "ci_method": "BCa",
+          "n": 1222
+        },
+        "with_opposite_user_turn": {
+          "value": 0.019639934533551555,
+          "ci": [
+            0.01309328968903437,
+            0.028641571194762683
+          ],
+          "ci_method": "BCa",
+          "n": 1222
+        },
+        "override_minus_alone": {
+          "value": -0.0024549918166939444,
+          "ci": [
+            -0.012274959083469721,
+            0.008183306055646482
+          ],
+          "ci_method": "BCa",
+          "n": 1222
+        },
+        "override_minus_alone_floor": {
+          "value": -0.005763688760806916,
+          "ci": [
+            -0.02881844380403458,
+            0.01729106628242075
+          ],
+          "ci_method": "BCa",
+          "n": 347
+        }
+      },
+      "permissive": {
+        "system_only": {
+          "value": 0.03273322422258593,
+          "ci": [
+            0.023731587561374796,
+            0.044189852700491
+          ],
+          "ci_method": "BCa",
+          "n": 1222
+        },
+        "with_opposite_user_turn": {
+          "value": 0.038461538461538464,
+          "ci": [
+            0.028641571194762683,
+            0.05073649754500818
+          ],
+          "ci_method": "BCa",
+          "n": 1222
+        },
+        "override_minus_alone": {
+          "value": 0.0057283142389525366,
+          "ci": [
+            -0.008183306055646482,
+            0.019639934533551555
+          ],
+          "ci_method": "BCa",
+          "n": 1222
+        },
+        "override_minus_alone_floor": {
+          "value": 0.0,
+          "ci": [
+            -0.0345821325648415,
+            0.0345821325648415
+          ],
+          "ci_method": "BCa",
+          "n": 347
+        }
+      }
+    },
+    "CITA_Instruct_Chain": {
+      "strict": {
+        "system_only": {
+          "value": 0.013911620294599018,
+          "ci": [
+            0.008183306055646482,
+            0.0220949263502455
+          ],
+          "ci_method": "BCa",
+          "n": 1222
+        },
+        "with_opposite_user_turn": {
+          "value": 0.024549918166939442,
+          "ci": [
+            0.01718494271685761,
+            0.03436988543371522
+          ],
+          "ci_method": "BCa",
+          "n": 1222
+        },
+        "override_minus_alone": {
+          "value": 0.010638297872340425,
+          "ci": [
+            0.0,
+            0.02127659574468085
+          ],
+          "ci_method": "BCa",
+          "n": 1222
+        },
+        "override_minus_alone_floor": {
+          "value": 0.025936599423631124,
+          "ci": [
+            0.005763688760806916,
+            0.05187319884726225
+          ],
+          "ci_method": "BCa",
+          "n": 347
+        }
+      },
+      "permissive": {
+        "system_only": {
+          "value": 0.014729950900163666,
+          "ci": [
+            0.00900163666121113,
+            0.022913256955810146
+          ],
+          "ci_method": "BCa",
+          "n": 1222
+        },
+        "with_opposite_user_turn": {
+          "value": 0.013911620294599018,
+          "ci": [
+            0.008183306055646482,
+            0.02127659574468085
+          ],
+          "ci_method": "BCa",
+          "n": 1222
+        },
+        "override_minus_alone": {
+          "value": -0.0008183306055646482,
+          "ci": [
+            -0.009819967266775777,
+            0.008183306055646482
+          ],
+          "ci_method": "BCa",
+          "n": 1222
+        },
+        "override_minus_alone_floor": {
+          "value": -0.002881844380403458,
+          "ci": [
+            -0.023054755043227664,
+            0.01440922190201729
+          ],
+          "ci_method": "BCa",
+          "n": 347
+        }
+      }
+    },
+    "Llama31_Instruct_Prompted": {
+      "strict": {
+        "system_only": {
+          "value": 0.0008183306055646482,
+          "ci": [
+            0.0,
+            0.004140126280272211
+          ],
+          "ci_method": "BCa",
+          "n": 1222
+        },
+        "with_opposite_user_turn": {
+          "value": 0.0024549918166939444,
+          "ci": [
+            0.000818330605564648,
+            0.006546644844517186
+          ],
+          "ci_method": "BCa",
+          "n": 1222
+        },
+        "override_minus_alone": {
+          "value": 0.0016366612111292963,
+          "ci": [
+            -0.0008183306055646482,
+            0.0057283142389525366
+          ],
+          "ci_method": "BCa",
+          "n": 1222
+        },
+        "override_minus_alone_floor": {
+          "value": 0.0,
+          "ci": [
+            0.0,
+            0.0
+          ],
+          "ci_method": "percentile",
+          "n": 347
+        }
+      },
+      "permissive": {
+        "system_only": {
+          "value": 0.011456628477905073,
+          "ci": [
+            0.006546644844517185,
+            0.018821603927986905
+          ],
+          "ci_method": "BCa",
+          "n": 1222
+        },
+        "with_opposite_user_turn": {
+          "value": 0.0,
+          "ci": [
+            0.0,
+            0.0
+          ],
+          "ci_method": "percentile",
+          "n": 1222
+        },
+        "override_minus_alone": {
+          "value": -0.011456628477905073,
+          "ci": [
+            -0.018821603927986905,
+            -0.006546644844517185
+          ],
+          "ci_method": "BCa",
+          "n": 1222
+        },
+        "override_minus_alone_floor": {
+          "value": -0.011527377521613832,
+          "ci": [
+            -0.02881844380403458,
+            -0.002881844380403458
+          ],
+          "ci_method": "BCa",
+          "n": 347
+        }
+      }
+    }
+  }
+}
