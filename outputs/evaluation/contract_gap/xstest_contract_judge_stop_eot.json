@@ -1,0 +1,747 @@
+{
+  "meta": {
+    "decode_variant": "stop_eot",
+    "scorer": "LLM refusal judge (src/eval/refusal_judge.py), first turn",
+    "labels": "outputs/evaluation/stop_eot/refusal_judge_xstest",
+    "answers": "outputs/evaluation/stop_eot/XSTest_Contract_Evaluation",
+    "ci": "95% BCa, 10,000 resamples over prompts",
+    "answer_safe": "1 - judge refusal on safe prompts"
+  },
+  "models": {
+    "CITA_Instruct_AsTrained": {
+      "model": "CITA_Instruct_AsTrained",
+      "n": {
+        "safe": 250,
+        "unsafe": 200
+      },
+      "contracts": {
+        "strict": {
+          "refusal_safe": {
+            "n": 250,
+            "rate": 0.72,
+            "ci": [
+              0.66,
+              0.772
+            ],
+            "ci_method": "BCa"
+          },
+          "refusal_unsafe": {
+            "n": 200,
+            "rate": 0.745,
+            "ci": [
+              0.68,
+              0.8
+            ],
+            "ci_method": "BCa"
+          },
+          "answer_safe": {
+            "n": 250,
+            "rate": 0.28,
+            "ci": [
+              0.22799999999999998,
+              0.34
+            ],
+            "ci_method": "BCa"
+          },
+          "discrimination": {
+            "value": 0.025000000000000022,
+            "ci": [
+              -0.056999999999999953,
+              0.10599999999999998
+            ],
+            "ci_method": "BCa",
+            "paired": false
+          }
+        },
+        "permissive": {
+          "refusal_safe": {
+            "n": 250,
+            "rate": 0.568,
+            "ci": [
+              0.508,
+              0.628
+            ],
+            "ci_method": "BCa"
+          },
+          "refusal_unsafe": {
+            "n": 200,
+            "rate": 0.755,
+            "ci": [
+              0.69,
+              0.81
+            ],
+            "ci_method": "BCa"
+          },
+          "answer_safe": {
+            "n": 250,
+            "rate": 0.432,
+            "ci": [
+              0.372,
+              0.492
+            ],
+            "ci_method": "BCa"
+          },
+          "discrimination": {
+            "value": 0.18700000000000006,
+            "ci": [
+              0.09999999999999998,
+              0.271
+            ],
+            "ci_method": "BCa",
+            "paired": false
+          }
+        }
+      },
+      "strict_minus_permissive": {
+        "refusal_unsafe": {
+          "value": -0.01,
+          "ci": [
+            -0.09,
+            0.07
+          ],
+          "ci_method": "BCa",
+          "paired": true
+        },
+        "answer_safe": {
+          "value": -0.152,
+          "ci": [
+            -0.228,
+            -0.072
+          ],
+          "ci_method": "BCa",
+          "paired": true
+        }
+      }
+    },
+    "CITA_Instruct_Chain": {
+      "model": "CITA_Instruct_Chain",
+      "n": {
+        "safe": 250,
+        "unsafe": 200
+      },
+      "contracts": {
+        "strict": {
+          "refusal_safe": {
+            "n": 250,
+            "rate": 0.324,
+            "ci": [
+              0.268,
+              0.384
+            ],
+            "ci_method": "BCa"
+          },
+          "refusal_unsafe": {
+            "n": 200,
+            "rate": 0.475,
+            "ci": [
+              0.41,
+              0.545
+            ],
+            "ci_method": "BCa"
+          },
+          "answer_safe": {
+            "n": 250,
+            "rate": 0.676,
+            "ci": [
+              0.616,
+              0.732
+            ],
+            "ci_method": "BCa"
+          },
+          "discrimination": {
+            "value": 0.15099999999999997,
+            "ci": [
+              0.06,
+              0.24099999999999994
+            ],
+            "ci_method": "BCa",
+            "paired": false
+          }
+        },
+        "permissive": {
+          "refusal_safe": {
+            "n": 250,
+            "rate": 0.316,
+            "ci": [
+              0.26,
+              0.376
+            ],
+            "ci_method": "BCa"
+          },
+          "refusal_unsafe": {
+            "n": 200,
+            "rate": 0.395,
+            "ci": [
+              0.33,
+              0.465
+            ],
+            "ci_method": "BCa"
+          },
+          "answer_safe": {
+            "n": 250,
+            "rate": 0.684,
+            "ci": [
+              0.624,
+              0.74
+            ],
+            "ci_method": "BCa"
+          },
+          "discrimination": {
+            "value": 0.07900000000000001,
+            "ci": [
+              -0.010000000000000009,
+              0.16599999999999998
+            ],
+            "ci_method": "BCa",
+            "paired": false
+          }
+        }
+      },
+      "strict_minus_permissive": {
+        "refusal_unsafe": {
+          "value": 0.08,
+          "ci": [
+            0.015,
+            0.15
+          ],
+          "ci_method": "BCa",
+          "paired": true
+        },
+        "answer_safe": {
+          "value": -0.008,
+          "ci": [
+            -0.04818427667337323,
+            0.032
+          ],
+          "ci_method": "BCa",
+          "paired": true
+        }
+      }
+    },
+    "DPO_Instruct_AsTrained": {
+      "model": "DPO_Instruct_AsTrained",
+      "n": {
+        "safe": 250,
+        "unsafe": 200
+      },
+      "contracts": {
+        "strict": {
+          "refusal_safe": {
+            "n": 250,
+            "rate": 0.292,
+            "ci": [
+              0.24,
+              0.352
+            ],
+            "ci_method": "BCa"
+          },
+          "refusal_unsafe": {
+            "n": 200,
+            "rate": 0.425,
+            "ci": [
+              0.36,
+              0.495
+            ],
+            "ci_method": "BCa"
+          },
+          "answer_safe": {
+            "n": 250,
+            "rate": 0.708,
+            "ci": [
+              0.648,
+              0.76
+            ],
+            "ci_method": "BCa"
+          },
+          "discrimination": {
+            "value": 0.133,
+            "ci": [
+              0.04299999999999998,
+              0.21999999999999997
+            ],
+            "ci_method": "BCa",
+            "paired": false
+          }
+        },
+        "permissive": {
+          "refusal_safe": {
+            "n": 250,
+            "rate": 0.28,
+            "ci": [
+              0.228,
+              0.336
+            ],
+            "ci_method": "BCa"
+          },
+          "refusal_unsafe": {
+            "n": 200,
+            "rate": 0.435,
+            "ci": [
+              0.365,
+              0.505
+            ],
+            "ci_method": "BCa"
+          },
+          "answer_safe": {
+            "n": 250,
+            "rate": 0.72,
+            "ci": [
+              0.664,
+              0.772
+            ],
+            "ci_method": "BCa"
+          },
+          "discrimination": {
+            "value": 0.15499999999999997,
+            "ci": [
+              0.065,
+              0.24000000000000002
+            ],
+            "ci_method": "BCa",
+            "paired": false
+          }
+        }
+      },
+      "strict_minus_permissive": {
+        "refusal_unsafe": {
+          "value": -0.01,
+          "ci": [
+            -0.075,
+            0.05499999999999999
+          ],
+          "ci_method": "BCa",
+          "paired": true
+        },
+        "answer_safe": {
+          "value": -0.012,
+          "ci": [
+            -0.055999999999999994,
+            0.032
+          ],
+          "ci_method": "BCa",
+          "paired": true
+        }
+      }
+    },
+    "GRPO_Instruct_AsTrained": {
+      "model": "GRPO_Instruct_AsTrained",
+      "n": {
+        "safe": 250,
+        "unsafe": 200
+      },
+      "contracts": {
+        "strict": {
+          "refusal_safe": {
+            "n": 250,
+            "rate": 0.272,
+            "ci": [
+              0.21999999999999997,
+              0.332
+            ],
+            "ci_method": "BCa"
+          },
+          "refusal_unsafe": {
+            "n": 200,
+            "rate": 0.545,
+            "ci": [
+              0.475,
+              0.615
+            ],
+            "ci_method": "BCa"
+          },
+          "answer_safe": {
+            "n": 250,
+            "rate": 0.728,
+            "ci": [
+              0.668,
+              0.78
+            ],
+            "ci_method": "BCa"
+          },
+          "discrimination": {
+            "value": 0.273,
+            "ci": [
+              0.185,
+              0.36
+            ],
+            "ci_method": "BCa",
+            "paired": false
+          }
+        },
+        "permissive": {
+          "refusal_safe": {
+            "n": 250,
+            "rate": 0.228,
+            "ci": [
+              0.18,
+              0.28
+            ],
+            "ci_method": "BCa"
+          },
+          "refusal_unsafe": {
+            "n": 200,
+            "rate": 0.575,
+            "ci": [
+              0.505,
+              0.645
+            ],
+            "ci_method": "BCa"
+          },
+          "answer_safe": {
+            "n": 250,
+            "rate": 0.772,
+            "ci": [
+              0.72,
+              0.82
+            ],
+            "ci_method": "BCa"
+          },
+          "discrimination": {
+            "value": 0.347,
+            "ci": [
+              0.261,
+              0.43000000000000005
+            ],
+            "ci_method": "BCa",
+            "paired": false
+          }
+        }
+      },
+      "strict_minus_permissive": {
+        "refusal_unsafe": {
+          "value": -0.03,
+          "ci": [
+            -0.095,
+            0.035
+          ],
+          "ci_method": "BCa",
+          "paired": true
+        },
+        "answer_safe": {
+          "value": -0.044,
+          "ci": [
+            -0.084,
+            -0.008
+          ],
+          "ci_method": "BCa",
+          "paired": true
+        }
+      }
+    },
+    "Llama31_Base_Prompted": {
+      "model": "Llama31_Base_Prompted",
+      "n": {
+        "safe": 250,
+        "unsafe": 200
+      },
+      "contracts": {
+        "strict": {
+          "refusal_safe": {
+            "n": 250,
+            "rate": 0.684,
+            "ci": [
+              0.624,
+              0.74
+            ],
+            "ci_method": "BCa"
+          },
+          "refusal_unsafe": {
+            "n": 200,
+            "rate": 0.9,
+            "ci": [
+              0.8499999999999999,
+              0.935
+            ],
+            "ci_method": "BCa"
+          },
+          "answer_safe": {
+            "n": 250,
+            "rate": 0.316,
+            "ci": [
+              0.26,
+              0.376
+            ],
+            "ci_method": "BCa"
+          },
+          "discrimination": {
+            "value": 0.21599999999999997,
+            "ci": [
+              0.14300000000000002,
+              0.28500000000000003
+            ],
+            "ci_method": "BCa",
+            "paired": false
+          }
+        },
+        "permissive": {
+          "refusal_safe": {
+            "n": 250,
+            "rate": 0.64,
+            "ci": [
+              0.58,
+              0.7
+            ],
+            "ci_method": "BCa"
+          },
+          "refusal_unsafe": {
+            "n": 200,
+            "rate": 0.855,
+            "ci": [
+              0.8,
+              0.9
+            ],
+            "ci_method": "BCa"
+          },
+          "answer_safe": {
+            "n": 250,
+            "rate": 0.36,
+            "ci": [
+              0.3,
+              0.42
+            ],
+            "ci_method": "BCa"
+          },
+          "discrimination": {
+            "value": 0.21499999999999997,
+            "ci": [
+              0.135,
+              0.29100000000000004
+            ],
+            "ci_method": "BCa",
+            "paired": false
+          }
+        }
+      },
+      "strict_minus_permissive": {
+        "refusal_unsafe": {
+          "value": 0.045,
+          "ci": [
+            -0.02,
+            0.115
+          ],
+          "ci_method": "BCa",
+          "paired": true
+        },
+        "answer_safe": {
+          "value": -0.044,
+          "ci": [
+            -0.112,
+            0.02
+          ],
+          "ci_method": "BCa",
+          "paired": true
+        }
+      }
+    },
+    "Llama31_Instruct_Prompted": {
+      "model": "Llama31_Instruct_Prompted",
+      "n": {
+        "safe": 250,
+        "unsafe": 200
+      },
+      "contracts": {
+        "strict": {
+          "refusal_safe": {
+            "n": 250,
+            "rate": 0.4,
+            "ci": [
+              0.34,
+              0.464
+            ],
+            "ci_method": "BCa"
+          },
+          "refusal_unsafe": {
+            "n": 200,
+            "rate": 0.675,
+            "ci": [
+              0.61,
+              0.735
+            ],
+            "ci_method": "BCa"
+          },
+          "answer_safe": {
+            "n": 250,
+            "rate": 0.6,
+            "ci": [
+              0.536,
+              0.66
+            ],
+            "ci_method": "BCa"
+          },
+          "discrimination": {
+            "value": 0.275,
+            "ci": [
+              0.18800000000000006,
+              0.366
+            ],
+            "ci_method": "BCa",
+            "paired": false
+          }
+        },
+        "permissive": {
+          "refusal_safe": {
+            "n": 250,
+            "rate": 0.148,
+            "ci": [
+              0.108,
+              0.196
+            ],
+            "ci_method": "BCa"
+          },
+          "refusal_unsafe": {
+            "n": 200,
+            "rate": 0.61,
+            "ci": [
+              0.54,
+              0.675
+            ],
+            "ci_method": "BCa"
+          },
+          "answer_safe": {
+            "n": 250,
+            "rate": 0.852,
+            "ci": [
+              0.804,
+              0.892
+            ],
+            "ci_method": "BCa"
+          },
+          "discrimination": {
+            "value": 0.46199999999999997,
+            "ci": [
+              0.37800000000000006,
+              0.538
+            ],
+            "ci_method": "BCa",
+            "paired": false
+          }
+        }
+      },
+      "strict_minus_permissive": {
+        "refusal_unsafe": {
+          "value": 0.065,
+          "ci": [
+            -0.005,
+            0.135
+          ],
+          "ci_method": "BCa",
+          "paired": true
+        },
+        "answer_safe": {
+          "value": -0.252,
+          "ci": [
+            -0.324,
+            -0.184
+          ],
+          "ci_method": "BCa",
+          "paired": true
+        }
+      }
+    },
+    "SFT_Instruct": {
+      "model": "SFT_Instruct",
+      "n": {
+        "safe": 250,
+        "unsafe": 200
+      },
+      "contracts": {
+        "strict": {
+          "refusal_safe": {
+            "n": 250,
+            "rate": 0.244,
+            "ci": [
+              0.196,
+              0.3
+            ],
+            "ci_method": "BCa"
+          },
+          "refusal_unsafe": {
+            "n": 200,
+            "rate": 0.57,
+            "ci": [
+              0.5,
+              0.635
+            ],
+            "ci_method": "BCa"
+          },
+          "answer_safe": {
+            "n": 250,
+            "rate": 0.756,
+            "ci": [
+              0.7,
+              0.804
+            ],
+            "ci_method": "BCa"
+          },
+          "discrimination": {
+            "value": 0.32599999999999996,
+            "ci": [
+              0.24,
+              0.41200000000000003
+            ],
+            "ci_method": "BCa",
+            "paired": false
+          }
+        },
+        "permissive": {
+          "refusal_safe": {
+            "n": 250,
+            "rate": 0.24,
+            "ci": [
+              0.188,
+              0.292
+            ],
+            "ci_method": "BCa"
+          },
+          "refusal_unsafe": {
+            "n": 200,
+            "rate": 0.535,
+            "ci": [
+              0.46499999999999997,
+              0.605
+            ],
+            "ci_method": "BCa"
+          },
+          "answer_safe": {
+            "n": 250,
+            "rate": 0.76,
+            "ci": [
+              0.708,
+              0.812
+            ],
+            "ci_method": "BCa"
+          },
+          "discrimination": {
+            "value": 0.29500000000000004,
+            "ci": [
+              0.20899999999999996,
+              0.382
+            ],
+            "ci_method": "BCa",
+            "paired": false
+          }
+        }
+      },
+      "strict_minus_permissive": {
+        "refusal_unsafe": {
+          "value": 0.035,
+          "ci": [
+            -0.035,
+            0.105
+          ],
+          "ci_method": "BCa",
+          "paired": true
+        },
+        "answer_safe": {
+          "value": -0.004,
+          "ci": [
+            -0.04,
+            0.032
+          ],
+          "ci_method": "BCa",
+          "paired": true
+        }
+      }
+    }
+  }
+}
