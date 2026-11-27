@@ -1,0 +1,163 @@
+{
+  "meta": {
+    "scorer": "LLM refusal judge, first turn",
+    "resamples": 10000,
+    "resampling": "unsafe and safe prompts resampled with replacement, the same draw for every model",
+    "dominance": "at least as high on both axes and higher on one"
+  },
+  "points": {
+    "CITA_Instruct_AsTrained|strict": {
+      "refusal_unsafe": 0.745,
+      "answer_safe": 0.28
+    },
+    "CITA_Instruct_AsTrained|permissive": {
+      "refusal_unsafe": 0.755,
+      "answer_safe": 0.43200000000000005
+    },
+    "CITA_Instruct_Chain|strict": {
+      "refusal_unsafe": 0.475,
+      "answer_safe": 0.6759999999999999
+    },
+    "CITA_Instruct_Chain|permissive": {
+      "refusal_unsafe": 0.395,
+      "answer_safe": 0.6839999999999999
+    },
+    "DPO_Instruct_AsTrained|strict": {
+      "refusal_unsafe": 0.425,
+      "answer_safe": 0.708
+    },
+    "DPO_Instruct_AsTrained|permissive": {
+      "refusal_unsafe": 0.435,
+      "answer_safe": 0.72
+    },
+    "GRPO_Instruct_AsTrained|strict": {
+      "refusal_unsafe": 0.545,
+      "answer_safe": 0.728
+    },
+    "GRPO_Instruct_AsTrained|permissive": {
+      "refusal_unsafe": 0.575,
+      "answer_safe": 0.772
+    },
+    "Llama31_Base_Prompted|strict": {
+      "refusal_unsafe": 0.9,
+      "answer_safe": 0.31599999999999995
+    },
+    "Llama31_Base_Prompted|permissive": {
+      "refusal_unsafe": 0.855,
+      "answer_safe": 0.36
+    },
+    "Llama31_Instruct_Prompted|strict": {
+      "refusal_unsafe": 0.675,
+      "answer_safe": 0.6
+    },
+    "Llama31_Instruct_Prompted|permissive": {
+      "refusal_unsafe": 0.61,
+      "answer_safe": 0.852
+    },
+    "SFT_Instruct|strict": {
+      "refusal_unsafe": 0.57,
+      "answer_safe": 0.756
+    },
+    "SFT_Instruct|permissive": {
+      "refusal_unsafe": 0.535,
+      "answer_safe": 0.76
+    }
+  },
+  "non_dominated": [
+    "CITA_Instruct_AsTrained|permissive",
+    "Llama31_Base_Prompted|strict",
+    "Llama31_Base_Prompted|permissive",
+    "Llama31_Instruct_Prompted|strict",
+    "Llama31_Instruct_Prompted|permissive"
+  ],
+  "dominated": {
+    "CITA_Instruct_AsTrained|strict": {
+      "by": "Llama31_Base_Prompted|strict",
+      "all_dominators": [
+        "CITA_Instruct_AsTrained|permissive",
+        "Llama31_Base_Prompted|strict",
+        "Llama31_Base_Prompted|permissive"
+      ],
+      "share_of_resamples_dominated": 0.8473
+    },
+    "CITA_Instruct_Chain|strict": {
+      "by": "Llama31_Instruct_Prompted|permissive",
+      "all_dominators": [
+        "GRPO_Instruct_AsTrained|strict",
+        "GRPO_Instruct_AsTrained|permissive",
+        "Llama31_Instruct_Prompted|permissive",
+        "SFT_Instruct|strict",
+        "SFT_Instruct|permissive"
+      ],
+      "share_of_resamples_dominated": 0.9984
+    },
+    "CITA_Instruct_Chain|permissive": {
+      "by": "Llama31_Instruct_Prompted|permissive",
+      "all_dominators": [
+        "DPO_Instruct_AsTrained|strict",
+        "DPO_Instruct_AsTrained|permissive",
+        "GRPO_Instruct_AsTrained|strict",
+        "GRPO_Instruct_AsTrained|permissive",
+        "Llama31_Instruct_Prompted|permissive",
+        "SFT_Instruct|strict",
+        "SFT_Instruct|permissive"
+      ],
+      "share_of_resamples_dominated": 1.0
+    },
+    "DPO_Instruct_AsTrained|strict": {
+      "by": "Llama31_Instruct_Prompted|permissive",
+      "all_dominators": [
+        "DPO_Instruct_AsTrained|permissive",
+        "GRPO_Instruct_AsTrained|strict",
+        "GRPO_Instruct_AsTrained|permissive",
+        "Llama31_Instruct_Prompted|permissive",
+        "SFT_Instruct|strict",
+        "SFT_Instruct|permissive"
+      ],
+      "share_of_resamples_dominated": 1.0
+    },
+    "DPO_Instruct_AsTrained|permissive": {
+      "by": "Llama31_Instruct_Prompted|permissive",
+      "all_dominators": [
+        "GRPO_Instruct_AsTrained|strict",
+        "GRPO_Instruct_AsTrained|permissive",
+        "Llama31_Instruct_Prompted|permissive",
+        "SFT_Instruct|strict",
+        "SFT_Instruct|permissive"
+      ],
+      "share_of_resamples_dominated": 1.0
+    },
+    "GRPO_Instruct_AsTrained|strict": {
+      "by": "Llama31_Instruct_Prompted|permissive",
+      "all_dominators": [
+        "GRPO_Instruct_AsTrained|permissive",
+        "Llama31_Instruct_Prompted|permissive",
+        "SFT_Instruct|strict"
+      ],
+      "share_of_resamples_dominated": 0.9323
+    },
+    "GRPO_Instruct_AsTrained|permissive": {
+      "by": "Llama31_Instruct_Prompted|permissive",
+      "all_dominators": [
+        "Llama31_Instruct_Prompted|permissive"
+      ],
+      "share_of_resamples_dominated": 0.7939
+    },
+    "SFT_Instruct|strict": {
+      "by": "Llama31_Instruct_Prompted|permissive",
+      "all_dominators": [
+        "GRPO_Instruct_AsTrained|permissive",
+        "Llama31_Instruct_Prompted|permissive"
+      ],
+      "share_of_resamples_dominated": 0.8246
+    },
+    "SFT_Instruct|permissive": {
+      "by": "Llama31_Instruct_Prompted|permissive",
+      "all_dominators": [
+        "GRPO_Instruct_AsTrained|permissive",
+        "Llama31_Instruct_Prompted|permissive"
+      ],
+      "share_of_resamples_dominated": 0.9486
+    }
+  }
+}
