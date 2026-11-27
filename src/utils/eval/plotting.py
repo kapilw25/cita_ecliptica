@@ -70,6 +70,8 @@ def get_model_color(model_name: str) -> str:
         return '#4B0082' if 'Instruct' in model_name else '#DDA0DD'  # Indigo / Plum
     elif 'GRPO' in model_name:
         return '#FF8C00' if 'Instruct' in model_name else '#FFDAB9'  # DarkOrange / PeachPuff
+    elif 'CITA' in model_name and 'Chain' in model_name:  # SwiPO retrained on the intended chain (SwiPO-S): own hue
+        return '#008B8B' if 'Instruct' in model_name else '#7FD1D1'
     elif 'CITA' in model_name:
         return '#00008B' if 'Instruct' in model_name else '#87CEEB'
     elif 'Baseline' in model_name:

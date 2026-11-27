@@ -24,6 +24,7 @@ from src.utils.eval.display_names import get_display_names  # noqa: E402
 
 CFG = yaml.safe_load(open(project_root / "configs" / "pipeline.yaml"))
 GAP_JSON = project_root / CFG["paths"]["evaluation_dir"] / "contract_gap" / "astrained_conditional_safety.json"
+CHAIN_JSON = project_root / CFG["paths"]["evaluation_dir"] / "contract_gap" / "chain_final_only_pair.json"  # SwiPO-S pair
 OUT_DIR = project_root / CFG["paths"]["evaluation_dir"] / "contract_gap" / "figures"
 STEMS = {"wide": "v1_loading_teaser", "column": "v2_loading_teaser_column"}  # plot-standards rule 11: version prefix per figure
 TRAINERS = CFG["score_table"]["trainers"]
@@ -57,18 +58,24 @@ def diagram(ax):
         for x0 in (0.30, 0.635):
             ax.annotate("", xy=(x0 + 0.065, y + 0.10), xytext=(x0, y + 0.10),
                         arrowprops=dict(arrowstyle="->", lw=2, color="black"))
-    ax.text(0.5, -0.06, "parent = SFT for DPO, PPO, GRPO; DPO for SwiPO", ha="center", va="top",
+    ax.text(0.5, -0.06, "parent: SFT; SwiPO-R: DPO; SwiPO-S: SFT + DPO", ha="center", va="top",
             fontsize=FS - 2, fontweight="bold", color="#3a3f47")
 
 
+def pairs():
+    """(label, final-adapter-only key, as-trained key) per model; SwiPO-R = as released, SwiPO-S = intended chain."""
+    out = [(NAME.get(t, t) + ("-R" if t == "CITA" else ""), f"{t}_Instruct", f"{t}_Instruct_AsTrained") for t in TRAINERS]
+    return out + [("SwiPO-S", "CITA_Instruct_Chain_FinalOnly", "CITA_Instruct_Chain")]
+
+
 def bars(ax, data):
-    """Grouped bars per model: hatched = as loaded (reference arm), solid = as trained; sorted by as-trained gap, largest right."""
-    order = sorted(TRAINERS, key=lambda t: data[f"{t}_Instruct_AsTrained"]["score"])
+    """Grouped bars per model: hatched = final adapter only (reference arm), solid = as trained; sorted by as-trained gap, largest right."""
+    order = sorted(pairs(), key=lambda p: data[p[2]]["score"])
     x = np.arange(len(order))
     w = 0.38
-    for i, t in enumerate(tqdm(order, desc="loading_teaser_plot", unit="model")):
-        color = get_model_color(f"{t}_Instruct")
-        for k, (key, hatch, dx) in enumerate([(f"{t}_Instruct", "///", -w / 2), (f"{t}_Instruct_AsTrained", None, w / 2)]):
+    for i, (label, before_key, after_key) in enumerate(tqdm(order, desc="loading_teaser_plot", unit="model")):
+        color = get_model_color(after_key)
+        for key, hatch, dx in [(before_key, "///", -w / 2), (after_key, None, w / 2)]:
             r = data[key]
             lo, hi = r["ci"]
             ax.bar(i + dx, r["score"], w, color=color if hatch is None else "white", edgecolor=color, hatch=hatch, linewidth=2)
@@ -76,14 +83,14 @@ def bars(ax, data):
                               capsize=3, elinewidth=1.4)
             for line in err[2]:
                 line.set_alpha(0.6)
-            ax.text(i + dx, hi + 0.015, f"{r['score']:.2f}", ha="center", va="bottom", fontsize=FS - 2, fontweight="bold")
-        before, after = data[f"{t}_Instruct"]["score"], data[f"{t}_Instruct_AsTrained"]["score"]
+            ax.text(i + dx, hi + 0.015, f"{r['score']:.2f}", ha="center", va="bottom", fontsize=FS - 3, fontweight="bold")
+        before, after = data[before_key]["score"], data[after_key]["score"]
         pct = (after - before) / before * 100  # plot-standards rule 1: per-pair delta, red when the gap falls
-        top = max(data[k]["ci"][1] for k in (f"{t}_Instruct", f"{t}_Instruct_AsTrained"))
-        ax.text(i, top + 0.075, f"{pct:+.0f}% {'↓' if pct < 0 else '↑'}", ha="center", va="bottom", fontsize=FS - 1,
+        top = max(data[k]["ci"][1] for k in (before_key, after_key))
+        ax.text(i, top + 0.075, f"{pct:+.0f}% {'↓' if pct < 0 else '↑'}", ha="center", va="bottom", fontsize=FS - 2,
                 fontweight="bold", color=RED if pct < 0 else GREEN)
     ax.set_xticks(x)
-    ax.set_xticklabels([NAME.get(t, t) for t in order], fontsize=FS, fontweight="bold")
+    ax.set_xticklabels([p[0] for p in order], fontsize=FS - 1, fontweight="bold")
     ax.set_ylim(0, 0.68)
     ax.set_ylabel("Refusal gap\n(strict minus permissive)", fontsize=FS, fontweight="bold")
     ax.tick_params(axis="y", labelsize=FS - 1)
@@ -97,14 +104,15 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--layout", choices=sorted(STEMS), default="wide", help="wide: two panels side by side (figure*); column: stacked for one column")
     args = ap.parse_args()
-    data = json.load(open(GAP_JSON))["suites"]["conditional_safety"]
+    data = {**json.load(open(GAP_JSON))["suites"]["conditional_safety"],
+            **json.load(open(CHAIN_JSON))["suites"]["conditional_safety"]}
     n = {data[k]["n"] for k in data}
     if len(n) != 1:
         raise RuntimeError(f"{GAP_JSON.name}: models scored on different prompt counts {n}")
-    for t in TRAINERS:
-        for k in (f"{t}_Instruct", f"{t}_Instruct_AsTrained"):
+    for _, before_key, after_key in pairs():
+        for k in (before_key, after_key):
             if k not in data:
-                raise RuntimeError(f"{GAP_JSON.name} has no {k}")
+                raise RuntimeError(f"{GAP_JSON.name} + {CHAIN_JSON.name} have no {k}")
     if args.layout == "wide":
         fig = plt.figure(figsize=(14, 4.6))
         gs = fig.add_gridspec(1, 2, width_ratios=[1.0, 1.25], wspace=0.18)

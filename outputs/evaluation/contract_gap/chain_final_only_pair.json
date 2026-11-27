@@ -1,0 +1,48 @@
+{
+  "meta": {
+    "models": [
+      "CITA_Instruct_Chain_FinalOnly",
+      "CITA_Instruct_Chain"
+    ],
+    "reference": "CITA_Instruct_Chain_FinalOnly",
+    "statistic": {
+      "conditional_safety": "|strict - permissive| refusal rate"
+    },
+    "bootstrap": {
+      "n_iterations": 10000,
+      "confidence_level": 0.95,
+      "method": "BCa"
+    },
+    "resampling_unit": "item, paired across models"
+  },
+  "suites": {
+    "conditional_safety": {
+      "CITA_Instruct_Chain_FinalOnly": {
+        "n": 1222,
+        "score": 0.34124386252045824,
+        "ci": [
+          0.3076923076923077,
+          0.3739770867430442
+        ],
+        "ci_method": "BCa"
+      },
+      "CITA_Instruct_Chain": {
+        "n": 1222,
+        "score": 0.05155482815057283,
+        "ci": [
+          0.020458265139116204,
+          0.08183306055646482
+        ],
+        "ci_method": "BCa",
+        "minus_ref": {
+          "value": -0.2896890343698854,
+          "ci": [
+            -0.3330605564648118,
+            -0.24468085106382975
+          ],
+          "ci_method": "BCa"
+        }
+      }
+    }
+  }
+}
