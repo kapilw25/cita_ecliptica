@@ -43,7 +43,7 @@ def diagram(ax):
     ax.set_xlim(0, 1)
     ax.set_ylim(0, 1)
     ax.axis("off")
-    rows = [(0.56, "As trained", GREEN, False), (0.08, "As loaded (our earlier versions)", RED, True)]
+    rows = [(0.56, "As trained", GREEN, False), (0.08, "Final adapter only (parent missing)", RED, True)]
     for y, label, color, missing in rows:
         ax.add_patch(FancyBboxPatch((0.0, y - 0.03), 1.0, 0.40, boxstyle="round,pad=0.0,rounding_size=0.04",
                                     linewidth=2.5, edgecolor=color, facecolor="none"))
@@ -89,8 +89,8 @@ def bars(ax, data):
     ax.tick_params(axis="y", labelsize=FS - 1)
     ax.grid(axis="y", linestyle="--", alpha=0.5)
     ax.set_axisbelow(True)
-    return [Patch(facecolor="white", edgecolor="black", hatch="///", label="as loaded (earlier versions)"),
-            Patch(facecolor="#5b6573", edgecolor="black", label="as trained")]
+    return [Patch(facecolor="white", edgecolor="black", hatch="///", label="final adapter only"),
+            Patch(facecolor="#5b6573", edgecolor="black", label="as trained (parents merged)")]
 
 
 def main():
