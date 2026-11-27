@@ -10,14 +10,31 @@ Already submitted: ✅ [SC4AI'27 (W15)](https://sites.google.com/view/sc4ai/work
 
 | 🏛️ Venue | 🔗 URL | ⏰ Due (PST) | 📬 Results out | 📄 Our track | 🎯 Why it fits |
 |---|---|---|---|---|---|
-| 🤝 LoyalAgents (W27) | [loyalagents.github.io/aaai27](https://loyalagents.github.io/aaai27/) · [OpenReview](https://openreview.net/group?id=AAAI.org/2027/Workshop/LoyalAgents) | 🔹 Sat Nov 28, 3:59 AM | 🔹 Wed Dec 2 | 🔹 full ≤8 p ([v2_LoyalAgents/](v2_LoyalAgents/) READY) | 🟢 whose contract the agent follows; v2 already written for this call |
-| 🎯 MultiRobust (W38) | [robust-ai-2027.github.io](https://robust-ai-2027.github.io/aaai27_workshop) · [OpenReview](https://openreview.net/group?id=AAAI.org/2027/Workshop/MultiRobust) | 🔹 Sat Nov 28, 3:59 AM | 🔹 Wed Dec 2 | 🔹 full ≤8 p | 🟢 safety vs helpfulness trade-off, model alignment, one model / many objectives |
-| 📊 Bench2Evidence (Bridge, not a workshop) | [bench-to-evidence.github.io](https://bench-to-evidence.github.io/) · [OpenReview](https://openreview.net/group?id=AAAI.org/2027/Bridge/Bench2Evidence) | 🔹 Wed Dec 2, 3:59 AM | 🔹 Sun Dec 13 | 🔹 full 6-8 p / short 2-4 p | 🟢 topics 1-2 ("do scorers measure what they claim", stability across runs) match our query-scrambled test (fidelity ignores the prompt: 0.560 vs 0.565), within-model AQI, BCa intervals |
-| 📐 MATH4AI (W2) | [sites.google.com/view/math4aiworkshop2027](https://sites.google.com/view/math4aiworkshop2027) · [OpenReview](https://openreview.net/group?id=AAAI.org/2027/Workshop/MATH4AI) | 🔹 Wed Dec 2, 4:00 AM | 🔹 not stated | 🔹 long ≤7 p / short ≤4 p | 🟡 Proposition 1 + KL trust region; but Proposition 1 is a simple separability result, thin for a math venue |
+| 🤝 LoyalAgents (W27) | [loyalagents.github.io/aaai27](https://loyalagents.github.io/aaai27/) · [OpenReview](https://openreview.net/group?id=AAAI.org/2027/Workshop/LoyalAgents) | 🔹 Sat Nov 28, 3:59 AM | 🔹 Wed Dec 2 | 🟢 short 4 p, single-blind: [v4_LoyalAgents_4page_astrained/](v4_LoyalAgents_4page_astrained/) | 🟢 whose contract the agent follows; deployer vs user conflict test |
+| 🎯 MultiRobust (W38) | [robust-ai-2027.github.io](https://robust-ai-2027.github.io/aaai27_workshop) · [OpenReview](https://openreview.net/group?id=AAAI.org/2027/Workshop/MultiRobust) | 🔹 Sat Nov 28, 3:59 AM | 🔹 Wed Dec 2 | 🟢 short 4 p (refs and appendix excluded), double-blind: [v5_MultiRobust_4page/](v5_MultiRobust_4page/) | 🟢 safety vs helpfulness trade-off, model alignment, one model / many objectives |
+| 📊 Bench2Evidence (Bridge, not a workshop) | [bench-to-evidence.github.io](https://bench-to-evidence.github.io/) · [OpenReview](https://openreview.net/group?id=AAAI.org/2027/Bridge/Bench2Evidence) | 🔹 Wed Dec 2, 3:59 AM | 🔹 Sun Dec 13 | 🟢 short 4 p, double-blind: [v6_Bench2Evidence_4page/](v6_Bench2Evidence_4page/) | 🟢 topics 1-2 ("do scorers measure what they claim", stability across runs) match our query-scrambled test (fidelity ignores the prompt: 0.560 vs 0.565), within-model AQI, BCa intervals |
+| 📐 MATH4AI (W2) | [sites.google.com/view/math4aiworkshop2027](https://sites.google.com/view/math4aiworkshop2027) · [OpenReview](https://openreview.net/group?id=AAAI.org/2027/Workshop/MATH4AI) | 🔹 Wed Dec 2, 4:00 AM | 🔹 not stated | 🟢 short 4 p, single-blind: [v7_MATH4AI_4page/](v7_MATH4AI_4page/) | 🟡 separability proposition and its one-contract corollary, tested on two SwiPO chains; the judge calls the math correct but thin, and the so-called KL term is a log-ratio penalty, not a KL |
 | 🛡️ LAUT (W29) | [llm-agents-under-threat.github.io](https://llm-agents-under-threat.github.io/) · [OpenReview](https://openreview.net/group?id=AAAI.org/2027/Workshop/LAUT) | 🔹 Sat Nov 28, 3:59 AM | 🔹 Wed Dec 2 | 🔹 full ≤7 p | 🔴 reviewers expect attacks or defenses; we ran none (floor leakage is a measurement, not an attack) |
 | 🎭 ANTHROLOGOS (W8) | [pragyaai.github.io/anthrologos](https://pragyaai.github.io/anthrologos/) · [OpenReview](https://openreview.net/group?id=AAAI.org/2027/Workshop/ANTHROLOGOS) | 🔹 Mon Nov 30, 10:30 AM | 🔹 not stated | 🔹 full ≤6 p / short ≤4 p | 🔴 SwiPO is about contracts, not human-like traits; "persona persistence" is a stretch a reviewer will see |
 
 Legend: 🟢 strong fit · 🟡 weak fit · 🔴 poor fit, not recommended · ✅ submitted · 🔹 value from the call
+
+## 🧬 Drafts (paper-variants: one source, four venue drafts)
+
+Owner picks Fri Nov 27 2026 ~12:00 AM PST: the as-trained finding goes to LoyalAgents, MultiRobust, Bench2Evidence and MATH4AI;
+shared sections are written once in [common/](common/) and pulled in with `\input`; numbers come from [make_numbers.py](make_numbers.py)
+(`common/numbers.tex`). One command rebuilds and gates every unfrozen draft: `python3 Overleaf_draft/v6_AAAI27_workshops/build_all.py`.
+
+| 🏛️ Venue | 📁 Draft folder | 🙈 Review | 📏 Limit | 🧑‍⚖️ Last fresh-judge score | 🔒 Status |
+|---|---|---|---|---|---|
+| 🤝 LoyalAgents | [v4_LoyalAgents_4page_astrained/](v4_LoyalAgents_4page_astrained/) | single-blind | 4 p | 54/100 (round 2) | 🟡 iterating; freeze at Fri ~10 PM PST |
+| 🎯 MultiRobust | [v5_MultiRobust_4page/](v5_MultiRobust_4page/) | double-blind | 4 p | 56/100 (round 1) | 🟡 iterating; freeze at Fri ~10 PM PST |
+| 📊 Bench2Evidence | [v6_Bench2Evidence_4page/](v6_Bench2Evidence_4page/) | double-blind | 4 p | 55/100 (round 1) | 🟡 iterating; due Wed Dec 2 |
+| 📐 MATH4AI | [v7_MATH4AI_4page/](v7_MATH4AI_4page/) | single-blind | 4 p | 49/100 (round 1) | 🟡 iterating; due Wed Dec 2 |
+| ✅ SC4AI | [v1_SC4AI/](v1_SC4AI/) | submitted | 8 p | - | 🔒 FROZEN |
+| ⚪ (superseded) | [v2_LoyalAgents/](v2_LoyalAgents/), [v3_LoyalAgents_4page/](v3_LoyalAgents_4page/) | - | - | - | 🔒 FROZEN, final adapter only |
+
+Review mode read from each venue's OpenReview submission form (author names hidden from reviewers means double-blind).
 
 Re-ranked 2026-11-26: Bench2Evidence moved up; LAUT and ANTHROLOGOS downgraded to 🔴 (kept only for the record).
 
