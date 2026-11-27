@@ -9,6 +9,8 @@ plt.rcParams['font.family'] = 'serif'
 plt.rcParams['font.weight'] = 'bold'  # ALL text bold globally
 plt.rcParams['font.size'] = 11
 plt.rcParams['axes.linewidth'] = 1.2
+plt.rcParams['pdf.fonttype'] = 42  # embed TrueType, not Type 3 (AAAI's camera-ready check rejects Type 3 fonts)
+plt.rcParams['ps.fonttype'] = 42
 from matplotlib.patches import Patch
 from pathlib import Path
 from typing import List, Dict, Optional, Tuple
