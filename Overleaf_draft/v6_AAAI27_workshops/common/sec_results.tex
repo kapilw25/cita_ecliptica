@@ -69,6 +69,7 @@ Instruct & 0.232{\tiny$\pm$.024} & 0\% & 0.231{\tiny$\pm$.024} & 0.142{\tiny$\pm
 \setlength{\tabcolsep}{2.5pt}
 % bold: col max cols=2,4; col min cols=3,5
 \setlength{\tabcolsep}{1.6pt}
+\resizebox{\columnwidth}{!}{%  % the natural width ran about 12 pt into the gutter (page checker, Nov 27)
 \begin{tabular}{lrrrr}
 \toprule
  & \multicolumn{2}{c}{Suite (347 floor)} & \multicolumn{2}{c}{Held-out (918 floor)} \\
@@ -81,7 +82,7 @@ GRPO & 0.159{\tiny$\pm$.037} & $-$0.012{\tiny[$-$.069, .046]} & 0.142{\tiny$\pm$
 SwiPO-R & \textbf{0.530{\tiny$\pm$.052}} & +0.010{\tiny[$-$.058, .078]} & \textbf{0.588{\tiny$\pm$.032}} & $-$0.016{\tiny[$-$.058, .027]} \\
 SwiPO-S & 0.259{\tiny$\pm$.046} & $-$0.024{\tiny[$-$.091, .045]} & 0.249{\tiny$\pm$.028} & $-$0.011{\tiny[$-$.057, .035]} \\  % SwiPO-S: floor_leakage_chain.json, floor_leakage_heldout_chain.json
 \bottomrule
-\end{tabular}
+\end{tabular}}
 \caption{Models as trained (SwiPO-R, SwiPO-S as in Table~\ref{tab:loading}). Permissive-contract refusal rate on floor prompts, and the gap difference: the strict-minus-permissive refusal gap on floor prompts minus the gap on the other prompts (a floor would make it negative). 95\% BCa half-widths ($\pm$) or intervals ([\,]), 10,000 resamples of prompts. Bold: the stronger floor per column by point estimate (higher permissive refusal; smaller gap difference); intervals overlap.}
 \label{tab:floor}
 \end{table}
