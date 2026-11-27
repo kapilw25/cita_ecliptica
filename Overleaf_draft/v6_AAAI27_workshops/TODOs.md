@@ -1,6 +1,6 @@
 # ✅ SwiPO TODOs (v4, v5, v6, v7)
 
-Updated Fri Nov 27 2026, 9:45 AM PST. One TODO file for all SwiPO workshop drafts (owner order Fri Nov 27 ~8:05 AM PST), next to [venues.md](venues.md). It replaces `v2_LoyalAgents/TODOs.md`, archived at [legacy/v2_LoyalAgents/TODOs.md](legacy/v2_LoyalAgents/TODOs.md). Sources: the ARR reviews ([KpHA](../ARR_feedback/Reviewer_KpHA.md), [gMno](../ARR_feedback/Reviewer_gMno.md), [shuX](../ARR_feedback/Reviewer_shuX.md)) and the ChatGPT and Claude reviews in `feedback/output/<draft>/by_chatgpt.md` and `by_claude.md`. No early freeze: every draft iterates until its deadline (owner, Fri Nov 27). Owner away Fri Nov 27 ~8:40 AM to ~8:40 PM PST; picks before leaving: Claude integrates each new result honestly (abstracts included, titles fixed, cuts only from the judges' cut lists), runs a fresh Claude judge round on the Saturday drafts around 6 PM, keeps the anonymous data link, and sends a phone ping only on key events.
+Updated Fri Nov 27 2026, 10:00 AM PST. One TODO file for all SwiPO workshop drafts (owner order Fri Nov 27 ~8:05 AM PST), next to [venues.md](venues.md). It replaces `v2_LoyalAgents/TODOs.md`, archived at [legacy/v2_LoyalAgents/TODOs.md](legacy/v2_LoyalAgents/TODOs.md). Sources: the ARR reviews ([KpHA](../ARR_feedback/Reviewer_KpHA.md), [gMno](../ARR_feedback/Reviewer_gMno.md), [shuX](../ARR_feedback/Reviewer_shuX.md)) and the ChatGPT and Claude reviews in `feedback/output/<draft>/by_chatgpt.md` and `by_claude.md`. No early freeze: every draft iterates until its deadline (owner, Fri Nov 27). Owner away Fri Nov 27 ~8:40 AM to ~8:40 PM PST; picks before leaving: Claude integrates each new result honestly (abstracts included, titles fixed, cuts only from the judges' cut lists), runs a fresh Claude judge round on the Saturday drafts around 6 PM, keeps the anonymous data link, and sends a phone ping only on key events.
 
 **Legend:** 🔴 open · ⏳ queued · 🟡 in progress · ✅ done · 👤 a person does it · ⚪ deferred · ⛔ blocked · 🟢 ChatGPT · 🟠 Claude · 📜 ARR
 
@@ -25,8 +25,8 @@ One rented RTX PRO 6000 (96 GB), driven over SSH. The four Saturday runs go one 
 |---|---|---|---|
 | 🤝 Conflict-of-interest arm | 🤝 v4 | ✅ Fri Nov 27, 9:26 AM | ✅ done |
 | 🛡️ Llama Guard on XSTest | 🎯 v5 | ✅ Fri Nov 27, 9:33 AM | ✅ done |
-| 🛡️ Llama Guard on overrides | 🤝 v4 | ⏰ ~Fri Nov 27, 10:30 AM | 🟡 running |
-| ❓ Disclosure follow-up question | 🤝 v4 | ⏰ ~Fri Nov 27, 11:30 AM | ⏳ queued |
+| 🛡️ Llama Guard on overrides | 🤝 v4 | ✅ Fri Nov 27, 9:53 AM | ✅ done |
+| ❓ Disclosure follow-up question | 🤝 v4 | ⏰ ~Fri Nov 27, 11:30 AM | 🟡 running |
 | 🧪 Evaluate no-KL ablation | 🔗 all | ⏰ ~Fri Nov 27, 1 PM | ⏳ queued |
 | 🔁 Three resampled answers | 📊 v6, 🎯 v5 | ⏰ ~Sat Nov 28 | ⏳ queued |
 | ⚖️ Qwen second judge | 📊 v6 | ⏰ ~Sat Nov 28 | ⏳ queued |
@@ -50,7 +50,7 @@ Owner pick Fri Nov 27 ~8:25 AM PST: no new baseline trainings before Dec 2. The 
 | 📥 Conflict result into paper | 🤝 v4 | ✅ Fri Nov 27, 9:35 AM | ✅ done |
 | 📏 Capability line, all drafts | 🔗 all | ✅ Fri Nov 27, 8 AM | ✅ done |
 | 📥 Harm on XSTest plane | 🎯 v5 | ✅ Fri Nov 27, 9:39 AM | ✅ sentence, not plotted |
-| 📥 Override severity sentence | 🤝 v4 | ⏰ Fri Nov 27, 2 PM | 🔴 waits run |
+| 📥 Override severity sentence | 🤝 v4, 🎯 v5 | ✅ Fri Nov 27, 9:56 AM | ✅ done |
 | 📥 No-KL row and sentence | 🔗 all | ⏰ Fri Nov 27, 3 PM | 🔴 waits run |
 | ⚖️ Dominance, non-dominated points | 🎯 v5 | ✅ Fri Nov 27, 8 AM | ✅ done |
 | 📉 Objective-driven harm differences | 🎯 v5 | ✅ Fri Nov 27, 8 AM | ✅ in text |
