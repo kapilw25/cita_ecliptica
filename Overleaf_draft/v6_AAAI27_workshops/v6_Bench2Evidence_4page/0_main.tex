@@ -74,7 +74,7 @@ Reproducible language-model evaluation depends on prompts, decoding, and scoring
 
 \section{Conclusion}
 
-Loaded as trained and scored by both instruments, only SwiPO without SFT and a prompted instruction-tuned model keep a refusal switch; the scorer check shows the pretrained model's phrase gap is mostly wording, and the harm check detects no contract effect. Correcting composition can remove a switch or reveal one, so reliable evidence for stacked adapters requires verifying the composition loaded, stopping decoding at the end of the turn, scoring the first turn with a validated scorer, reporting harm separately, and checking held-out prompts against a no-adapter control.
+Loaded as trained and scored by both instruments, only SwiPO without SFT and a prompted instruction-tuned model keep a refusal switch; the scorer check shows the pretrained model's phrase gap is mostly wording, and the harm check detects no contract effect in any trained model. Correcting composition can remove a switch or reveal one, so reliable evidence for stacked adapters requires verifying the composition loaded, stopping decoding at the end of the turn, scoring the first turn with a validated scorer, reporting harm separately, and checking held-out prompts against a no-adapter control.
 
 {\small
 \bibliography{../common/cita}
