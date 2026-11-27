@@ -90,7 +90,7 @@ def bars(ax, data):
         ax.text(i, top + 0.075, f"{pct:+.0f}% {'↓' if pct < 0 else '↑'}".replace("-", "\u2212"), ha="center", va="bottom", fontsize=FS - 2,
                 fontweight="bold", color=RED if pct < 0 else GREEN)
     ax.set_xticks(x)
-    ax.set_xticklabels([p[0] for p in order], fontsize=FS - 1, fontweight="bold")
+    ax.set_xticklabels([p[0] for p in order], fontsize=FS - 2, fontweight="bold")  # FS - 1 left SwiPO-S and SwiPO-R touching
     ax.set_ylim(0, 0.68)
     ax.set_ylabel("Refusal gap\n(strict minus permissive)", fontsize=FS, fontweight="bold")
     ax.tick_params(axis="y", labelsize=FS - 1)
@@ -122,7 +122,7 @@ def main():
                    bbox_to_anchor=(0.69, 0.0))
         fig.subplots_adjust(left=0.01, right=0.99, top=0.97, bottom=0.22)  # explicit band below the axes for the legend (rule 3)
     else:  # one column: diagram above, bars below (rule 6: stacked panels)
-        fig = plt.figure(figsize=(7.0, 7.2))
+        fig = plt.figure(figsize=(6.0, 6.2))  # same printed size as 7.0 x 7.2, text about 17% larger (both judges: Figure 1 text too small)
         gs = fig.add_gridspec(2, 1, height_ratios=[0.78, 1.22], hspace=0.12)
         diagram(fig.add_subplot(gs[0]))
         handles = bars(fig.add_subplot(gs[1]), data)
