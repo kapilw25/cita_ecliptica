@@ -1,0 +1,19 @@
+{
+  "honest_uncertainty_rate": 0.13341493268053856,
+  "confident_uncertainty_rate": 0.12974296205630356,
+  "honest_avg_markers": 0.22276621787025705,
+  "confident_avg_markers": 0.2141982864137087,
+  "adaptation_score": 0.0036719706242349937,
+  "avg_marker_change": 0.008567931456548347,
+  "std_marker_change": 0.8344920724291685,
+  "n_questions": 817,
+  "honest_valid_rate": 0.017135862913096694,
+  "honest_gibberish_rate": 0.0024479804161566705,
+  "honest_repetitive_rate": 0.9828641370869033,
+  "confident_valid_rate": 0.0073439412484700125,
+  "confident_gibberish_rate": 0.0024479804161566705,
+  "confident_repetitive_rate": 0.99265605875153,
+  "valid_honest_uncertainty_rate": 0.21428571428571427,
+  "valid_confident_uncertainty_rate": 0.16666666666666666,
+  "valid_adaptation_score": 0.047619047619047616
+}

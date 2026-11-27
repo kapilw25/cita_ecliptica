@@ -1,0 +1,174 @@
+{
+  "meta": {
+    "models": [
+      "CITA_Instruct_AsTrained",
+      "DPO_Instruct_AsTrained",
+      "PPO_Instruct_AsTrained",
+      "GRPO_Instruct_AsTrained",
+      "CITA_Instruct",
+      "DPO_Instruct",
+      "PPO_Instruct",
+      "GRPO_Instruct",
+      "Llama31_Instruct_Prompted"
+    ],
+    "reference": "CITA_Instruct_AsTrained",
+    "statistic": {
+      "truthfulqa": "honest - confident uncertainty-marker rate"
+    },
+    "bootstrap": {
+      "n_iterations": 10000,
+      "confidence_level": 0.95,
+      "method": "BCa"
+    },
+    "resampling_unit": "item, paired across models"
+  },
+  "suites": {
+    "truthfulqa": {
+      "CITA_Instruct_AsTrained": {
+        "n": 817,
+        "score": -0.011015911872705019,
+        "ci": [
+          -0.04773561811505508,
+          0.02570379436964504
+        ],
+        "ci_method": "BCa"
+      },
+      "DPO_Instruct_AsTrained": {
+        "n": 817,
+        "score": -0.0036719706242350062,
+        "ci": [
+          -0.03549571603427173,
+          0.02692778457772338
+        ],
+        "ci_method": "BCa",
+        "minus_ref": {
+          "value": 0.007343941248470013,
+          "ci": [
+            -0.0416156670746634,
+            0.056303549571603426
+          ],
+          "ci_method": "BCa"
+        }
+      },
+      "PPO_Instruct_AsTrained": {
+        "n": 817,
+        "score": 0.0036719706242350062,
+        "ci": [
+          -0.025703794369645042,
+          0.03427172582619339
+        ],
+        "ci_method": "BCa",
+        "minus_ref": {
+          "value": 0.014687882496940025,
+          "ci": [
+            -0.033047735618115054,
+            0.06364749082007344
+          ],
+          "ci_method": "BCa"
+        }
+      },
+      "GRPO_Instruct_AsTrained": {
+        "n": 817,
+        "score": 0.0036719706242350062,
+        "ci": [
+          -0.024479804161566712,
+          0.03427172582619339
+        ],
+        "ci_method": "BCa",
+        "minus_ref": {
+          "value": 0.014687882496940025,
+          "ci": [
+            -0.03182374541003672,
+            0.06364749082007344
+          ],
+          "ci_method": "BCa"
+        }
+      },
+      "CITA_Instruct": {
+        "n": 817,
+        "score": 0.01346389228886169,
+        "ci": [
+          -0.0208078335373317,
+          0.04773561811505508
+        ],
+        "ci_method": "BCa",
+        "minus_ref": {
+          "value": 0.02447980416156671,
+          "ci": [
+            -0.024479804161566705,
+            0.07343941248470012
+          ],
+          "ci_method": "BCa"
+        }
+      },
+      "DPO_Instruct": {
+        "n": 817,
+        "score": -0.004895960832313341,
+        "ci": [
+          -0.0416156670746634,
+          0.03182374541003672
+        ],
+        "ci_method": "BCa",
+        "minus_ref": {
+          "value": 0.006119951040391678,
+          "ci": [
+            -0.04528763769889841,
+            0.06119951040391677
+          ],
+          "ci_method": "BCa"
+        }
+      },
+      "PPO_Instruct": {
+        "n": 817,
+        "score": -0.008567931456548347,
+        "ci": [
+          -0.042839657282741736,
+          0.028151774785801713
+        ],
+        "ci_method": "BCa",
+        "minus_ref": {
+          "value": 0.0024479804161566723,
+          "ci": [
+            -0.04696073357016313,
+            0.056303549571603426
+          ],
+          "ci_method": "BCa"
+        }
+      },
+      "GRPO_Instruct": {
+        "n": 817,
+        "score": 0.011015911872705019,
+        "ci": [
+          -0.022031823745410038,
+          0.04528763769889842
+        ],
+        "ci_method": "BCa",
+        "minus_ref": {
+          "value": 0.022031823745410038,
+          "ci": [
+            -0.02692778457772338,
+            0.07343941248470012
+          ],
+          "ci_method": "BCa"
+        }
+      },
+      "Llama31_Instruct_Prompted": {
+        "n": 817,
+        "score": 0.3990208078335373,
+        "ci": [
+          0.3598531211750306,
+          0.4369645042839657
+        ],
+        "ci_method": "BCa",
+        "minus_ref": {
+          "value": 0.41003671970624234,
+          "ci": [
+            0.3561811505507956,
+            0.4638922888616891
+          ],
+          "ci_method": "BCa"
+        }
+      }
+    }
+  }
+}

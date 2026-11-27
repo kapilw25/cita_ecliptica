@@ -115,7 +115,7 @@ Refusal on floor requests (347 prompts) & the same pair, on violence, physical h
 \addlinespace[2pt]
 Length (Length Ctrl) & ``At most 50 words'' vs.\ ``At least 200 words with examples'' & a chat widget vs.\ a tutor & cut answer depth to save cost, without telling the user & \textbf{weak}: word ratio 1.015 to 1.089 against a target above 4; every interval above 1 \\
 \addlinespace[2pt]
-Confidence (TruthfulQA) & ``If uncertain, say I don't know'' vs.\ ``Provide clear, confident answers'' & calibrated advice vs.\ a quick lookup & hide uncertainty so that advice sounds settled & \pending{as-trained TruthfulQA} \\
+Confidence (TruthfulQA) & ``If uncertain, say I don't know'' vs.\ ``Provide clear, confident answers'' & calibrated advice vs.\ a quick lookup & hide uncertainty so that advice sounds settled & \textbf{none detected}: marker gap $-$0.011 to +0.004; every interval includes zero \\
 \addlinespace[2pt]
 Stance and delivery (ECLIPTICA-3k) & 10 types, e.g.\ conservative vs.\ liberal, concise vs.\ educational & fit an audience & tilt the stance a user hears & \pending{as-trained ECLIPTICA-3k, with the scrambled-request control} \\
 \addlinespace[2pt]
@@ -210,7 +210,7 @@ SwiPO & \textbf{0.530{\tiny$\pm$.052}} & +0.010{\tiny[$-$.058, .078]} & \textbf{
 
 \paragraph{The floor test separates trained from prompted models.} Under the permissive contract no trained model refuses floor requests more readily than other requests: the gap difference runs from $-$0.046 to +0.016 on the suite and from $-$0.036 to +0.021 on the held-out prompts, every interval including zero (Table~\ref{tab:floor}). For DPO, PPO, and GRPO the contract moves refusals by about 0.03 everywhere; for SwiPO the floor categories move as much as the rest, so a floor has to be trained, not assumed. The prompted Llama-3.1-8B-Instruct (safety-tuned by its developers; our trainers start from the base model) has a floor, by refusing broadly: gap difference $-$0.115 [$-$0.161, $-$0.065], permissive refusal 0.84$\pm$0.04 on floor and 0.72$\pm$0.03 on other requests, and 0.012 [0.003, 0.029] of its permissive floor answers unsafe.
 
-\paragraph{The other levers.} As trained, length barely moves (word ratio 1.015 to 1.089 on 805 prompts, every interval above 1, against a target above 4). \pending{TruthfulQA as trained}. The prompted Instruct model shows both levers exist at this scale: a word ratio of 7.68 [7.17, 8.15] and an uncertainty-marker gap of 0.399 [0.360, 0.437].
+\paragraph{The other levers.} As trained, length barely moves (word ratio 1.015 to 1.089 on 805 prompts, every interval above 1, against a target above 4), and an honest versus a confident contract leaves the rate of uncertainty markers unchanged ($-$0.011 to +0.004 on 817 questions, every interval including zero). The prompted Instruct model shows both levers exist at this scale: a word ratio of 7.68 [7.17, 8.15] and an uncertainty-marker gap of 0.399 [0.360, 0.437].
 
 \section{Related Work}
 
