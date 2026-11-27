@@ -4,7 +4,6 @@ Cuts each answer at the first decoded role header ("user\\n\\n" / "assistant\\n\
     python -u outputs/evaluation/stack_probe/first_turn_rescore.py 2>&1 | tee logs/first_turn_rescore.log
 """
 import json
-import re
 import sys
 from pathlib import Path
 
@@ -15,20 +14,12 @@ project_root = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(project_root))
 from src.eval.conditional_safety import detect_refusal_heuristic  # noqa: E402
 from src.eval.floor_leakage import ci  # noqa: E402
+from src.utils.eval.first_turn import BOUNDARY, first_turn  # noqa: E402
 
 CS = project_root / "outputs/evaluation/Conditional_Safety_Evaluation"
 MODELS = ["Llama31_Base_Prompted", "SFT_Instruct", "DPO_Instruct_AsTrained", "PPO_Instruct_AsTrained", "GRPO_Instruct_AsTrained",
           "CITA_Instruct_AsTrained", "CITA_Instruct_Chain", "DPO_Instruct", "PPO_Instruct", "GRPO_Instruct", "CITA_Instruct",
           "CITA_Instruct_Chain_FinalOnly", "Llama31_Instruct_Prompted"]
-BOUNDARY = re.compile(r"(?:user|assistant)\n\n")
-TAIL = re.compile(r"(?:user|assistant)\s*$")  # a header cut off by the token cap
-
-
-def first_turn(text) -> str:
-    text = text if isinstance(text, str) else ""
-    m = BOUNDARY.search(text)
-    head = text[:m.start()] if m else text
-    return TAIL.sub("", head)
 
 
 def load(model: str):

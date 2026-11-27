@@ -1,0 +1,88 @@
+\documentclass[letterpaper]{article} % DO NOT CHANGE THIS
+\usepackage[submission]{aaai2027}  % DO NOT CHANGE THIS (anonymous review version: Bench2Evidence hides authors from reviewers)
+\nocopyright  % non-archival bridge program: the AAAI copyright line does not apply to this paper
+\usepackage[hyphens]{url}  % DO NOT CHANGE THIS
+\usepackage{graphicx} % DO NOT CHANGE THIS
+\urlstyle{rm} % DO NOT CHANGE THIS
+\def\UrlFont{\rm}  % DO NOT CHANGE THIS
+\usepackage{natbib}  % DO NOT CHANGE THIS AND DO NOT ADD ANY OPTIONS TO IT
+\usepackage{caption} % DO NOT CHANGE THIS AND DO NOT ADD ANY OPTIONS TO IT
+\frenchspacing  % DO NOT CHANGE THIS
+\input{../common/preamble}
+\input{venue}
+\pdfinfo{
+/TemplateVersion (2027.1)
+}
+
+\setcounter{secnumdepth}{2}
+
+% VENUE PARTS ONLY (paper-variants skill): shared sections live in ../common/ and are pulled in with \input.
+% Bench2Evidence (AAAI-27 Bridge "From Agent Benchmarks to Deployment Evidence"), short paper (2 to 4 pages), double-blind.
+% Owner pick Fri Nov 27 2026 ~12:00 AM PST: the as-trained finding goes to every upcoming venue. Framing: an audit of one
+% benchmark claim (topic 1: do benchmarks and scorers measure what they claim; topic 2: stability of results).
+% Due Wed Dec 2 2026 3:59 AM PST (Dec 1 AoE).
+
+\title{SwiPO on ECLIPTICA-3k: When an Alignment Benchmark Measures the Wrong Model}
+
+\author{Anonymous Authors}
+\affiliations{Anonymous Institution}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+A benchmark number is deployment evidence only if it measures the model that will be deployed. We audit one claim: that preference-trained Llama-3.1-8B models, and SwiPO (an instruction-conditioned DPO with a Kullback-Leibler anchor) in particular, change how readily they refuse when a deployer changes a natural-language contract in the system message. Earlier evaluations loaded each model as the base plus only its final low-rank adapter, while training had merged parent adapters first. Loaded that way, every model shows a strict-minus-permissive refusal gap of 0.30 to 0.49, and three of four also move harmful content. Loaded as trained, the gaps of DPO, PPO, and GRPO fall to 0.03, SwiPO retrained on the intended chain keeps 0.052 (95\% interval 0.020 to 0.082), and no model's rate of unsafe answers moves. The pretrained model alone has 0.299 (0.266 to 0.332): the reported switch was its prompt-following, which supervised fine-tuning on one contract removes. A second check finds that the as-trained models run past the end of their turn, which roughly doubles measured refusal rates; scoring the first turn leaves the gaps unchanged. We turn the checks into a short protocol for evaluating models built from stacked adapters.
+\end{abstract}
+
+\begin{links}
+    % aaai2027.sty defines \link with an em dash ("--- "); use a colon (house style: no em dashes)
+    \renewcommand{\link}[2]{\par\textbf{#1}: \url{#2}}%
+    \link{Data}{hf.co/datasets/anonymousML123/ECLIPTICA-3k}
+\end{links}
+
+\section{Introduction}
+
+Benchmarks for aligned agents report a score per model, and deployment decisions read it as a property of the checkpoint that will ship. That reading holds only if the evaluated model is the trained one, the decoded answer is the answer a user would see, and the scorer measures the behavior it names \cite{biderman2024lessons}; statistical care over runs is necessary but not sufficient \cite{agarwal2021precipice}. Switchable alignment is a demanding case: it claims that one checkpoint changes behavior when a natural-language contract $I$ in the system message changes, with the request $X$ fixed (Figure~\ref{fig:teaser}). The claim is a difference between two conditions, so any evaluation choice that shifts one condition more than the other creates or erases it.
+
+\input{../common/fig_teaser}
+
+We audit such a claim end to end, on Direct Preference Optimization (DPO) \cite{rafailov2023direct}, PPO, GRPO, and the switchable method SwiPO, and report what each check changed. Our contributions are:
+\begin{itemize}
+    \item Five checks that a contract-switching result must pass before it counts as deployment evidence: composition, decoding, scorer, contamination, and controls (Section~\ref{sec:checks}).
+    \item A reversal under the composition check: models evaluated without their parent adapters show refusal switches of 0.30 to 0.49 that also move harmful content; as trained, the switch belongs to the pretrained model and supervised fine-tuning on one contract removes it (Section~\ref{sec:results}).
+    \item A confirmation under the decoding check: answers that run into invented turns inflate refusal rates in both conditions but leave the gaps unchanged (Section~\ref{sec:results}).
+\end{itemize}
+
+\section{Five Checks Before a Number Becomes Evidence}
+\label{sec:checks}
+
+A switching claim is a gap: the strict-minus-permissive difference in a behavior, with $X$ fixed and only $I$ varied; Table~\ref{tab:levers} lists the contract pairs we evaluate. We apply five checks to every gap, each with paired 95\% intervals over prompts.
+\begin{itemize}
+    \item \textbf{Composition.} Is the evaluated model the trained one? Each training stage here merges its parent adapter and trains a new one, so the trained model is the base plus every adapter in its chain; we evaluate both that model and the final adapter alone.
+    \item \textbf{Decoding.} Does each answer stop where the model's turn ends? We count answers that continue into invented user or assistant turns and re-score the first turn alone.
+    \item \textbf{Scorer.} Does the scorer measure the named behavior? Refusal is a phrase heuristic, so we score harm separately with Llama Guard 3 and ask whether harm moves with refusal wording.
+    \item \textbf{Contamination.} Most suite prompts appear in the training pool, so we repeat the gaps on 2,444 held-out prompts.
+    \item \textbf{Controls.} The base model with no adapter and a prompted off-the-shelf instruction-tuned model bound what the training added.
+\end{itemize}
+
+\input{../common/tab_levers}
+
+\input{../common/sec_setup}
+
+\input{../common/sec_results}
+
+\section{Related Work}
+
+Reproducible language-model evaluation depends on prompts, decoding, and scoring details that reported numbers rarely carry \cite{biderman2024lessons}, and intervals over runs are needed before a difference counts \cite{agarwal2021precipice}; we add model composition to that list. \input{../common/related_core}
+\input{../common/sec_limits}
+
+\section{Conclusion}
+
+Loaded as trained, no preference-trained model here changes its refusals much with the contract: the switch the earlier evaluation reported belonged to the pretrained model, supervised fine-tuning on one contract removes it, and SwiPO's loss, trained with one contract, does not restore it; harmful content moves under no contract. For any model built from stacked adapters, an evaluation should state the composition it loaded, stop decoding at the end of the turn, score the first turn, report harm separately from refusal wording, and check held-out prompts against a no-adapter control.
+
+{\small
+\bibliography{../common/cita}
+}
+
+\end{document}
