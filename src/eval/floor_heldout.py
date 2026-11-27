@@ -1,6 +1,7 @@
 """Held-out floor test: strict and permissive contracts on unseen PKU-SafeRLHF prompts for the four Instruct models. GPU-only.
     python -u src/eval/floor_heldout.py --SANITY --no-wandb 2>&1 | tee logs/floor_heldout_sanity.log
     python -u src/eval/floor_heldout.py --FULL 2>&1 | tee logs/floor_heldout_full.log
+    python -u src/eval/floor_heldout.py --FULL --no-wandb --seed 1 --models DPO_Instruct_AsTrained Llama31_Instruct_Prompted 2>&1 | tee logs/floor_heldout_seed1.log
 """
 
 import argparse
@@ -77,6 +78,8 @@ def main():
     mode.add_argument("--FULL", action="store_true", help=f"all {H['n_prompts']} held-out prompts")
     ap.add_argument("--trainers", nargs="+", choices=TRAINERS, default=TRAINERS,
                     help="subset of trainers for this process; run one process per trainer in parallel to keep the GPU busy")
+    ap.add_argument("--seed", type=int, default=H["seed"],
+                    help="sampling seed; any seed other than floor_leakage.heldout.seed is a resample written to <dir>/full_seed<N>/")
     ap.add_argument("--models", nargs="+", choices=sorted(MODELS), default=None,
                     help="explicit model keys instead of --trainers (controls: NoInstruct models, the prompted Instruct baseline)")
     add_wandb_args(ap)
@@ -84,10 +87,10 @@ def main():
     if not torch.cuda.is_available():
         raise RuntimeError("CUDA not available: floor_heldout.py is GPU-only")
     rows = load_prompts(SANITY_N if args.SANITY else H["n_prompts"])
-    out_root = project_root / H["dir"] / ("sanity" if args.SANITY else "full")
+    out_root = project_root / H["dir"] / (("sanity" if args.SANITY else "full") + (f"_seed{args.seed}" if args.seed != H["seed"] else ""))
     run = init_wandb("floor_heldout", "sanity" if args.SANITY else "full", {**H, "n": len(rows), "trainers": args.trainers},
                      enabled=not args.no_wandb)
-    torch.manual_seed(H["seed"])
+    torch.manual_seed(args.seed)
     for key in args.models or [f"{t}_{VARIANT}" for t in args.trainers]:
         d = out_root / key
         if all((d / f).exists() for f in ARMS.values()) and (d / "metrics.json").exists():

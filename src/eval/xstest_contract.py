@@ -2,6 +2,7 @@
 refusal rates, strict-minus-permissive gaps and safe-vs-unsafe discrimination, 95% BCa. GPU-only (--dry builds the prompts on CPU).
     python -u src/eval/xstest_contract.py --dry --samples 5 --models Llama31_Base_Prompted SFT_Instruct DPO_Instruct_AsTrained PPO_Instruct_AsTrained GRPO_Instruct_AsTrained CITA_Instruct_AsTrained CITA_Instruct_Chain Llama31_Instruct_Prompted 2>&1 | tee logs/xstest_contract_dry.log
     python -u src/eval/xstest_contract.py --decode_variant stop_eot --batch_size 50 --models Llama31_Base_Prompted SFT_Instruct DPO_Instruct_AsTrained PPO_Instruct_AsTrained GRPO_Instruct_AsTrained CITA_Instruct_AsTrained CITA_Instruct_Chain Llama31_Instruct_Prompted 2>&1 | tee logs/xstest_contract_stop_eot.log
+    python -u src/eval/xstest_contract.py --seed 1 --decode_variant stop_eot --batch_size 50 --models Llama31_Base_Prompted SFT_Instruct DPO_Instruct_AsTrained PPO_Instruct_AsTrained GRPO_Instruct_AsTrained CITA_Instruct_AsTrained CITA_Instruct_Chain Llama31_Instruct_Prompted 2>&1 | tee logs/xstest_contract_stop_eot_seed1.log
 """
 
 import argparse
@@ -118,7 +119,7 @@ def label(df):
     return df
 
 
-def run_arm(model, tok, rows, arm, partial, use_instruction, batch_size, decode):
+def run_arm(model, tok, rows, arm, partial, use_instruction, batch_size, decode, seed):
     """Generate one contract arm with resume from <arm>_partial.jsonl; returns the labelled answers."""
     done = [json.loads(line) for line in open(partial)] if partial.exists() else []
     if [r["prompt_idx"] for r in done] != rows.prompt_idx.tolist()[:len(done)]:
@@ -140,7 +141,7 @@ def run_arm(model, tok, rows, arm, partial, use_instruction, batch_size, decode)
         texts, lens = chat_prompts(tok, todo.prompt.tolist(), arm, use_instruction)
         every = -(-X["checkpoint_every"] // batch_size) * batch_size  # batch_generate saves when the answer count is a multiple
         print(f"  {arm}: {len(todo)} prompts to generate (longest {lens.max()} tokens), resume save every {every} answers")
-        torch.manual_seed(X["seed"])
+        torch.manual_seed(seed)
         t0 = time.time()
         out = batch_generate(model, tok, texts, batch_size=batch_size, max_new_tokens=X["max_new_tokens"],
                              temperature=X["temperature"], top_p=X["top_p"], do_sample=True, desc=f"xstest {arm}",
@@ -211,7 +212,7 @@ def evaluate_model(key, rows, out_dir, batch_size, decode, setup):
     model, tok = load_model_for_eval(key, attn_implementation=X["attn_implementation"], max_gpu_memory=X["max_gpu_memory"])
     dfs = {}
     for arm in ARMS:
-        dfs[arm] = run_arm(model, tok, rows, arm, d / f"{arm}_partial.jsonl", use_instruction, batch_size, decode)
+        dfs[arm] = run_arm(model, tok, rows, arm, d / f"{arm}_partial.jsonl", use_instruction, batch_size, decode, setup["seed"])
         tmp = d / f"{arm}_responses.csv.tmp{os.getpid()}"
         dfs[arm].to_csv(tmp, index=False)
         os.replace(tmp, d / f"{arm}_responses.csv")
@@ -262,6 +263,9 @@ def main():
     ap.add_argument("--samples", type=int, default=None,
                     help="smoke test: first N prompts of EACH label (2N in all); answers and summary get a _samples<N> suffix, "
                          "never the full run's files")
+    ap.add_argument("--seed", type=int, default=X["seed"],
+                    help="sampling seed (torch.manual_seed before each arm); any seed other than xstest_contract.seed is a resample "
+                         "and its answers and summary get a _seed<N> suffix")
     ap.add_argument("--dry", action="store_true",
                     help="no model: load XSTest, print the counts, build every chat prompt, print the first prompt of each label "
                          "under both contracts; computes no label and writes nothing")
@@ -286,13 +290,13 @@ def main():
         print(f"  {lab}: " + ", ".join(f"{t} {n}" for t, n in types.items()))
     decode = decode_kwargs(args.decode_variant)
     root = variant_root(args.decode_variant) if args.decode_variant else project_root / CFG["paths"]["evaluation_dir"]
-    suffix = f"_samples{args.samples}" if args.samples else ""
+    suffix = (f"_samples{args.samples}" if args.samples else "") + (f"_seed{args.seed}" if args.seed != X["seed"] else "")
     out_dir = root / f"{X['dir_name']}{suffix}"
     variant = f"_{args.decode_variant}" if args.decode_variant else ""
     summary_path = project_root / X["summary_dir"] / f"{X['summary_name']}{variant}{suffix}.json"
     setup = {"dataset": X["dataset"], "revision": X["revision"], "split": X["split"], "contract_texts": CONTRACTS,
              "harm_categories": "none (XSTest has no PKU-SafeRLHF categories)", "max_new_tokens": X["max_new_tokens"],
-             "temperature": X["temperature"], "top_p": X["top_p"], "seed": X["seed"], "attn_implementation": X["attn_implementation"],
+             "temperature": X["temperature"], "top_p": X["top_p"], "seed": args.seed, "attn_implementation": X["attn_implementation"],
              "decode_variant": args.decode_variant, "decode": decode,
              "n_prompts": {lab: int((rows.label == lab).sum()) for lab in LABELS}}
     print(f"{len(rows)} prompts x {len(ARMS)} contracts x {len(args.models)} models; answers in {out_dir}; summary {summary_path}")

@@ -1,0 +1,113 @@
+{
+  "meta": {
+    "gap": "strict minus permissive is_refusal (the suite's phrase heuristic: full answer for Conditional Safety and held-out, first turn for XSTest), paired over prompts",
+    "samples": "original run plus resamples (configs/pipeline.yaml resample_stability)",
+    "replicates": "PPO's released adapter is all zero, so its rows re-run SFT (as trained) and the base model (final only)",
+    "ci": "95% BCa over prompts, 10,000 resamples",
+    "sd": "across samples, ddof 1"
+  },
+  "replicates": {
+    "conditional_safety:SFT_Instruct-vs-PPO_Instruct_AsTrained": {
+      "a": {
+        "gap": 0.0220949263502455,
+        "ci": [
+          -0.004091653027823241,
+          0.047463175122749585
+        ],
+        "ci_method": "BCa",
+        "n": 1222,
+        "excludes_zero": false
+      },
+      "b": {
+        "gap": 0.03273322422258593,
+        "ci": [
+          0.007364975450081833,
+          0.05810147299509002
+        ],
+        "ci_method": "BCa",
+        "n": 1222,
+        "excludes_zero": true
+      },
+      "a_minus_b": {
+        "gap": -0.010638297872340425,
+        "ci": [
+          -0.045008183306055646,
+          0.02536824877250409
+        ],
+        "ci_method": "BCa",
+        "n": 1222,
+        "excludes_zero": false
+      },
+      "identical_labels": false,
+      "independent_replicate": true
+    },
+    "xstest:SFT_Instruct-vs-PPO_Instruct_AsTrained": {
+      "a": {
+        "gap": -0.0022222222222222222,
+        "ci": [
+          -0.013333333333333334,
+          0.006666666666666668
+        ],
+        "ci_method": "BCa",
+        "n": 450,
+        "excludes_zero": false
+      },
+      "b": {
+        "gap": -0.0022222222222222222,
+        "ci": [
+          -0.013333333333333334,
+          0.006666666666666668
+        ],
+        "ci_method": "BCa",
+        "n": 450,
+        "excludes_zero": false
+      },
+      "a_minus_b": {
+        "gap": 0.0,
+        "ci": [
+          0.0,
+          0.0
+        ],
+        "ci_method": "percentile",
+        "n": 450,
+        "excludes_zero": false
+      },
+      "identical_labels": true,
+      "independent_replicate": false
+    },
+    "conditional_safety:Llama31_Base_Prompted-vs-PPO_Instruct": {
+      "a": {
+        "gap": 0.2986906710310966,
+        "ci": [
+          0.26595744680851063,
+          0.3322422258592471
+        ],
+        "ci_method": "BCa",
+        "n": 1222,
+        "excludes_zero": true
+      },
+      "b": {
+        "gap": 0.3027823240589198,
+        "ci": [
+          0.27086743044189854,
+          0.33469721767594107
+        ],
+        "ci_method": "BCa",
+        "n": 1222,
+        "excludes_zero": true
+      },
+      "a_minus_b": {
+        "gap": -0.004091653027823241,
+        "ci": [
+          -0.05073649754500818,
+          0.041734860883797055
+        ],
+        "ci_method": "BCa",
+        "n": 1222,
+        "excludes_zero": false
+      },
+      "identical_labels": false,
+      "independent_replicate": true
+    }
+  }
+}

@@ -2,6 +2,8 @@
     python -u src/eval/floor_harm_classify.py --source conditional_safety --SANITY --no-wandb 2>&1 | tee logs/floor_harm_sanity.log
     python -u src/eval/floor_harm_classify.py --source conditional_safety --FULL 2>&1 | tee logs/floor_harm_cs.log
     python -u src/eval/floor_harm_classify.py --source heldout --FULL 2>&1 | tee logs/floor_harm_heldout.log
+    python -u src/eval/floor_harm_classify.py --source xstest --FULL --tag astrained --models Llama31_Base_Prompted SFT_Instruct DPO_Instruct_AsTrained PPO_Instruct_AsTrained GRPO_Instruct_AsTrained CITA_Instruct_AsTrained CITA_Instruct_Chain Llama31_Instruct_Prompted 2>&1 | tee logs/floor_harm_xstest.log
+    python -u src/eval/floor_harm_classify.py --source conflict --FULL --tag astrained --models Llama31_Base_Prompted SFT_Instruct DPO_Instruct_AsTrained PPO_Instruct_AsTrained GRPO_Instruct_AsTrained CITA_Instruct_AsTrained CITA_Instruct_Chain Llama31_Instruct_Prompted 2>&1 | tee logs/floor_harm_conflict.log
 """
 
 import argparse
@@ -32,6 +34,13 @@ TRAINERS = CFG["score_table"]["trainers"]
 VARIANT = CFG["floor_leakage"]["variant"]
 SANITY_N = CFG["eval"]["sanity"]["conditional_safety"]
 ARMS = {"strict": "strict_responses.csv", "permissive": "permissive_responses.csv"}
+# --source -> (answers dir, grouping); the floor_leakage SOURCES group by floor category, extra_sources say how they group
+HARM_SOURCES = {**{k: (v[0], "floor") for k, v in SOURCES.items()},
+                **{k: (project_root / s["dir"], s["group"]) for k, s in G["extra_sources"].items()}}
+# grouping -> (answer CSV column, in-group test, (in-group name, out-group name)); "floor" keeps the original output keys
+GROUPS = {"floor": ("harm_categories", lambda s: bool(FLOOR & set(ast.literal_eval(s))), ("floor", "non_floor")),
+          "xstest_label": ("label", lambda s: s == "unsafe", ("unsafe_prompts", "safe_prompts"))}
+DIFF = lambda a, b, axis=-1: np.mean(a, axis=axis) - np.mean(b, axis=axis)  # noqa: E731
 
 
 def classify(model, tok, prompts, responses, desc):
@@ -60,7 +69,8 @@ def summary(x):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--source", choices=sorted(SOURCES), required=True)
+    ap.add_argument("--source", choices=sorted(HARM_SOURCES), required=True,
+                    help="conditional_safety / heldout (floor groups), or floor_leakage.harm_classifier.extra_sources (conflict, xstest)")
     mode = ap.add_mutually_exclusive_group(required=True)
     mode.add_argument("--SANITY", action="store_true", help=f"first {SANITY_N} answers per arm")
     mode.add_argument("--FULL", action="store_true")
@@ -72,7 +82,10 @@ def main():
     args = ap.parse_args()
     if not torch.cuda.is_available():
         raise RuntimeError("CUDA not available: floor_harm_classify.py is GPU-only")
-    src_dir, _ = SOURCES[args.source]
+    src_dir, grouping = HARM_SOURCES[args.source]
+    col, in_group, (g_in, g_out) = GROUPS[grouping]
+    if args.source not in SOURCES and args.models is None:
+        ap.error(f"--source {args.source} needs explicit --models (and a --tag)")
     out_dir = project_root / G["dir"] / args.source / ("sanity" if args.SANITY else "full")
     default_keys = [f"{t}_{VARIANT}" for t in TRAINERS]
     keys = args.models or default_keys
@@ -103,24 +116,27 @@ def main():
             else:
                 unsafe = classify(model, tok, df.prompt.tolist(), df.response.tolist(), f"{key}/{arm}")
                 lab = pd.DataFrame({"prompt_idx": df.prompt_idx.to_numpy(), "is_refusal": df.is_refusal.to_numpy(),
-                                    "unsafe": unsafe, "harm_categories": df.harm_categories.to_numpy()})
+                                    "unsafe": unsafe, col: df[col].to_numpy()})
                 lab.to_csv(cache, index=False)
             labels[arm] = lab
         if not labels["strict"].prompt_idx.equals(labels["permissive"].prompt_idx):
             raise RuntimeError(f"{key}: strict and permissive prompt sets differ")
-        is_floor = labels["strict"].harm_categories.map(lambda s: bool(FLOOR & set(ast.literal_eval(s)))).to_numpy()
+        is_in = labels["strict"][col].map(in_group).to_numpy(dtype=bool)
         r = result[key] = {}
         for arm in ARMS:
             u = labels[arm].unsafe.to_numpy(dtype=float)
-            r[arm] = {"floor": summary(u[is_floor]), "non_floor": summary(u[~is_floor]), "all": summary(u)}
-        d_ci, d_m = ci((labels["permissive"].unsafe.to_numpy(dtype=float)[is_floor], labels["strict"].unsafe.to_numpy(dtype=float)[is_floor]),
-                       lambda a, b, axis=-1: np.mean(a, axis=axis) - np.mean(b, axis=axis), paired=True)
-        r["floor_permissive_minus_strict"] = {"value": r["permissive"]["floor"]["unsafe_rate"] - r["strict"]["floor"]["unsafe_rate"],
-                                              "ci": d_ci, "ci_method": d_m}
-        log_metrics(run, {f"{key}/{arm}_floor_unsafe": r[arm]["floor"]["unsafe_rate"] for arm in ARMS})
-        print(f"{key}: floor unsafe strict {r['strict']['floor']['unsafe_rate']:.3f} permissive {r['permissive']['floor']['unsafe_rate']:.3f}"
-              f" (diff {r['floor_permissive_minus_strict']['value']:+.3f} [{d_ci[0]:+.3f}, {d_ci[1]:+.3f}]); n_floor={int(is_floor.sum())}")
-    meta = {"source": args.source, "classifier": G["model"], "floor_categories": sorted(FLOOR), "bootstrap": CFG["bootstrap"],
+            r[arm] = {g_in: summary(u[is_in]), g_out: summary(u[~is_in]), "all": summary(u)}
+        for name, mask in ((g_in, is_in), (g_out, ~is_in), ("all", np.ones_like(is_in))):  # paired over the same prompts
+            up, us = labels["permissive"].unsafe.to_numpy(dtype=float)[mask], labels["strict"].unsafe.to_numpy(dtype=float)[mask]
+            d_ci, d_m = ci((up, us), DIFF, paired=True)
+            r[f"{name}_permissive_minus_strict"] = {"value": float(up.mean() - us.mean()), "ci": d_ci, "ci_method": d_m}
+        log_metrics(run, {f"{key}/{arm}_{g_in}_unsafe": r[arm][g_in]["unsafe_rate"] for arm in ARMS})
+        d = r[f"{g_in}_permissive_minus_strict"]
+        print(f"{key}: {g_in} unsafe strict {r['strict'][g_in]['unsafe_rate']:.3f} permissive {r['permissive'][g_in]['unsafe_rate']:.3f}"
+              f" (diff {d['value']:+.3f} [{d['ci'][0]:+.3f}, {d['ci'][1]:+.3f}]); {g_out} strict {r['strict'][g_out]['unsafe_rate']:.3f}"
+              f" permissive {r['permissive'][g_out]['unsafe_rate']:.3f}; n_{g_in}={int(is_in.sum())}")
+    meta = {"source": args.source, "answers_dir": str(src_dir.relative_to(project_root)), "grouping": grouping, "groups": [g_in, g_out],
+            "classifier": G["model"], "floor_categories": sorted(FLOOR), "bootstrap": CFG["bootstrap"],
             "note": "unsafe = Llama Guard 3 verdict on (prompt, answer); a refusal is normally judged safe; rates are over all prompts of a group"}
     json.dump({"meta": meta, "models": result}, open(out_json, "w"), indent=2)
     finish_wandb(run)

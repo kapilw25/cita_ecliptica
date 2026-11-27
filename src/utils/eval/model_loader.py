@@ -188,6 +188,11 @@ MODELS["CITA_Instruct_Chain_FinalOnly"] = {**MODELS["CITA_Instruct_Chain"], "sta
 MODELS["CITA_Instruct_Chain_noKL"] = {**MODELS["CITA_Instruct_Chain"],  # KL-anchor ablation: cita.py --lambda-kl 0, same chain
                                       "hf_repo": str(project_root / "outputs/training/chain/CITA_Instruct_noKL/lora_model_CITA_Instruct"),
                                       "display_name": "CITA Instruct (chain, no KL anchor)"}
+# G1a on the intended chain (owner pick Fri Nov 27 2026): the two-contract SwiPO data (g1_contracts/a_swipo2c) trained on base + SFT + DPO
+# merged, as CITA_Instruct_Chain; defined after the G1/G2/G5 loop so it gets the SFT+DPO stack, not the DPO-only one
+MODELS["G1a_SwiPO2C_Instruct_Chain"] = {**MODELS["CITA_Instruct_Chain"],
+                                        "hf_repo": str(project_root / "outputs/training/g1/a_swipo2c_chain/lora_model_CITA_Instruct"),
+                                        "display_name": "G1a SwiPO 2-contract (SFT, DPO, SwiPO chain)"}
 
 
 def is_local_adapter(hf_repo) -> bool:
