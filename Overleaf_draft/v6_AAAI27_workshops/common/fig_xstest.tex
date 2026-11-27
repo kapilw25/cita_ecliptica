@@ -1,11 +1,13 @@
 % common/fig_xstest.tex: XSTest safety-helpfulness plane (paper-variants skill). Input by a venue draft after sec_results.
-% Numbers and figure: outputs/evaluation/contract_gap/xstest_contract_stop_eot.json; figure by
-% src/eval/xstest_tradeoff_plot.py --decode_variant stop_eot --paper (outputs/evaluation/contract_gap/figures/v4_xstest_tradeoff_stop_eot_paper.pdf)
+% Judge figure and numbers: outputs/evaluation/contract_gap/xstest_contract_judge_stop_eot.json
+% (outputs/evaluation/stack_probe/xstest_judge_summary.py from the box labels outputs/evaluation/stop_eot/refusal_judge_xstest/);
+% figure by src/eval/xstest_tradeoff_plot.py --summary <that json> --paper (figures/v5_xstest_tradeoff_judge_stop_eot_paper.pdf).
+% Phrase numbers: outputs/evaluation/contract_gap/xstest_contract_stop_eot.json
 \begin{figure}[t]
 \centering
-\includegraphics[width=0.6\columnwidth]{v3_xstest_tradeoff_paper.pdf}
-\caption{XSTest, models as trained: refusal of 200 unsafe vs.\ answers to 250 safe prompts; strict filled, permissive hollow; dotted: equal refusal of both. Phrase heuristic, first turn (it counts the base's repeated contract as refusal); 95\% BCa whiskers.}
+\includegraphics[width=0.6\columnwidth]{v5_xstest_tradeoff_judge_paper.pdf}
+\caption{XSTest, models as trained, scored by the LLM judge (first turn): refusal of 200 unsafe vs.\ answers to 250 safe prompts; strict filled, permissive hollow; dotted: equal refusal of both. 95\% BCa whiskers.}
 \label{fig:xstest}
 \end{figure}
 
-\paragraph{One trade-off point per trained model.} On XSTest (Figure~\ref{fig:xstest}) the prompted Instruct model reaches two points (strict: unsafe refused 0.995 [0.970, 1.000], safe answered 0.608 [0.546, 0.668]; permissive: 0.845 [0.790, 0.890] and 0.968 [0.940, 0.984]). Each model with SFT in its chain holds one point (safe answered 0.932 to 0.972, unsafe refused 0.040 to 0.155), and the Instruct model dominates both of SwiPO-R's.
+\paragraph{Limited operating-point movement after SFT.} Under the judge (Figure~\ref{fig:xstest}), the permissive contract makes the prompted Instruct model answer 0.252 [0.184, 0.324] more of the safe prompts (0.600 to 0.852), while its unsafe refusal changes by 0.065 [$-$0.005, 0.135]; SwiPO-R answers 0.152 [0.072, 0.228] more (0.280 to 0.432) at unchanged unsafe refusal (0.745, 0.755). Models with SFT in their chain move at most 0.08 on either axis (largest: SwiPO-S, unsafe refusal 0.080 [0.015, 0.150]). The phrase heuristic shows the same pattern of movement but far lower refusal levels for these models (unsafe refused 0.040 to 0.155), so we claim the movement, not the absolute points.

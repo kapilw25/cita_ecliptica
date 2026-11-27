@@ -23,6 +23,7 @@
       "method": "BCa"
     },
     "decode_variant": null,
+    "suite": "conditional_safety",
     "eval_root": "outputs/evaluation",
     "labels_dir": "outputs/evaluation/refusal_judge"
   },
@@ -1152,6 +1153,354 @@
         "permissive": {
           "mean": 0.9997721382569558,
           "min": 0.98101366
+        }
+      },
+      "ci_method": [
+        "BCa"
+      ]
+    },
+    "G1a_SwiPO2C_Instruct": {
+      "n_prompts": 1222,
+      "gap_judge": 0.009819967266775777,
+      "gap_judge_ci": [
+        -0.020458265139116204,
+        0.040098199672667756
+      ],
+      "gap_heuristic_first_turn": 0.27495908346972175,
+      "gap_heuristic_first_turn_ci": [
+        0.24222585924713586,
+        0.3076923076923077
+      ],
+      "judge_minus_heuristic_gap": -0.265139116202946,
+      "judge_minus_heuristic_gap_ci": [
+        -0.306873977086743,
+        -0.22176759410801963
+      ],
+      "refusal_judge": {
+        "strict": {
+          "rate": 0.8199672667757774,
+          "ci": [
+            0.7978723404255319,
+            0.8404255319148937
+          ],
+          "ci_method": "BCa"
+        },
+        "permissive": {
+          "rate": 0.8101472995090017,
+          "ci": [
+            0.7872340425531914,
+            0.8314238952536824
+          ],
+          "ci_method": "BCa"
+        }
+      },
+      "refusal_heuristic_first_turn": {
+        "strict": {
+          "rate": 0.4157119476268412,
+          "ci": [
+            0.3878887070376432,
+            0.44353518821603927
+          ],
+          "ci_method": "BCa"
+        },
+        "permissive": {
+          "rate": 0.1407528641571195,
+          "ci": [
+            0.12193126022913256,
+            0.1612111292962357
+          ],
+          "ci_method": "BCa"
+        }
+      },
+      "agreement": 0.4001636661211129,
+      "agreement_ci": [
+        0.381342062193126,
+        0.4181669394435352
+      ],
+      "kappa": 0.06237333980940264,
+      "kappa_ci": [
+        0.04377546426980489,
+        0.08115146972793799
+      ],
+      "confusion_pooled": {
+        "judge_yes_heuristic_yes": 603,
+        "judge_yes_heuristic_no": 1389,
+        "judge_no_heuristic_yes": 77,
+        "judge_no_heuristic_no": 375
+      },
+      "truncated": {
+        "strict": 0,
+        "permissive": 0
+      },
+      "yes_no_mass": {
+        "strict": {
+          "mean": 0.9996835239607201,
+          "min": 0.941598
+        },
+        "permissive": {
+          "mean": 0.999706575450082,
+          "min": 0.91512066
+        }
+      },
+      "ci_method": [
+        "BCa"
+      ]
+    },
+    "G1b_SwiPOTwoTier_Instruct": {
+      "n_prompts": 1222,
+      "gap_judge": 0.004091653027823241,
+      "gap_judge_ci": [
+        -0.02536824877250409,
+        0.03436988543371522
+      ],
+      "gap_heuristic_first_turn": 0.29132569558101473,
+      "gap_heuristic_first_turn_ci": [
+        0.25777414075286414,
+        0.32405891980360063
+      ],
+      "judge_minus_heuristic_gap": -0.2872340425531915,
+      "judge_minus_heuristic_gap_ci": [
+        -0.3297872340425532,
+        -0.2463175122749591
+      ],
+      "refusal_judge": {
+        "strict": {
+          "rate": 0.8191489361702128,
+          "ci": [
+            0.7970540098199672,
+            0.8404255319148937
+          ],
+          "ci_method": "BCa"
+        },
+        "permissive": {
+          "rate": 0.8150572831423896,
+          "ci": [
+            0.792962356792144,
+            0.8363338788870703
+          ],
+          "ci_method": "BCa"
+        }
+      },
+      "refusal_heuristic_first_turn": {
+        "strict": {
+          "rate": 0.43126022913256956,
+          "ci": [
+            0.4034369885433715,
+            0.4582651391162029
+          ],
+          "ci_method": "BCa"
+        },
+        "permissive": {
+          "rate": 0.13993453355155483,
+          "ci": [
+            0.12193126022913257,
+            0.16039279869067102
+          ],
+          "ci_method": "BCa"
+        }
+      },
+      "agreement": 0.40220949263502453,
+      "agreement_ci": [
+        0.382569558101473,
+        0.4218494271685761
+      ],
+      "kappa": 0.06004157137261343,
+      "kappa_ci": [
+        0.03901123294731086,
+        0.08031791697036737
+      ],
+      "confusion_pooled": {
+        "judge_yes_heuristic_yes": 617,
+        "judge_yes_heuristic_no": 1380,
+        "judge_no_heuristic_yes": 81,
+        "judge_no_heuristic_no": 366
+      },
+      "truncated": {
+        "strict": 0,
+        "permissive": 0
+      },
+      "yes_no_mass": {
+        "strict": {
+          "mean": 0.9996820966366613,
+          "min": 0.94059104
+        },
+        "permissive": {
+          "mean": 0.9995752090016367,
+          "min": 0.86283195
+        }
+      },
+      "ci_method": [
+        "BCa"
+      ]
+    },
+    "G1a_SwiPO2C_Instruct_AsTrained": {
+      "n_prompts": 1222,
+      "gap_judge": 0.06137479541734861,
+      "gap_judge_ci": [
+        0.029459901800327332,
+        0.09328968903436989
+      ],
+      "gap_heuristic_first_turn": 0.5073649754500819,
+      "gap_heuristic_first_turn_ci": [
+        0.4746317512274959,
+        0.5384615384615384
+      ],
+      "judge_minus_heuristic_gap": -0.4459901800327333,
+      "judge_minus_heuristic_gap_ci": [
+        -0.4885433715220949,
+        -0.4026186579378069
+      ],
+      "refusal_judge": {
+        "strict": {
+          "rate": 0.7913256955810147,
+          "ci": [
+            0.7675941080196399,
+            0.8134206219312602
+          ],
+          "ci_method": "BCa"
+        },
+        "permissive": {
+          "rate": 0.7299509001636661,
+          "ci": [
+            0.704582651391162,
+            0.7545008183306056
+          ],
+          "ci_method": "BCa"
+        }
+      },
+      "refusal_heuristic_first_turn": {
+        "strict": {
+          "rate": 0.8101472995090017,
+          "ci": [
+            0.7872340425531915,
+            0.8314238952536824
+          ],
+          "ci_method": "BCa"
+        },
+        "permissive": {
+          "rate": 0.3027823240589198,
+          "ci": [
+            0.2774140752864157,
+            0.3282691774650834
+          ],
+          "ci_method": "BCa"
+        }
+      },
+      "agreement": 0.5716039279869067,
+      "agreement_ci": [
+        0.5540098199672667,
+        0.589607201309329
+      ],
+      "kappa": 0.0896157475070765,
+      "kappa_ci": [
+        0.05393845153808963,
+        0.12640233003499338
+      ],
+      "confusion_pooled": {
+        "judge_yes_heuristic_yes": 1086,
+        "judge_yes_heuristic_no": 773,
+        "judge_no_heuristic_yes": 274,
+        "judge_no_heuristic_no": 311
+      },
+      "truncated": {
+        "strict": 0,
+        "permissive": 0
+      },
+      "yes_no_mass": {
+        "strict": {
+          "mean": 0.9998841180851065,
+          "min": 0.99055016
+        },
+        "permissive": {
+          "mean": 0.9998512788052374,
+          "min": 0.98580617
+        }
+      },
+      "ci_method": [
+        "BCa"
+      ]
+    },
+    "G1b_SwiPOTwoTier_Instruct_AsTrained": {
+      "n_prompts": 1222,
+      "gap_judge": 0.05482815057283143,
+      "gap_judge_ci": [
+        0.022913256955810146,
+        0.08592471358428805
+      ],
+      "gap_heuristic_first_turn": 0.4885433715220949,
+      "gap_heuristic_first_turn_ci": [
+        0.455810147299509,
+        0.5196399345335515
+      ],
+      "judge_minus_heuristic_gap": -0.4337152209492635,
+      "judge_minus_heuristic_gap_ci": [
+        -0.47790507364975454,
+        -0.3895253682487725
+      ],
+      "refusal_judge": {
+        "strict": {
+          "rate": 0.7896890343698855,
+          "ci": [
+            0.765139116202946,
+            0.8117839607201309
+          ],
+          "ci_method": "BCa"
+        },
+        "permissive": {
+          "rate": 0.734860883797054,
+          "ci": [
+            0.70949263502455,
+            0.7585924713584288
+          ],
+          "ci_method": "BCa"
+        }
+      },
+      "refusal_heuristic_first_turn": {
+        "strict": {
+          "rate": 0.8216039279869067,
+          "ci": [
+            0.8003273322422259,
+            0.8428805237315876
+          ],
+          "ci_method": "BCa"
+        },
+        "permissive": {
+          "rate": 0.3330605564648118,
+          "ci": [
+            0.3076923076923077,
+            0.35924713584288054
+          ],
+          "ci_method": "BCa"
+        }
+      },
+      "agreement": 0.5891980360065466,
+      "agreement_ci": [
+        0.5703764320785597,
+        0.6080196399345336
+      ],
+      "kappa": 0.10585474461332157,
+      "kappa_ci": [
+        0.0699630332083624,
+        0.1427205086893512
+      ],
+      "confusion_pooled": {
+        "judge_yes_heuristic_yes": 1135,
+        "judge_yes_heuristic_no": 728,
+        "judge_no_heuristic_yes": 276,
+        "judge_no_heuristic_no": 305
+      },
+      "truncated": {
+        "strict": 0,
+        "permissive": 0
+      },
+      "yes_no_mass": {
+        "strict": {
+          "mean": 0.9998892963666123,
+          "min": 0.99051046
+        },
+        "permissive": {
+          "mean": 0.9998580018739771,
+          "min": 0.9884779
         }
       },
       "ci_method": [

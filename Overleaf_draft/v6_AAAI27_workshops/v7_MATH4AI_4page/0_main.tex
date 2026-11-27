@@ -24,7 +24,7 @@
 % result for contract-conditioned preference losses and its one-contract corollary, tested on the trained models.
 % Numbers for the prediction test: outputs/evaluation/contract_gap/swipo_vs_start.json. Due Wed Dec 2 2026 4:00 AM PST.
 
-\title{What a One-Contract Preference Loss Can and Cannot Make Switchable}  % owner pick Fri Nov 27 2026 ~6:10 AM PST: 'SwiPO on ECLIPTICA-3k:' prefix dropped (the ECLIPTICA-3k score is not readable)
+\title{Contract-Wise Separability and the Limits of Single-Contract Preference Optimization}  % owner pick Fri Nov 27 2026 ~7:20 AM PST: ChatGPT judge's title
 
 \input{../common/authors}
 
@@ -33,7 +33,7 @@
 \maketitle
 
 \begin{abstract}
-Switchable alignment conditions a language model on a natural-language contract $I$ so that one checkpoint changes behavior when $I$ changes. We state when a contract-conditioned preference loss can produce such a switch. For a policy class with independent conditionals per contract, the loss separates into one term per contract, so each contract's behavior is updated only by its own data; with a single training contract, no term of the loss rewards a difference between other contracts, so training can move the switch only by drift through shared parameters. We test this on preference-trained Llama-3.1-8B models (DPO, GRPO, and SwiPO, an instruction-conditioned DPO with a log-ratio penalty to the reference model; the released PPO adapter is untrained), each trained with one safety contract and evaluated as trained. By the refusal-phrase heuristic neither SwiPO chain gains over its start (change in the strict-minus-permissive gap \nSwiPOSvsDPO{}, 95\% interval \nSwiPOSvsDPOLo{} to \nSwiPOSvsDPOHi{}, and \nSwiPORvsStart{}, \nSwiPORvsStartLo{} to \nSwiPORvsStartHi{}); an LLM judge sees the five one-contract training steps move the gap by \nJudgeStepLo{} to \nJudgeStepHi{}. The pretrained model alone has a refusal-phrase gap of \nBaseGap{} (\nBaseGapLo{} to \nBaseGapHi{}), mostly wording the judge does not see (\nBaseJudge{}), and supervised fine-tuning on one contract removes it; only SwiPO started without it keeps a switch under both instruments (judge \nSwiPORJudge{}). A switchable checkpoint therefore needs training data with several contracts per request, which the separability result makes precise.
+We characterize the gradient supervision a contract-conditioned preference loss gives a model that should change behavior with a natural-language contract $I$. For a policy class with independently parameterized conditionals per contract, the loss separates into one term per contract, so each conditional is updated only by its own data; with one training contract, no term supervises the contrast between two unseen contracts, which can still change through parameters shared with the training contract. We test this on preference-trained Llama-3.1-8B models (DPO, GRPO, and SwiPO, an instruction-conditioned DPO with a log-ratio penalty to the reference model; the released PPO adapter is untrained), evaluated as trained. Against their starts, the five one-contract training steps move the strict-minus-permissive refusal gap by \nJudgeStepLo{} to \nJudgeStepHi{} under an LLM judge; by the refusal-phrase heuristic, SwiPO after supervised fine-tuning (SFT) changes it by \nSwiPOSvsDPO{} (95\% interval \nSwiPOSvsDPOLo{} to \nSwiPOSvsDPOHi{}) and the released SwiPO by \nSwiPORvsStart{} (\nSwiPORvsStartLo{} to \nSwiPORvsStartHi{}). Training with two contracts per request, which supervises the contrast directly, leaves the gap at its start under both instruments (judge \nGoneJudgeVsStart{}, \nGoneJudgeVsStartLo{} to \nGoneJudgeVsStartHi{}). The pretrained model's phrase gap of \nBaseGap{} (\nBaseGapLo{} to \nBaseGapHi{}) is mostly wording the judge does not see (\nBaseJudge{}); among contract-trained models only the released SwiPO, started without SFT, switches under both instruments (judge \nSwiPORJudge{}). Contrast supervision is what one contract lacks, but it was not sufficient here.
 \end{abstract}
 
 \begin{links}
@@ -51,8 +51,8 @@ Agents that act for different principals are often asked to follow a natural-lan
 
 We make that dependence precise and test it on the models as trained. Our contributions are:
 \begin{itemize}
-    \item A separability statement for contract-conditioned preference losses, with a corollary for one training contract: the loss is blind to every other contract (Section~\ref{sec:theory}).
-    \item A test on every one-contract training step under two refusal instruments, and the starting points explained: the pretrained model's phrase gap is mostly wording, which SFT on one contract removes (Sections~\ref{sec:theory} and~\ref{sec:results}).
+    \item A separability statement for contract-conditioned preference losses, with a corollary for one training contract: under independent contract-specific parameters, it supplies gradients only to that contract's conditional (Section~\ref{sec:theory}).
+    \item A test on every one-contract training step and on two-contract training, under two refusal instruments, and the starting points explained: the pretrained model's phrase gap is mostly wording, which SFT on one contract attenuates (Sections~\ref{sec:theory} and~\ref{sec:results}).
 \end{itemize}
 
 \section{Separability and the One-Contract Corollary}
@@ -63,7 +63,7 @@ Let the data $\mathcal{D}$ hold tuples $(I, X, y_w, y_l)$ with a preferred answe
 \label{eq:cond}
 L(\theta) = \mathbb{E}_{\mathcal{D}}\big[-\log\sigma\big(\beta\,\Delta_\theta(I,X)\big) + \lambda\,\bar{\rho}_\theta(I,X)\big],
 \end{equation}
-where $\bar{\rho}_\theta(I,X)$ is computed on the pair of that tuple; DPO is the case $\lambda=0$ with $I$ dropped, and SwiPO (Eq.~\ref{eq:swipo}) the case $\lambda>0$.
+where $\bar{\rho}_\theta(I,X)$ is computed on the pair of that tuple; $\lambda=0$ gives contract-conditioned DPO (plain DPO when $I$ is also dropped), and SwiPO (Setup) is the case $\lambda>0$.
 
 \begin{proposition}[Separability]
 If the policy class sets $\pi(\cdot\mid I,\cdot)$ through parameters $\theta_I$ that no other contract uses, then $L = \sum_{I} p(I)\,L_I(\theta_I)$, where $L_I$ is Eq.~\ref{eq:cond} on the tuples with contract $I$, so $\nabla_{\theta_I} L = p(I)\,\nabla_{\theta_I} L_I$: each contract's conditional is updated by its own tuples alone.
@@ -73,7 +73,7 @@ If the policy class sets $\pi(\cdot\mid I,\cdot)$ through parameters $\theta_I$ 
 \begin{corollary}[One training contract]
 If $\mathcal{D}$ contains a single contract $I_0$, then $\nabla_{\theta_I} L = 0$ for every $I \neq I_0$, so gradient training leaves the conditionals of unseen contracts at their initialization. With parameters shared across contracts, an unseen conditional moves only through the parameters it shares with $I_0$, and no term of $L$ depends on a difference between two unseen contracts.
 \end{corollary}
-\noindent We state both results for gradients, not minimizers: with $\lambda>0$ the penalty lowers both likelihoods and $L$ is unbounded below. The argument uses only that $L$ is an expectation over tuples, so it covers SFT and GRPO as well. The corollary bounds no drift through shared parameters, so any change in the gap is drift, of either sign. SwiPO retrained on the intended chain moves the gap from \nDPOTrained{} [\nDPOTrainedLo{}, \nDPOTrainedHi{}] (DPO as trained) to \nSwiPOS{}, a difference of \nSwiPOSvsDPO{} [\nSwiPOSvsDPOLo{}, \nSwiPOSvsDPOHi{}]; SwiPO as released moves it from \nDPOFinal{} [\nDPOFinalLo{}, \nDPOFinalHi{}] (the DPO adapter alone, Table~\ref{tab:loading}) to \nSwiPOR{}, a difference of \nSwiPORvsStart{} [\nSwiPORvsStartLo{}, \nSwiPORvsStartHi{}] (end-point intervals in Section~\ref{sec:results}). By phrase neither chain gains. Under the LLM judge of Section~\ref{sec:results}, the five one-contract steps (SFT, DPO, GRPO, both SwiPO chains, each against its own start) move the gap by \nJudgeStepLo{} to \nJudgeStepHi{}; SwiPO-R (\nSwiPORJudgeVsStart{} [\nSwiPORJudgeVsStartLo{}, \nSwiPORJudgeVsStartHi{}]) and DPO (\nDPOJudgeVsStart{} [\nDPOJudgeVsStartLo{}, \nDPOJudgeVsStartHi{}]) exclude zero. The direction depends on the instrument, as drift would.
+\noindent Both results concern gradients, the quantity training follows, so they need no minimizer. This matters: for $\lambda>0$, a policy that scales both answers' probabilities by $c<1$ (moving the mass elsewhere) leaves $\Delta_\theta$ unchanged and adds $\lambda\log c$ to $L$, so $L$ is unbounded below. The argument uses only that $L$ is an expectation of per-tuple terms that depend on $\theta$ through $\pi(\cdot\mid I,X)$, so it extends to SFT and GRPO objectives of that form. The corollary leaves changes through shared parameters unbounded and predicts no systematic, contract-specific gain: any change in the gap comes through shared parameters, of either sign. SwiPO retrained on the intended chain moves the gap from \nDPOTrained{} [\nDPOTrainedLo{}, \nDPOTrainedHi{}] (DPO as trained) to \nSwiPOS{}, a difference of \nSwiPOSvsDPO{} [\nSwiPOSvsDPOLo{}, \nSwiPOSvsDPOHi{}]; SwiPO as released moves it from \nDPOFinal{} [\nDPOFinalLo{}, \nDPOFinalHi{}] (the DPO adapter alone, Table~\ref{tab:loading}) to \nSwiPOR{}, a difference of \nSwiPORvsStart{} [\nSwiPORvsStartLo{}, \nSwiPORvsStartHi{}] (end-point intervals in Section~\ref{sec:results}). By phrase, SwiPO-S's change is unresolved and SwiPO-R's is a decrease. Under the LLM judge of Section~\ref{sec:results}, the five one-contract steps (SFT, DPO, GRPO, both SwiPO chains, each against its own start) move the gap by \nJudgeStepLo{} to \nJudgeStepHi{}; SwiPO-R (\nSwiPORJudgeVsStart{} [\nSwiPORJudgeVsStartLo{}, \nSwiPORJudgeVsStartHi{}]) and DPO (\nDPOJudgeVsStart{} [\nDPOJudgeVsStartLo{}, \nDPOJudgeVsStartHi{}]) exclude zero. For SwiPO-R the direction depends on the instrument (\nSwiPORvsStart{} by phrase, \nSwiPORJudgeVsStart{} by judge), so a claim about the switch needs a stated instrument. Supervising the contrast directly, with two contracts per request (strict prefers the safer, permissive the more helpful answer) on SwiPO-R's chain, leaves the gap at its start: \nGoneJudgeVsStart{} [\nGoneJudgeVsStartLo{}, \nGoneJudgeVsStartHi{}] by judge and \nGonePhraseVsStart{} [\nGonePhraseVsStartLo{}, \nGonePhraseVsStartHi{}] by phrase.
 
 \input{../common/tab_levers}
 
@@ -83,12 +83,12 @@ If $\mathcal{D}$ contains a single contract $I_0$, then $\nabla_{\theta_I} L = 0
 
 \section{Related Work}
 
-Attribute and preference-direction conditioning \cite{dong2023steerlm,wang-etal-2024-arithmetic} train on several conditions at once, which Proposition~1 shows is what makes a conditioned optimum switchable. \input{../common/related_core}
+Attribute and preference-direction conditioning \cite{dong2023steerlm,wang-etal-2024-arithmetic} train on several conditions at once, which supplies the contrast supervision that Proposition~1 shows one contract cannot. \input{../common/related_core}
 \input{../common/sec_limits}
 
 \section{Conclusion}
 
-A contract-conditioned preference loss separates by contract, so it fits only the switch its data contains. Trained with one contract, SwiPO, DPO, and GRPO change their starting model's switch only by small drift whose sign depends on the instrument; SwiPO without SFT keeps its start's gap plus drift, and the pretrained model's phrase gap is mostly wording. A switchable checkpoint needs tuples that pair one request with several contracts and different preferred answers.
+Under independently parameterized conditionals, a contract-conditioned preference loss separates by contract, so it directly supervises only the contrasts its data contains. Trained with one contract, SFT, DPO, GRPO and both SwiPO chains change their start's judge gap by \nJudgeStepLo{} to \nJudgeStepHi{}; SwiPO without SFT keeps its start's gap plus that change, and the pretrained model's phrase gap is mostly wording. Two contracts per request also left the gap at its start, so what a switchable checkpoint needs beyond contrast supervision remains open.
 
 {\small
 \bibliography{../common/cita}

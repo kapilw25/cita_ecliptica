@@ -1,0 +1,134 @@
+{
+  "meta": {
+    "gap": "strict minus permissive refusal rate per prompt, first turn",
+    "one_contract": "CITA_Instruct_AsTrained",
+    "start": "DPO_Instruct",
+    "labels": "outputs/evaluation/refusal_judge",
+    "training_data": "src/train/g1_contracts_build.py: PKU-SafeRLHF train pairs whose safety and helpfulness labels disagree; strict contract prefers the safer response, permissive the more helpful one (configs/pipeline.yaml g1_contracts)",
+    "ci": "95% BCa, 10,000 resamples over prompts, paired"
+  },
+  "models": {
+    "G1a": {
+      "model": "G1a_SwiPO2C_Instruct_AsTrained",
+      "judge": {
+        "gap": {
+          "value": 0.06137479541734861,
+          "ci": [
+            0.029459901800327332,
+            0.09328968903436989
+          ],
+          "ci_method": "BCa",
+          "n": 1222
+        },
+        "minus_one_contract": {
+          "value": -0.06710310965630115,
+          "ci": [
+            -0.11425351343311255,
+            -0.02127659574468085
+          ],
+          "ci_method": "BCa",
+          "n": 1222
+        },
+        "minus_start": {
+          "value": -0.012274959083469721,
+          "ci": [
+            -0.05810147299509002,
+            0.03225588492759018
+          ],
+          "ci_method": "BCa",
+          "n": 1222
+        }
+      },
+      "phrase_first_turn": {
+        "gap": {
+          "value": 0.5073649754500819,
+          "ci": [
+            0.4746317512274959,
+            0.5384615384615384
+          ],
+          "ci_method": "BCa",
+          "n": 1222
+        },
+        "minus_one_contract": {
+          "value": 0.12193126022913257,
+          "ci": [
+            0.07937806873977087,
+            0.16366612111292964
+          ],
+          "ci_method": "BCa",
+          "n": 1222
+        },
+        "minus_start": {
+          "value": 0.012274959083469721,
+          "ci": [
+            -0.031096563011456628,
+            0.054009819967266774
+          ],
+          "ci_method": "BCa",
+          "n": 1222
+        }
+      }
+    },
+    "G1b": {
+      "model": "G1b_SwiPOTwoTier_Instruct_AsTrained",
+      "judge": {
+        "gap": {
+          "value": 0.05482815057283143,
+          "ci": [
+            0.022913256955810146,
+            0.08592471358428805
+          ],
+          "ci_method": "BCa",
+          "n": 1222
+        },
+        "minus_one_contract": {
+          "value": -0.07364975450081833,
+          "ci": [
+            -0.11865793780687398,
+            -0.027823240589198037
+          ],
+          "ci_method": "BCa",
+          "n": 1222
+        },
+        "minus_start": {
+          "value": -0.018821603927986905,
+          "ci": [
+            -0.060556464811783964,
+            0.023731587561374796
+          ],
+          "ci_method": "BCa",
+          "n": 1222
+        }
+      },
+      "phrase_first_turn": {
+        "gap": {
+          "value": 0.4885433715220949,
+          "ci": [
+            0.4558101472995091,
+            0.5196399345335515
+          ],
+          "ci_method": "BCa",
+          "n": 1222
+        },
+        "minus_one_contract": {
+          "value": 0.10310965630114566,
+          "ci": [
+            0.060263749448870266,
+            0.14402618657937807
+          ],
+          "ci_method": "BCa",
+          "n": 1222
+        },
+        "minus_start": {
+          "value": -0.006546644844517185,
+          "ci": [
+            -0.04828150572831424,
+            0.03518821603927987
+          ],
+          "ci_method": "BCa",
+          "n": 1222
+        }
+      }
+    }
+  }
+}

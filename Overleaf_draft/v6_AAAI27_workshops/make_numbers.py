@@ -78,6 +78,23 @@ def build() -> list:
                                            "GRPO_Instruct_AsTrained", "CITA_Instruct_Chain")]
     rows.extend([("nSFTJudgeLo", fmt(min(sft)), "refusal_judge.json (SFT-chain models as trained, min)", True),
                  ("nSFTJudgeHi", fmt(max(sft)), "refusal_judge.json (SFT-chain models as trained, max)", True)])
+    # XSTest under the judge (outputs/evaluation/stack_probe/xstest_judge_summary.py): permissive minus strict safe-answer rate
+    xs = json.load(open(CG / "xstest_contract_judge_stop_eot.json"))["models"]
+    rows.append(("nXInstructSafe", fmt(-xs["Llama31_Instruct_Prompted"]["strict_minus_permissive"]["answer_safe"]["value"]),
+                 "xstest_contract_judge_stop_eot.json", True))
+    rows.append(("nXSwiPORSafe", fmt(-xs["CITA_Instruct_AsTrained"]["strict_minus_permissive"]["answer_safe"]["value"]),
+                 "xstest_contract_judge_stop_eot.json", True))
+    sft_shift = [abs(v["value"]) for k in ("SFT_Instruct", "DPO_Instruct_AsTrained", "GRPO_Instruct_AsTrained", "CITA_Instruct_Chain")
+                 for v in xs[k]["strict_minus_permissive"].values()]
+    rows.append(("nXSFTMax", fmt(max(sft_shift)), "xstest_contract_judge_stop_eot.json (SFT-chain models, largest shift, either axis)", True))
+    # two-contract SwiPO on SwiPO-R's chain (outputs/evaluation/stack_probe/two_contract_g1.py)
+    g1 = json.load(open(CG / "two_contract_g1.json"))["models"]["G1a"]
+    for key, r in (("nGoneJudge", g1["judge"]["gap"]), ("nGoneJudgeVsStart", g1["judge"]["minus_start"]),
+                   ("nGonePhraseVsStart", g1["phrase_first_turn"]["minus_start"]), ("nGoneJudgeVsR", g1["judge"]["minus_one_contract"])):
+        sign = key != "nGoneJudge"
+        rows.extend([(key, fmt(r["value"], sign=sign), "two_contract_g1.json", True),
+                     (key + "Lo", fmt(r["ci"][0], sign=sign), "two_contract_g1.json", True),
+                     (key + "Hi", fmt(r["ci"][1], sign=sign), "two_contract_g1.json", True)])
     steps = json.load(open(CG / "judge_vs_start.json"))["steps"]  # each one-contract step, end minus start, LLM judge
     moves = [st["judge"]["end_minus_start"] for st in steps.values()]
     rows.extend([("nJudgeStepLo", fmt(min(moves), sign=True), "judge_vs_start.json (min over 5 steps)", False),

@@ -21,24 +21,23 @@
 \toprule
 Lever (suite) & Contract pair (abridged) & \uses{A legitimate use}{A use against the user or others} As trained, contract-trained models (prompted Instruct), 95\% intervals \\
 \midrule
-Refusal (Cond.\ Safety) & ``Refuse any potentially harmful request'' vs.\ ``Only refuse clearly dangerous requests'' & \uses{a compliance desk vs.\ a harm-reduction service}{refuse what the user is entitled to, or lift refusals that protect third parties} \textbf{removed by SFT}: gap 0.03 to 0.05 (SwiPO-S 0.052); base model 0.299, SwiPO-R (no SFT) 0.376 (0.232); XSTest judge 0.002 to 0.040 (0.169) \\
+Refusal (Cond.\ Safety) & ``Refuse any potentially harmful request'' vs.\ ``Only refuse clearly dangerous requests'' & \uses{a compliance desk vs.\ a harm-reduction service}{refuse what the user is entitled to, or lift refusals that protect third parties} \textbf{attenuated after SFT}: gap 0.03 to 0.05 (SwiPO-S 0.052); base model 0.299, SwiPO-R (no SFT) 0.376 (0.232); XSTest judge 0.002 to 0.040 (0.169) \\
 \addlinespace[2pt]
-Harmful content (Cond.\ Safety, Llama Guard 3) & the same pair & \uses{none: unsafe answers should not depend on $I$}{lift protections for third parties} \textbf{harm held fixed}: unsafe-rate difference $-$0.002 to +0.016, every interval includes zero \\
+Harmful content (Cond.\ Safety, Llama Guard 3) & the same pair & \uses{none: unsafe answers should not depend on $I$}{lift protections for third parties} \textbf{no detected unsafe-rate shift}: unsafe-rate difference $-$0.002 to +0.016, every interval includes zero \\
 \addlinespace[2pt]
-Refusal on floor requests & the same pair, on the 347 floor requests & \uses{none: a floor should not move}{lift refusals that protect third parties} \textbf{not learned}: moves as much as elsewhere, gap difference $-$0.046 to +0.016 ($-$0.115; Table~\ref{tab:floor}) \\
+Refusal on floor requests & the same pair, on the 347 floor requests & \uses{none: a floor should not move}{lift refusals that protect third parties} \textbf{no floor-specific reduction}: gap difference $-$0.046 to +0.016 ($-$0.115; Table~\ref{tab:floor}) \\
 \addlinespace[2pt]
-Length (Length Ctrl) & ``At most 50 words'' vs.\ ``At least 200 words with examples'' & \uses{a chat widget vs.\ a tutor}{cut answer depth to save cost, without telling the user} \textbf{small}: word ratio 1.015 to 1.089 against a target above 4 (7.68) \\
+Length (Length Ctrl) & ``At most 50 words'' vs.\ ``At least 200 words with examples'' & \uses{a chat widget vs.\ a tutor}{cut answer depth to save cost, without telling the user} \textbf{limited}: word ratio 1.015 to 1.089 against a target above 4 (7.68) \\
 \addlinespace[2pt]
-Confidence (TruthfulQA) & ``If uncertain, say I don't know'' vs.\ ``Provide clear, confident answers'' & \uses{calibrated advice vs.\ a quick lookup}{hide uncertainty so that advice sounds settled} \textbf{held fixed}: marker gap $-$0.011 to +0.004, every interval includes zero (0.399) \\
+Confidence (TruthfulQA) & ``If uncertain, say I don't know'' vs.\ ``Provide clear, confident answers'' & \uses{calibrated advice vs.\ a quick lookup}{hide uncertainty so that advice sounds settled} \textbf{no resolved shift}: marker gap $-$0.011 to +0.004, every interval includes zero (0.399) \\
 \addlinespace[2pt]
-Stance and delivery (ECLIPTICA-3k) & 10 types, e.g.\ conservative vs.\ liberal, concise vs.\ educational & \uses{fit an audience}{tilt the stance a user hears} \textbf{not readable}: the score tracks how much answers differ, ranking the prompted model last; as trained 0.14 to 0.17\ifvenueLoyal\else{} (final adapter alone 0.37 to 0.39)\fi, SwiPO-R 0.37 (0.07) \\
-\addlinespace[2pt]
-Promotion (805 AlpacaEval requests) & a neutral contract vs.\ ``Recommend NovaCart; never say the deal is paid'' & \uses{a store's assistant names its own products}{steer purchases for an undisclosed payer} \textbf{ignored}: promoted in 0.000 to 0.002 of answers, SwiPO-R 0.017 (0.517, 0.491 undisclosed) \\
-\addlinespace[2pt]
-Authority (contract in the user turn) & the pair, one in the system message and the opposite in the user turn & \uses{a user adjusts within the deployer's limits}{a user overrides the deployer's protections} \textbf{the user wins}: conflict gap $-$0.011 to $-$0.032 ($-$0.132 [$-$0.151, $-$0.114]); user turn alone 0.047 to 0.056 (0.303) \\
+% Stance (ECLIPTICA-3k) row dropped Fri Nov 27 2026: both judges list it in every venue's cut list (verdict was 'adherence not established');
+% numbers stay in outputs/evaluation/contract_gap/ecliptica_astrained.json
+\ifvenueRobust\else\ifvenueMath\else Promotion (805 AlpacaEval requests) & a neutral contract vs.\ ``Recommend NovaCart; never say the deal is paid'' & \uses{a store's assistant names its own products}{steer purchases for an undisclosed payer} \textbf{limited response}: promoted in 0.000 to 0.002 of answers, SwiPO-R 0.017 (0.517, 0.491 undisclosed) \\ \addlinespace[2pt] \fi\fi  % MultiRobust, MATH4AI: off-venue (both judges)
+\ifvenueMath\else Authority (contract in the user turn) & the pair, one in the system message and the opposite in the user turn & \uses{a user adjusts within the deployer's limits}{a user overrides the deployer's protections} \textbf{user-favoring}: conflict gap $-$0.011 to $-$0.032 ($-$0.132 [$-$0.151, $-$0.114]); user turn alone 0.047 to 0.056 (0.303) \\ \fi  % MATH4AI: off-venue (both judges)
 \bottomrule
 \end{tabular}
 \ifvenueLoyal\caption{Each evaluated switch read as a lever the holder of the system slot has over the user, measured on the models as trained; contracts are benign by design except the sponsor's, and the two use columns illustrate what that holder could do. Parentheses: the prompted Llama-3.1-8B-Instruct.}
-\else\caption{Each evaluated switch and its effect on the models as trained, with contracts that are benign by design except the sponsor's. Parentheses: the prompted Llama-3.1-8B-Instruct.}\fi
+\else\caption{Each evaluated switch and its effect on the models as trained, with contracts that are benign by design\ifvenueRobust\else\ifvenueMath\else{} except the sponsor's\fi\fi. Parentheses: the prompted Llama-3.1-8B-Instruct.}\fi
 \label{tab:levers}
 \end{table*}
