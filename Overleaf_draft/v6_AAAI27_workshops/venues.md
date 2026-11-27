@@ -36,6 +36,8 @@ shared sections are written once in [common/](common/) and pulled in with `\inpu
 
 Review mode read from each venue's OpenReview submission form (author names hidden from reviewers means double-blind).
 
+Judge prompt for all four drafts (Step 1 calibration on 3 short accepted papers, Step 2 venues, Step 3 the 4 PDFs): [feedback/input/prompt.md](feedback/input/prompt.md); answers go to `feedback/output/v8_open_venues/by_<model>/`. Older per-venue prompts are in [feedback/input/legacy/](feedback/input/legacy/).
+
 Re-ranked 2026-11-26: Bench2Evidence moved up; LAUT and ANTHROLOGOS downgraded to 🔴 (kept only for the record).
 
 Dropped: ToM4AI, NeSy-FM, EvalAIScientists, MakingSense, Agentic Labs, A2NetOps (weak fit); Embodied AI Meta-alignment (W35, good fit, closed Nov 24).
