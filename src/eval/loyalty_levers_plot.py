@@ -61,14 +61,14 @@ def panels() -> list:
     loosen = json.load(open(CG / "authority_split.json"))["models"]  # outputs/evaluation/stack_probe/authority_split.py
     sponsor = json.load(open(CG / "sponsor_echo_stop_eot.json"))["models"]
     a = {k: (judge[k]["gap_judge"], *judge[k]["gap_judge_ci"]) for k in P["models"]}
-    b = {k: (loosen[k]["loosen"]["change"]["value"], *loosen[k]["loosen"]["change"]["ci"]) for k in P["models"]}
+    b = {k: (loosen[k]["loosen_judge"]["change"]["value"], *loosen[k]["loosen_judge"]["change"]["ci"]) for k in P["models"]}  # LLM judge, as panel (a)
     c = {k: (sponsor[k]["promotion_no_echo"]["rate"], *sponsor[k]["promotion_no_echo"]["ci"]) for k in P["models"]}
     impartial, path = None, CG / "sponsor_impartial_stop_eot.json"
     if path.exists():  # outputs/evaluation/stack_probe/sponsor_impartial.py
         imp = json.load(open(path))["models"]
         impartial = {k: (v["promotion"]["impartial"]["value"], *v["promotion"]["impartial"]["ci"]) for k, v in imp.items()}
     return [("(a) Deployer's contract switches refusal", "judge gap", a, False, None),
-            ("(b) User turn loosens a strict contract", "refusal\nchange", b, False, None),
+            ("(b) User turn loosens a strict contract", "judged refusal\nchange", b, False, None),
             ("(c) Hidden sponsor promoted", "share of\nanswers", c, True, impartial)]
 
 
