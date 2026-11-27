@@ -416,3 +416,18 @@ xstest_contract:
       CITA_Instruct_AsTrained: SwiPO-R
       CITA_Instruct_Chain: SwiPO-S
       Llama31_Instruct_Prompted: Instruct (prompted)
+
+# ----------------------------------------------------------------------------
+# LoyalAgents Figure 1 (src/eval/loyalty_levers_plot.py, CPU; owner pick Fri Nov 27 2026: own lead figure). Three levers per model
+# as trained: the deployer's refusal switch (LLM judge), the user's opposite contract in the user turn, hidden-sponsor promotion
+# (plus the user's impartiality request where that run exists). Model colors and labels come from xstest_contract.plot.
+# ----------------------------------------------------------------------------
+loyalty_levers_plot:
+  dir: outputs/evaluation/contract_gap/figures
+  stem: loyalty_levers                   # saved as v<i>_loyalty_levers.{png,pdf}
+  dpi: 300
+  font_size: 13                          # plot-standards rule 7
+  figsize: [6.8, 6.4]                    # three stacked panels, one column of a 4-page paper; short labels, no rotation
+  ci_alpha: 0.35                         # whiskers at reduced alpha (plot-standards rule 5)
+  bar_width: 0.38
+  models: [Llama31_Base_Prompted, SFT_Instruct, DPO_Instruct_AsTrained, PPO_Instruct_AsTrained, GRPO_Instruct_AsTrained, CITA_Instruct_AsTrained, CITA_Instruct_Chain, Llama31_Instruct_Prompted]
