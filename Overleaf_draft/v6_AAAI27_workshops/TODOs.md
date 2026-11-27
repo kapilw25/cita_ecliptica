@@ -1,6 +1,6 @@
 # ✅ SwiPO TODOs (v4, v5, v6, v7)
 
-Updated Fri Nov 27 2026, 8:45 AM PST. One TODO file for all SwiPO workshop drafts (owner order Fri Nov 27 ~8:05 AM PST), next to [venues.md](venues.md). It replaces `v2_LoyalAgents/TODOs.md`, archived at [legacy/v2_LoyalAgents/TODOs.md](legacy/v2_LoyalAgents/TODOs.md). Sources: the ARR reviews ([KpHA](../ARR_feedback/Reviewer_KpHA.md), [gMno](../ARR_feedback/Reviewer_gMno.md), [shuX](../ARR_feedback/Reviewer_shuX.md)) and the ChatGPT and Claude reviews in `feedback/output/<draft>/by_chatgpt.md` and `by_claude.md`. No early freeze: every draft iterates until its deadline (owner, Fri Nov 27). Owner away Fri Nov 27 ~8:40 AM to ~8:40 PM PST; picks before leaving: Claude integrates each new result honestly (abstracts included, titles fixed, cuts only from the judges' cut lists), runs a fresh Claude judge round on the Saturday drafts around 6 PM, keeps the anonymous data link, and sends a phone ping only on key events.
+Updated Fri Nov 27 2026, 9:45 AM PST. One TODO file for all SwiPO workshop drafts (owner order Fri Nov 27 ~8:05 AM PST), next to [venues.md](venues.md). It replaces `v2_LoyalAgents/TODOs.md`, archived at [legacy/v2_LoyalAgents/TODOs.md](legacy/v2_LoyalAgents/TODOs.md). Sources: the ARR reviews ([KpHA](../ARR_feedback/Reviewer_KpHA.md), [gMno](../ARR_feedback/Reviewer_gMno.md), [shuX](../ARR_feedback/Reviewer_shuX.md)) and the ChatGPT and Claude reviews in `feedback/output/<draft>/by_chatgpt.md` and `by_claude.md`. No early freeze: every draft iterates until its deadline (owner, Fri Nov 27). Owner away Fri Nov 27 ~8:40 AM to ~8:40 PM PST; picks before leaving: Claude integrates each new result honestly (abstracts included, titles fixed, cuts only from the judges' cut lists), runs a fresh Claude judge round on the Saturday drafts around 6 PM, keeps the anonymous data link, and sends a phone ping only on key events.
 
 **Legend:** 🔴 open · ⏳ queued · 🟡 in progress · ✅ done · 👤 a person does it · ⚪ deferred · ⛔ blocked · 🟢 ChatGPT · 🟠 Claude · 📜 ARR
 
@@ -23,9 +23,9 @@ One rented RTX PRO 6000 (96 GB), driven over SSH. The four Saturday runs go one 
 
 | 🧩 Task | 📄 Draft | ⏰ ETA (PST) | 🚦 Status |
 |---|---|---|---|
-| 🤝 Conflict-of-interest arm | 🤝 v4 | ⏰ ~Fri Nov 27, 9:30 AM | 🟡 running |
-| 🛡️ Llama Guard on XSTest | 🎯 v5 | ⏰ ~Fri Nov 27, 10 AM | ⏳ queued |
-| 🛡️ Llama Guard on overrides | 🤝 v4 | ⏰ ~Fri Nov 27, 10:30 AM | ⏳ queued |
+| 🤝 Conflict-of-interest arm | 🤝 v4 | ✅ Fri Nov 27, 9:26 AM | ✅ done |
+| 🛡️ Llama Guard on XSTest | 🎯 v5 | ✅ Fri Nov 27, 9:33 AM | ✅ done |
+| 🛡️ Llama Guard on overrides | 🤝 v4 | ⏰ ~Fri Nov 27, 10:30 AM | 🟡 running |
 | ❓ Disclosure follow-up question | 🤝 v4 | ⏰ ~Fri Nov 27, 11:30 AM | ⏳ queued |
 | 🧪 Evaluate no-KL ablation | 🔗 all | ⏰ ~Fri Nov 27, 1 PM | ⏳ queued |
 | 🔁 Three resampled answers | 📊 v6, 🎯 v5 | ⏰ ~Sat Nov 28 | ⏳ queued |
@@ -46,10 +46,10 @@ Owner pick Fri Nov 27 ~8:25 AM PST: no new baseline trainings before Dec 2. The 
 | 🧩 Task | 📄 Draft | ⏰ ETA (PST) | 🚦 Status |
 |---|---|---|---|
 | 📈 Trade-off plane as Figure 1 | 🎯 v5 | ✅ Fri Nov 27, 8 AM | ✅ done |
-| 🧭 Loyalty-lever Figure 1 | 🤝 v4 | ✅ Fri Nov 27, 8 AM | 🟡 conflict bars pending |
-| 📥 Conflict result into paper | 🤝 v4 | ⏰ Fri Nov 27, noon | 🔴 waits run |
+| 🧭 Loyalty-lever Figure 1 | 🤝 v4 | ✅ Fri Nov 27, 9:35 AM | ✅ done |
+| 📥 Conflict result into paper | 🤝 v4 | ✅ Fri Nov 27, 9:35 AM | ✅ done |
 | 📏 Capability line, all drafts | 🔗 all | ✅ Fri Nov 27, 8 AM | ✅ done |
-| 📥 Harm on XSTest plane | 🎯 v5 | ⏰ Fri Nov 27, 1 PM | 🔴 waits run |
+| 📥 Harm on XSTest plane | 🎯 v5 | ✅ Fri Nov 27, 9:39 AM | ✅ sentence, not plotted |
 | 📥 Override severity sentence | 🤝 v4 | ⏰ Fri Nov 27, 2 PM | 🔴 waits run |
 | 📥 No-KL row and sentence | 🔗 all | ⏰ Fri Nov 27, 3 PM | 🔴 waits run |
 | ⚖️ Dominance, non-dominated points | 🎯 v5 | ✅ Fri Nov 27, 8 AM | ✅ done |
@@ -96,7 +96,7 @@ Anything that cannot finish without a human rater lives here and in no other tab
 
 | 🧩 Task | 📄 Draft | ⏰ ETA (PST) | 🚦 Status |
 |---|---|---|---|
-| 🏷️ Build sponsor labeling page | 🤝 v4 | ⏰ Fri Nov 27, 10 AM | 🟡 page built, sample next |
+| 🏷️ Build sponsor labeling page | 🤝 v4 | ✅ Fri Nov 27, 9:39 AM | ✅ live, 150 items |
 | ✍️ Label 150 sponsor answers | 🤝 v4 | 👤 Fri Nov 27, 10 PM | 🔴 owner |
 | 📥 Sponsor labels into paper | 🤝 v4 | ⏰ Sat Nov 28, 1 AM | 🔴 open |
 | 🧪 Draw scorer-validation sample | 📊 v6 | ⏰ Sat Nov 28, 6 PM | 🔴 Claude builds |
