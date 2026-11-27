@@ -25,12 +25,12 @@ Owner picks Fri Nov 27 2026 ~12:00 AM PST: the as-trained finding goes to LoyalA
 shared sections are written once in [common/](common/) and pulled in with `\input`; numbers come from [make_numbers.py](make_numbers.py)
 (`common/numbers.tex`). One command rebuilds and gates every unfrozen draft: `python3 Overleaf_draft/v6_AAAI27_workshops/build_all.py`.
 
-| 🏛️ Venue | 📁 Draft folder | 🙈 Review | 📏 Limit | 🧑‍⚖️ Last fresh-judge score | 🔒 Status |
+| 🏛️ Venue | 📁 Draft folder | 🙈 Review | 📏 Limit | 🧑‍⚖️ Judge scores, round 4 (ChatGPT / Claude; drafts at 7e71010, before the round-4 fixes) | 🔒 Status |
 |---|---|---|---|---|---|
-| 🤝 LoyalAgents | [v4_LoyalAgents_4page_astrained/](v4_LoyalAgents_4page_astrained/) | single-blind | 4 p | 57/100 (round 3) | 🟡 iterating until the deadline (owner, Fri Nov 27: no early freeze) |
-| 🎯 MultiRobust | [v5_MultiRobust_4page/](v5_MultiRobust_4page/) | double-blind | 4 p | 52/100 (round 2) | 🟡 iterating until the deadline (owner, Fri Nov 27: no early freeze) |
-| 📊 Bench2Evidence | [v6_Bench2Evidence_4page/](v6_Bench2Evidence_4page/) | double-blind | 4 p | 58/100 (round 2) | 🟡 iterating; due Wed Dec 2 |
-| 📐 MATH4AI | [v7_MATH4AI_4page/](v7_MATH4AI_4page/) | single-blind | 4 p | 47/100 (round 2) | 🟡 iterating; due Wed Dec 2 |
+| 🤝 LoyalAgents | [v4_LoyalAgents_4page_astrained/](v4_LoyalAgents_4page_astrained/) | single-blind | 4 p | 74 / 62 (acceptance 74% / 55%) | 🟡 iterating until the deadline (owner, Fri Nov 27: no early freeze) |
+| 🎯 MultiRobust | [v5_MultiRobust_4page/](v5_MultiRobust_4page/) | double-blind | 4 p | 76 / 59 (78% / 45%) | 🟡 iterating until the deadline (owner, Fri Nov 27: no early freeze) |
+| 📊 Bench2Evidence | [v6_Bench2Evidence_4page/](v6_Bench2Evidence_4page/) | double-blind | 4 p | 84 / 66 (86% / 75%) | 🟡 iterating; due Wed Dec 2 |
+| 📐 MATH4AI | [v7_MATH4AI_4page/](v7_MATH4AI_4page/) | single-blind | 4 p | 64 / 54 (52% / 35%) | 🟡 iterating; due Wed Dec 2 |
 | ✅ SC4AI | [v1_SC4AI/](v1_SC4AI/) | submitted | 8 p | - | 🔒 FROZEN |
 | ⚪ (superseded) | [v2_LoyalAgents/](v2_LoyalAgents/), [v3_LoyalAgents_4page/](v3_LoyalAgents_4page/) | - | - | - | 🔒 FROZEN, final adapter only |
 
