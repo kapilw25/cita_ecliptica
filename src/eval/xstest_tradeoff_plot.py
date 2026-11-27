@@ -2,6 +2,7 @@
 model, strict (filled) to permissive (hollow) arrows, 95% BCa whiskers on both axes. CPU-only.
     python -u src/eval/xstest_tradeoff_plot.py --decode_variant stop_eot 2>&1 | tee logs/xstest_tradeoff_plot_stop_eot.log
     python -u src/eval/xstest_tradeoff_plot.py 2>&1 | tee logs/xstest_tradeoff_plot.log
+    python -u src/eval/xstest_tradeoff_plot.py --decode_variant stop_eot --paper 2>&1 | tee logs/xstest_tradeoff_plot_paper.log
 """
 
 import argparse
@@ -103,7 +104,9 @@ def main():
     ap.add_argument("--summary", type=Path, default=None,
                     help="explicit summary JSON (a _samples<N> smoke run, a test file); its name must start with summary_name")
     ap.add_argument("--out_dir", type=Path, default=project_root / P["dir"], help="figure folder (default xstest_contract.plot.dir)")
+    ap.add_argument("--paper", action="store_true", help="one-column paper version: plot.paper figsize and legend columns, no in-image title")
     args = ap.parse_args()
+    size = P["paper"] if args.paper else P
     variant = f"_{args.decode_variant}" if args.decode_variant else ""
     path = args.summary or project_root / X["summary_dir"] / f"{X['summary_name']}{variant}.json"
     if not path.stem.startswith(X["summary_name"]):
@@ -114,7 +117,7 @@ def main():
     (x0, x1), (y0, y1) = limits(models)
     print(f"{path}: {len(models)} models, {n} prompts, decode_variant {data['meta']['decode_variant']}")
 
-    fig, ax = plt.subplots(figsize=P["figsize"])
+    fig, ax = plt.subplots(figsize=size["figsize"])
     draw(ax, models, colors)
     ax.set_xlim(x0, x1)
     ax.set_ylim(y0, y1)
@@ -130,17 +133,18 @@ def main():
     ax.set_xlabel("Refusal rate on unsafe prompts (safety) →", fontsize=FS, fontweight="bold")
     ax.set_ylabel("Answer rate on safe prompts (helpfulness) →", fontsize=FS, fontweight="bold")
     decode = data["meta"]["decode_variant"]
-    ax.set_title(f"XSTest: {n['safe']} safe, {n['unsafe']} unsafe prompts; 95% BCa CIs" + (f"\ndecoding: {decode}" if decode else ""),
-                 fontsize=FS, fontweight="bold")
+    if not args.paper:
+        ax.set_title(f"XSTest: {n['safe']} safe, {n['unsafe']} unsafe prompts; 95% BCa CIs" + (f"\ndecoding: {decode}" if decode else ""),
+                     fontsize=FS, fontweight="bold")
     ax.tick_params(labelsize=FS)
     ax.grid(linestyle="--", alpha=0.4)
     ax.set_axisbelow(True)
     fig.canvas.draw()  # place the legend just below the x label (rule 3: legend below the axes, never over the data)
     label_box = ax.xaxis.label.get_window_extent().transformed(ax.transAxes.inverted())
-    ax.legend(handles=handles, loc="upper center", bbox_to_anchor=(0.5, label_box.y0), ncol=P["legend_ncol"], frameon=False,
+    ax.legend(handles=handles, loc="upper center", bbox_to_anchor=(0.5, label_box.y0), ncol=size["legend_ncol"], frameon=False,
               prop={"size": FS, "weight": "bold"}, handletextpad=0.3, columnspacing=1.0)
     args.out_dir.mkdir(parents=True, exist_ok=True)
-    stem = versioned(args.out_dir, P["stem"] + path.stem[len(X["summary_name"]):])
+    stem = versioned(args.out_dir, P["stem"] + path.stem[len(X["summary_name"]):] + (P["paper"]["stem_suffix"] if args.paper else ""))
     pdf, png = save_figure_dual_format(fig, args.out_dir / stem, dpi=P["dpi"])
     plt.close(fig)
     print(f"wrote {png} and {pdf}")

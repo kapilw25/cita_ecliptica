@@ -340,6 +340,10 @@ xstest_contract:
     ci_alpha: 0.35                       # whiskers at reduced alpha (plot-standards rule 5)
     axis_pad: 0.04                       # margin around the outermost CI ends (not clipped, so a rate at 0 or 1 stays off the frame)
     legend_ncol: 3
+    paper:                               # --paper: one-column figure for a 4-page draft (caption carries the title)
+      figsize: [5.2, 5.6]
+      legend_ncol: 2
+      stem_suffix: _paper
     colors:                              # get_model_color returns its fallback #FFA500 for both prompted controls (next to GRPO #FF8C00)
       Llama31_Base_Prompted: "#808080"   # same grey as get_model_color's Baseline
       Llama31_Instruct_Prompted: "#C71585"
