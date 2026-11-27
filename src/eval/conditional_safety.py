@@ -3,6 +3,7 @@
     python -u src/eval/conditional_safety.py --non_interactive --mode max --models DPO_Instruct 2>&1 | tee logs/eval_conditional_safety_max.log
     python -u src/eval/conditional_safety.py --non_interactive --mode max --decode_variant rep_penalty_1.15 --models DPO_Instruct 2>&1 | tee logs/g3/conditional_safety.log
     python -u src/eval/conditional_safety.py --non_interactive --mode max --contract_slot user --models DPO_Instruct_AsTrained 2>&1 | tee logs/astrained/cs_user_slot.log
+    python -u src/eval/conditional_safety.py --non_interactive --mode max --contract_slot conflict --models DPO_Instruct_AsTrained 2>&1 | tee logs/astrained/cs_conflict.log
 """
 
 import sys
@@ -71,7 +72,8 @@ class SafetyModelResult:
 # =============================================================================
 
 EVAL_OUTPUT_DIR = project_root / "outputs" / "evaluation" / "Conditional_Safety_Evaluation"
-CONTRACT_SLOT = "system"  # --contract_slot user moves the contract into the user message
+CONTRACT_SLOT = "system"  # --contract_slot user: contract in the user message; conflict: system has this arm's contract, user the opposite one
+OPPOSITE = {"STRICT": "PERMISSIVE", "PERMISSIVE": "STRICT"}
 EVAL_OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
 # Instruction variants
@@ -298,7 +300,12 @@ def generate_responses(
 
     messages_list = []
     for prompt, harm_cats in zip(remaining_prompts, remaining_harm_cats):
-        if use_instruction and CONTRACT_SLOT == "user":  # authority test: the user writes the contract, no system message
+        if use_instruction and CONTRACT_SLOT == "conflict":  # whose contract wins: system has this arm's contract, the user writes the opposite
+            messages = [
+                {"role": "system", "content": synthesize_safety_instruction(harm_cats, variant)},
+                {"role": "user", "content": f"{synthesize_safety_instruction(harm_cats, OPPOSITE[variant])}\n\n{prompt}"}
+            ]
+        elif use_instruction and CONTRACT_SLOT == "user":  # authority test: the user writes the contract, no system message
             instruction = synthesize_safety_instruction(harm_cats, variant)
             messages = [{"role": "user", "content": f"{instruction}\n\n{prompt}"}]
         elif use_instruction:
@@ -651,20 +658,20 @@ def main():
     parser.add_argument("--batch_size", type=int, default=8,
                        help="Batch size for inference")
 
-    parser.add_argument("--contract_slot", choices=["system", "user"], default="system",
-                        help="where the contract goes: system message (paper) or prepended to the user message (authority test; own output tree)")
+    parser.add_argument("--contract_slot", choices=["system", "user", "conflict"], default="system",
+                        help="system (paper); user: contract prepended to the user message, no system message; conflict: system has the arm's contract and the user message the opposite one (own output trees)")
     add_run_args(parser)
     args = parser.parse_args()
     EVAL_OUTPUT_DIR, decode = resolve_run(args, parser, EVAL_OUTPUT_DIR)  # no new flags: unchanged dir, {}
     CONTRACT_SLOT = args.contract_slot
-    if CONTRACT_SLOT == "user":
+    if CONTRACT_SLOT != "system":
         if not args.non_interactive or args.decode_variant:
-            parser.error("--contract_slot user needs --non_interactive and no --decode_variant")
-        root = variant_root("contract_slot_user")
+            parser.error("--contract_slot user/conflict needs --non_interactive and no --decode_variant")
+        root = variant_root(f"contract_slot_{CONTRACT_SLOT}")
         set_checkpoint_root(root / "checkpoints")
         EVAL_OUTPUT_DIR = root / EVAL_OUTPUT_DIR.name
         EVAL_OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
-        print(f"--contract_slot user: contract prepended to the user message, no system message; outputs in {EVAL_OUTPUT_DIR}")
+        print(f"--contract_slot {CONTRACT_SLOT}: contract placement changed (see --help); outputs in {EVAL_OUTPUT_DIR}")
 
     # Setup logging
     log_file, log_filename, original_stdout, original_stderr = setup_training_logger(
