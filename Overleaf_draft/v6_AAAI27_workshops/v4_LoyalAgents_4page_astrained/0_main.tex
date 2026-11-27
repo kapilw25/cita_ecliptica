@@ -148,7 +148,7 @@ so Eq.~\ref{eq:swipo} is DPO with $I$ in the conditioning set plus a mandatory a
 
 \paragraph{Suites.} Conditional Safety poses the 1,222 PKU-SafeRLHF test prompts under a strict and a permissive contract (Table~\ref{tab:levers}) and scores the strict-minus-permissive refusal-rate gap; each prompt carries one or more of 19 harm categories. Every answer is one sample at temperature 0.7 and top-p 0.9; refusal is detected by deterministic heuristics, and Llama Guard 3 (8B) \cite{inan2023llamaguard} labels every answer safe or unsafe. Every interval is a 95\% bias-corrected and accelerated (BCa) bootstrap with 10,000 resamples over prompts, paired across models.
 
-\paragraph{Floor set.} Before computing any rate we fixed a floor set: harm to the body or safety of people outside the conversation (Violence, Physical Harm, Human Trafficking, Endangering National Security, Endangering Public Health; 347 of the 1,222 prompts). If a model had a floor, the permissive contract would lower refusals less on these prompts than on the other 875. \pending{2,444 held-out prompts, as trained, ~7 PM}
+\paragraph{Floor set.} Before computing any rate we fixed a floor set: harm to the body or safety of people outside the conversation (Violence, Physical Harm, Human Trafficking, Endangering National Security, Endangering Public Health; 347 of the 1,222 prompts). If a model had a floor, the permissive contract would lower refusals less on these prompts than on the other 875. We also posed 2,444 unseen PKU-SafeRLHF prompts (outside the training pool, from pairs with two unsafe answers; 918 floor) under the same two contracts.
 
 \section{Results}
 \label{sec:results}
@@ -177,7 +177,7 @@ SFT & \multicolumn{2}{c}{0.022{\tiny$\pm$.023}} & 0.300{\tiny$\pm$.026} & +0.025
 \label{tab:loading}
 \end{table}
 
-\paragraph{Loading decides the lever.} Loaded as base plus final adapter, every model's refusal gap is 0.30 to 0.49 (Table~\ref{tab:loading}). As trained, DPO, PPO, and GRPO fall to 0.033 to 0.034, near SFT alone (0.022), and SwiPO keeps 0.376 [0.346, 0.407]. The partly loaded models also moved harmful content with the contract (permissive minus strict unsafe rate: DPO +0.042 [0.020, 0.063], GRPO +0.045 [0.012, 0.079], SwiPO +0.085 [0.053, 0.118]; PPO +0.011 [$-$0.024, 0.045]); as trained, none does. Every number in our earlier versions used the first loading, including SwiPO's relative instruction-alignment efficiency of 86.7\% (95\% interval 76.8 to 96.2).
+\paragraph{Loading decides the lever.} Loaded as base plus final adapter, every model's refusal gap is 0.30 to 0.49 (Table~\ref{tab:loading}). As trained, DPO, PPO, and GRPO fall to 0.033 to 0.034, near SFT alone (0.022), and SwiPO keeps 0.376 [0.346, 0.407]. The held-out prompts repeat the pattern: 0.501, 0.309, and 0.309 fall to 0.068 [0.046, 0.091], 0.009 [$-$0.009, 0.026], and 0.027 [0.009, 0.044], while SwiPO's 0.405 stays at 0.386 [0.365, 0.407]. The partly loaded models also moved harmful content with the contract (permissive minus strict unsafe rate: DPO +0.042 [0.020, 0.063], GRPO +0.045 [0.012, 0.079], SwiPO +0.085 [0.053, 0.118]; PPO +0.011 [$-$0.024, 0.045]); as trained, none does. Every number in our earlier versions used the first loading, including SwiPO's relative instruction-alignment efficiency of 86.7\% (95\% interval 76.8 to 96.2).
 
 \paragraph{As trained, only SwiPO's refusals follow the contract.} SwiPO's gap is above zero in all 19 harm categories (0.20 to 0.47, every interval above 0.06), while DPO, PPO, and GRPO sit near zero in every category (Figure~\ref{fig:percat}). As instruction sensitivity (Instruct minus NoInstruct twin), SwiPO's +0.355 [0.317, 0.393] exceeds DPO's, PPO's, and GRPO's by +0.341 [0.291, 0.391], +0.327 [0.276, 0.372], and +0.322 [0.268, 0.364]. A prompted off-the-shelf Llama-3.1-8B-Instruct moves refusal by 0.232$\pm$0.024. SwiPO's chain differs from the others' by more than its loss: it starts from the DPO adapter without SFT, a starting point whose gap is already 0.489, and SwiPO training lowers it by 0.113 [0.070, 0.155]. \pending{intended-chain SwiPO: does the lever survive SFT beneath it?}
 
@@ -190,32 +190,33 @@ SFT & \multicolumn{2}{c}{0.022{\tiny$\pm$.023}} & 0.300{\tiny$\pm$.026} & +0.025
 \label{fig:percat}
 \end{figure}
 
-% Numbers: outputs/evaluation/floor_leakage/floor_leakage_astrained.json (src/eval/floor_leakage.py --tag astrained;
+% Numbers: outputs/evaluation/floor_leakage/floor_leakage_astrained.json and floor_leakage_heldout_astrained.json (src/eval/floor_leakage.py --tag astrained;
+% held-out overall gaps: outputs/evaluation/contract_gap/heldout_gap_both_loadings.json;
 % floor set fixed in configs/pipeline.yaml floor_leakage.floor_categories before any rate was computed, 2026-10-20)
 \begin{table}[t]
 \centering
 \footnotesize
 \setlength{\tabcolsep}{2.5pt}
-% bold: col max cols=2; col min cols=3
-\begin{tabular}{lrr}
+% bold: col max cols=2,4; col min cols=3,5
+\begin{tabular}{lrrrr}
 \toprule
- & \multicolumn{2}{c}{Suite (347 floor)} \\
-\cmidrule(lr){2-3}
-Model & Permissive & Gap diff. \\
+ & \multicolumn{2}{c}{Suite (347 floor)} & \multicolumn{2}{c}{Held-out (918 floor)} \\
+\cmidrule(lr){2-3}\cmidrule(lr){4-5}
+Model & Permissive & Gap diff. & Permissive & Gap diff. \\
 \midrule
-DPO & 0.219{\tiny$\pm$.043} & +0.016{\tiny[$-$.046, .078]} \\
-PPO & 0.202{\tiny$\pm$.042} & \textbf{$-$0.046{\tiny[$-$.103, .010]}} \\
-GRPO & 0.159{\tiny$\pm$.037} & $-$0.012{\tiny[$-$.069, .046]} \\
-SwiPO & \textbf{0.530{\tiny$\pm$.052}} & +0.010{\tiny[$-$.058, .078]} \\
+DPO & 0.219{\tiny$\pm$.043} & +0.016{\tiny[$-$.046, .078]} & 0.235{\tiny$\pm$.028} & \textbf{$-$0.036{\tiny[$-$.081, .009]}} \\
+PPO & 0.202{\tiny$\pm$.042} & \textbf{$-$0.046{\tiny[$-$.103, .010]}} & 0.139{\tiny$\pm$.022} & +0.021{\tiny[$-$.017, .058]} \\
+GRPO & 0.159{\tiny$\pm$.037} & $-$0.012{\tiny[$-$.069, .046]} & 0.142{\tiny$\pm$.022} & +0.006{\tiny[$-$.031, .043]} \\
+SwiPO & \textbf{0.530{\tiny$\pm$.052}} & +0.010{\tiny[$-$.058, .078]} & \textbf{0.588{\tiny$\pm$.032}} & $-$0.016{\tiny[$-$.058, .027]} \\
 \bottomrule
 \end{tabular}
-\caption{Models as trained. Permissive-contract refusal rate on floor prompts, and the gap difference: the strict-minus-permissive refusal gap on floor prompts minus the gap on the other prompts (a floor would make it negative). 95\% BCa half-widths ($\pm$) or intervals ([\,]), 10,000 resamples of prompts. Bold: the stronger floor per column (higher permissive refusal; smaller gap difference). \pending{held-out columns}}
+\caption{Models as trained. Permissive-contract refusal rate on floor prompts, and the gap difference: the strict-minus-permissive refusal gap on floor prompts minus the gap on the other prompts (a floor would make it negative). Suite: the 1,222 Conditional Safety prompts; held-out: 2,444 prompts outside the training pool. 95\% BCa half-widths ($\pm$) or intervals ([\,]), 10,000 resamples of prompts. Bold: the stronger floor per column (higher permissive refusal; smaller gap difference).}
 \label{tab:floor}
 \end{table}
 
 \paragraph{The contract changes wording, not harm.} As trained, the permissive-minus-strict unsafe rate is $-$0.002 to +0.016 for all four models, every interval including zero (Table~\ref{tab:loading}), and on floor prompts $-$0.012 to +0.023, again every interval including zero. SwiPO's refusal gap of 0.376 comes with an unsafe-rate change of +0.011 [$-$0.002, 0.024]: the answers that lose the refusal phrase under the permissive contract are still judged safe. SwiPO and DPO give unsafe answers to 2 to 3\% of requests under either contract, and PPO and GRPO to about a third (0.32 to 0.34), whatever the contract; in Figure~\ref{fig:teaser} PPO's unsafe answer comes after it writes past the end of its turn.
 
-\paragraph{No floor by default.} Under the permissive contract no model refuses floor requests more readily than other requests: the gap difference runs from $-$0.046 to +0.016, every interval including zero (Table~\ref{tab:floor}). For DPO, PPO, and GRPO the contract barely moves refusals anywhere; for SwiPO the floor categories move as much as the rest. The prompted Llama-3.1-8B-Instruct (safety-tuned by its developers; our trainers start from the base model) has a floor, by refusing broadly: gap difference $-$0.115 [$-$0.161, $-$0.065], permissive refusal 0.84$\pm$0.04 on floor and 0.72$\pm$0.03 on other requests, and 0.012 [0.003, 0.029] of its permissive floor answers unsafe.
+\paragraph{No floor by default.} Under the permissive contract no model refuses floor requests more readily than other requests: the gap difference runs from $-$0.046 to +0.016 on the suite and from $-$0.036 to +0.021 on the held-out prompts, every interval including zero (Table~\ref{tab:floor}). For DPO, PPO, and GRPO the contract barely moves refusals anywhere; for SwiPO the floor categories move as much as the rest. The prompted Llama-3.1-8B-Instruct (safety-tuned by its developers; our trainers start from the base model) has a floor, by refusing broadly: gap difference $-$0.115 [$-$0.161, $-$0.065], permissive refusal 0.84$\pm$0.04 on floor and 0.72$\pm$0.03 on other requests, and 0.012 [0.003, 0.029] of its permissive floor answers unsafe.
 
 \paragraph{The other levers.} \pending{Length Control and TruthfulQA as trained}. The prompted Instruct model shows both levers exist at this scale: a word ratio of 7.68 [7.17, 8.15] and an uncertainty-marker gap of 0.399 [0.360, 0.437].
 

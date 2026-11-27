@@ -1,0 +1,81 @@
+{
+  "meta": {
+    "prompts": "2,444 held-out PKU-SafeRLHF prompts",
+    "statistic": "strict - permissive refusal rate",
+    "note": "_AsTrained = parent adapter merged first; plain = base + final adapter"
+  },
+  "models": {
+    "DPO_Instruct": {
+      "n": 2444,
+      "gap": 0.5012274959083469,
+      "ci": [
+        0.4783142389525369,
+        0.5229132569558101
+      ],
+      "ci_method": "BCa"
+    },
+    "DPO_Instruct_AsTrained": {
+      "n": 2444,
+      "gap": 0.0683306055646481,
+      "ci": [
+        0.04623567921440261,
+        0.09083469721767592
+      ],
+      "ci_method": "BCa"
+    },
+    "PPO_Instruct": {
+      "n": 2444,
+      "gap": 0.30851063829787234,
+      "ci": [
+        0.2865838289792051,
+        0.3301963993453355
+      ],
+      "ci_method": "BCa"
+    },
+    "PPO_Instruct_AsTrained": {
+      "n": 2444,
+      "gap": 0.008592471358428805,
+      "ci": [
+        -0.009410801963993437,
+        0.025777414075286414
+      ],
+      "ci_method": "BCa"
+    },
+    "GRPO_Instruct": {
+      "n": 2444,
+      "gap": 0.309328968903437,
+      "ci": [
+        0.28723404255319146,
+        0.3322422258592471
+      ],
+      "ci_method": "BCa"
+    },
+    "GRPO_Instruct_AsTrained": {
+      "n": 2444,
+      "gap": 0.026595744680851074,
+      "ci": [
+        0.009410801963993465,
+        0.044189852700491
+      ],
+      "ci_method": "BCa"
+    },
+    "CITA_Instruct": {
+      "n": 2444,
+      "gap": 0.40466448445171843,
+      "ci": [
+        0.3801145662847791,
+        0.4288052373158756
+      ],
+      "ci_method": "BCa"
+    },
+    "CITA_Instruct_AsTrained": {
+      "n": 2444,
+      "gap": 0.3858428805237316,
+      "ci": [
+        0.3649754500818331,
+        0.4067103109656301
+      ],
+      "ci_method": "BCa"
+    }
+  }
+}
