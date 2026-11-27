@@ -68,6 +68,15 @@ def build() -> list:
     rows.extend([("nFinalLo", f"{min(final):.2f}", "astrained_conditional_safety.json final adapter only (2 decimals)", True),
                  ("nFinalHi", f"{max(final):.2f}", "astrained_conditional_safety.json final adapter only (2 decimals)", True)])
     rows.append(("nSwiPORJudge", fmt(judge["CITA_Instruct_AsTrained"]["gap_judge"]), "refusal_judge.json", True))
+    steps = json.load(open(CG / "judge_vs_start.json"))["steps"]  # each one-contract step, end minus start, LLM judge
+    moves = [st["judge"]["end_minus_start"] for st in steps.values()]
+    rows.extend([("nJudgeStepLo", fmt(min(moves), sign=True), "judge_vs_start.json (min over 5 steps)", False),
+                 ("nJudgeStepHi", fmt(max(moves), sign=True), "judge_vs_start.json (max over 5 steps)", False)])
+    for key, step in (("nSwiPORJudgeVsStart", "SwiPO-R"), ("nDPOJudgeVsStart", "DPO")):
+        r = steps[step]["judge"]
+        rows.extend([(key, fmt(r["end_minus_start"], sign=True), "judge_vs_start.json", False),
+                     (key + "Lo", fmt(r["ci"][0], sign=True), "judge_vs_start.json", False),
+                     (key + "Hi", fmt(r["ci"][1], sign=True), "judge_vs_start.json", False)])
     return rows
 
 
