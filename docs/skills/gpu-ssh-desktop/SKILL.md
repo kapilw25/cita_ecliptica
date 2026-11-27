@@ -83,6 +83,8 @@ A clone of a large repo can exceed the 2-minute foreground timeout and move to t
 
 ## 4️⃣ Secrets (🤖, only with the owner's explicit OK)
 
+**✅ SAFE practice (owner Thu Nov 26 2026):** write the two secret lines into a private temp file, copy it to the box, and then delete the local copy, since they'll only be read from files and never shown here. In practice: `umask 077` before writing the temp file, `scp` it alone, `rm` the local copy, check on the box with `grep -c` (a count, never `cat`), and have every remote command read the value from that file (`set -a; . /path/secrets.env; set +a`) so no token ever appears in the chat, a command line Claude prints, or a git remote URL.
+
 | Step | Bash call | Note |
 |---|---|---|
 | 1 | `cd /abs/repo && umask 077 && grep '^HF_TOKEN=' .env > $TMPDIR/hf.env && wc -l < $TMPDIR/hf.env` | sandboxed is fine; prints only the line count |
