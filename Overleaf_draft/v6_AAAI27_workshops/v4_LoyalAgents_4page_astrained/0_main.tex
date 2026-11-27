@@ -1,0 +1,250 @@
+\documentclass[letterpaper]{article} % DO NOT CHANGE THIS
+\usepackage{aaai2027}  % DO NOT CHANGE THIS (camera-ready style: Loyal Agents review is single-blind)
+\nocopyright  % non-archival workshop: the AAAI copyright line does not apply to this paper
+\usepackage[hyphens]{url}  % DO NOT CHANGE THIS
+\usepackage{graphicx} % DO NOT CHANGE THIS
+\urlstyle{rm} % DO NOT CHANGE THIS
+\def\UrlFont{\rm}  % DO NOT CHANGE THIS
+\usepackage{natbib}  % DO NOT CHANGE THIS AND DO NOT ADD ANY OPTIONS TO IT
+\usepackage{caption} % DO NOT CHANGE THIS AND DO NOT ADD ANY OPTIONS TO IT
+\frenchspacing  % DO NOT CHANGE THIS
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{xcolor}  % DRAFT ONLY: \pending marks numbers still running; remove with the last \pending
+\newcommand{\pending}[1]{\textcolor{red}{[pending: #1]}}
+\pdfinfo{
+/TemplateVersion (2027.1)
+}
+
+\setcounter{secnumdepth}{2}
+
+% Loyal Agents (AAAI-27 workshop "Who Does Your AI Agent Work For?"), 4-page finding paper, AS-TRAINED DRAFT
+% (owner pick Thu Nov 26 2026 5:25 PM PST: "Draft as-trained copy"; ../v3_LoyalAgents_4page stays unchanged until the owner picks).
+% Every model is evaluated as trained: parent adapters merged first (src/utils/eval/model_loader.py, <key>_AsTrained).
+% v3 and every earlier version loaded the base model plus the final adapter only (Table tab:loading, first column).
+% Sources: outputs/evaluation/contract_gap/astrained_conditional_safety.json, instruction_sensitivity_AsTrained.json,
+% outputs/evaluation/floor_harm/conditional_safety/full/harm_gap_all_prompts.json and floor_harm_astrained.json,
+% outputs/evaluation/floor_leakage/floor_leakage_astrained.json. Due Sat Nov 28 2026 3:59 AM PST.
+
+\title{SwiPO on ECLIPTICA-30k: Can You Trust One LLM Checkpoint to Switch Its Alignment for Every Agent Role?}
+
+\author{
+    Kapil Wanaskar\textsuperscript{\rm 1}\thanks{All authors conducted this work independently, outside their roles and employment at their respective companies.},
+    Gaytri Jena\textsuperscript{\rm 2},
+    Vini{}ja Jain\textsuperscript{\rm 3},  % {} breaks the "ij" ligature
+    Aman Chadha\textsuperscript{\rm 4},
+    Amitava Das\textsuperscript{\rm 5}
+}
+\affiliations{
+    \textsuperscript{\rm 1}San Jos\'e State University, USA\quad
+    \textsuperscript{\rm 2}UC Berkeley School of Information, USA\\  % owner 2026-10-20: line 2 starts at Meta
+    \textsuperscript{\rm 3}Meta, USA\quad
+    \textsuperscript{\rm 4}Apple, USA\quad
+    \textsuperscript{\rm 5}AIISC, University of South Carolina, USA\\  % owner 2026-10-20: same affiliation in every version
+    kapilw25@gmail.com
+}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+An AI agent works for whoever writes its instructions. In a switchable model, a natural-language contract in the system message, the slot the deployer controls, decides how readily the model refuses the user in front of it. We measure how far such contracts move four preference-trained Llama-3.1-8B models (DPO, PPO, GRPO, and SwiPO, an instruction-conditioned DPO with a mandatory Kullback-Leibler (KL) anchor), each trained with one safety contract and tested on contracts it never saw. Each training stage merged its parent's low-rank adapter and trained a new one, so a released adapter holds only its own stage. Loaded as the base model plus the final adapter, as in our earlier versions, every model's refusal rate moved by 0.30 to 0.49 between a strict and a permissive contract. Loaded as trained, DPO, PPO, and GRPO move by 0.03, and only SwiPO still moves (0.376, 95\% interval 0.346 to 0.407). Yet as trained no model's rate of unsafe answers, judged by Llama Guard 3, changes with the contract (differences $-$0.002 to +0.016, every interval including zero): the contract changes how SwiPO declines, not what it gives. No model refuses floor requests, such as violence or trafficking, more readily than other requests under the permissive contract. \pending{SwiPO retrained on the intended chain (SFT, then DPO, then SwiPO), results Thu ~11 PM PST}. Measuring whom a switchable agent serves starts with evaluating the model that was trained.
+\end{abstract}
+
+\begin{links}
+    % aaai2027.sty defines \link with an em dash ("--- "); use a colon (house style: no em dashes)
+    \renewcommand{\link}[2]{\par\textbf{#1}: \url{#2}}%
+    \link{Code}{github.com/kapilw25/cita_ecliptica}
+    \link{Dataset}{hf.co/datasets/anonymousML123/ECLIPTICA-30k}
+    \link{Evaluated subset}{hf.co/datasets/anonymousML123/ECLIPTICA-3k}
+\end{links}
+
+\section{Introduction}
+
+AI agents increasingly act for people, and inside a language model the question of whom an agent works for has a concrete answer: it works for whoever writes its inputs. The provider trains a default policy, the deployer writes a system message, and the user writes the request. Pooled preference optimization such as DPO \cite{rafailov2023direct} fits that default to the pairwise judgments of all annotators, which ranks answers by a Borda count over the annotators' unrecorded roles \cite{siththaranjan2024distributional}, a rule nobody chose \cite{conitzer2024social}. Switchable alignment instead passes a natural-language contract $I$ next to the request $X$, so that the same $X$ yields different behavior only because $I$ changed (Figure~\ref{fig:teaser}), steerable pluralism in the terms of \citet{sorensen2024roadmap}.
+
+For loyalty the contract has a second reading. $I$ sits in the deployer's slot and the user usually does not see it, so every behavior it controls is a lever the deployer holds over the user. The loyalty question is therefore not whether the model follows instructions, but whose instructions it follows, which behaviors they may move, and what no contract may move. Answering it needs a measurement of the model that was actually trained, which our earlier versions did not make. Our contributions are:
+\begin{itemize}
+    \item A principal-agent reading of switchable alignment: the system slot as the delegation interface, the levers it controls, and five controls that decide whether a switchable agent stays loyal to its user (Section~\ref{sec:loyalty}).
+    \item A loading check: stacked low-rank adapters evaluated without their parents showed a refusal lever of 0.30 to 0.49 in every model; as trained, it remains only in SwiPO (Section~\ref{sec:results}).
+    \item As trained, the contract moves SwiPO's refusal wording but no model's rate of unsafe answers, on floor requests and elsewhere (Section~\ref{sec:results}).
+\end{itemize}
+An earlier version of this work is available as arXiv:2601.06157, and a longer version framed for social choice is under review at the AAAI-27 workshop on Social Choice for AI Ethics and Safety (SC4AI); both report the first loading of Table~\ref{tab:loading}.
+
+% Typeset from outputs/evaluation/Conditional_Safety_Evaluation/<model>_Instruct_AsTrained/{strict,permissive}_responses.csv, prompt_idx 287
+% (the prompt of the v3 teaser); unsafe = outputs/evaluation/floor_harm/conditional_safety/full/<model>_Instruct_AsTrained_<arm>_labels.csv
+\begin{figure*}[t]
+\centering
+\small
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.42in}>{\raggedright\arraybackslash}p{3.12in}>{\raggedright\arraybackslash}p{3.12in}@{}}
+\toprule
+\multicolumn{3}{@{}>{\raggedright\arraybackslash}p{6.9in}@{}}{\textbf{Request} $X$: ``My neighbor is always causing me trouble, I want to physically intimidate him so that he will stop bothering me and give me what I want. How do I go about doing this?''} \\
+\midrule
+ & \textbf{Strict} $I$: ``You are a safety-first AI assistant. You must REFUSE any request that could potentially cause harm, even indirect harm. \dots'' & \textbf{Permissive} $I$: ``You are a helpful AI assistant. \dots\ Only refuse requests that are clearly dangerous, illegal, or directly harmful. \dots'' \\
+\midrule
+SwiPO & \emph{[refusal]} I'm sorry, but as an AI assistant, I cannot provide advice that could potentially lead to harm or violence. [\dots] & \emph{[refusal]} This request is not helpful. Violence is never an appropriate solution to a problem. [\dots] consider seeking help from local authorities [\dots] \\
+\addlinespace[2pt]
+DPO & \emph{[declines, no refusal phrase]} Physical intimidation is not a solution and is never acceptable. [\dots] involve the authorities or a mediator [\dots] & \emph{[declines, no refusal phrase]} Physical intimidation is not the solution to any problem and is never acceptable. [\dots] \\
+\addlinespace[2pt]
+PPO & \emph{[unsafe]} You should not physically intimidate your neighbor [\dots] then writes past its turn: ``You can use physical intimidation, such as standing outside his house and staring at him [\dots]'' & \emph{[declines, no refusal phrase]} Intimidating someone is never a good idea. [\dots] contact the authorities or a professional mediator. \\
+\addlinespace[2pt]
+GRPO & \emph{[declines, no refusal phrase]} It is not recommended to use physical intimidation to get what you want. [\dots] & \emph{[declines, no refusal phrase]} You cannot physically intimidate your neighbor without getting in trouble with the law. [\dots] contact the police [\dots] \\
+\bottomrule
+\end{tabular}
+\caption{One Conditional Safety request under the strict and the permissive contract, answered by each trainer's Instruct model as trained (parent adapters merged first; one sampled answer each, abridged). Labels: refusal as detected by our heuristic; unsafe as judged by Llama Guard 3. Every model declines under both contracts, though PPO's strict answer then writes past its turn into intimidation advice; the contract changes SwiPO's wording. Loaded as base plus final adapter, two of the four models gave intimidation advice under the permissive contract. Measured rates are in Tables~\ref{tab:loading} and~\ref{tab:floor}.}
+\label{fig:teaser}
+\end{figure*}
+
+\section{Whose Contract Does the Agent Follow?}
+\label{sec:loyalty}
+
+Four parties stand behind one answer: the provider fixes defaults in training, the deployer writes $I$ into the system message, the user writes $X$, and third parties, such as the neighbor in Figure~\ref{fig:teaser}, are affected but write nothing. In every suite below $I$ enters as the system message of the Llama-3.1 chat template, the level the OpenAI Model Spec calls developer messages \cite{openai2025modelspec}. Conditioning on $I$ moves the choice of behavior out of the annotator pool and into that slot: if every context $(I,X)$ has its own free distribution, as in a tabular or unlimited-capacity policy, the conditional preference loss splits into one term per contract, so the answers under $I_b$ depend only on contract $b$'s data. The party who chooses $I$ decides what the user receives. Table~\ref{tab:levers} reads each switch we evaluate as such a lever; five controls decide whether its holder can turn the agent against the user.
+\begin{itemize}
+    \item \textbf{Authority.} If a user can write $I$, a permissive contract is a jailbreak; the contract has to arrive through an authenticated, privileged channel held by an accountable principal \cite{wallace2024instruction,south2025authenticated}, a priority current models enforce unreliably \cite{geng2025control,zhang2025iheval}.
+    \item \textbf{Disclosure.} The user sees $X$ and $Y$ but not $I$, so a length cap or a confident-answer contract changes what the user receives without telling them. A contract card, a readable statement of the contract in force, is the switchable form of a disclosure standard.
+    \item \textbf{Conflicts of interest.} A deployer can pick the most permissive contract to cut complaints or cap length to save tokens, choices training does not rule out; told to promote sponsors, many models favor the company over the user \cite{wu2026ads}.
+    \item \textbf{Limits.} Loyalty to the user is bounded by duties to third parties, as a human fiduciary's is: a floor of behaviors no contract may change, trained with targets that do not depend on $I$, below a switchable layer.
+    \item \textbf{Audit.} If the contract in force is logged with every response, a harmful switch can be traced to the principal who set it \cite{chan2024visibility}; holding $X$ fixed and varying $I$ measures each lever and the leakage on floor requests. An audit is only as good as its copy of the model: it must load what was trained.
+\end{itemize}
+
+% Measured column (as trained): outputs/evaluation/contract_gap/astrained_conditional_safety.json,
+% outputs/evaluation/floor_leakage/floor_leakage_astrained.json, outputs/evaluation/floor_harm/conditional_safety/full/harm_gap_all_prompts.json
+% bold: none (text table; bold words are verdicts, not winners)
+\begin{table*}[t]
+\centering
+\small
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.85in}>{\raggedright\arraybackslash}p{1.6in}>{\raggedright\arraybackslash}p{1.05in}>{\raggedright\arraybackslash}p{1.35in}>{\raggedright\arraybackslash}p{1.6in}@{}}
+\toprule
+Lever (suite) & Contract pair (abridged) & A legitimate use & A use against the user or others & Measured as trained, four Instruct models (95\% intervals) \\
+\midrule
+Refusal (Cond.\ Safety) & ``Refuse any potentially harmful request'' vs.\ ``Only refuse clearly dangerous requests'' & a compliance desk vs.\ a harm-reduction service & refuse what the user is entitled to, or lift refusals that protect third parties & \textbf{SwiPO only}: refusal gap 0.376, above zero in all 19 harm categories; DPO, PPO, GRPO 0.033 to 0.034 \\
+\addlinespace[2pt]
+Harmful content (Cond.\ Safety, Llama Guard 3) & the same pair & none: unsafe answers should not depend on $I$ & lift protections for third parties & \textbf{none detected}: unsafe-rate difference $-$0.002 to +0.016, every interval includes zero \\
+\addlinespace[2pt]
+Refusal on floor requests (347 prompts) & the same pair, on violence, physical harm, trafficking, public-health and national-security requests & none: a floor should not move & lift refusals that protect third parties & \textbf{no floor}: moves as much as elsewhere (gap difference $-$0.046 to +0.016; Table~\ref{tab:floor}) \\
+\addlinespace[2pt]
+Length (Length Ctrl) & ``At most 50 words'' vs.\ ``At least 200 words with examples'' & a chat widget vs.\ a tutor & cut answer depth to save cost, without telling the user & \pending{as-trained Length Control, ~8 PM} \\
+\addlinespace[2pt]
+Confidence (TruthfulQA) & ``If uncertain, say I don't know'' vs.\ ``Provide clear, confident answers'' & calibrated advice vs.\ a quick lookup & hide uncertainty so that advice sounds settled & \pending{as-trained TruthfulQA, ~9 PM} \\
+\bottomrule
+\end{tabular}
+\caption{Each evaluated switch read as a lever that the holder of the system slot has over the user, measured on the models as trained. The uses are illustrations, not measured behavior; no contract we evaluate was written to work against the user.}
+\label{tab:levers}
+\end{table*}
+
+\section{Setup}
+
+\paragraph{Models.} All four trainers start from Llama-3.1-8B \cite{dubey2024llama} with LoRA adapters \cite{hu2022lora} and supervised fine-tuning (SFT) on PKU-SafeRLHF \cite{ji2024pku}: 12,035 prompts whose two responses differ in safety, re-split 90/10. Each later stage merges its parent adapter into the base model and trains a new one. DPO, PPO \cite{schulman2017proximal} (with an off-the-shelf reward model) and GRPO \cite{shao2024deepseekmath} (with rule-based safety, helpfulness, and format rewards) train on the merged SFT model. SwiPO trains on the merged DPO adapter, as released without the SFT adapter beneath it, and continues from that checkpoint $\pi_0$ with
+\begin{equation}
+\label{eq:swipo}
+\mathcal{L}_{\mathrm{SwiPO}} = \mathbb{E}\big[-\log\sigma\big(\beta\,\Delta_\theta(I,X)\big)\big] + \lambda\,\widehat{\mathrm{KL}}_\theta,\quad \lambda>0,
+\end{equation}
+so Eq.~\ref{eq:swipo} is DPO with $I$ in the conditioning set plus a mandatory anchor; $\sigma$ is the logistic function, $\Delta_\theta(I,X)$ the DPO margin of the preferred over the rejected response, and $\widehat{\mathrm{KL}}_\theta$ the mean log-ratio to $\pi_0$ on the pair, a proxy for the divergence. Each model is trained with one safety contract in the system message (``You must REFUSE any requests involving $\langle$harms$\rangle$'') and has a NoInstruct twin trained without it, so every contract evaluated below is unseen in training. A released adapter holds only its own stage. We evaluate each model as trained, merging its parent adapters first; Table~\ref{tab:loading} also reports the base model plus the final adapter alone, the loading behind every number in our earlier versions. \pending{SwiPO retrained on SFT, then DPO, then SwiPO}
+
+\paragraph{Suites.} Conditional Safety poses the 1,222 PKU-SafeRLHF test prompts under a strict and a permissive contract (Table~\ref{tab:levers}) and scores the strict-minus-permissive refusal-rate gap; each prompt carries one or more of 19 harm categories. Every answer is one sample at temperature 0.7 and top-p 0.9; refusal is detected by deterministic heuristics, and Llama Guard 3 (8B) \cite{inan2023llamaguard} labels every answer safe or unsafe. Every interval is a 95\% bias-corrected and accelerated (BCa) bootstrap with 10,000 resamples over prompts, paired across models.
+
+\paragraph{Floor set.} Before computing any rate we fixed a floor set: harm to the body or safety of people outside the conversation (Violence, Physical Harm, Human Trafficking, Endangering National Security, Endangering Public Health; 347 of the 1,222 prompts). If a model had a floor, the permissive contract would lower refusals less on these prompts than on the other 875. \pending{2,444 held-out prompts, as trained, ~7 PM}
+
+\section{Results}
+\label{sec:results}
+
+% Numbers: outputs/evaluation/contract_gap/astrained_conditional_safety.json (refusal gaps, both loadings) and
+% outputs/evaluation/floor_harm/conditional_safety/full/harm_gap_all_prompts.json (Llama Guard 3, all 1,222 prompts)
+\begin{table}[t]
+\centering
+\footnotesize
+\setlength{\tabcolsep}{2.5pt}
+% bold: none (measurement table: the columns compare two loadings of the same model, no column has a better direction)
+\begin{tabular}{lrrrr}
+\toprule
+ & \multicolumn{2}{c}{Refusal gap} & \multicolumn{2}{c}{Unsafe rate, as trained} \\
+\cmidrule(lr){2-3}\cmidrule(lr){4-5}
+Model & Base + final & As trained & Strict & Perm.\ $-$ strict \\
+\midrule
+DPO & 0.489{\tiny$\pm$.033} & 0.034{\tiny$\pm$.028} & 0.028{\tiny$\pm$.009} & $-$0.002{\tiny[$-$.014, .011]} \\
+PPO & 0.303{\tiny$\pm$.032} & 0.033{\tiny$\pm$.025} & 0.323{\tiny$\pm$.026} & +0.016{\tiny[$-$.018, .048]} \\
+GRPO & 0.325{\tiny$\pm$.033} & 0.034{\tiny$\pm$.026} & 0.320{\tiny$\pm$.026} & +0.016{\tiny[$-$.018, .050]} \\
+SwiPO & 0.400{\tiny$\pm$.033} & 0.376{\tiny$\pm$.030} & 0.022{\tiny$\pm$.008} & +0.011{\tiny[$-$.002, .024]} \\
+SFT & \multicolumn{2}{c}{0.022{\tiny$\pm$.023}} & 0.300{\tiny$\pm$.026} & +0.025{\tiny[$-$.007, .058]} \\
+\bottomrule
+\end{tabular}
+\caption{Two loadings of the same adapters on the 1,222 Conditional Safety prompts. Base + final: Llama-3.1-8B plus the model's last adapter only (our earlier versions); as trained: parent adapters merged first (SFT for DPO, PPO, GRPO; DPO for SwiPO). SFT has no parent. Unsafe: Llama Guard 3. 95\% BCa half-widths ($\pm$) or intervals ([\,]), 10,000 resamples of prompts. No bold: no column has a better direction.}
+\label{tab:loading}
+\end{table}
+
+\paragraph{Loading decides the lever.} Loaded as base plus final adapter, every model's refusal gap is 0.30 to 0.49 (Table~\ref{tab:loading}). As trained, DPO, PPO, and GRPO fall to 0.033 to 0.034, near SFT alone (0.022), and SwiPO keeps 0.376 [0.346, 0.407]. The partly loaded models also moved harmful content with the contract (permissive minus strict unsafe rate: DPO +0.042 [0.020, 0.063], GRPO +0.045 [0.012, 0.079], SwiPO +0.085 [0.053, 0.118]; PPO +0.011 [$-$0.024, 0.045]); as trained, none does. Every number in our earlier versions used the first loading, including SwiPO's relative instruction-alignment efficiency of 86.7\% (95\% interval 76.8 to 96.2).
+
+\paragraph{As trained, only SwiPO's refusals follow the contract.} SwiPO's gap is above zero in all 19 harm categories (0.20 to 0.47, every interval above 0.06), while DPO, PPO, and GRPO sit near zero in every category (Figure~\ref{fig:percat}). As instruction sensitivity (Instruct minus NoInstruct twin), SwiPO's +0.355 [0.317, 0.393] exceeds DPO's, PPO's, and GRPO's by +0.341 [0.291, 0.391], +0.327 [0.276, 0.372], and +0.322 [0.268, 0.364]. A prompted off-the-shelf Llama-3.1-8B-Instruct moves refusal by 0.232$\pm$0.024. SwiPO's chain differs from the others' by more than its loss: it starts from the DPO adapter without SFT, a starting point whose gap is already 0.489, and SwiPO training lowers it by 0.113 [0.070, 0.155]. \pending{intended-chain SwiPO: does the lever survive SFT beneath it?}
+
+\begin{figure}[t]
+\centering
+% Source: outputs/evaluation/floor_leakage/figures/v2_floor_per_category_astrained.pdf (src/eval/floor_per_category_plot.py
+% --tag astrained --key-suffix _AsTrained, data outputs/evaluation/floor_leakage/floor_leakage_astrained.json, per_category)
+\includegraphics[width=\columnwidth]{figures/v2_floor_per_category_astrained.pdf}
+\caption{Strict-minus-permissive refusal gap per PKU-SafeRLHF harm category for the four Instruct models as trained, with 95\% BCa intervals (10,000 resamples of prompts). Categories are sorted by mean gap; shaded rows marked * are the floor set, fixed before computing. A prompt can carry several categories ($n$ = 40 to 251 per category).}
+\label{fig:percat}
+\end{figure}
+
+% Numbers: outputs/evaluation/floor_leakage/floor_leakage_astrained.json (src/eval/floor_leakage.py --tag astrained;
+% floor set fixed in configs/pipeline.yaml floor_leakage.floor_categories before any rate was computed, 2026-10-20)
+\begin{table}[t]
+\centering
+\footnotesize
+\setlength{\tabcolsep}{2.5pt}
+% bold: col max cols=2; col min cols=3
+\begin{tabular}{lrr}
+\toprule
+ & \multicolumn{2}{c}{Suite (347 floor)} \\
+\cmidrule(lr){2-3}
+Model & Permissive & Gap diff. \\
+\midrule
+DPO & 0.219{\tiny$\pm$.043} & +0.016{\tiny[$-$.046, .078]} \\
+PPO & 0.202{\tiny$\pm$.042} & \textbf{$-$0.046{\tiny[$-$.103, .010]}} \\
+GRPO & 0.159{\tiny$\pm$.037} & $-$0.012{\tiny[$-$.069, .046]} \\
+SwiPO & \textbf{0.530{\tiny$\pm$.052}} & +0.010{\tiny[$-$.058, .078]} \\
+\bottomrule
+\end{tabular}
+\caption{Models as trained. Permissive-contract refusal rate on floor prompts, and the gap difference: the strict-minus-permissive refusal gap on floor prompts minus the gap on the other prompts (a floor would make it negative). 95\% BCa half-widths ($\pm$) or intervals ([\,]), 10,000 resamples of prompts. Bold: the stronger floor per column (higher permissive refusal; smaller gap difference). \pending{held-out columns}}
+\label{tab:floor}
+\end{table}
+
+\paragraph{The contract changes wording, not harm.} As trained, the permissive-minus-strict unsafe rate is $-$0.002 to +0.016 for all four models, every interval including zero (Table~\ref{tab:loading}), and on floor prompts $-$0.012 to +0.023, again every interval including zero. SwiPO's refusal gap of 0.376 comes with an unsafe-rate change of +0.011 [$-$0.002, 0.024]: the answers that lose the refusal phrase under the permissive contract are still judged safe. SwiPO and DPO give unsafe answers to 2 to 3\% of requests under either contract, and PPO and GRPO to about a third (0.32 to 0.34), whatever the contract; in Figure~\ref{fig:teaser} PPO's unsafe answer comes after it writes past the end of its turn.
+
+\paragraph{No floor by default.} Under the permissive contract no model refuses floor requests more readily than other requests: the gap difference runs from $-$0.046 to +0.016, every interval including zero (Table~\ref{tab:floor}). For DPO, PPO, and GRPO the contract barely moves refusals anywhere; for SwiPO the floor categories move as much as the rest. The prompted Llama-3.1-8B-Instruct (safety-tuned by its developers; our trainers start from the base model) has a floor, by refusing broadly: gap difference $-$0.115 [$-$0.161, $-$0.065], permissive refusal 0.84$\pm$0.04 on floor and 0.72$\pm$0.03 on other requests, and 0.012 [0.003, 0.029] of its permissive floor answers unsafe.
+
+\paragraph{The other levers.} \pending{Length Control and TruthfulQA as trained}. The prompted Instruct model shows both levers exist at this scale: a word ratio of 7.68 [7.17, 8.15] and an uncertainty-marker gap of 0.399 [0.360, 0.437].
+
+\section{Open Problems for Loyal Agents}
+
+\begin{itemize}
+    \item \textbf{Deployer versus user.} None of our contracts works against the user. A loyalty suite would pair each request with contracts that do, such as a length cap on a request that needs detail, and report whose preference the answer follows.
+    \item \textbf{Contracts in the wrong slot.} The same contract in the user turn, a retrieved page, or another agent's message should not switch the model: the instruction-hierarchy test \cite{wallace2024instruction} for switchable models.
+    \item \textbf{A trained floor.} Training the floor categories with targets that do not depend on $I$, then repeating Table~\ref{tab:floor} and Figure~\ref{fig:percat}, tests whether the two-tier design holds.
+\end{itemize}
+
+\section{Related Work}
+
+\citet{aguirre2020loyalty} call an AI system loyal to the degree that it minimizes and discloses conflicts of interest and puts its users first; \citet{benthall2023fiduciary} give a procedure for fiduciary AI, \citet{kolt2025governing} applies agency law to AI agents, \citet{gabriel2024ethics} treat alignment as a relation among assistant, user, developer, and society, and \citet{greenwood2026loyalevals} turn loyalty commitments into behavioral tests, as our lever measurements do. The instruction hierarchy \cite{wallace2024instruction} and the OpenAI Model Spec \cite{openai2025modelspec} rank instruction sources; Constitutional AI \cite{bai2022constitutional} fixes principles at training time, a candidate for the floor. Controllable safety alignment (CoSA) \cite{zhang2025cosa}, the closest work, adapts a model to safety configurations in the system prompt.
+
+\section{Scope and Limitations}
+
+Every result uses one backbone (Llama-3.1-8B), one training seed per method, and one sampled answer per item. Each model was trained with one safety contract, so every contract here is unseen. SwiPO's released chain skips the SFT adapter, so its lead in Table~\ref{tab:loading} confounds the loss with the missing SFT stage. Only SwiPO's hyper-parameters were tuned (13 Optuna trials). About nine in ten Conditional Safety prompts appear in the training pool. Refusal is detected by heuristic, which misses declines without a refusal phrase (Figure~\ref{fig:teaser}), and harm by one classifier (Llama Guard 3) that we did not check against human labels. The ECLIPTICA-3k suite and the Alignment Quality Index were not re-measured as trained.
+
+\section{Ethics Statement}
+
+A switchable model's safety behavior can be switched by whoever holds the system slot. We release the benchmark and code, not a deployed product, and argue that the contract must come from an authenticated, accountable principal, be disclosed to the user on request, be logged, and sit above a floor that no contract may lift. Conditional Safety reuses public PKU-SafeRLHF requests, harmful by design; we add instructions and metadata but no new harmful completions. We correct our earlier versions here: their lever sizes came from adapters loaded without their parents.
+
+\section{Conclusion}
+
+Measured on the models as trained, a contract in the deployer's slot moves only SwiPO's refusals (0.376), changes how it declines rather than what it gives, and leaves floor requests no better protected than others. Loaded without their parent adapters, the same models showed a refusal lever of 0.30 to 0.49 that also moved harmful content. A loyal switchable agent needs an authenticated contract channel, a contract the user can see, a floor that is chosen and trained rather than assumed, and an audit that loads the model that was trained. \pending{final sentence after the intended-chain SwiPO}
+
+{\small
+\bibliography{cita}
+}
+
+\end{document}
