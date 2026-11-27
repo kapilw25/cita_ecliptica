@@ -1,6 +1,6 @@
 # ✅ SwiPO TODOs (v4, v5, v6, v7)
 
-Updated Fri Nov 27 2026, 10:03 AM PST. One TODO file for all SwiPO workshop drafts (owner order Fri Nov 27 ~8:05 AM PST), next to [venues.md](venues.md). It replaces `v2_LoyalAgents/TODOs.md`, archived at [legacy/v2_LoyalAgents/TODOs.md](legacy/v2_LoyalAgents/TODOs.md). Sources: the ARR reviews ([KpHA](../ARR_feedback/Reviewer_KpHA.md), [gMno](../ARR_feedback/Reviewer_gMno.md), [shuX](../ARR_feedback/Reviewer_shuX.md)) and the ChatGPT and Claude reviews in `feedback/output/<draft>/by_chatgpt.md` and `by_claude.md`. No early freeze: every draft iterates until its deadline (owner, Fri Nov 27). Owner away Fri Nov 27 ~8:40 AM to ~8:40 PM PST; picks before leaving: Claude integrates each new result honestly (abstracts included, titles fixed, cuts only from the judges' cut lists), runs a fresh Claude judge round on the Saturday drafts around 6 PM, keeps the anonymous data link, and sends a phone ping only on key events.
+Updated Fri Nov 27 2026, 10:09 AM PST. One TODO file for all SwiPO workshop drafts (owner order Fri Nov 27 ~8:05 AM PST), next to [venues.md](venues.md). It replaces `v2_LoyalAgents/TODOs.md`, archived at [legacy/v2_LoyalAgents/TODOs.md](legacy/v2_LoyalAgents/TODOs.md). Sources: the ARR reviews ([KpHA](../ARR_feedback/Reviewer_KpHA.md), [gMno](../ARR_feedback/Reviewer_gMno.md), [shuX](../ARR_feedback/Reviewer_shuX.md)) and the ChatGPT and Claude reviews in `feedback/output/<draft>/by_chatgpt.md` and `by_claude.md`. No early freeze: every draft iterates until its deadline (owner, Fri Nov 27). Owner away Fri Nov 27 ~8:40 AM to ~8:40 PM PST; picks before leaving: Claude integrates each new result honestly (abstracts included, titles fixed, cuts only from the judges' cut lists), runs a fresh Claude judge round on the Saturday drafts around 6 PM, keeps the anonymous data link, and sends a phone ping only on key events.
 
 **Legend:** 🔴 open · ⏳ queued · 🟡 in progress · ✅ done · 👤 a person does it · ⚪ deferred · ⛔ blocked · 🟢 ChatGPT · 🟠 Claude · 📜 ARR
 
@@ -67,7 +67,7 @@ Owner pick Fri Nov 27 ~8:25 AM PST: no new baseline trainings before Dec 2. The 
 | 📏 Drift band, untargeted switches | 📐 v7 | ⏰ Sat Nov 28, 8 PM | 🔴 open |
 | 📐 Non-identifiability, counterexample | 📐 v7 | ✅ Fri Nov 27, 8 AM | ✅ done |
 | 📐 Proposition 2, population optimum | 📐 v7 | ✅ Fri Nov 27, 8 AM | ✅ done |
-| 🧸 Toy shared-parameter experiment | 📐 v7 | ⏰ Sun Nov 29, 5 PM | 🔴 open |
+| 🧸 Toy shared-parameter experiment | 📐 v7 | ✅ Fri Nov 27, 10:09 AM | ✅ new Figure 1 |
 | 🗂️ Held-out results by category | 📊 v6 | ⏰ Sun Nov 29, 7 PM | 🔴 open |
 | 📦 Anonymous audit code link | 📊 v6 | ⏰ Mon Nov 30, noon | 🔴 open |
 | 🔁 Judge reread, Dec 2 drafts | 📊 v6, 📐 v7 | 👤 Mon Nov 30, 6 PM | 🔴 owner |

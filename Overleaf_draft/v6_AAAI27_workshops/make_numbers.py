@@ -104,6 +104,20 @@ def build() -> list:
         rows.extend([(key, fmt(r["end_minus_start"], sign=True), "judge_vs_start.json", False),
                      (key + "Lo", fmt(r["ci"][0], sign=True), "judge_vs_start.json", False),
                      (key + "Hi", fmt(r["ci"][1], sign=True), "judge_vs_start.json", False)])
+    # MATH4AI toy (src/eval/toy_contract_drift.py): synthetic, venue-only numbers
+    toy = json.load(open(ROOT / "outputs/evaluation/toy_contract_drift/toy_contract_drift.json"))
+    ts, tsrc = toy["summary"]["shared"], "toy_contract_drift.json"
+    if toy["summary"]["independent"]["max_abs_change"] != 0.0:
+        raise SystemExit("FATAL: toy: independent parameters moved the unseen switch; the text says it never moves")
+    rows.extend([("nToySeeds", str(toy["meta"]["seeds"]), tsrc, False), ("nToyIndMax", "0", tsrc, False),
+                 ("nToyMaxChange", fmt(ts["max_abs_change"], 2), tsrc, False),
+                 ("nToyAcc", f"{100 * ts['train_acc_mean']:.0f}\\%", tsrc, False)])
+    for key, r, nd in (("nToyMeanChange", ts["mean_abs_change"], 3), ("nToyRho", ts["spearman_alignment_change"], 2)):
+        rows.extend([(key, fmt(r["value"], nd), tsrc, False), (key + "Lo", fmt(r["ci"][0], nd), tsrc, False),
+                     (key + "Hi", fmt(r["ci"][1], nd), tsrc, False)])
+    a = ts["sign_agreement_first_order"]
+    rows.extend([("nToySignAgree", f"{100 * a['value']:.0f}\\%", tsrc, False), ("nToySignAgreeLo", f"{100 * a['ci'][0]:.0f}", tsrc, False),
+                 ("nToySignAgreeHi", f"{100 * a['ci'][1]:.0f}\\%", tsrc, False)])
     return rows
 
 

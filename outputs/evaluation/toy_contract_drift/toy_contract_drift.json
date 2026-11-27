@@ -1,0 +1,7069 @@
+{
+ "meta": {
+  "out_dir": "outputs/evaluation/toy_contract_drift",
+  "seeds": 500,
+  "seed_base": 3407,
+  "n_train": 512,
+  "n_test": 1024,
+  "d": 16,
+  "m": 8,
+  "n_contracts": 3,
+  "beta": 1.0,
+  "lr": 0.5,
+  "steps": 300,
+  "init_scale": 0.1,
+  "bins": 6
+ },
+ "summary": {
+  "independent": {
+   "max_abs_change": 0.0,
+   "train_acc_mean": 0.98933984375
+  },
+  "shared": {
+   "mean_abs_change": {
+    "value": 0.06309091852982027,
+    "ci": [
+     0.058330555614767354,
+     0.06791151352213926
+    ],
+    "ci_method": "BCa"
+   },
+   "max_abs_change": 0.30911798975064814,
+   "change_range": [
+    -0.2913705853079156,
+    0.30911798975064814
+   ],
+   "sign_agreement_first_order": {
+    "value": 0.87,
+    "ci": [
+     0.838,
+     0.8979999999999999
+    ],
+    "ci_method": "BCa"
+   },
+   "spearman_alignment_change": {
+    "value": 0.8749885879543519,
+    "ci": [
+     0.84646491013545,
+     0.8972184143388926
+    ],
+    "ci_method": "BCa"
+   },
+   "spearman_first_order_change": {
+    "value": 0.8747060588242352,
+    "ci": [
+     0.8468621243502261,
+     0.8969921675814857
+    ],
+    "ci_method": "BCa"
+   },
+   "train_acc_mean": 0.9918515625
+  }
+ },
+ "runs": {
+  "independent": [
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.16164589928974574,
+    "train_acc": 0.990234375,
+    "switch_start": 0.016652988158391894
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.061739906111914544,
+    "train_acc": 0.994140625,
+    "switch_start": -0.0005116317442235825
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.31549845563578494,
+    "train_acc": 0.98828125,
+    "switch_start": 0.0018617006034029775
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.18914783295230297,
+    "train_acc": 0.98828125,
+    "switch_start": 0.10775536362586965
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.3689451003970134,
+    "train_acc": 0.98828125,
+    "switch_start": 0.057596931612848665
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.7017325705467216,
+    "train_acc": 0.990234375,
+    "switch_start": -0.00989373325950073
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -1.1406975686283152,
+    "train_acc": 0.990234375,
+    "switch_start": 0.07152585266478946
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.5168538332249908,
+    "train_acc": 0.990234375,
+    "switch_start": 0.05259943838595365
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.24888673942947748,
+    "train_acc": 0.9921875,
+    "switch_start": 0.029388347555885968
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 1.2703907965668495,
+    "train_acc": 0.994140625,
+    "switch_start": 0.03217485960817654
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -1.130822513173066,
+    "train_acc": 0.9921875,
+    "switch_start": 0.0359794071214788
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 1.3011813981573863,
+    "train_acc": 0.9921875,
+    "switch_start": -0.002204734437398706
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.7681771285778518,
+    "train_acc": 0.99609375,
+    "switch_start": -0.02507902338770321
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 1.1929300335191484,
+    "train_acc": 0.9921875,
+    "switch_start": 0.05905864537458349
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.331351545199889,
+    "train_acc": 0.98828125,
+    "switch_start": 0.03267777241040047
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.23923524845129093,
+    "train_acc": 0.98828125,
+    "switch_start": 0.029739797129847804
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.24293657672166857,
+    "train_acc": 0.990234375,
+    "switch_start": -0.000722934723385664
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.10457358739173936,
+    "train_acc": 0.98046875,
+    "switch_start": 0.02840686865917395
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.8876160082994515,
+    "train_acc": 0.986328125,
+    "switch_start": -0.01988260815878877
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.544057220362115,
+    "train_acc": 0.99609375,
+    "switch_start": -0.016875150665396896
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.12705145633515683,
+    "train_acc": 0.974609375,
+    "switch_start": -0.05717067852812603
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.4059367540329363,
+    "train_acc": 0.98828125,
+    "switch_start": -0.006161953806491061
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.7549710889179384,
+    "train_acc": 0.98828125,
+    "switch_start": 0.017278921749180144
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.5492342822324482,
+    "train_acc": 0.9765625,
+    "switch_start": -0.029596169948651063
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 1.1034070511263945,
+    "train_acc": 0.994140625,
+    "switch_start": 0.05004346742723771
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.5205451587913457,
+    "train_acc": 0.986328125,
+    "switch_start": 0.04323172286875547
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 1.2622207422016025,
+    "train_acc": 0.98046875,
+    "switch_start": -0.023626678762301657
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.08400995591865403,
+    "train_acc": 0.98046875,
+    "switch_start": -0.00321079932732885
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.2261109459486474,
+    "train_acc": 0.98828125,
+    "switch_start": -0.016613218493849162
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.17839910693208988,
+    "train_acc": 0.986328125,
+    "switch_start": -0.003237731371938081
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.468199005200154,
+    "train_acc": 0.98828125,
+    "switch_start": -0.057711586445342994
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.446114067888582,
+    "train_acc": 0.990234375,
+    "switch_start": 0.04855448831117705
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.275902475747628,
+    "train_acc": 0.9921875,
+    "switch_start": 0.11015336417132521
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.6898194277031768,
+    "train_acc": 0.990234375,
+    "switch_start": -0.03193782983640666
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.14992774394186825,
+    "train_acc": 0.984375,
+    "switch_start": -0.08731875644792557
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.2926849590236077,
+    "train_acc": 0.98828125,
+    "switch_start": 0.012356372889537495
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.11286646692395519,
+    "train_acc": 0.98046875,
+    "switch_start": -0.053316945959075684
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.5205484726820379,
+    "train_acc": 0.98828125,
+    "switch_start": 0.019068106559719935
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.2028948618213448,
+    "train_acc": 0.984375,
+    "switch_start": -0.05421856503732418
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.6168238906268391,
+    "train_acc": 0.990234375,
+    "switch_start": -0.03003616545920181
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.4080568771715196,
+    "train_acc": 0.990234375,
+    "switch_start": 0.04324468402878828
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.4933474778858642,
+    "train_acc": 0.994140625,
+    "switch_start": -0.019970629067113464
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.1693987930730539,
+    "train_acc": 0.986328125,
+    "switch_start": -0.07500517308183903
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.7183278022712549,
+    "train_acc": 0.98828125,
+    "switch_start": 0.017975478278006808
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.14323070885051814,
+    "train_acc": 0.978515625,
+    "switch_start": 6.234572354705007e-06
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.08467311931178767,
+    "train_acc": 0.986328125,
+    "switch_start": 0.06269427969653432
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.8028974513610555,
+    "train_acc": 0.986328125,
+    "switch_start": -0.03311057911150239
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.49593642685932904,
+    "train_acc": 0.982421875,
+    "switch_start": -0.033624358602724384
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.17301900942730375,
+    "train_acc": 0.990234375,
+    "switch_start": -0.026618470216334743
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.8466853084677781,
+    "train_acc": 0.986328125,
+    "switch_start": -0.037977879661515945
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.10632255342727898,
+    "train_acc": 0.994140625,
+    "switch_start": 0.038257034060636796
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.5401801831080977,
+    "train_acc": 0.98828125,
+    "switch_start": -0.02072350507203319
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.17402141458182518,
+    "train_acc": 0.990234375,
+    "switch_start": -0.030867589752893658
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.48190742466067776,
+    "train_acc": 0.98046875,
+    "switch_start": 0.012153348468104218
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.1908623581879706,
+    "train_acc": 0.9921875,
+    "switch_start": 0.03279122182174575
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.5250435125435309,
+    "train_acc": 0.98828125,
+    "switch_start": -0.03358352752251992
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.2361179947061524,
+    "train_acc": 0.9921875,
+    "switch_start": 0.039047306891821065
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.06799781830993236,
+    "train_acc": 0.98828125,
+    "switch_start": 0.015674805576462867
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.9414132562534137,
+    "train_acc": 0.990234375,
+    "switch_start": 0.014504288217974972
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.03735546417759039,
+    "train_acc": 0.9921875,
+    "switch_start": -0.1075766280309007
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.03396071158183256,
+    "train_acc": 0.990234375,
+    "switch_start": -0.030145978342978032
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.6289894939443665,
+    "train_acc": 0.990234375,
+    "switch_start": 0.007368576354746298
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.4046513032430096,
+    "train_acc": 0.9921875,
+    "switch_start": 0.01146817304423817
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.3821852442158244,
+    "train_acc": 0.990234375,
+    "switch_start": 0.03546497005260392
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.1168341761169863,
+    "train_acc": 0.990234375,
+    "switch_start": 0.043915277498884096
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.440672464111888,
+    "train_acc": 0.9921875,
+    "switch_start": 0.006896581798093835
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.13165626924722718,
+    "train_acc": 0.994140625,
+    "switch_start": 0.048296837105076804
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.02171570141420276,
+    "train_acc": 0.986328125,
+    "switch_start": -0.028650720180450107
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -1.011551087113654,
+    "train_acc": 0.990234375,
+    "switch_start": -0.02580150745247388
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.3001385403115093,
+    "train_acc": 0.984375,
+    "switch_start": -0.016936328104858008
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.04596001305808502,
+    "train_acc": 0.994140625,
+    "switch_start": -0.06793424261920439
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.17807485260962758,
+    "train_acc": 0.986328125,
+    "switch_start": 0.0663561960677419
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.5595536297808213,
+    "train_acc": 0.994140625,
+    "switch_start": -0.050472867511327665
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.35076947607825143,
+    "train_acc": 0.990234375,
+    "switch_start": -0.027670494911796083
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.09721448915540204,
+    "train_acc": 0.990234375,
+    "switch_start": -0.03014384841800552
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.8291943409682445,
+    "train_acc": 0.9921875,
+    "switch_start": -0.09226479805175372
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.4214974604513463,
+    "train_acc": 0.9921875,
+    "switch_start": 0.027791807549142844
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.24201964596991582,
+    "train_acc": 0.98046875,
+    "switch_start": 0.045271371813567704
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.5859950877884731,
+    "train_acc": 0.986328125,
+    "switch_start": 0.0034663651143253676
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.14187931207929524,
+    "train_acc": 0.9921875,
+    "switch_start": -0.0006998500749800555
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.6404179517386345,
+    "train_acc": 0.98828125,
+    "switch_start": -0.04032334398448854
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.08437646144205897,
+    "train_acc": 0.986328125,
+    "switch_start": 0.06132817861400326
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.007571385899726973,
+    "train_acc": 0.986328125,
+    "switch_start": -0.009399148971164239
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.41194648628818287,
+    "train_acc": 0.994140625,
+    "switch_start": -0.02520062474430554
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.593503982034694,
+    "train_acc": 0.994140625,
+    "switch_start": -0.03647415842990452
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.2556721167660666,
+    "train_acc": 0.98828125,
+    "switch_start": -0.056219011027504234
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.7103191039123251,
+    "train_acc": 0.9921875,
+    "switch_start": -0.006427450422875255
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.48904780787639646,
+    "train_acc": 0.98828125,
+    "switch_start": -0.016435085689622125
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.40125987141604336,
+    "train_acc": 0.99609375,
+    "switch_start": -0.047030087033942444
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.3168745096349284,
+    "train_acc": 0.98828125,
+    "switch_start": -0.11717875026082972
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.6476367817727724,
+    "train_acc": 0.9921875,
+    "switch_start": -0.04180679840882283
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.2768907703956933,
+    "train_acc": 0.984375,
+    "switch_start": 0.027276067947231353
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -1.0213898781409179,
+    "train_acc": 0.990234375,
+    "switch_start": -0.00919675977553091
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.001031887316082114,
+    "train_acc": 0.98828125,
+    "switch_start": 0.000887097194582684
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.2869369744310222,
+    "train_acc": 0.98828125,
+    "switch_start": 0.07683042298119382
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.8065264996663676,
+    "train_acc": 0.982421875,
+    "switch_start": 0.02657872045317049
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.6322153748400616,
+    "train_acc": 0.978515625,
+    "switch_start": 0.025601361867071598
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.0442897359314659,
+    "train_acc": 0.98828125,
+    "switch_start": 0.02958994994437878
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.990833201036895,
+    "train_acc": 0.990234375,
+    "switch_start": -0.015769817256951525
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.1653673070736788,
+    "train_acc": 0.982421875,
+    "switch_start": 0.023834837575544242
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.10290177844283616,
+    "train_acc": 0.98828125,
+    "switch_start": -0.04993527516796471
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.8573117199126415,
+    "train_acc": 0.986328125,
+    "switch_start": -0.0006014698401244211
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.313269915747062,
+    "train_acc": 0.986328125,
+    "switch_start": -0.006088528807558901
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.02316712505779528,
+    "train_acc": 0.994140625,
+    "switch_start": 0.02570025228316982
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.19500924960678714,
+    "train_acc": 0.9921875,
+    "switch_start": 0.007378054410207169
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.3547084707986251,
+    "train_acc": 0.98828125,
+    "switch_start": -0.030593429426424935
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.09164999989782835,
+    "train_acc": 0.986328125,
+    "switch_start": -0.027870511471054377
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -1.1250215631503193,
+    "train_acc": 0.990234375,
+    "switch_start": -0.024838137261998437
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.9867897311684155,
+    "train_acc": 0.994140625,
+    "switch_start": 0.07568925775840529
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.3921162694467903,
+    "train_acc": 0.990234375,
+    "switch_start": -0.05214236757859092
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.012606984196279133,
+    "train_acc": 0.986328125,
+    "switch_start": -0.043247005389677316
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.6190202798161414,
+    "train_acc": 0.99609375,
+    "switch_start": 0.02840618798944406
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.7697900391974403,
+    "train_acc": 0.98828125,
+    "switch_start": -0.038544507188387034
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.217049773454149,
+    "train_acc": 0.978515625,
+    "switch_start": -0.030063354327224612
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.1421883094580152,
+    "train_acc": 0.994140625,
+    "switch_start": 0.021487184608531683
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.7771955774210563,
+    "train_acc": 0.9921875,
+    "switch_start": -0.012172774725427021
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.7097195386197296,
+    "train_acc": 0.98828125,
+    "switch_start": -0.01502276808646149
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 1.0028048941532546,
+    "train_acc": 0.9921875,
+    "switch_start": -0.019045631666033874
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -1.010651611361569,
+    "train_acc": 0.9921875,
+    "switch_start": -0.022898138718415895
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.2547322189764851,
+    "train_acc": 0.990234375,
+    "switch_start": 0.011243912068046293
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.34548726018742926,
+    "train_acc": 0.98828125,
+    "switch_start": -0.026197628330910695
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.38979304067372944,
+    "train_acc": 0.994140625,
+    "switch_start": 0.004252081215485224
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.8592145179980211,
+    "train_acc": 0.9921875,
+    "switch_start": 0.04888733635089792
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.4860531425819816,
+    "train_acc": 0.986328125,
+    "switch_start": 0.015148977469688107
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.4754158248183422,
+    "train_acc": 0.984375,
+    "switch_start": 0.06035345476368362
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.7217235173102592,
+    "train_acc": 0.98828125,
+    "switch_start": -0.05062041395611247
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.3488220329093641,
+    "train_acc": 0.986328125,
+    "switch_start": 0.06835433855276725
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.01844543803299875,
+    "train_acc": 0.986328125,
+    "switch_start": -0.02381328945327125
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.3276955761709522,
+    "train_acc": 0.990234375,
+    "switch_start": -0.008573694107409753
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.8958977448168963,
+    "train_acc": 0.990234375,
+    "switch_start": 0.032470480438159345
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.2236685178454229,
+    "train_acc": 0.990234375,
+    "switch_start": -0.1000485815195278
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.3742380294913466,
+    "train_acc": 0.986328125,
+    "switch_start": 0.02726747563635618
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.18341332352434842,
+    "train_acc": 0.990234375,
+    "switch_start": 0.0386798515008967
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.2789163100539172,
+    "train_acc": 0.986328125,
+    "switch_start": -0.04155567227671689
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.8015950981236803,
+    "train_acc": 0.982421875,
+    "switch_start": 0.003817634719127253
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.12864417386731597,
+    "train_acc": 0.9921875,
+    "switch_start": -0.01505919531230644
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.19799944979102657,
+    "train_acc": 0.98828125,
+    "switch_start": -0.0161035440151418
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.045556998953485056,
+    "train_acc": 0.99609375,
+    "switch_start": -0.033792719242404554
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.34546812949146966,
+    "train_acc": 0.994140625,
+    "switch_start": 0.0033257246532278546
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.050007554624820816,
+    "train_acc": 0.990234375,
+    "switch_start": -0.031259691771847224
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.4126898046986834,
+    "train_acc": 0.98828125,
+    "switch_start": 0.09024804559990726
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.21289792493347076,
+    "train_acc": 0.9921875,
+    "switch_start": -0.011549012652352204
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.13732336652808813,
+    "train_acc": 0.990234375,
+    "switch_start": -0.04532726986390517
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.5795378939056862,
+    "train_acc": 0.984375,
+    "switch_start": 0.03818195087219245
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.3129645725431912,
+    "train_acc": 0.990234375,
+    "switch_start": 0.01400834730784335
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.04877488030866918,
+    "train_acc": 0.990234375,
+    "switch_start": -0.0032430151357709333
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.15815132724664088,
+    "train_acc": 0.998046875,
+    "switch_start": -0.03108652448370377
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.5968660298718168,
+    "train_acc": 0.98828125,
+    "switch_start": -0.017347941526368822
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.11093209518232539,
+    "train_acc": 0.998046875,
+    "switch_start": 0.019600699391585465
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.4268136870088577,
+    "train_acc": 0.994140625,
+    "switch_start": -0.03445633769893387
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.0064348762585148545,
+    "train_acc": 0.994140625,
+    "switch_start": -0.024138521929544136
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.22189075053367074,
+    "train_acc": 0.986328125,
+    "switch_start": 0.03218057311630474
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.4665316819279378,
+    "train_acc": 0.998046875,
+    "switch_start": -0.004563092145312905
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.3372685545359443,
+    "train_acc": 0.990234375,
+    "switch_start": -0.017529155541656686
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.2404745795931167,
+    "train_acc": 0.98828125,
+    "switch_start": 0.019357817344569404
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.252804624914206,
+    "train_acc": 0.998046875,
+    "switch_start": 0.012918204355408212
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.010373239295729336,
+    "train_acc": 0.990234375,
+    "switch_start": -0.01852845931498047
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.3012894947073541,
+    "train_acc": 0.98828125,
+    "switch_start": -0.05617314698431845
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.9931150431007089,
+    "train_acc": 0.986328125,
+    "switch_start": 0.022418386775372
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.7848858128279943,
+    "train_acc": 0.9921875,
+    "switch_start": -0.042998657002873086
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.5649091069344961,
+    "train_acc": 0.98828125,
+    "switch_start": -0.0711687210597853
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.7364972393749549,
+    "train_acc": 0.98828125,
+    "switch_start": -0.014505374690682079
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.3821994873878628,
+    "train_acc": 0.990234375,
+    "switch_start": -0.004757569410685211
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.3541338916606438,
+    "train_acc": 0.994140625,
+    "switch_start": -0.026400177052984825
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.6045780930290708,
+    "train_acc": 0.9921875,
+    "switch_start": -0.005807947930727058
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.1447796366676336,
+    "train_acc": 0.98828125,
+    "switch_start": 0.03786491891447158
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.16646199287048094,
+    "train_acc": 0.982421875,
+    "switch_start": 0.04621681546579607
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.9128832112063537,
+    "train_acc": 0.9921875,
+    "switch_start": -0.0378336148551526
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.04759187132362047,
+    "train_acc": 0.98828125,
+    "switch_start": -0.03343299000009633
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.772010874640224,
+    "train_acc": 0.98828125,
+    "switch_start": -0.029217413371976565
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.5486717512047978,
+    "train_acc": 0.982421875,
+    "switch_start": 0.018631534890018342
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.030734592664580056,
+    "train_acc": 0.9921875,
+    "switch_start": -0.015627284197167378
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -1.310655816492373,
+    "train_acc": 0.984375,
+    "switch_start": 0.048727779470495336
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.1871560311921866,
+    "train_acc": 0.9921875,
+    "switch_start": 0.10086859236766327
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.07241086728125515,
+    "train_acc": 0.98828125,
+    "switch_start": 0.005479992912843058
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.39510088472041277,
+    "train_acc": 0.98828125,
+    "switch_start": -0.041000478751815464
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.5422525770676613,
+    "train_acc": 0.986328125,
+    "switch_start": -0.0021793840031451416
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.6127346936119967,
+    "train_acc": 0.994140625,
+    "switch_start": -0.0323421587068405
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.9335333861447402,
+    "train_acc": 0.98828125,
+    "switch_start": 0.013951500265546209
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.43169644835411064,
+    "train_acc": 0.994140625,
+    "switch_start": -0.018706364230793034
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.16538947288352474,
+    "train_acc": 0.98828125,
+    "switch_start": 0.014441430317797432
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.9915585876027396,
+    "train_acc": 0.99609375,
+    "switch_start": 0.016386336282988807
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.3346829499583171,
+    "train_acc": 0.990234375,
+    "switch_start": 0.019584932238591805
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -1.1590009280431393,
+    "train_acc": 0.986328125,
+    "switch_start": 0.028382478854847275
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.7843743480894511,
+    "train_acc": 0.98828125,
+    "switch_start": -0.05708992602496893
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.1635853540010648,
+    "train_acc": 0.98828125,
+    "switch_start": 0.0076976988235988196
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.17324734865448765,
+    "train_acc": 0.994140625,
+    "switch_start": 0.054434536939222775
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.7011587256802329,
+    "train_acc": 0.986328125,
+    "switch_start": -0.022600128790441085
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.8096533123176667,
+    "train_acc": 0.984375,
+    "switch_start": 0.00540757016169515
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.09673165078000587,
+    "train_acc": 0.99609375,
+    "switch_start": 0.015482227462748384
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.5471119620395825,
+    "train_acc": 0.974609375,
+    "switch_start": 0.03321109808318712
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.5777737768425057,
+    "train_acc": 0.986328125,
+    "switch_start": 0.0024003801265934785
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.1267636101990655,
+    "train_acc": 0.984375,
+    "switch_start": 0.04313967583260887
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.7991430260413235,
+    "train_acc": 0.990234375,
+    "switch_start": 0.013324369214500744
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.44607285087255444,
+    "train_acc": 0.9921875,
+    "switch_start": 0.029149258315671292
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.48249860390706345,
+    "train_acc": 0.98828125,
+    "switch_start": 0.05580477103877801
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.07045258291722648,
+    "train_acc": 0.9921875,
+    "switch_start": -0.008946553275042103
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -1.1504446309037704,
+    "train_acc": 0.998046875,
+    "switch_start": -0.0636721162268628
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.6674470235232457,
+    "train_acc": 0.98828125,
+    "switch_start": 0.008707756801765294
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.2552119181013796,
+    "train_acc": 0.9921875,
+    "switch_start": 0.030461335539535027
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.2818897273669555,
+    "train_acc": 0.986328125,
+    "switch_start": -0.005553604298080256
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 1.0681197588191722,
+    "train_acc": 0.9921875,
+    "switch_start": 0.017818939305395978
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.355037944170578,
+    "train_acc": 0.9921875,
+    "switch_start": 0.024495033778812618
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.4330901070927512,
+    "train_acc": 0.986328125,
+    "switch_start": 0.013002054939938992
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.779929191842929,
+    "train_acc": 0.9921875,
+    "switch_start": 0.04310245395885437
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.15469298731326248,
+    "train_acc": 0.9921875,
+    "switch_start": -0.0545806158781391
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.15631463384266542,
+    "train_acc": 0.982421875,
+    "switch_start": 0.02140276145659084
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.7588560045455508,
+    "train_acc": 0.994140625,
+    "switch_start": -0.12044194577662715
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.26278721860605575,
+    "train_acc": 0.990234375,
+    "switch_start": -0.031641447165590864
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.7038396024258479,
+    "train_acc": 0.9921875,
+    "switch_start": -0.008307967457502358
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.08464741573828649,
+    "train_acc": 0.984375,
+    "switch_start": 0.036878143432768545
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.06892402614002899,
+    "train_acc": 0.9921875,
+    "switch_start": 0.0073221528606446555
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.56920631757354,
+    "train_acc": 0.98828125,
+    "switch_start": -0.012653430561986955
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.23928477800285536,
+    "train_acc": 0.986328125,
+    "switch_start": 0.006886845361584434
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.30183335035243625,
+    "train_acc": 0.9921875,
+    "switch_start": -0.04575445169295845
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.9272900126665541,
+    "train_acc": 0.994140625,
+    "switch_start": -0.041119370817116696
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.2945212496146621,
+    "train_acc": 0.9921875,
+    "switch_start": 0.016027718178379242
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.3062305810387659,
+    "train_acc": 0.994140625,
+    "switch_start": -0.005312493597372309
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.2890604144055786,
+    "train_acc": 0.98828125,
+    "switch_start": -0.011608864913327265
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.12820642859902426,
+    "train_acc": 0.982421875,
+    "switch_start": 0.036505443262763046
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.6812181679526776,
+    "train_acc": 0.98828125,
+    "switch_start": -0.02689769714834273
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.5273275473960045,
+    "train_acc": 0.98828125,
+    "switch_start": -0.0040715783849880356
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.14240592024218,
+    "train_acc": 0.98828125,
+    "switch_start": -0.05466898516352742
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -1.0238236790736908,
+    "train_acc": 0.986328125,
+    "switch_start": 0.021838102349439992
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.34583638176615833,
+    "train_acc": 0.9921875,
+    "switch_start": 0.010817834718225222
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.3013007653619474,
+    "train_acc": 0.9921875,
+    "switch_start": -0.009103632592048435
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.5116241379205322,
+    "train_acc": 0.990234375,
+    "switch_start": -0.020649314900727654
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.26028822667075496,
+    "train_acc": 0.986328125,
+    "switch_start": -0.03472099790642491
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.17357979177473137,
+    "train_acc": 0.994140625,
+    "switch_start": 0.021731787134831385
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.43455295682914963,
+    "train_acc": 0.98828125,
+    "switch_start": -0.07061082971390428
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.3725509303570096,
+    "train_acc": 0.986328125,
+    "switch_start": 0.010537921597251865
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.08681364632183326,
+    "train_acc": 0.984375,
+    "switch_start": 0.05618349059389455
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.18787357629704485,
+    "train_acc": 0.986328125,
+    "switch_start": 0.04845560780984849
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.6736665569760065,
+    "train_acc": 0.986328125,
+    "switch_start": -0.0011031075940633088
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.13632824423469736,
+    "train_acc": 0.986328125,
+    "switch_start": -0.0646596270886132
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.0009422172875430401,
+    "train_acc": 0.994140625,
+    "switch_start": 0.05680807928396238
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.31110211447288183,
+    "train_acc": 0.990234375,
+    "switch_start": 0.013461060423899688
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.4297715169207864,
+    "train_acc": 0.986328125,
+    "switch_start": 0.016305814293412324
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.6438033425212866,
+    "train_acc": 0.990234375,
+    "switch_start": -0.032094345040003046
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.10372553640789295,
+    "train_acc": 0.986328125,
+    "switch_start": 0.046004914954271045
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.6319067369545213,
+    "train_acc": 0.994140625,
+    "switch_start": 0.048294917558233195
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.2096917994131597,
+    "train_acc": 0.986328125,
+    "switch_start": 0.02854881210662407
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.6215238254575393,
+    "train_acc": 0.994140625,
+    "switch_start": 0.027640678222497453
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.18930338566470412,
+    "train_acc": 0.9921875,
+    "switch_start": -0.0011219489700915444
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.22145583771139088,
+    "train_acc": 0.98828125,
+    "switch_start": -0.0003053067548458477
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.32339528705319825,
+    "train_acc": 0.984375,
+    "switch_start": -0.0033182399908734802
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.027607023728682456,
+    "train_acc": 0.98828125,
+    "switch_start": 0.012775130308247938
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.15878296900416164,
+    "train_acc": 0.98828125,
+    "switch_start": -0.009039684487659811
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.001033660635072764,
+    "train_acc": 0.99609375,
+    "switch_start": -0.026904718832210052
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.047968547806907916,
+    "train_acc": 0.98828125,
+    "switch_start": -0.05021016908532065
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.17858072011140386,
+    "train_acc": 0.98828125,
+    "switch_start": 0.019334828542157373
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.10989989090738517,
+    "train_acc": 0.990234375,
+    "switch_start": -0.008604970785797087
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.22754474771773756,
+    "train_acc": 0.9921875,
+    "switch_start": 0.04026094685530132
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.5680575326594509,
+    "train_acc": 0.98828125,
+    "switch_start": -0.03470080404915653
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.7885324627147933,
+    "train_acc": 0.98828125,
+    "switch_start": 0.03566963655412703
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.9444764035342346,
+    "train_acc": 0.98828125,
+    "switch_start": -0.08069592875002564
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.5965551162031132,
+    "train_acc": 0.98046875,
+    "switch_start": -0.010460992954864365
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.006759261447881013,
+    "train_acc": 0.986328125,
+    "switch_start": -0.07437563127080454
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.13319328325670918,
+    "train_acc": 0.98828125,
+    "switch_start": -0.02396581872944757
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.20289001543351554,
+    "train_acc": 0.9921875,
+    "switch_start": -0.043510199369617635
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.9245580297805114,
+    "train_acc": 0.998046875,
+    "switch_start": 0.032031209409400255
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.4687811824096437,
+    "train_acc": 0.990234375,
+    "switch_start": -0.0028183272730782838
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.47841496092726055,
+    "train_acc": 0.9921875,
+    "switch_start": -0.017462465886527022
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.3247105183672693,
+    "train_acc": 0.98828125,
+    "switch_start": -0.054384582735893125
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.009717270622732754,
+    "train_acc": 0.98046875,
+    "switch_start": 0.03497831331101964
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.6465231615315892,
+    "train_acc": 0.990234375,
+    "switch_start": -0.09230526790257991
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.4474112621927581,
+    "train_acc": 0.994140625,
+    "switch_start": -0.009612246739425677
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.8558704190984324,
+    "train_acc": 0.998046875,
+    "switch_start": -0.02299800338443085
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.6324829558060828,
+    "train_acc": 0.9921875,
+    "switch_start": -0.028158075694562516
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.16991063834769948,
+    "train_acc": 0.986328125,
+    "switch_start": -0.040133671415574015
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.04200184429141149,
+    "train_acc": 0.9921875,
+    "switch_start": -0.054390517163651175
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.5799035626178098,
+    "train_acc": 0.994140625,
+    "switch_start": -0.020836153652585215
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.39900152446293846,
+    "train_acc": 0.98046875,
+    "switch_start": -0.07543487305796195
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.6907872692411618,
+    "train_acc": 0.990234375,
+    "switch_start": 0.039190714604907195
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.20689618156833195,
+    "train_acc": 0.990234375,
+    "switch_start": 0.06825526949424393
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.42171721597019585,
+    "train_acc": 0.986328125,
+    "switch_start": -0.045773466547899246
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.37727852111937615,
+    "train_acc": 0.99609375,
+    "switch_start": -0.0007420297226112399
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.22692974093472673,
+    "train_acc": 0.994140625,
+    "switch_start": 0.06092362828267402
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.41314299730219634,
+    "train_acc": 0.990234375,
+    "switch_start": -0.044265060467080675
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.1329033789684895,
+    "train_acc": 0.98828125,
+    "switch_start": -0.01307157136535048
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.03721717840942618,
+    "train_acc": 0.98828125,
+    "switch_start": -0.10438038254121494
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.3426250035950652,
+    "train_acc": 0.984375,
+    "switch_start": -0.05067106286137399
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.2105052151566572,
+    "train_acc": 0.984375,
+    "switch_start": -0.029877650549631676
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.5250312305957237,
+    "train_acc": 0.98828125,
+    "switch_start": -0.0013728687025758401
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.5685407148624091,
+    "train_acc": 0.982421875,
+    "switch_start": -0.021154739486305342
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.5111577075073407,
+    "train_acc": 1.0,
+    "switch_start": -0.012109999267781052
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.20443672638764687,
+    "train_acc": 0.986328125,
+    "switch_start": -0.0022620675476858598
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.6351690264214693,
+    "train_acc": 0.99609375,
+    "switch_start": 0.03464900365917041
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.3367848614395266,
+    "train_acc": 0.984375,
+    "switch_start": 0.02855158949086539
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.5756896699247596,
+    "train_acc": 0.98828125,
+    "switch_start": 0.013140200680461227
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.01784442271786224,
+    "train_acc": 0.9921875,
+    "switch_start": -0.07542472881830725
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.0637004825930716,
+    "train_acc": 0.994140625,
+    "switch_start": -0.016470601144775103
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.155374513927121,
+    "train_acc": 0.994140625,
+    "switch_start": -0.06947635241675273
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.7472875794957861,
+    "train_acc": 0.994140625,
+    "switch_start": 0.004080859173790176
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.20397534975513631,
+    "train_acc": 0.98828125,
+    "switch_start": -0.09015427539880283
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.4628764840660641,
+    "train_acc": 0.990234375,
+    "switch_start": -0.029945780243454574
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.26573487195155154,
+    "train_acc": 0.986328125,
+    "switch_start": -0.016905380103900407
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.4429637298117204,
+    "train_acc": 0.986328125,
+    "switch_start": 0.0019586596140065272
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.01936959630660201,
+    "train_acc": 0.990234375,
+    "switch_start": 0.04595488887539555
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.3239433985275938,
+    "train_acc": 0.984375,
+    "switch_start": 0.00821118351199386
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.4211335299215684,
+    "train_acc": 0.986328125,
+    "switch_start": 0.061137560097340234
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.4666263862276664,
+    "train_acc": 0.990234375,
+    "switch_start": -0.007368729832163256
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.3694986337616216,
+    "train_acc": 0.9921875,
+    "switch_start": 0.02599441487130421
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.04667499003172135,
+    "train_acc": 0.986328125,
+    "switch_start": 0.03466274122740686
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.2516001841556748,
+    "train_acc": 0.99609375,
+    "switch_start": 0.021568289342638484
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -1.211191589572945,
+    "train_acc": 0.9921875,
+    "switch_start": 0.005618023294322647
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 1.1446227926231398,
+    "train_acc": 0.99609375,
+    "switch_start": -0.06372986016017171
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.6799756613587833,
+    "train_acc": 0.98828125,
+    "switch_start": -0.009491022461860375
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.06051558630820175,
+    "train_acc": 0.98828125,
+    "switch_start": -0.09479849348934699
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.16513357556409547,
+    "train_acc": 0.986328125,
+    "switch_start": 0.0020772925924884334
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.262223391321278,
+    "train_acc": 0.98828125,
+    "switch_start": 0.04899145226553987
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.09593166807237086,
+    "train_acc": 0.98828125,
+    "switch_start": -0.001356186149245797
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 1.18467217850828,
+    "train_acc": 0.990234375,
+    "switch_start": -0.06580131398801628
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.0612741828479553,
+    "train_acc": 0.9921875,
+    "switch_start": 0.055791391439168864
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.25256368961516884,
+    "train_acc": 0.99609375,
+    "switch_start": -0.05156737417003532
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.6560087027135425,
+    "train_acc": 0.9921875,
+    "switch_start": 0.039711367841393244
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.21396276151028298,
+    "train_acc": 0.982421875,
+    "switch_start": -0.049029369885190896
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.3011297228628049,
+    "train_acc": 0.9921875,
+    "switch_start": 0.02061819096612367
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.8715697086764669,
+    "train_acc": 0.990234375,
+    "switch_start": 0.04454417046123414
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.07279346824369842,
+    "train_acc": 0.982421875,
+    "switch_start": 0.006973876586041518
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.40451033447128604,
+    "train_acc": 0.9921875,
+    "switch_start": 0.08507498967609681
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.33990574498685766,
+    "train_acc": 0.986328125,
+    "switch_start": -0.02331888902112693
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -1.0413461078640351,
+    "train_acc": 0.990234375,
+    "switch_start": -0.004869091504464229
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.3511714762822752,
+    "train_acc": 0.984375,
+    "switch_start": -0.07573926624616595
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.5817854932630817,
+    "train_acc": 0.984375,
+    "switch_start": 0.03784898621113753
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.018642319684777364,
+    "train_acc": 0.99609375,
+    "switch_start": -0.006384525301361288
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.841433074936585,
+    "train_acc": 0.990234375,
+    "switch_start": 0.03306427054327456
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.589744697591484,
+    "train_acc": 0.990234375,
+    "switch_start": 0.023116795113465514
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.5751321486189787,
+    "train_acc": 0.9921875,
+    "switch_start": 0.010425898650847674
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.9781099453826607,
+    "train_acc": 0.986328125,
+    "switch_start": 0.02457449032429821
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -1.1155084890566596,
+    "train_acc": 0.982421875,
+    "switch_start": -0.0006617965334471486
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.17204496312873602,
+    "train_acc": 0.994140625,
+    "switch_start": 0.08035422931538727
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.13292408407235168,
+    "train_acc": 0.994140625,
+    "switch_start": -0.03757758243440376
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 1.0840100640594366,
+    "train_acc": 0.982421875,
+    "switch_start": -0.05384523451013804
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.31061335529754763,
+    "train_acc": 0.98828125,
+    "switch_start": 0.009272468054396518
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -1.0052932469221612,
+    "train_acc": 0.986328125,
+    "switch_start": -0.019169218595434023
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.31443987889399166,
+    "train_acc": 0.9921875,
+    "switch_start": 0.01367058862998142
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 1.0083889470858853,
+    "train_acc": 0.9921875,
+    "switch_start": 0.01260425904103716
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.4409082999579602,
+    "train_acc": 0.982421875,
+    "switch_start": -0.037592706532752554
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.4699003266874598,
+    "train_acc": 0.994140625,
+    "switch_start": -0.0024201678423276933
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.2873665817857664,
+    "train_acc": 0.984375,
+    "switch_start": 0.0557491589290301
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.6362759123383911,
+    "train_acc": 0.990234375,
+    "switch_start": -0.009709720336726811
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.20827392131700329,
+    "train_acc": 0.9921875,
+    "switch_start": -0.010266937102289611
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.4502176197613748,
+    "train_acc": 0.978515625,
+    "switch_start": 0.04446161158979217
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.10325285041298365,
+    "train_acc": 0.9921875,
+    "switch_start": 0.02393803824611015
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.5296165397526726,
+    "train_acc": 0.990234375,
+    "switch_start": 0.02239727360152459
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.4296390460430916,
+    "train_acc": 0.984375,
+    "switch_start": 0.021109334784497596
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.3358713773128226,
+    "train_acc": 0.98828125,
+    "switch_start": -0.060178747288039944
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.5096317196405804,
+    "train_acc": 0.984375,
+    "switch_start": -0.076635744365258
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.555462083846689,
+    "train_acc": 0.998046875,
+    "switch_start": 0.0321579503819296
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.26503815274422426,
+    "train_acc": 0.986328125,
+    "switch_start": -0.06278142291379227
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.009179128890097421,
+    "train_acc": 0.986328125,
+    "switch_start": -0.004894668044848283
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.5050005020723872,
+    "train_acc": 0.984375,
+    "switch_start": -0.0018540539781909562
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.19789205584648764,
+    "train_acc": 0.98828125,
+    "switch_start": -0.005367105383630754
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.21967097513697126,
+    "train_acc": 0.990234375,
+    "switch_start": -0.015275421353296771
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.054932392937290075,
+    "train_acc": 0.9921875,
+    "switch_start": -0.05457019031621439
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.5645329877534017,
+    "train_acc": 0.990234375,
+    "switch_start": 0.03178483472084727
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.6569606924900575,
+    "train_acc": 0.990234375,
+    "switch_start": 0.02789328800218846
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.03818444475913563,
+    "train_acc": 0.98828125,
+    "switch_start": 0.010476567135896054
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.062392360692614474,
+    "train_acc": 0.9921875,
+    "switch_start": 0.02033454197095988
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.9005233684869489,
+    "train_acc": 0.990234375,
+    "switch_start": -0.005361686067898264
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.1246403125808293,
+    "train_acc": 0.9921875,
+    "switch_start": -0.06194611917395894
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.6262310676820487,
+    "train_acc": 0.982421875,
+    "switch_start": -0.011535758645606383
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.32312490931092963,
+    "train_acc": 0.99609375,
+    "switch_start": -0.03682001752665803
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.13278192001988426,
+    "train_acc": 0.98828125,
+    "switch_start": 0.07983771786529958
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.5340307874568255,
+    "train_acc": 0.994140625,
+    "switch_start": -0.021346847954854302
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.32707945135448013,
+    "train_acc": 0.994140625,
+    "switch_start": 0.05228231707694676
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.391562263559099,
+    "train_acc": 0.99609375,
+    "switch_start": 0.01887322428358737
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.1342204042679052,
+    "train_acc": 0.98828125,
+    "switch_start": 0.04379667208809383
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.3331584144366141,
+    "train_acc": 0.9921875,
+    "switch_start": -0.08062925001671847
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.2794016474810808,
+    "train_acc": 0.990234375,
+    "switch_start": 0.042015278443750206
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.2339366456644613,
+    "train_acc": 0.990234375,
+    "switch_start": -0.01836150411935325
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.0674582446271984,
+    "train_acc": 0.9921875,
+    "switch_start": 0.005386855024576136
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.2683770409820442,
+    "train_acc": 0.982421875,
+    "switch_start": 0.039020228262878674
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.06471221028849855,
+    "train_acc": 0.98828125,
+    "switch_start": -0.013553208882398304
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.2917157127689883,
+    "train_acc": 0.986328125,
+    "switch_start": 0.002553564011439787
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.3231180978993239,
+    "train_acc": 0.986328125,
+    "switch_start": 0.015112979660510655
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.6655606022824191,
+    "train_acc": 0.990234375,
+    "switch_start": -0.06387552047646036
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.255267681126748,
+    "train_acc": 0.984375,
+    "switch_start": -0.07363297697158216
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.7509310326405292,
+    "train_acc": 0.990234375,
+    "switch_start": -0.012569842610334468
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.022609030784589812,
+    "train_acc": 0.9921875,
+    "switch_start": -0.08626599232978446
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.14996165613616658,
+    "train_acc": 0.986328125,
+    "switch_start": -0.024458063573621118
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.37147738068149017,
+    "train_acc": 0.99609375,
+    "switch_start": -0.02589488580056158
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.18014403985606414,
+    "train_acc": 0.994140625,
+    "switch_start": -0.051786734535975605
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.07244052407231655,
+    "train_acc": 0.9921875,
+    "switch_start": -0.05310404346381013
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.4714143722005686,
+    "train_acc": 0.9921875,
+    "switch_start": -0.04631460609576043
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.006692419849514575,
+    "train_acc": 0.9921875,
+    "switch_start": -0.06553037758660858
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.5873285171108189,
+    "train_acc": 0.9921875,
+    "switch_start": 0.008741719137849283
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.6726136067784023,
+    "train_acc": 0.9921875,
+    "switch_start": 0.0064053476734505874
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.5949989218518582,
+    "train_acc": 0.984375,
+    "switch_start": 0.01379847486057445
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.5544747293419869,
+    "train_acc": 0.99609375,
+    "switch_start": 0.013223168377722904
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.18108766496005982,
+    "train_acc": 0.990234375,
+    "switch_start": -0.01229726119624931
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.04435281225008783,
+    "train_acc": 0.9921875,
+    "switch_start": 0.06915325471555406
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.1390754329266527,
+    "train_acc": 0.990234375,
+    "switch_start": -0.07144194767589895
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 1.196026176747778,
+    "train_acc": 0.98828125,
+    "switch_start": -0.0010839520935900222
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.4062412118792047,
+    "train_acc": 0.986328125,
+    "switch_start": -0.059406415246590336
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -1.2683926926539355,
+    "train_acc": 0.990234375,
+    "switch_start": 0.05712973141539443
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.9152476152301343,
+    "train_acc": 0.9921875,
+    "switch_start": 0.03608631969319389
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.8156102650848083,
+    "train_acc": 0.994140625,
+    "switch_start": 0.04602735328437857
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.5570797586592071,
+    "train_acc": 0.990234375,
+    "switch_start": -0.03305510251137826
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.19625125542576932,
+    "train_acc": 0.994140625,
+    "switch_start": 0.09123685789434853
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.8641333450426217,
+    "train_acc": 0.990234375,
+    "switch_start": 0.03483076947802914
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.24846818484218297,
+    "train_acc": 0.98046875,
+    "switch_start": -0.05015804053229457
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 1.1306557234779966,
+    "train_acc": 0.984375,
+    "switch_start": 0.11963656366064501
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.8915422800391568,
+    "train_acc": 0.990234375,
+    "switch_start": 0.009981115508903925
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 1.1213414237346409,
+    "train_acc": 0.994140625,
+    "switch_start": -0.039401932938011
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.33485323627933256,
+    "train_acc": 0.990234375,
+    "switch_start": -0.02691577617694887
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.06301490558247486,
+    "train_acc": 0.98828125,
+    "switch_start": 0.031348519945149894
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.724870887993692,
+    "train_acc": 0.9921875,
+    "switch_start": -0.03951623889266936
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.33904219551488113,
+    "train_acc": 0.998046875,
+    "switch_start": -0.0005828524912467148
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -1.0101621909774665,
+    "train_acc": 0.98828125,
+    "switch_start": 0.07722457812153133
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.3458279360530177,
+    "train_acc": 0.986328125,
+    "switch_start": 0.008510651323626137
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.23141437670471246,
+    "train_acc": 0.994140625,
+    "switch_start": -0.02832741102294482
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.923751762894711,
+    "train_acc": 0.9921875,
+    "switch_start": -0.04588351395371207
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.05310806828304037,
+    "train_acc": 0.984375,
+    "switch_start": 0.044566125236506465
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.8577065662386807,
+    "train_acc": 0.9921875,
+    "switch_start": 0.03972028999248492
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.40599351721458,
+    "train_acc": 0.98828125,
+    "switch_start": -0.02704468563425886
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -1.1320813282843576,
+    "train_acc": 0.990234375,
+    "switch_start": 0.02909035746899773
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.2682330356302519,
+    "train_acc": 0.990234375,
+    "switch_start": 0.03649475758117811
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.007988346964854162,
+    "train_acc": 0.994140625,
+    "switch_start": -0.03474258551822
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.4998528217600175,
+    "train_acc": 0.9921875,
+    "switch_start": 0.03179139267925124
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.5764152471341107,
+    "train_acc": 0.994140625,
+    "switch_start": -0.029400645300404392
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.22715206458851916,
+    "train_acc": 0.994140625,
+    "switch_start": 0.04766255601385482
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.4324818645932478,
+    "train_acc": 0.98828125,
+    "switch_start": 0.025199261153592216
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.29089103299648056,
+    "train_acc": 0.986328125,
+    "switch_start": 0.007937494702290437
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.1543964521767175,
+    "train_acc": 0.986328125,
+    "switch_start": 0.0434095585590898
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.057685843489013955,
+    "train_acc": 0.99609375,
+    "switch_start": -0.07164645896103299
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.02994996614526607,
+    "train_acc": 0.978515625,
+    "switch_start": 0.03681494649553943
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.34704074725696765,
+    "train_acc": 0.9921875,
+    "switch_start": 0.009342975280245084
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.13080777080524142,
+    "train_acc": 0.9921875,
+    "switch_start": -0.013938328066202672
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.26762894940627163,
+    "train_acc": 0.990234375,
+    "switch_start": 0.04066088254389723
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.33091862267920574,
+    "train_acc": 0.984375,
+    "switch_start": 0.01993162240430821
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.8791014530855559,
+    "train_acc": 0.986328125,
+    "switch_start": -0.02717835029474472
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.3051453038003744,
+    "train_acc": 0.9921875,
+    "switch_start": -0.04544717544783503
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.6432291555694503,
+    "train_acc": 0.9765625,
+    "switch_start": -0.018278302831353302
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.40907068527814755,
+    "train_acc": 0.982421875,
+    "switch_start": 0.051917072123220914
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.21480261693190308,
+    "train_acc": 0.986328125,
+    "switch_start": -0.09152043836818441
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.14772942826116386,
+    "train_acc": 0.98828125,
+    "switch_start": 0.018697416202233516
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.4773421873634286,
+    "train_acc": 0.98828125,
+    "switch_start": -0.08875373095074
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.485290859090818,
+    "train_acc": 0.994140625,
+    "switch_start": 0.047813608956644875
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.01834933905312436,
+    "train_acc": 0.9921875,
+    "switch_start": 0.007545146525606306
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.004386385438338136,
+    "train_acc": 0.990234375,
+    "switch_start": -0.04801678042033761
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.5369669454677891,
+    "train_acc": 0.982421875,
+    "switch_start": 0.025599481753199146
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.356802330500377,
+    "train_acc": 0.98046875,
+    "switch_start": -0.0835064311554661
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.5380597057673819,
+    "train_acc": 0.984375,
+    "switch_start": 0.005880309691251057
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.051930857138514586,
+    "train_acc": 0.9921875,
+    "switch_start": -0.06769153346901693
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.5804581907429898,
+    "train_acc": 0.994140625,
+    "switch_start": -0.02429009990579871
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.10766326334879639,
+    "train_acc": 0.98828125,
+    "switch_start": -0.0286295169616333
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.19312905221282944,
+    "train_acc": 0.9921875,
+    "switch_start": -0.06753433054534055
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.5280187329217294,
+    "train_acc": 0.98828125,
+    "switch_start": 0.06399138810740246
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.13261515343020422,
+    "train_acc": 0.984375,
+    "switch_start": -0.07425818324385688
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.037659954379773194,
+    "train_acc": 0.994140625,
+    "switch_start": 0.02320193590883742
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.8550882328501663,
+    "train_acc": 0.98828125,
+    "switch_start": -0.000725412204680395
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.7534209400576544,
+    "train_acc": 0.9921875,
+    "switch_start": -0.0025349436343113257
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.1549276331502456,
+    "train_acc": 0.9921875,
+    "switch_start": 0.06617413503061842
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.34864575202774134,
+    "train_acc": 0.98828125,
+    "switch_start": 0.015918019103994246
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.3013323917999333,
+    "train_acc": 0.990234375,
+    "switch_start": 0.021388953589323224
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.3383699896777955,
+    "train_acc": 0.99609375,
+    "switch_start": 0.06617601459712602
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.17798730420034775,
+    "train_acc": 0.98828125,
+    "switch_start": 0.03768359054907955
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 1.0399838604279568,
+    "train_acc": 0.98828125,
+    "switch_start": 0.05995668043435001
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -1.0108138411534375,
+    "train_acc": 0.98828125,
+    "switch_start": 0.04451751563009421
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.6410704706010837,
+    "train_acc": 0.990234375,
+    "switch_start": -0.053752940829608645
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.06124773079352592,
+    "train_acc": 0.990234375,
+    "switch_start": -0.033466739699585676
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.16995229314585636,
+    "train_acc": 0.9921875,
+    "switch_start": 0.0431352132223449
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.9965680869281214,
+    "train_acc": 0.9921875,
+    "switch_start": 0.08087841678032588
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.034786461979938454,
+    "train_acc": 0.98828125,
+    "switch_start": 0.022593959017788313
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.10917660226225978,
+    "train_acc": 0.98828125,
+    "switch_start": 0.07951877169244179
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.0689838571775327,
+    "train_acc": 0.98828125,
+    "switch_start": 0.03480561887125445
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.9264004193786819,
+    "train_acc": 0.98828125,
+    "switch_start": 0.0052797507597033035
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.543016628709634,
+    "train_acc": 0.98046875,
+    "switch_start": 0.028591566744836754
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.0225848776680041,
+    "train_acc": 0.990234375,
+    "switch_start": 0.07367667768411205
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.3166134920000158,
+    "train_acc": 0.98828125,
+    "switch_start": 0.057889956104222706
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.8949229982053091,
+    "train_acc": 0.986328125,
+    "switch_start": 0.046918292815376836
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.20797866035097512,
+    "train_acc": 0.98828125,
+    "switch_start": 0.08629914889762745
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.8948243779205763,
+    "train_acc": 0.9921875,
+    "switch_start": -0.00046332338719998374
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.44188845858323694,
+    "train_acc": 0.9921875,
+    "switch_start": -0.04304714989122528
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.1277097564458534,
+    "train_acc": 0.990234375,
+    "switch_start": 0.08309118818458279
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.18804338042148988,
+    "train_acc": 0.994140625,
+    "switch_start": -0.03555919509691462
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.06214998162675414,
+    "train_acc": 0.990234375,
+    "switch_start": -0.031980838137857084
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.8740625440075096,
+    "train_acc": 0.98828125,
+    "switch_start": 0.03176752377423207
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.5018767151124431,
+    "train_acc": 0.9921875,
+    "switch_start": 0.05737173932736241
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.522120926646503,
+    "train_acc": 0.990234375,
+    "switch_start": 0.007537928821702255
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.4586441175070881,
+    "train_acc": 0.978515625,
+    "switch_start": 0.007512843438919929
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.13226521945560857,
+    "train_acc": 0.994140625,
+    "switch_start": -0.015219068690918325
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.17639618747963445,
+    "train_acc": 0.98828125,
+    "switch_start": 0.0003528793292149322
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.1684216650584328,
+    "train_acc": 0.990234375,
+    "switch_start": -0.015465562889559517
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.5088717417646089,
+    "train_acc": 0.994140625,
+    "switch_start": 0.004345490722303766
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.49952360445148,
+    "train_acc": 0.990234375,
+    "switch_start": 0.01764291350717752
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.2722043968758788,
+    "train_acc": 0.98828125,
+    "switch_start": -0.006682206446671212
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.20857485208589666,
+    "train_acc": 0.9921875,
+    "switch_start": 0.015426809697153581
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.35195015118457196,
+    "train_acc": 0.9921875,
+    "switch_start": -0.05925378764663927
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.25023663471873986,
+    "train_acc": 0.98046875,
+    "switch_start": -0.10263200261049274
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.9728076622632298,
+    "train_acc": 0.990234375,
+    "switch_start": -0.023723956362152767
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -1.6041834735566876,
+    "train_acc": 0.9921875,
+    "switch_start": 0.05280854321276082
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 1.2492848656360827,
+    "train_acc": 0.986328125,
+    "switch_start": 0.024975511643038822
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.3315789895200626,
+    "train_acc": 0.990234375,
+    "switch_start": -0.03429772336806374
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.16887695247766704,
+    "train_acc": 0.98046875,
+    "switch_start": 0.040204549447673266
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.37480523904842317,
+    "train_acc": 0.986328125,
+    "switch_start": -0.022351359464523008
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": 0.337303656831556,
+    "train_acc": 0.98828125,
+    "switch_start": -0.023405356899559273
+   },
+   {
+    "change": 0.0,
+    "first_order": -0.0,
+    "alignment": -0.026616290225159614,
+    "train_acc": 0.990234375,
+    "switch_start": -0.11650832391249161
+   }
+  ],
+  "shared": [
+   {
+    "change": -0.02351202029533412,
+    "first_order": -0.006018693292682282,
+    "alignment": -0.16164589928974574,
+    "train_acc": 0.990234375,
+    "switch_start": 0.00795423535156611
+   },
+   {
+    "change": -0.01228321464888097,
+    "first_order": -0.003364092145005597,
+    "alignment": -0.061739906111914544,
+    "train_acc": 0.9921875,
+    "switch_start": 0.0004724049489387523
+   },
+   {
+    "change": -0.01083707319392714,
+    "first_order": -0.010354057029548813,
+    "alignment": -0.31549845563578494,
+    "train_acc": 0.98828125,
+    "switch_start": -0.033553896628462476
+   },
+   {
+    "change": 0.0715832438675607,
+    "first_order": 0.00832379519046519,
+    "alignment": 0.18914783295230297,
+    "train_acc": 0.990234375,
+    "switch_start": -0.08403081935882711
+   },
+   {
+    "change": -0.07511751374574158,
+    "first_order": -0.015164396397550487,
+    "alignment": -0.3689451003970134,
+    "train_acc": 0.990234375,
+    "switch_start": 0.059130027842095326
+   },
+   {
+    "change": 0.05795694228107741,
+    "first_order": 0.03225919770608384,
+    "alignment": 0.7017325705467216,
+    "train_acc": 0.9921875,
+    "switch_start": 0.006666334959532516
+   },
+   {
+    "change": -0.14128993194360115,
+    "first_order": -0.045436264131419477,
+    "alignment": -1.1406975686283152,
+    "train_acc": 0.99609375,
+    "switch_start": -0.027440494004475395
+   },
+   {
+    "change": 0.031500769680088,
+    "first_order": 0.01685677697989453,
+    "alignment": 0.5168538332249908,
+    "train_acc": 0.9921875,
+    "switch_start": 0.0827548604451323
+   },
+   {
+    "change": 0.05558059646366024,
+    "first_order": 0.01066355575381924,
+    "alignment": 0.24888673942947748,
+    "train_acc": 0.9921875,
+    "switch_start": 0.026374098844647177
+   },
+   {
+    "change": 0.16231918659389077,
+    "first_order": 0.04742807379004138,
+    "alignment": 1.2703907965668495,
+    "train_acc": 0.99609375,
+    "switch_start": -0.04916397849732239
+   },
+   {
+    "change": -0.26011320456378584,
+    "first_order": -0.05363702401756838,
+    "alignment": -1.130822513173066,
+    "train_acc": 0.994140625,
+    "switch_start": -0.05028209721079761
+   },
+   {
+    "change": 0.18554439952453777,
+    "first_order": 0.041715811063017055,
+    "alignment": 1.3011813981573863,
+    "train_acc": 0.990234375,
+    "switch_start": 0.05331016399941145
+   },
+   {
+    "change": -0.1318901078391878,
+    "first_order": -0.029165519135302853,
+    "alignment": -0.7681771285778518,
+    "train_acc": 0.99609375,
+    "switch_start": 0.05393426632965584
+   },
+   {
+    "change": 0.2206987492963912,
+    "first_order": 0.042751263778252946,
+    "alignment": 1.1929300335191484,
+    "train_acc": 0.994140625,
+    "switch_start": -0.006627916192324379
+   },
+   {
+    "change": 0.019857230196299383,
+    "first_order": 0.010233065890886356,
+    "alignment": 0.331351545199889,
+    "train_acc": 0.9921875,
+    "switch_start": 0.030171129567168664
+   },
+   {
+    "change": 0.024295234656201512,
+    "first_order": 0.009146838349462652,
+    "alignment": 0.23923524845129093,
+    "train_acc": 0.990234375,
+    "switch_start": -0.0002730838716030154
+   },
+   {
+    "change": 0.0670798582195793,
+    "first_order": 0.007296371138825333,
+    "alignment": 0.24293657672166857,
+    "train_acc": 0.9921875,
+    "switch_start": -0.04762760901025126
+   },
+   {
+    "change": 0.0576274170181306,
+    "first_order": 0.003385532356235581,
+    "alignment": 0.10457358739173936,
+    "train_acc": 0.98828125,
+    "switch_start": -0.002201025014160367
+   },
+   {
+    "change": 0.13449171740971805,
+    "first_order": 0.03851443330880373,
+    "alignment": 0.8876160082994515,
+    "train_acc": 0.990234375,
+    "switch_start": -0.07149256967629296
+   },
+   {
+    "change": 0.14751979054941647,
+    "first_order": 0.018683780257302614,
+    "alignment": 0.544057220362115,
+    "train_acc": 0.998046875,
+    "switch_start": -0.07646734311963985
+   },
+   {
+    "change": -0.013755603587119976,
+    "first_order": 0.0035338695896376567,
+    "alignment": 0.12705145633515683,
+    "train_acc": 0.974609375,
+    "switch_start": 0.06136625587883893
+   },
+   {
+    "change": 0.05781257342406529,
+    "first_order": 0.01585224765133723,
+    "alignment": 0.4059367540329363,
+    "train_acc": 0.990234375,
+    "switch_start": -0.01314957328941753
+   },
+   {
+    "change": -0.07258691133813724,
+    "first_order": -0.027255071961893553,
+    "alignment": -0.7549710889179384,
+    "train_acc": 0.9921875,
+    "switch_start": -0.01384608984962065
+   },
+   {
+    "change": 0.04286885596301021,
+    "first_order": 0.021604411656462614,
+    "alignment": 0.5492342822324482,
+    "train_acc": 0.98828125,
+    "switch_start": 0.037878980097757475
+   },
+   {
+    "change": 0.2176599233789253,
+    "first_order": 0.04405749712459252,
+    "alignment": 1.1034070511263945,
+    "train_acc": 0.99609375,
+    "switch_start": 0.014324021838814156
+   },
+   {
+    "change": 0.14995998512835781,
+    "first_order": 0.01901217338100756,
+    "alignment": 0.5205451587913457,
+    "train_acc": 0.986328125,
+    "switch_start": -0.02029356248334232
+   },
+   {
+    "change": 0.11390546370316429,
+    "first_order": 0.046133869544922795,
+    "alignment": 1.2622207422016025,
+    "train_acc": 0.984375,
+    "switch_start": 0.003934049735066073
+   },
+   {
+    "change": -0.005394965961471439,
+    "first_order": 0.0024455446877251147,
+    "alignment": 0.08400995591865403,
+    "train_acc": 0.986328125,
+    "switch_start": 0.009812119004502656
+   },
+   {
+    "change": -0.06592601671035589,
+    "first_order": -0.01024211899531895,
+    "alignment": -0.2261109459486474,
+    "train_acc": 0.990234375,
+    "switch_start": 0.05040901558489212
+   },
+   {
+    "change": -0.055880561572289725,
+    "first_order": -0.007372608986205567,
+    "alignment": -0.17839910693208988,
+    "train_acc": 0.986328125,
+    "switch_start": 0.011872070958981004
+   },
+   {
+    "change": 0.18168570055610325,
+    "first_order": 0.016097600891493574,
+    "alignment": 0.468199005200154,
+    "train_acc": 0.9921875,
+    "switch_start": 0.027703187594300956
+   },
+   {
+    "change": 0.06351715041850275,
+    "first_order": 0.015827146348522877,
+    "alignment": 0.446114067888582,
+    "train_acc": 0.9921875,
+    "switch_start": 0.009947731044168372
+   },
+   {
+    "change": 0.04550396192435896,
+    "first_order": 0.011614017074636197,
+    "alignment": 0.275902475747628,
+    "train_acc": 0.9921875,
+    "switch_start": -0.012980644557912212
+   },
+   {
+    "change": 0.2340536032254988,
+    "first_order": 0.02309916983125582,
+    "alignment": 0.6898194277031768,
+    "train_acc": 0.9921875,
+    "switch_start": 0.0022073027718452296
+   },
+   {
+    "change": 0.02175744099575471,
+    "first_order": 0.00547790599720952,
+    "alignment": 0.14992774394186825,
+    "train_acc": 0.986328125,
+    "switch_start": -0.0018224894462908463
+   },
+   {
+    "change": -0.03501164402243992,
+    "first_order": -0.012282738662116082,
+    "alignment": -0.2926849590236077,
+    "train_acc": 0.98828125,
+    "switch_start": 0.013389206713989684
+   },
+   {
+    "change": 0.0326352131353992,
+    "first_order": 0.0035487149256515746,
+    "alignment": 0.11286646692395519,
+    "train_acc": 0.986328125,
+    "switch_start": -0.018061195358391152
+   },
+   {
+    "change": 0.004205793080670192,
+    "first_order": 0.020424130308904054,
+    "alignment": 0.5205484726820379,
+    "train_acc": 0.9921875,
+    "switch_start": 0.07792573784299711
+   },
+   {
+    "change": 0.018570039366627114,
+    "first_order": 0.007253295168398441,
+    "alignment": 0.2028948618213448,
+    "train_acc": 0.986328125,
+    "switch_start": 0.008096430620439162
+   },
+   {
+    "change": 0.0637391139338863,
+    "first_order": 0.02011085741393922,
+    "alignment": 0.6168238906268391,
+    "train_acc": 0.994140625,
+    "switch_start": 0.02656010673312607
+   },
+   {
+    "change": 0.1308971269237091,
+    "first_order": 0.013044489164995184,
+    "alignment": 0.4080568771715196,
+    "train_acc": 0.9921875,
+    "switch_start": -0.11461793512467763
+   },
+   {
+    "change": 0.12819028262948293,
+    "first_order": 0.018630668872865228,
+    "alignment": 0.4933474778858642,
+    "train_acc": 0.99609375,
+    "switch_start": 0.03624969252784182
+   },
+   {
+    "change": 0.03120201440458837,
+    "first_order": 0.008320344348605114,
+    "alignment": 0.1693987930730539,
+    "train_acc": 0.9921875,
+    "switch_start": -0.016027114935920173
+   },
+   {
+    "change": -0.11589027572282688,
+    "first_order": -0.02463991551034797,
+    "alignment": -0.7183278022712549,
+    "train_acc": 0.9921875,
+    "switch_start": 0.07684439236424676
+   },
+   {
+    "change": 0.021096189447297256,
+    "first_order": -0.005584583409480329,
+    "alignment": -0.14323070885051814,
+    "train_acc": 0.98828125,
+    "switch_start": -0.061139733859201545
+   },
+   {
+    "change": -0.05092290062221941,
+    "first_order": -0.0033029846139961045,
+    "alignment": -0.08467311931178767,
+    "train_acc": 0.9921875,
+    "switch_start": 0.06021099913371319
+   },
+   {
+    "change": 0.1090103365777077,
+    "first_order": 0.0309471189685207,
+    "alignment": 0.8028974513610555,
+    "train_acc": 0.990234375,
+    "switch_start": 0.038428552714135554
+   },
+   {
+    "change": -0.03725362148629838,
+    "first_order": -0.01656327998580489,
+    "alignment": -0.49593642685932904,
+    "train_acc": 0.9921875,
+    "switch_start": 0.008654953851049942
+   },
+   {
+    "change": 0.08387560786982355,
+    "first_order": 0.007564465351596082,
+    "alignment": 0.17301900942730375,
+    "train_acc": 0.994140625,
+    "switch_start": -0.08206134329315706
+   },
+   {
+    "change": 0.18616965625046197,
+    "first_order": 0.02821174266152999,
+    "alignment": 0.8466853084677781,
+    "train_acc": 0.98828125,
+    "switch_start": -0.07445535989689556
+   },
+   {
+    "change": 0.011540500064847267,
+    "first_order": 0.004079220882721777,
+    "alignment": 0.10632255342727898,
+    "train_acc": 0.998046875,
+    "switch_start": -0.0062539870375389675
+   },
+   {
+    "change": -0.026794692933200782,
+    "first_order": -0.021973852173520294,
+    "alignment": -0.5401801831080977,
+    "train_acc": 0.9921875,
+    "switch_start": -0.054051545552824355
+   },
+   {
+    "change": -0.04653432616017795,
+    "first_order": -0.0071334361291050565,
+    "alignment": -0.17402141458182518,
+    "train_acc": 0.9921875,
+    "switch_start": 0.041723484146391876
+   },
+   {
+    "change": 0.06291045500984692,
+    "first_order": 0.015762175410095173,
+    "alignment": 0.48190742466067776,
+    "train_acc": 0.982421875,
+    "switch_start": -0.024642743796456038
+   },
+   {
+    "change": -0.07681815045209466,
+    "first_order": -0.00833398461871035,
+    "alignment": -0.1908623581879706,
+    "train_acc": 0.994140625,
+    "switch_start": 0.06080295928646743
+   },
+   {
+    "change": -0.043383125017298824,
+    "first_order": -0.018444687939686524,
+    "alignment": -0.5250435125435309,
+    "train_acc": 0.990234375,
+    "switch_start": -0.04363797289491583
+   },
+   {
+    "change": -0.02322750705441557,
+    "first_order": 0.01060456729212611,
+    "alignment": 0.2361179947061524,
+    "train_acc": 0.994140625,
+    "switch_start": 0.07594914139850406
+   },
+   {
+    "change": 0.012612148300033146,
+    "first_order": 0.0022677001552680875,
+    "alignment": 0.06799781830993236,
+    "train_acc": 0.990234375,
+    "switch_start": -0.0015188566618608934
+   },
+   {
+    "change": 0.15743481146055668,
+    "first_order": 0.034965997624775896,
+    "alignment": 0.9414132562534137,
+    "train_acc": 0.990234375,
+    "switch_start": -0.05665362787217934
+   },
+   {
+    "change": 0.05588526198965234,
+    "first_order": -0.0016837567412577303,
+    "alignment": 0.03735546417759039,
+    "train_acc": 0.9921875,
+    "switch_start": -0.058766648090961264
+   },
+   {
+    "change": -0.0015357872261492801,
+    "first_order": 0.0017079406437205613,
+    "alignment": 0.03396071158183256,
+    "train_acc": 0.9921875,
+    "switch_start": 0.01774254844844782
+   },
+   {
+    "change": 0.012256280409308262,
+    "first_order": 0.025461359688733594,
+    "alignment": 0.6289894939443665,
+    "train_acc": 0.994140625,
+    "switch_start": 0.06849644295189869
+   },
+   {
+    "change": 0.06059509409366014,
+    "first_order": 0.01708359376664124,
+    "alignment": 0.4046513032430096,
+    "train_acc": 0.9921875,
+    "switch_start": -0.0406090520563995
+   },
+   {
+    "change": 0.04813478674251978,
+    "first_order": 0.014491326009922676,
+    "alignment": 0.3821852442158244,
+    "train_acc": 0.990234375,
+    "switch_start": 0.00024794838172767595
+   },
+   {
+    "change": -0.032370473688209125,
+    "first_order": 0.0014236819025994474,
+    "alignment": 0.1168341761169863,
+    "train_acc": 0.9921875,
+    "switch_start": 0.04186440142565019
+   },
+   {
+    "change": 0.047483347467737524,
+    "first_order": 0.020611403147581586,
+    "alignment": 0.440672464111888,
+    "train_acc": 0.994140625,
+    "switch_start": 0.014970870650182103
+   },
+   {
+    "change": 0.020967082477645387,
+    "first_order": 0.005245284642416923,
+    "alignment": 0.13165626924722718,
+    "train_acc": 0.998046875,
+    "switch_start": 0.002855155741160538
+   },
+   {
+    "change": 0.02905292785898518,
+    "first_order": -0.0007422374436342628,
+    "alignment": 0.02171570141420276,
+    "train_acc": 0.9921875,
+    "switch_start": -0.042923165277766226
+   },
+   {
+    "change": -0.06872269722747809,
+    "first_order": -0.032385849868594295,
+    "alignment": -1.011551087113654,
+    "train_acc": 0.990234375,
+    "switch_start": -0.0017602574606529542
+   },
+   {
+    "change": -0.001965310048191067,
+    "first_order": -0.009986119381849103,
+    "alignment": -0.3001385403115093,
+    "train_acc": 0.98828125,
+    "switch_start": -0.055034572053075416
+   },
+   {
+    "change": 0.009426309761275519,
+    "first_order": -0.0020550631776093255,
+    "alignment": -0.04596001305808502,
+    "train_acc": 0.994140625,
+    "switch_start": -0.014891714657191878
+   },
+   {
+    "change": 0.07046558546112368,
+    "first_order": 0.006655964972372323,
+    "alignment": 0.17807485260962758,
+    "train_acc": 0.990234375,
+    "switch_start": -0.045336260906624654
+   },
+   {
+    "change": 0.06598421321824975,
+    "first_order": 0.019655800544869637,
+    "alignment": 0.5595536297808213,
+    "train_acc": 0.99609375,
+    "switch_start": 0.017362152663468675
+   },
+   {
+    "change": 0.03332743217635138,
+    "first_order": -0.011352715634918468,
+    "alignment": -0.35076947607825143,
+    "train_acc": 0.990234375,
+    "switch_start": -0.07605587888014845
+   },
+   {
+    "change": 0.011811119325570857,
+    "first_order": -0.006305871139189648,
+    "alignment": -0.09721448915540204,
+    "train_acc": 0.994140625,
+    "switch_start": -0.03722099068334525
+   },
+   {
+    "change": -0.14968118979971798,
+    "first_order": -0.031069167389428828,
+    "alignment": -0.8291943409682445,
+    "train_acc": 0.9921875,
+    "switch_start": 0.06603019534876553
+   },
+   {
+    "change": -0.009096365376474937,
+    "first_order": 0.016098612374208947,
+    "alignment": 0.4214974604513463,
+    "train_acc": 0.9921875,
+    "switch_start": 0.05607991193884708
+   },
+   {
+    "change": 0.060431869685000986,
+    "first_order": 0.008635259489965623,
+    "alignment": 0.24201964596991582,
+    "train_acc": 0.984375,
+    "switch_start": -0.03880515989875615
+   },
+   {
+    "change": -0.006520813056868219,
+    "first_order": -0.020864064386529737,
+    "alignment": -0.5859950877884731,
+    "train_acc": 0.9921875,
+    "switch_start": -0.042764761415784336
+   },
+   {
+    "change": -0.0030575931051074756,
+    "first_order": 0.005151271507431205,
+    "alignment": 0.14187931207929524,
+    "train_acc": 0.994140625,
+    "switch_start": 0.020668575954817924
+   },
+   {
+    "change": 0.028053556051667185,
+    "first_order": 0.0281653444428201,
+    "alignment": 0.6404179517386345,
+    "train_acc": 0.9921875,
+    "switch_start": 0.04876754247076074
+   },
+   {
+    "change": -0.06338757433264817,
+    "first_order": -0.0036416813543430886,
+    "alignment": -0.08437646144205897,
+    "train_acc": 0.98828125,
+    "switch_start": 0.05748789288165538
+   },
+   {
+    "change": 0.005882177793062982,
+    "first_order": 0.0007590515552730575,
+    "alignment": 0.007571385899726973,
+    "train_acc": 0.990234375,
+    "switch_start": -0.0018725729816110128
+   },
+   {
+    "change": 0.13897367977051503,
+    "first_order": 0.014874381531486161,
+    "alignment": 0.41194648628818287,
+    "train_acc": 0.99609375,
+    "switch_start": -0.025727798292658928
+   },
+   {
+    "change": -0.045691352980264735,
+    "first_order": -0.024420865967895396,
+    "alignment": -0.593503982034694,
+    "train_acc": 0.99609375,
+    "switch_start": 0.01648537926240562
+   },
+   {
+    "change": -0.00701720106656694,
+    "first_order": 0.01069211183850989,
+    "alignment": 0.2556721167660666,
+    "train_acc": 0.990234375,
+    "switch_start": 0.06801858911164027
+   },
+   {
+    "change": 0.09051598642156289,
+    "first_order": 0.02759313966751429,
+    "alignment": 0.7103191039123251,
+    "train_acc": 0.9921875,
+    "switch_start": -0.022488895919835113
+   },
+   {
+    "change": 0.02749814961945364,
+    "first_order": 0.021366214105016275,
+    "alignment": 0.48904780787639646,
+    "train_acc": 0.9921875,
+    "switch_start": 0.0202101829474004
+   },
+   {
+    "change": 0.03138961264039307,
+    "first_order": 0.01559198149683671,
+    "alignment": 0.40125987141604336,
+    "train_acc": 0.998046875,
+    "switch_start": 0.026291494393908696
+   },
+   {
+    "change": 0.033958426926615756,
+    "first_order": 0.011272833855418185,
+    "alignment": 0.3168745096349284,
+    "train_acc": 0.98828125,
+    "switch_start": -0.004350713225930016
+   },
+   {
+    "change": -0.12259154448778255,
+    "first_order": -0.019638539868445826,
+    "alignment": -0.6476367817727724,
+    "train_acc": 0.994140625,
+    "switch_start": 0.05854586324300938
+   },
+   {
+    "change": 0.007635984978350805,
+    "first_order": 0.007688140469927776,
+    "alignment": 0.2768907703956933,
+    "train_acc": 0.990234375,
+    "switch_start": 0.018380569240173106
+   },
+   {
+    "change": -0.12427546272507271,
+    "first_order": -0.03976060829793326,
+    "alignment": -1.0213898781409179,
+    "train_acc": 0.9921875,
+    "switch_start": -0.0347067074470528
+   },
+   {
+    "change": 0.01426097554284075,
+    "first_order": -0.0002454206212652106,
+    "alignment": -0.001031887316082114,
+    "train_acc": 0.990234375,
+    "switch_start": -0.006203002198223174
+   },
+   {
+    "change": 0.08403298145134949,
+    "first_order": 0.01046195787084276,
+    "alignment": 0.2869369744310222,
+    "train_acc": 0.990234375,
+    "switch_start": 0.001463265851964799
+   },
+   {
+    "change": -0.10882646180760958,
+    "first_order": -0.030384108795139014,
+    "alignment": -0.8065264996663676,
+    "train_acc": 0.98828125,
+    "switch_start": 0.023848720181107917
+   },
+   {
+    "change": 0.0373260129360439,
+    "first_order": 0.025143135867345418,
+    "alignment": 0.6322153748400616,
+    "train_acc": 0.982421875,
+    "switch_start": 0.060729179307772135
+   },
+   {
+    "change": 0.012270218301566504,
+    "first_order": -0.001710852190351883,
+    "alignment": -0.0442897359314659,
+    "train_acc": 0.9921875,
+    "switch_start": -0.03397691252714777
+   },
+   {
+    "change": 0.07571712945242201,
+    "first_order": 0.029933940687222046,
+    "alignment": 0.990833201036895,
+    "train_acc": 0.9921875,
+    "switch_start": 0.019989480050776123
+   },
+   {
+    "change": 0.04659138363374636,
+    "first_order": 0.0030255294271782185,
+    "alignment": 0.1653673070736788,
+    "train_acc": 0.984375,
+    "switch_start": -0.035943968385238174
+   },
+   {
+    "change": 0.01207734115972979,
+    "first_order": -0.004193582578558625,
+    "alignment": -0.10290177844283616,
+    "train_acc": 0.990234375,
+    "switch_start": -0.031576396064386364
+   },
+   {
+    "change": 0.16582909126658765,
+    "first_order": 0.03337397326559757,
+    "alignment": 0.8573117199126415,
+    "train_acc": 0.98828125,
+    "switch_start": -0.01064943938535177
+   },
+   {
+    "change": 0.04327435239859298,
+    "first_order": 0.010003184614908253,
+    "alignment": 0.313269915747062,
+    "train_acc": 0.98828125,
+    "switch_start": -0.0017613513345444004
+   },
+   {
+    "change": -0.053219233318367705,
+    "first_order": 0.002146601409064523,
+    "alignment": 0.02316712505779528,
+    "train_acc": 0.998046875,
+    "switch_start": 0.07514703921158238
+   },
+   {
+    "change": -0.04318798222429908,
+    "first_order": -0.006394280571828773,
+    "alignment": -0.19500924960678714,
+    "train_acc": 0.994140625,
+    "switch_start": 0.03004988224566584
+   },
+   {
+    "change": 0.09338711642473418,
+    "first_order": 0.012812949503544828,
+    "alignment": 0.3547084707986251,
+    "train_acc": 0.98828125,
+    "switch_start": -0.0435172335568802
+   },
+   {
+    "change": 0.02402320812844956,
+    "first_order": 0.006027191996425693,
+    "alignment": 0.09164999989782835,
+    "train_acc": 0.994140625,
+    "switch_start": -0.021978228721516075
+   },
+   {
+    "change": -0.14444742165074448,
+    "first_order": -0.04337877889227456,
+    "alignment": -1.1250215631503193,
+    "train_acc": 0.994140625,
+    "switch_start": -0.0521118200182049
+   },
+   {
+    "change": 0.07690429169475424,
+    "first_order": 0.03692266299671875,
+    "alignment": 0.9867897311684155,
+    "train_acc": 0.99609375,
+    "switch_start": 0.04308566530226632
+   },
+   {
+    "change": -0.14927982765082526,
+    "first_order": -0.016207124531366114,
+    "alignment": -0.3921162694467903,
+    "train_acc": 0.990234375,
+    "switch_start": 0.0018034911160733427
+   },
+   {
+    "change": 0.04137600908683943,
+    "first_order": 0.00018265930260069952,
+    "alignment": 0.012606984196279133,
+    "train_acc": 0.9921875,
+    "switch_start": -0.05322939228755308
+   },
+   {
+    "change": 0.11464118291315131,
+    "first_order": 0.019983207826117774,
+    "alignment": 0.6190202798161414,
+    "train_acc": 0.998046875,
+    "switch_start": -0.04852700850615396
+   },
+   {
+    "change": -0.1449994728846924,
+    "first_order": -0.025057378685165253,
+    "alignment": -0.7697900391974403,
+    "train_acc": 0.990234375,
+    "switch_start": 0.01654225402943981
+   },
+   {
+    "change": 0.002652804767679519,
+    "first_order": 0.009324849108018157,
+    "alignment": 0.217049773454149,
+    "train_acc": 0.986328125,
+    "switch_start": 0.0508834049040305
+   },
+   {
+    "change": 0.05582621390231392,
+    "first_order": 0.005186081318907529,
+    "alignment": 0.1421883094580152,
+    "train_acc": 0.998046875,
+    "switch_start": -0.01941157417701216
+   },
+   {
+    "change": -0.09340856707054684,
+    "first_order": -0.031780733371245706,
+    "alignment": -0.7771955774210563,
+    "train_acc": 0.99609375,
+    "switch_start": 0.03185498626245225
+   },
+   {
+    "change": -0.12865401024765188,
+    "first_order": -0.02388624704657707,
+    "alignment": -0.7097195386197296,
+    "train_acc": 0.9921875,
+    "switch_start": 0.06185667687830089
+   },
+   {
+    "change": 0.07178868110370251,
+    "first_order": 0.03823762095487204,
+    "alignment": 1.0028048941532546,
+    "train_acc": 1.0,
+    "switch_start": 0.03731812196602661
+   },
+   {
+    "change": -0.15204616021957656,
+    "first_order": -0.03519385893231402,
+    "alignment": -1.010651611361569,
+    "train_acc": 0.994140625,
+    "switch_start": -0.018307088591936575
+   },
+   {
+    "change": -0.007598065813482284,
+    "first_order": -0.011235457615281733,
+    "alignment": -0.2547322189764851,
+    "train_acc": 0.990234375,
+    "switch_start": -0.015592351822480038
+   },
+   {
+    "change": -0.044642943866310625,
+    "first_order": 0.015286617699964433,
+    "alignment": 0.34548726018742926,
+    "train_acc": 0.990234375,
+    "switch_start": 0.09585952410071902
+   },
+   {
+    "change": 0.09175761112187661,
+    "first_order": 0.01518338299081648,
+    "alignment": 0.38979304067372944,
+    "train_acc": 0.994140625,
+    "switch_start": -0.0336511440781526
+   },
+   {
+    "change": -0.12860831578963072,
+    "first_order": -0.030394315714780594,
+    "alignment": -0.8592145179980211,
+    "train_acc": 0.9921875,
+    "switch_start": -0.042670174978487685
+   },
+   {
+    "change": -0.055981750864893806,
+    "first_order": -0.015835436597124875,
+    "alignment": -0.4860531425819816,
+    "train_acc": 0.990234375,
+    "switch_start": 0.01943622029211229
+   },
+   {
+    "change": -0.1163311370781245,
+    "first_order": -0.018455420984603736,
+    "alignment": -0.4754158248183422,
+    "train_acc": 0.98828125,
+    "switch_start": 0.03160601019384261
+   },
+   {
+    "change": 0.1203790594299395,
+    "first_order": 0.028495866225650382,
+    "alignment": 0.7217235173102592,
+    "train_acc": 0.986328125,
+    "switch_start": -0.039405064795968434
+   },
+   {
+    "change": -0.1438858670700553,
+    "first_order": -0.006599821043763087,
+    "alignment": -0.3488220329093641,
+    "train_acc": 0.990234375,
+    "switch_start": 0.15809354745430954
+   },
+   {
+    "change": 0.01675243861061895,
+    "first_order": 0.0007467175377198186,
+    "alignment": 0.01844543803299875,
+    "train_acc": 0.98828125,
+    "switch_start": -0.02208536672900984
+   },
+   {
+    "change": 0.036518663410226915,
+    "first_order": 0.011549368828509076,
+    "alignment": 0.3276955761709522,
+    "train_acc": 0.994140625,
+    "switch_start": -1.4631964856393867e-06
+   },
+   {
+    "change": 0.1076966550070591,
+    "first_order": 0.037823371396830355,
+    "alignment": 0.8958977448168963,
+    "train_acc": 0.9921875,
+    "switch_start": -0.03869274813099057
+   },
+   {
+    "change": -0.024404422692541353,
+    "first_order": 0.00832135259524044,
+    "alignment": 0.2236685178454229,
+    "train_acc": 0.9921875,
+    "switch_start": 0.06616326968234329
+   },
+   {
+    "change": 0.06925558883947433,
+    "first_order": 0.011492392996419269,
+    "alignment": 0.3742380294913466,
+    "train_acc": 0.986328125,
+    "switch_start": -0.027943048468328145
+   },
+   {
+    "change": -0.036533987167216946,
+    "first_order": -0.007878071361430958,
+    "alignment": -0.18341332352434842,
+    "train_acc": 0.990234375,
+    "switch_start": -0.009109522057643725
+   },
+   {
+    "change": 0.054138688735878876,
+    "first_order": 0.010677065797058988,
+    "alignment": 0.2789163100539172,
+    "train_acc": 0.9921875,
+    "switch_start": -0.017548888086989314
+   },
+   {
+    "change": -0.15688003303067677,
+    "first_order": -0.0337760255093203,
+    "alignment": -0.8015950981236803,
+    "train_acc": 0.990234375,
+    "switch_start": 0.07050080472204019
+   },
+   {
+    "change": -0.0015806000903042343,
+    "first_order": -0.005005038588469106,
+    "alignment": -0.12864417386731597,
+    "train_acc": 0.998046875,
+    "switch_start": -0.008197952784997395
+   },
+   {
+    "change": 0.018895764734109317,
+    "first_order": 0.006989546262521995,
+    "alignment": 0.19799944979102657,
+    "train_acc": 0.990234375,
+    "switch_start": 0.031493829067140364
+   },
+   {
+    "change": 0.010901523919518446,
+    "first_order": -0.0015803109276860833,
+    "alignment": -0.045556998953485056,
+    "train_acc": 0.998046875,
+    "switch_start": -0.018939486682750577
+   },
+   {
+    "change": -0.024055948952304215,
+    "first_order": -0.01361648035566156,
+    "alignment": -0.34546812949146966,
+    "train_acc": 0.994140625,
+    "switch_start": -0.009219705839585023
+   },
+   {
+    "change": -0.0037102407858310765,
+    "first_order": -0.0011856728005760083,
+    "alignment": -0.050007554624820816,
+    "train_acc": 0.990234375,
+    "switch_start": -0.0016741798337981575
+   },
+   {
+    "change": -0.023880469509408538,
+    "first_order": -0.014133029236858542,
+    "alignment": -0.4126898046986834,
+    "train_acc": 0.9921875,
+    "switch_start": 0.0062031226785093565
+   },
+   {
+    "change": 0.006118017735041389,
+    "first_order": -0.007943891392879326,
+    "alignment": -0.21289792493347076,
+    "train_acc": 0.99609375,
+    "switch_start": -0.02906668510517342
+   },
+   {
+    "change": 0.03680986298125479,
+    "first_order": 0.006229639985969143,
+    "alignment": 0.13732336652808813,
+    "train_acc": 0.990234375,
+    "switch_start": -0.029476892813060405
+   },
+   {
+    "change": -0.07147493356668057,
+    "first_order": -0.017337734056576938,
+    "alignment": -0.5795378939056862,
+    "train_acc": 0.984375,
+    "switch_start": 0.032202382374750455
+   },
+   {
+    "change": 0.06871025869914568,
+    "first_order": 0.01083257205766999,
+    "alignment": 0.3129645725431912,
+    "train_acc": 0.990234375,
+    "switch_start": -0.03737650944561993
+   },
+   {
+    "change": -0.00818184086110264,
+    "first_order": -0.0022447033054840727,
+    "alignment": -0.04877488030866918,
+    "train_acc": 0.99609375,
+    "switch_start": 0.0024822937762584013
+   },
+   {
+    "change": -0.03191892643064444,
+    "first_order": -0.005655743349841389,
+    "alignment": -0.15815132724664088,
+    "train_acc": 0.998046875,
+    "switch_start": 0.024371840758889173
+   },
+   {
+    "change": -0.12478025123533473,
+    "first_order": -0.021955532924882917,
+    "alignment": -0.5968660298718168,
+    "train_acc": 0.990234375,
+    "switch_start": -0.009462934301884047
+   },
+   {
+    "change": -0.016767175095888962,
+    "first_order": -0.005673858699127848,
+    "alignment": -0.11093209518232539,
+    "train_acc": 1.0,
+    "switch_start": 0.01030714103458295
+   },
+   {
+    "change": -0.04419106095814678,
+    "first_order": -0.015948952293558017,
+    "alignment": -0.4268136870088577,
+    "train_acc": 0.994140625,
+    "switch_start": -0.011338308341532996
+   },
+   {
+    "change": -0.024105812334574456,
+    "first_order": 0.0007161614074766277,
+    "alignment": 0.0064348762585148545,
+    "train_acc": 0.998046875,
+    "switch_start": 0.036772811044373924
+   },
+   {
+    "change": -0.03778533379086504,
+    "first_order": -0.00779516125254303,
+    "alignment": -0.22189075053367074,
+    "train_acc": 0.98828125,
+    "switch_start": 0.0034697507633426787
+   },
+   {
+    "change": 0.116495724164705,
+    "first_order": 0.01761715300612208,
+    "alignment": 0.4665316819279378,
+    "train_acc": 1.0,
+    "switch_start": 0.011121769697731739
+   },
+   {
+    "change": -0.01501596893445388,
+    "first_order": 0.011261245815068406,
+    "alignment": 0.3372685545359443,
+    "train_acc": 0.99609375,
+    "switch_start": 0.07913991531225695
+   },
+   {
+    "change": 0.04636911341724286,
+    "first_order": 0.009790012137027593,
+    "alignment": 0.2404745795931167,
+    "train_acc": 0.9921875,
+    "switch_start": -0.016355516666018616
+   },
+   {
+    "change": -0.02928875167642777,
+    "first_order": -0.010239216305964962,
+    "alignment": -0.252804624914206,
+    "train_acc": 1.0,
+    "switch_start": -0.061313347424628815
+   },
+   {
+    "change": -0.011970802848925495,
+    "first_order": 3.7706146127386254e-05,
+    "alignment": 0.010373239295729336,
+    "train_acc": 0.9921875,
+    "switch_start": 0.014528463386669821
+   },
+   {
+    "change": 0.01926872980612097,
+    "first_order": -0.009154339060888137,
+    "alignment": -0.3012894947073541,
+    "train_acc": 0.9921875,
+    "switch_start": -0.0404695903783682
+   },
+   {
+    "change": 0.21421086062615388,
+    "first_order": 0.03651802420523715,
+    "alignment": 0.9931150431007089,
+    "train_acc": 0.98828125,
+    "switch_start": 0.04673526550472532
+   },
+   {
+    "change": -0.12078057501265053,
+    "first_order": -0.02793884967486657,
+    "alignment": -0.7848858128279943,
+    "train_acc": 0.9921875,
+    "switch_start": -0.01910658299590488
+   },
+   {
+    "change": 0.06597458279559076,
+    "first_order": 0.018088396105995008,
+    "alignment": 0.5649091069344961,
+    "train_acc": 0.9921875,
+    "switch_start": 0.002284890666382931
+   },
+   {
+    "change": 0.15506639552816384,
+    "first_order": 0.026221159420453742,
+    "alignment": 0.7364972393749549,
+    "train_acc": 0.98828125,
+    "switch_start": -0.011189756970888618
+   },
+   {
+    "change": 0.004954482106082972,
+    "first_order": -0.012958565434380433,
+    "alignment": -0.3821994873878628,
+    "train_acc": 0.9921875,
+    "switch_start": -0.04575097745441273
+   },
+   {
+    "change": 0.03624745806642222,
+    "first_order": 0.015687508169890785,
+    "alignment": 0.3541338916606438,
+    "train_acc": 0.994140625,
+    "switch_start": 0.0012155713157612083
+   },
+   {
+    "change": 0.04154572297085304,
+    "first_order": 0.02113115230785474,
+    "alignment": 0.6045780930290708,
+    "train_acc": 0.9921875,
+    "switch_start": 0.03219017662691102
+   },
+   {
+    "change": 0.03754402815131649,
+    "first_order": -0.004094784740805459,
+    "alignment": -0.1447796366676336,
+    "train_acc": 0.990234375,
+    "switch_start": -0.06350586600177505
+   },
+   {
+    "change": 0.08326775538529287,
+    "first_order": 0.008159447729552382,
+    "alignment": 0.16646199287048094,
+    "train_acc": 0.98828125,
+    "switch_start": -0.07817214026311692
+   },
+   {
+    "change": -0.1445327363321056,
+    "first_order": -0.03335687435818579,
+    "alignment": -0.9128832112063537,
+    "train_acc": 0.990234375,
+    "switch_start": -0.023405061720823038
+   },
+   {
+    "change": -0.01912087433153887,
+    "first_order": -0.0025266076272841137,
+    "alignment": -0.04759187132362047,
+    "train_acc": 0.98828125,
+    "switch_start": 0.022433872963073608
+   },
+   {
+    "change": -0.14178269640405372,
+    "first_order": -0.02506662962030541,
+    "alignment": -0.772010874640224,
+    "train_acc": 0.990234375,
+    "switch_start": 0.04956030462294784
+   },
+   {
+    "change": 0.002426454056036323,
+    "first_order": 0.020149427682441136,
+    "alignment": 0.5486717512047978,
+    "train_acc": 0.984375,
+    "switch_start": 0.09513762942837622
+   },
+   {
+    "change": 0.029994604670522996,
+    "first_order": 0.0015620087990189917,
+    "alignment": 0.030734592664580056,
+    "train_acc": 0.994140625,
+    "switch_start": -0.03558336725319608
+   },
+   {
+    "change": -0.20513040956837453,
+    "first_order": -0.048192209841731365,
+    "alignment": -1.310655816492373,
+    "train_acc": 0.990234375,
+    "switch_start": -0.05841461105063876
+   },
+   {
+    "change": 0.07632332731331694,
+    "first_order": -0.0026046489537479276,
+    "alignment": -0.1871560311921866,
+    "train_acc": 0.9921875,
+    "switch_start": -0.10272702248732993
+   },
+   {
+    "change": -0.10942488518112597,
+    "first_order": -0.005411170598202205,
+    "alignment": -0.07241086728125515,
+    "train_acc": 0.9921875,
+    "switch_start": 0.12551597317760932
+   },
+   {
+    "change": 0.09516434293956127,
+    "first_order": 0.012428073046618348,
+    "alignment": 0.39510088472041277,
+    "train_acc": 0.9921875,
+    "switch_start": -0.04490877228279701
+   },
+   {
+    "change": 0.058126010723715406,
+    "first_order": 0.018161186260135735,
+    "alignment": 0.5422525770676613,
+    "train_acc": 0.98828125,
+    "switch_start": 0.019257485412599744
+   },
+   {
+    "change": 0.03854498644596287,
+    "first_order": 0.02309083116343234,
+    "alignment": 0.6127346936119967,
+    "train_acc": 0.99609375,
+    "switch_start": 0.02187491835566641
+   },
+   {
+    "change": -0.08150747896964376,
+    "first_order": -0.034675755347331534,
+    "alignment": -0.9335333861447402,
+    "train_acc": 0.994140625,
+    "switch_start": 0.014637844775149468
+   },
+   {
+    "change": -0.008995242429295044,
+    "first_order": -0.01762574713802505,
+    "alignment": -0.43169644835411064,
+    "train_acc": 0.9921875,
+    "switch_start": -0.038738575538937295
+   },
+   {
+    "change": -0.03203584824153104,
+    "first_order": -0.005448160570082749,
+    "alignment": -0.16538947288352474,
+    "train_acc": 0.9921875,
+    "switch_start": -0.013036764555360805
+   },
+   {
+    "change": 0.14431020081158774,
+    "first_order": 0.034627909395174426,
+    "alignment": 0.9915585876027396,
+    "train_acc": 0.99609375,
+    "switch_start": -0.05428514713461899
+   },
+   {
+    "change": -0.0793315061790169,
+    "first_order": -0.011308002964174798,
+    "alignment": -0.3346829499583171,
+    "train_acc": 0.994140625,
+    "switch_start": 0.06067284223916358
+   },
+   {
+    "change": -0.13258602738642583,
+    "first_order": -0.0454653866077531,
+    "alignment": -1.1590009280431393,
+    "train_acc": 0.990234375,
+    "switch_start": -0.03312642930397154
+   },
+   {
+    "change": -0.07802171934587704,
+    "first_order": -0.030320209221329105,
+    "alignment": -0.7843743480894511,
+    "train_acc": 0.99609375,
+    "switch_start": 0.004386668688754793
+   },
+   {
+    "change": 0.0064993525609946725,
+    "first_order": 0.004506585111174275,
+    "alignment": 0.1635853540010648,
+    "train_acc": 0.990234375,
+    "switch_start": 0.012520843585325224
+   },
+   {
+    "change": 0.03240606957517962,
+    "first_order": -0.004716047155905914,
+    "alignment": -0.17324734865448765,
+    "train_acc": 0.994140625,
+    "switch_start": -0.08626688899194537
+   },
+   {
+    "change": -0.09763393775029244,
+    "first_order": -0.024509111415133216,
+    "alignment": -0.7011587256802329,
+    "train_acc": 0.986328125,
+    "switch_start": 0.014491486439152435
+   },
+   {
+    "change": 0.13003712780876348,
+    "first_order": 0.03362373139674544,
+    "alignment": 0.8096533123176667,
+    "train_acc": 0.990234375,
+    "switch_start": -0.01767598298446517
+   },
+   {
+    "change": 0.045716456954102674,
+    "first_order": 0.004583159304455498,
+    "alignment": 0.09673165078000587,
+    "train_acc": 0.998046875,
+    "switch_start": -0.04515875353932805
+   },
+   {
+    "change": -0.10079161749701991,
+    "first_order": -0.018098905866878044,
+    "alignment": -0.5471119620395825,
+    "train_acc": 0.978515625,
+    "switch_start": 0.03111598769970368
+   },
+   {
+    "change": -0.10686631114684828,
+    "first_order": -0.021598699337386045,
+    "alignment": -0.5777737768425057,
+    "train_acc": 0.990234375,
+    "switch_start": 0.04983302566944863
+   },
+   {
+    "change": 0.056200935626805754,
+    "first_order": 0.00589566680269502,
+    "alignment": 0.1267636101990655,
+    "train_acc": 0.990234375,
+    "switch_start": -0.027920320015618297
+   },
+   {
+    "change": 0.15047365127836626,
+    "first_order": 0.029563407534479794,
+    "alignment": 0.7991430260413235,
+    "train_acc": 0.9921875,
+    "switch_start": 0.008115279063905858
+   },
+   {
+    "change": -0.03251375351567032,
+    "first_order": -0.013328684100444141,
+    "alignment": -0.44607285087255444,
+    "train_acc": 0.99609375,
+    "switch_start": -0.0012250539444126785
+   },
+   {
+    "change": -0.013236710206415175,
+    "first_order": -0.019628470520884317,
+    "alignment": -0.48249860390706345,
+    "train_acc": 0.994140625,
+    "switch_start": -0.06433376345371314
+   },
+   {
+    "change": -0.03395511964410656,
+    "first_order": -0.002053648426586144,
+    "alignment": -0.07045258291722648,
+    "train_acc": 0.9921875,
+    "switch_start": 0.027837880088325623
+   },
+   {
+    "change": -0.08761103502404348,
+    "first_order": -0.04620210716306991,
+    "alignment": -1.1504446309037704,
+    "train_acc": 0.998046875,
+    "switch_start": -0.07671391129918133
+   },
+   {
+    "change": 0.06934601230596057,
+    "first_order": 0.026049279321558885,
+    "alignment": 0.6674470235232457,
+    "train_acc": 0.98828125,
+    "switch_start": -0.025226627033086646
+   },
+   {
+    "change": 0.051790325082772384,
+    "first_order": 0.009821620976800328,
+    "alignment": 0.2552119181013796,
+    "train_acc": 0.9921875,
+    "switch_start": -0.011699020347687775
+   },
+   {
+    "change": 0.013507859199764882,
+    "first_order": 0.010362183060834324,
+    "alignment": 0.2818897273669555,
+    "train_acc": 0.98828125,
+    "switch_start": 0.05881991147677028
+   },
+   {
+    "change": 0.30911798975064814,
+    "first_order": 0.042773258664605525,
+    "alignment": 1.0681197588191722,
+    "train_acc": 0.994140625,
+    "switch_start": -0.0937143858301245
+   },
+   {
+    "change": -0.10160237709506822,
+    "first_order": -0.014590639582898695,
+    "alignment": -0.355037944170578,
+    "train_acc": 0.994140625,
+    "switch_start": 0.08349929366105113
+   },
+   {
+    "change": -0.02895424224840982,
+    "first_order": -0.015139157530808104,
+    "alignment": -0.4330901070927512,
+    "train_acc": 0.9921875,
+    "switch_start": -0.021162160486562206
+   },
+   {
+    "change": -0.08802972928992778,
+    "first_order": -0.0264604541697204,
+    "alignment": -0.779929191842929,
+    "train_acc": 0.9921875,
+    "switch_start": -0.04058054343274961
+   },
+   {
+    "change": 0.029708276407127424,
+    "first_order": 0.0061925884402394445,
+    "alignment": 0.15469298731326248,
+    "train_acc": 0.9921875,
+    "switch_start": 0.0076011548841420605
+   },
+   {
+    "change": -0.019456347243473324,
+    "first_order": -0.007648732141824876,
+    "alignment": -0.15631463384266542,
+    "train_acc": 0.98046875,
+    "switch_start": 0.012635461700754302
+   },
+   {
+    "change": 0.05681489947135218,
+    "first_order": 0.026276957200314553,
+    "alignment": 0.7588560045455508,
+    "train_acc": 0.99609375,
+    "switch_start": 0.004719670310761139
+   },
+   {
+    "change": -0.02663199070942181,
+    "first_order": 0.0069714320828473675,
+    "alignment": 0.26278721860605575,
+    "train_acc": 0.990234375,
+    "switch_start": 0.05261829997784172
+   },
+   {
+    "change": 0.08593491957091631,
+    "first_order": 0.024317220788605157,
+    "alignment": 0.7038396024258479,
+    "train_acc": 0.9921875,
+    "switch_start": 0.003761184226098905
+   },
+   {
+    "change": 0.051048925852392554,
+    "first_order": 0.003149464234406821,
+    "alignment": 0.08464741573828649,
+    "train_acc": 0.9921875,
+    "switch_start": -0.06222758922971161
+   },
+   {
+    "change": 0.020810046597539187,
+    "first_order": 0.0007603578518009991,
+    "alignment": 0.06892402614002899,
+    "train_acc": 0.994140625,
+    "switch_start": -0.017119332294896067
+   },
+   {
+    "change": 0.03234107783713449,
+    "first_order": 0.01877421046929443,
+    "alignment": 0.56920631757354,
+    "train_acc": 0.98828125,
+    "switch_start": 0.02569698273966431
+   },
+   {
+    "change": -0.00907619571511627,
+    "first_order": -0.009304131947396871,
+    "alignment": -0.23928477800285536,
+    "train_acc": 0.9921875,
+    "switch_start": -0.006163739252096105
+   },
+   {
+    "change": -0.056840680395083915,
+    "first_order": -0.010764062965403231,
+    "alignment": -0.30183335035243625,
+    "train_acc": 0.994140625,
+    "switch_start": 0.028318978834559937
+   },
+   {
+    "change": -0.19301327418122702,
+    "first_order": -0.03874581876237283,
+    "alignment": -0.9272900126665541,
+    "train_acc": 0.994140625,
+    "switch_start": -0.0144185690281948
+   },
+   {
+    "change": -0.028311764897303814,
+    "first_order": -0.009532903864667422,
+    "alignment": -0.2945212496146621,
+    "train_acc": 0.9921875,
+    "switch_start": -0.023385109718134334
+   },
+   {
+    "change": 0.1392066282656022,
+    "first_order": 0.01240184075347536,
+    "alignment": 0.3062305810387659,
+    "train_acc": 0.99609375,
+    "switch_start": -0.1034111003123308
+   },
+   {
+    "change": 0.021209804484316364,
+    "first_order": 0.008777061414109418,
+    "alignment": 0.2890604144055786,
+    "train_acc": 0.99609375,
+    "switch_start": 0.06749512985182349
+   },
+   {
+    "change": 0.05751679006705087,
+    "first_order": 0.005558951243922863,
+    "alignment": 0.12820642859902426,
+    "train_acc": 0.986328125,
+    "switch_start": -0.060892382224165625
+   },
+   {
+    "change": 0.16530501618033566,
+    "first_order": 0.021246271522371837,
+    "alignment": 0.6812181679526776,
+    "train_acc": 0.9921875,
+    "switch_start": -0.04579355299164494
+   },
+   {
+    "change": -0.021175284629941282,
+    "first_order": -0.01757034289173426,
+    "alignment": -0.5273275473960045,
+    "train_acc": 0.9921875,
+    "switch_start": -0.021625825528323185
+   },
+   {
+    "change": 0.018117732773657344,
+    "first_order": 0.004866323014068926,
+    "alignment": 0.14240592024218,
+    "train_acc": 0.990234375,
+    "switch_start": -0.006103945867012798
+   },
+   {
+    "change": -0.1285648957401856,
+    "first_order": -0.03450729886279915,
+    "alignment": -1.0238236790736908,
+    "train_acc": 0.994140625,
+    "switch_start": -0.07615533662911927
+   },
+   {
+    "change": -0.025760651011310542,
+    "first_order": -0.011273263164162538,
+    "alignment": -0.34583638176615833,
+    "train_acc": 0.994140625,
+    "switch_start": -0.0034660642058162174
+   },
+   {
+    "change": 0.07703901970317598,
+    "first_order": 0.010460187337517692,
+    "alignment": 0.3013007653619474,
+    "train_acc": 0.99609375,
+    "switch_start": -0.01463080196224472
+   },
+   {
+    "change": 0.09942123609521047,
+    "first_order": 0.01907012967205227,
+    "alignment": 0.5116241379205322,
+    "train_acc": 0.9921875,
+    "switch_start": 0.008417625849598901
+   },
+   {
+    "change": 0.006484618684400735,
+    "first_order": -0.011687671008561199,
+    "alignment": -0.26028822667075496,
+    "train_acc": 0.990234375,
+    "switch_start": -0.03786263676723306
+   },
+   {
+    "change": 0.007105074047351059,
+    "first_order": 0.007180135121071816,
+    "alignment": 0.17357979177473137,
+    "train_acc": 0.994140625,
+    "switch_start": 0.00652717750050548
+   },
+   {
+    "change": 0.045295479356336966,
+    "first_order": 0.016715950555380426,
+    "alignment": 0.43455295682914963,
+    "train_acc": 0.990234375,
+    "switch_start": 0.012248206909229573
+   },
+   {
+    "change": -0.10777027768830505,
+    "first_order": -0.015242095516268483,
+    "alignment": -0.3725509303570096,
+    "train_acc": 0.98828125,
+    "switch_start": 0.05683511509178203
+   },
+   {
+    "change": -0.005741014362107676,
+    "first_order": -0.0023757933307990194,
+    "alignment": -0.08681364632183326,
+    "train_acc": 0.986328125,
+    "switch_start": 0.008750898171514199
+   },
+   {
+    "change": -0.07362021255169168,
+    "first_order": -0.005770372474720262,
+    "alignment": -0.18787357629704485,
+    "train_acc": 0.990234375,
+    "switch_start": 0.07364450792449667
+   },
+   {
+    "change": 0.09142067403525281,
+    "first_order": 0.02283546965381891,
+    "alignment": 0.6736665569760065,
+    "train_acc": 0.9921875,
+    "switch_start": 0.0011085129087786741
+   },
+   {
+    "change": -0.031622582511642024,
+    "first_order": -0.003242796561763425,
+    "alignment": -0.13632824423469736,
+    "train_acc": 0.990234375,
+    "switch_start": 0.022063272351335206
+   },
+   {
+    "change": 0.0007724790568896895,
+    "first_order": 0.0005396230942887483,
+    "alignment": 0.0009422172875430401,
+    "train_acc": 0.99609375,
+    "switch_start": 0.003424989969574549
+   },
+   {
+    "change": -0.0020649844714580104,
+    "first_order": -0.009912878904213655,
+    "alignment": -0.31110211447288183,
+    "train_acc": 0.9921875,
+    "switch_start": -0.024415625216719722
+   },
+   {
+    "change": 0.06227459113849316,
+    "first_order": 0.019600025303653252,
+    "alignment": 0.4297715169207864,
+    "train_acc": 0.990234375,
+    "switch_start": -0.026243938502119125
+   },
+   {
+    "change": -0.096190132001393,
+    "first_order": -0.022740193408075367,
+    "alignment": -0.6438033425212866,
+    "train_acc": 0.99609375,
+    "switch_start": -0.007011478404827746
+   },
+   {
+    "change": 0.05197203342820564,
+    "first_order": 0.0032492317846770672,
+    "alignment": 0.10372553640789295,
+    "train_acc": 0.986328125,
+    "switch_start": -0.057620767804492524
+   },
+   {
+    "change": -0.04164328455674922,
+    "first_order": -0.024041494227145813,
+    "alignment": -0.6319067369545213,
+    "train_acc": 0.99609375,
+    "switch_start": -0.03483810939139699
+   },
+   {
+    "change": -0.05909522860619718,
+    "first_order": -0.007044752137326142,
+    "alignment": -0.2096917994131597,
+    "train_acc": 0.9921875,
+    "switch_start": 0.0503228322188596
+   },
+   {
+    "change": 0.15553119988272934,
+    "first_order": 0.023951022476520766,
+    "alignment": 0.6215238254575393,
+    "train_acc": 0.99609375,
+    "switch_start": -0.10841919831211055
+   },
+   {
+    "change": 0.025191767425492978,
+    "first_order": 0.007394832947055343,
+    "alignment": 0.18930338566470412,
+    "train_acc": 0.994140625,
+    "switch_start": 0.012908579218211785
+   },
+   {
+    "change": 0.05198882127183056,
+    "first_order": 0.007292043147217237,
+    "alignment": 0.22145583771139088,
+    "train_acc": 0.990234375,
+    "switch_start": -0.0012896027858727162
+   },
+   {
+    "change": 0.03946460485318303,
+    "first_order": 0.010817488981117424,
+    "alignment": 0.32339528705319825,
+    "train_acc": 0.9921875,
+    "switch_start": 0.027302249712545683
+   },
+   {
+    "change": -0.040995938711380575,
+    "first_order": -0.0023116630491146115,
+    "alignment": -0.027607023728682456,
+    "train_acc": 0.99609375,
+    "switch_start": 0.055357861848424644
+   },
+   {
+    "change": -0.006937301116175253,
+    "first_order": -0.007325727995144159,
+    "alignment": -0.15878296900416164,
+    "train_acc": 0.994140625,
+    "switch_start": -0.0034650382225713417
+   },
+   {
+    "change": 0.021426267729378955,
+    "first_order": -5.8745784123728534e-05,
+    "alignment": -0.001033660635072764,
+    "train_acc": 0.99609375,
+    "switch_start": -0.03820836311200089
+   },
+   {
+    "change": 0.014916510094689906,
+    "first_order": 0.0020424869582560444,
+    "alignment": 0.047968547806907916,
+    "train_acc": 0.9921875,
+    "switch_start": -0.01670216604635575
+   },
+   {
+    "change": -0.006601636102475716,
+    "first_order": 0.005930179456429727,
+    "alignment": 0.17858072011140386,
+    "train_acc": 0.994140625,
+    "switch_start": 0.03894292209646563
+   },
+   {
+    "change": 0.0258802911613532,
+    "first_order": 0.0033706997109155573,
+    "alignment": 0.10989989090738517,
+    "train_acc": 0.9921875,
+    "switch_start": -0.02074820429296778
+   },
+   {
+    "change": -0.026652034771698016,
+    "first_order": -0.007171060998923087,
+    "alignment": -0.22754474771773756,
+    "train_acc": 0.9921875,
+    "switch_start": 0.008760902190539677
+   },
+   {
+    "change": -0.12427149928080766,
+    "first_order": -0.023588810359183584,
+    "alignment": -0.5680575326594509,
+    "train_acc": 0.990234375,
+    "switch_start": 0.016801734078905086
+   },
+   {
+    "change": 0.15064526039964143,
+    "first_order": 0.03413989504183437,
+    "alignment": 0.7885324627147933,
+    "train_acc": 0.9921875,
+    "switch_start": 0.05094717524736038
+   },
+   {
+    "change": -0.19264023101247074,
+    "first_order": -0.03202173537882506,
+    "alignment": -0.9444764035342346,
+    "train_acc": 0.98828125,
+    "switch_start": 0.032459628112084596
+   },
+   {
+    "change": 0.01734980572276143,
+    "first_order": 0.01973957996929085,
+    "alignment": 0.5965551162031132,
+    "train_acc": 0.990234375,
+    "switch_start": 0.025597878661462625
+   },
+   {
+    "change": -0.00040340614775400893,
+    "first_order": 0.00038641110252111337,
+    "alignment": -0.006759261447881013,
+    "train_acc": 0.98828125,
+    "switch_start": 0.0026904070414043146
+   },
+   {
+    "change": 0.035156341797300025,
+    "first_order": 0.004180103323441424,
+    "alignment": 0.13319328325670918,
+    "train_acc": 0.986328125,
+    "switch_start": -0.0019675085659487494
+   },
+   {
+    "change": -0.06415356476210411,
+    "first_order": -0.005808681799592197,
+    "alignment": -0.20289001543351554,
+    "train_acc": 0.998046875,
+    "switch_start": 0.05738734798733654
+   },
+   {
+    "change": -0.17452540994541577,
+    "first_order": -0.03652478639854851,
+    "alignment": -0.9245580297805114,
+    "train_acc": 0.998046875,
+    "switch_start": 0.026104533897861378
+   },
+   {
+    "change": -0.0034048530947875383,
+    "first_order": 0.01464805555911038,
+    "alignment": 0.4687811824096437,
+    "train_acc": 0.9921875,
+    "switch_start": 0.08329763720947875
+   },
+   {
+    "change": 0.03314750966533155,
+    "first_order": 0.016114537246240335,
+    "alignment": 0.47841496092726055,
+    "train_acc": 0.994140625,
+    "switch_start": 0.013909843199138704
+   },
+   {
+    "change": -0.08232856459355727,
+    "first_order": -0.013369180377460014,
+    "alignment": -0.3247105183672693,
+    "train_acc": 0.990234375,
+    "switch_start": 0.05540801500327957
+   },
+   {
+    "change": -0.0039030357058437177,
+    "first_order": -0.0006632406261539452,
+    "alignment": 0.009717270622732754,
+    "train_acc": 0.982421875,
+    "switch_start": -0.009943083789573915
+   },
+   {
+    "change": -0.048886826299644456,
+    "first_order": -0.022102020449979654,
+    "alignment": -0.6465231615315892,
+    "train_acc": 0.990234375,
+    "switch_start": -0.01968064932182527
+   },
+   {
+    "change": 0.09260730591525121,
+    "first_order": 0.01738203323763533,
+    "alignment": 0.4474112621927581,
+    "train_acc": 0.99609375,
+    "switch_start": -0.03752852818311416
+   },
+   {
+    "change": -0.09380400326093838,
+    "first_order": -0.03076188917935161,
+    "alignment": -0.8558704190984324,
+    "train_acc": 0.998046875,
+    "switch_start": 0.019676848060354184
+   },
+   {
+    "change": 0.004802737249461189,
+    "first_order": 0.021745429143882312,
+    "alignment": 0.6324829558060828,
+    "train_acc": 0.9921875,
+    "switch_start": 0.08196357371008602
+   },
+   {
+    "change": 0.04446917734102207,
+    "first_order": 0.006325476835622514,
+    "alignment": 0.16991063834769948,
+    "train_acc": 0.98828125,
+    "switch_start": 0.016168738241253717
+   },
+   {
+    "change": -0.02816428555305129,
+    "first_order": -0.0015883277484259799,
+    "alignment": -0.04200184429141149,
+    "train_acc": 0.99609375,
+    "switch_start": 0.020736974978276944
+   },
+   {
+    "change": 0.059493093900718566,
+    "first_order": 0.023461942723845542,
+    "alignment": 0.5799035626178098,
+    "train_acc": 0.99609375,
+    "switch_start": 0.03259470522579065
+   },
+   {
+    "change": 0.012872004125870952,
+    "first_order": 0.014487666899276361,
+    "alignment": 0.39900152446293846,
+    "train_acc": 0.990234375,
+    "switch_start": 0.017970437369977853
+   },
+   {
+    "change": 0.031353916022281575,
+    "first_order": 0.023294454619370148,
+    "alignment": 0.6907872692411618,
+    "train_acc": 0.9921875,
+    "switch_start": 0.048447847843296754
+   },
+   {
+    "change": 0.04446235200100473,
+    "first_order": 0.007528279140393021,
+    "alignment": 0.20689618156833195,
+    "train_acc": 0.99609375,
+    "switch_start": -0.01254326914544212
+   },
+   {
+    "change": 0.082916168233785,
+    "first_order": 0.015113647687538121,
+    "alignment": 0.42171721597019585,
+    "train_acc": 0.998046875,
+    "switch_start": -0.059700035899308806
+   },
+   {
+    "change": 0.010495704016745357,
+    "first_order": 0.013679563141121318,
+    "alignment": 0.37727852111937615,
+    "train_acc": 0.99609375,
+    "switch_start": 0.02595597545257191
+   },
+   {
+    "change": -0.010749103326745252,
+    "first_order": -0.008051687191397724,
+    "alignment": -0.22692974093472673,
+    "train_acc": 0.998046875,
+    "switch_start": -0.05411754714088743
+   },
+   {
+    "change": -0.05464739730227224,
+    "first_order": -0.01518236474164537,
+    "alignment": -0.41314299730219634,
+    "train_acc": 0.9921875,
+    "switch_start": -0.009542671078896982
+   },
+   {
+    "change": 0.03845786867661468,
+    "first_order": -0.002621705553104649,
+    "alignment": -0.1329033789684895,
+    "train_acc": 0.990234375,
+    "switch_start": -0.051468046993837197
+   },
+   {
+    "change": 0.03792842496836264,
+    "first_order": 0.001046888699735626,
+    "alignment": 0.03721717840942618,
+    "train_acc": 0.990234375,
+    "switch_start": -0.058481164899587476
+   },
+   {
+    "change": 0.053713186442455804,
+    "first_order": 0.01001481389967129,
+    "alignment": 0.3426250035950652,
+    "train_acc": 0.98828125,
+    "switch_start": -0.013298054656995519
+   },
+   {
+    "change": 0.04311546480063536,
+    "first_order": 0.007378866523869763,
+    "alignment": 0.2105052151566572,
+    "train_acc": 0.990234375,
+    "switch_start": -0.01315048387659667
+   },
+   {
+    "change": -0.10371100212506833,
+    "first_order": -0.01889015456088818,
+    "alignment": -0.5250312305957237,
+    "train_acc": 0.990234375,
+    "switch_start": 0.038811481530369715
+   },
+   {
+    "change": 0.11813608088771133,
+    "first_order": 0.022288847335554713,
+    "alignment": 0.5685407148624091,
+    "train_acc": 0.990234375,
+    "switch_start": -0.02051164299329426
+   },
+   {
+    "change": -0.03034051520828273,
+    "first_order": -0.016052082707067653,
+    "alignment": -0.5111577075073407,
+    "train_acc": 1.0,
+    "switch_start": -0.03785835047391466
+   },
+   {
+    "change": 0.03964679241725115,
+    "first_order": -0.008880586588274042,
+    "alignment": -0.20443672638764687,
+    "train_acc": 0.986328125,
+    "switch_start": -0.07805512971412992
+   },
+   {
+    "change": -0.09295844544910362,
+    "first_order": -0.024310101815399957,
+    "alignment": -0.6351690264214693,
+    "train_acc": 0.99609375,
+    "switch_start": 0.033747991135639366
+   },
+   {
+    "change": -0.0579097220943209,
+    "first_order": -0.01220635763098582,
+    "alignment": -0.3367848614395266,
+    "train_acc": 0.986328125,
+    "switch_start": 0.022721996396557823
+   },
+   {
+    "change": 0.16649117591718213,
+    "first_order": 0.021467426139168928,
+    "alignment": 0.5756896699247596,
+    "train_acc": 0.990234375,
+    "switch_start": -0.02063138929018521
+   },
+   {
+    "change": 0.032757517299441166,
+    "first_order": -0.002215656417689243,
+    "alignment": -0.01784442271786224,
+    "train_acc": 0.9921875,
+    "switch_start": -0.06115270637633708
+   },
+   {
+    "change": 0.023094340685773526,
+    "first_order": 0.0027679915578299767,
+    "alignment": 0.0637004825930716,
+    "train_acc": 0.99609375,
+    "switch_start": -0.004888235093721035
+   },
+   {
+    "change": 0.009685757752308063,
+    "first_order": 0.004388404468208409,
+    "alignment": 0.155374513927121,
+    "train_acc": 0.99609375,
+    "switch_start": 0.017692232233109353
+   },
+   {
+    "change": 0.05868819784180334,
+    "first_order": 0.03296092761231006,
+    "alignment": 0.7472875794957861,
+    "train_acc": 0.994140625,
+    "switch_start": 0.02336264618675727
+   },
+   {
+    "change": 0.03952188833496799,
+    "first_order": 0.007664889501007695,
+    "alignment": 0.20397534975513631,
+    "train_acc": 0.990234375,
+    "switch_start": -0.028343763863792323
+   },
+   {
+    "change": -0.10315073771516788,
+    "first_order": -0.019237633177711017,
+    "alignment": -0.4628764840660641,
+    "train_acc": 0.990234375,
+    "switch_start": -0.03508016342342472
+   },
+   {
+    "change": 0.021380271243933345,
+    "first_order": 0.009351740580498175,
+    "alignment": 0.26573487195155154,
+    "train_acc": 0.994140625,
+    "switch_start": 0.03403677763793039
+   },
+   {
+    "change": -0.11079911070012297,
+    "first_order": -0.0166126592270619,
+    "alignment": -0.4429637298117204,
+    "train_acc": 0.9921875,
+    "switch_start": 0.07993527664639839
+   },
+   {
+    "change": 0.0012283698952245399,
+    "first_order": 0.0015921821139246847,
+    "alignment": 0.01936959630660201,
+    "train_acc": 0.9921875,
+    "switch_start": 0.0005255105069788988
+   },
+   {
+    "change": -0.024767234383784205,
+    "first_order": -0.013106593665431127,
+    "alignment": -0.3239433985275938,
+    "train_acc": 0.98828125,
+    "switch_start": -0.007934019779626227
+   },
+   {
+    "change": -0.013970772399148353,
+    "first_order": -0.01851175216848901,
+    "alignment": -0.4211335299215684,
+    "train_acc": 0.98828125,
+    "switch_start": -0.026209867951669914
+   },
+   {
+    "change": -0.0245460014383024,
+    "first_order": -0.016069920529664092,
+    "alignment": -0.4666263862276664,
+    "train_acc": 0.9921875,
+    "switch_start": -0.025545393578540986
+   },
+   {
+    "change": 0.062429441215250535,
+    "first_order": 0.016337202765722394,
+    "alignment": 0.3694986337616216,
+    "train_acc": 0.994140625,
+    "switch_start": -0.02633728818967984
+   },
+   {
+    "change": 0.004685693118270086,
+    "first_order": -0.0009996572151995506,
+    "alignment": -0.04667499003172135,
+    "train_acc": 0.986328125,
+    "switch_start": -0.023915366949369063
+   },
+   {
+    "change": -0.021042968609553105,
+    "first_order": -0.010153518537296798,
+    "alignment": -0.2516001841556748,
+    "train_acc": 0.998046875,
+    "switch_start": -0.013918483557507112
+   },
+   {
+    "change": -0.2913705853079156,
+    "first_order": -0.039594967416521576,
+    "alignment": -1.211191589572945,
+    "train_acc": 0.9921875,
+    "switch_start": -0.04290661513629331
+   },
+   {
+    "change": 0.1101886577226587,
+    "first_order": 0.04332423927269501,
+    "alignment": 1.1446227926231398,
+    "train_acc": 0.99609375,
+    "switch_start": -0.0005247394493987476
+   },
+   {
+    "change": 0.0056822120204320925,
+    "first_order": 0.022758479700285338,
+    "alignment": 0.6799756613587833,
+    "train_acc": 0.986328125,
+    "switch_start": 0.07615391150976464
+   },
+   {
+    "change": 0.05863624498939695,
+    "first_order": 0.005390402104403421,
+    "alignment": 0.06051558630820175,
+    "train_acc": 0.994140625,
+    "switch_start": -0.060109221046958955
+   },
+   {
+    "change": 0.019714645682189863,
+    "first_order": 0.006671947169349798,
+    "alignment": 0.16513357556409547,
+    "train_acc": 0.994140625,
+    "switch_start": 0.002563168138481566
+   },
+   {
+    "change": -0.06205048766807463,
+    "first_order": -0.009301328389582883,
+    "alignment": -0.262223391321278,
+    "train_acc": 0.990234375,
+    "switch_start": 0.029980929603197363
+   },
+   {
+    "change": 0.013790499799266491,
+    "first_order": -0.003394533078064708,
+    "alignment": -0.09593166807237086,
+    "train_acc": 0.994140625,
+    "switch_start": -0.04217042327163747
+   },
+   {
+    "change": 0.14676952808787352,
+    "first_order": 0.03977831387702976,
+    "alignment": 1.18467217850828,
+    "train_acc": 0.990234375,
+    "switch_start": 0.04873368362849477
+   },
+   {
+    "change": 0.019635782583352954,
+    "first_order": 0.0032513358588908115,
+    "alignment": 0.0612741828479553,
+    "train_acc": 0.994140625,
+    "switch_start": -0.013154395252272612
+   },
+   {
+    "change": 0.0463308694249165,
+    "first_order": 0.009472090323687404,
+    "alignment": 0.25256368961516884,
+    "train_acc": 0.99609375,
+    "switch_start": -0.0344932055106206
+   },
+   {
+    "change": 0.03203135149356148,
+    "first_order": 0.02353495322013735,
+    "alignment": 0.6560087027135425,
+    "train_acc": 0.998046875,
+    "switch_start": 0.02093912539965445
+   },
+   {
+    "change": 0.015594736903280781,
+    "first_order": 0.008964910170994513,
+    "alignment": 0.21396276151028298,
+    "train_acc": 0.98828125,
+    "switch_start": 0.01909222604036681
+   },
+   {
+    "change": -0.010026506680026942,
+    "first_order": 0.011800165744737865,
+    "alignment": 0.3011297228628049,
+    "train_acc": 0.9921875,
+    "switch_start": 0.037773178619220374
+   },
+   {
+    "change": 0.0778078585998188,
+    "first_order": 0.02751693832238672,
+    "alignment": 0.8715697086764669,
+    "train_acc": 0.990234375,
+    "switch_start": -0.008613550802925985
+   },
+   {
+    "change": 0.07440690985443413,
+    "first_order": -0.0027510376283304792,
+    "alignment": -0.07279346824369842,
+    "train_acc": 0.986328125,
+    "switch_start": -0.10789363933697815
+   },
+   {
+    "change": -0.06723333460317898,
+    "first_order": -0.015314548753670276,
+    "alignment": -0.40451033447128604,
+    "train_acc": 0.994140625,
+    "switch_start": 0.02856540465477435
+   },
+   {
+    "change": -0.036458132117105316,
+    "first_order": -0.012680643948958112,
+    "alignment": -0.33990574498685766,
+    "train_acc": 0.986328125,
+    "switch_start": 0.008346064933456392
+   },
+   {
+    "change": -0.19803301794205913,
+    "first_order": -0.03208548681635457,
+    "alignment": -1.0413461078640351,
+    "train_acc": 0.994140625,
+    "switch_start": 0.13307102228868972
+   },
+   {
+    "change": -0.018176267045593355,
+    "first_order": -0.010319306265228709,
+    "alignment": -0.3511714762822752,
+    "train_acc": 0.98828125,
+    "switch_start": 0.0029422415402639073
+   },
+   {
+    "change": -0.12218622634443846,
+    "first_order": -0.022325964001333205,
+    "alignment": -0.5817854932630817,
+    "train_acc": 0.986328125,
+    "switch_start": 0.01714344724783625
+   },
+   {
+    "change": 0.02050761357252223,
+    "first_order": -0.00022033850487213373,
+    "alignment": 0.018642319684777364,
+    "train_acc": 0.99609375,
+    "switch_start": -0.03398795212140044
+   },
+   {
+    "change": 0.11321836615763568,
+    "first_order": 0.025118433103933625,
+    "alignment": 0.841433074936585,
+    "train_acc": 0.994140625,
+    "switch_start": 0.0026456794592504976
+   },
+   {
+    "change": 0.06277013786209014,
+    "first_order": 0.015972670343250336,
+    "alignment": 0.589744697591484,
+    "train_acc": 0.9921875,
+    "switch_start": -0.010490684893351806
+   },
+   {
+    "change": -0.04061430210238984,
+    "first_order": -0.0224978071287541,
+    "alignment": -0.5751321486189787,
+    "train_acc": 0.994140625,
+    "switch_start": -0.02986817510680426
+   },
+   {
+    "change": -0.06962757132199032,
+    "first_order": -0.030812306278670768,
+    "alignment": -0.9781099453826607,
+    "train_acc": 0.984375,
+    "switch_start": -0.06704732281915177
+   },
+   {
+    "change": -0.17850233597227405,
+    "first_order": -0.0407898929090716,
+    "alignment": -1.1155084890566596,
+    "train_acc": 0.986328125,
+    "switch_start": 0.035417831209316186
+   },
+   {
+    "change": 0.05413430408764716,
+    "first_order": 0.007090631474423534,
+    "alignment": 0.17204496312873602,
+    "train_acc": 0.99609375,
+    "switch_start": -0.03726999472265924
+   },
+   {
+    "change": -0.004089104299694895,
+    "first_order": 0.0034125307588713217,
+    "alignment": 0.13292408407235168,
+    "train_acc": 0.99609375,
+    "switch_start": 0.018536483360015822
+   },
+   {
+    "change": 0.17200166291898641,
+    "first_order": 0.04697601909848652,
+    "alignment": 1.0840100640594366,
+    "train_acc": 0.982421875,
+    "switch_start": 0.04195228361922418
+   },
+   {
+    "change": 0.04394035768337394,
+    "first_order": 0.010871702619796125,
+    "alignment": 0.31061335529754763,
+    "train_acc": 0.990234375,
+    "switch_start": 0.0018286799721814945
+   },
+   {
+    "change": -0.07326312688096154,
+    "first_order": -0.041293040906782465,
+    "alignment": -1.0052932469221612,
+    "train_acc": 0.9921875,
+    "switch_start": -0.08255355222897895
+   },
+   {
+    "change": -0.06144527509457384,
+    "first_order": -0.01290516319347131,
+    "alignment": -0.31443987889399166,
+    "train_acc": 0.994140625,
+    "switch_start": 0.04423778186940006
+   },
+   {
+    "change": 0.13071220433946507,
+    "first_order": 0.027885751477605622,
+    "alignment": 1.0083889470858853,
+    "train_acc": 0.9921875,
+    "switch_start": 0.027381676295284207
+   },
+   {
+    "change": -0.02808546240401551,
+    "first_order": -0.01575739495067788,
+    "alignment": -0.4409082999579602,
+    "train_acc": 0.982421875,
+    "switch_start": -0.007887415708010739
+   },
+   {
+    "change": 0.029817070997578417,
+    "first_order": 0.017899033007923944,
+    "alignment": 0.4699003266874598,
+    "train_acc": 0.994140625,
+    "switch_start": 0.04505960594609117
+   },
+   {
+    "change": 0.06719833902248509,
+    "first_order": 0.01108819047881124,
+    "alignment": 0.2873665817857664,
+    "train_acc": 0.990234375,
+    "switch_start": -0.03926351995805345
+   },
+   {
+    "change": -0.09271712430044513,
+    "first_order": -0.0297251304488038,
+    "alignment": -0.6362759123383911,
+    "train_acc": 0.9921875,
+    "switch_start": 0.004561096644409145
+   },
+   {
+    "change": 0.01128796781615106,
+    "first_order": 0.007509468836099397,
+    "alignment": 0.20827392131700329,
+    "train_acc": 0.994140625,
+    "switch_start": 0.04135347455295578
+   },
+   {
+    "change": -0.056187141779195746,
+    "first_order": -0.016906945934392695,
+    "alignment": -0.4502176197613748,
+    "train_acc": 0.984375,
+    "switch_start": -0.012075486934215202
+   },
+   {
+    "change": -6.961041947724841e-05,
+    "first_order": 0.003552143814204968,
+    "alignment": 0.10325285041298365,
+    "train_acc": 0.99609375,
+    "switch_start": 0.006810335014552797
+   },
+   {
+    "change": -0.05198953679620051,
+    "first_order": -0.02029208431771944,
+    "alignment": -0.5296165397526726,
+    "train_acc": 0.9921875,
+    "switch_start": 0.0033782822333572565
+   },
+   {
+    "change": 0.05709390135228688,
+    "first_order": 0.017400729690311128,
+    "alignment": 0.4296390460430916,
+    "train_acc": 0.98828125,
+    "switch_start": 0.0005950236365787045
+   },
+   {
+    "change": 0.06150820638766547,
+    "first_order": 0.011999827767979839,
+    "alignment": 0.3358713773128226,
+    "train_acc": 0.98828125,
+    "switch_start": -0.004669739037092529
+   },
+   {
+    "change": 0.10317847237235234,
+    "first_order": 0.016743227237731164,
+    "alignment": 0.5096317196405804,
+    "train_acc": 0.990234375,
+    "switch_start": -0.041363055603450764
+   },
+   {
+    "change": 0.03719131515640699,
+    "first_order": 0.02036088394053492,
+    "alignment": 0.555462083846689,
+    "train_acc": 0.994140625,
+    "switch_start": 0.012115074729658951
+   },
+   {
+    "change": -0.0270415664575315,
+    "first_order": -0.010933396381186601,
+    "alignment": -0.26503815274422426,
+    "train_acc": 0.98828125,
+    "switch_start": -0.02093899601007593
+   },
+   {
+    "change": -0.021756502084284875,
+    "first_order": -0.0003348208376753695,
+    "alignment": -0.009179128890097421,
+    "train_acc": 0.990234375,
+    "switch_start": 0.02507388832172045
+   },
+   {
+    "change": -0.013221179582155344,
+    "first_order": -0.022548739125668182,
+    "alignment": -0.5050005020723872,
+    "train_acc": 0.990234375,
+    "switch_start": -0.030335896962116658
+   },
+   {
+    "change": 0.05601619323010081,
+    "first_order": 0.007344950362168768,
+    "alignment": 0.19789205584648764,
+    "train_acc": 0.9921875,
+    "switch_start": -0.022899069618661692
+   },
+   {
+    "change": -0.045889465667785394,
+    "first_order": -0.007823434041557404,
+    "alignment": -0.21967097513697126,
+    "train_acc": 0.9921875,
+    "switch_start": 0.02973913973634596
+   },
+   {
+    "change": 0.016223877333762394,
+    "first_order": 0.0027273521674834023,
+    "alignment": 0.054932392937290075,
+    "train_acc": 0.994140625,
+    "switch_start": -0.002469750986366606
+   },
+   {
+    "change": 0.05821121792447956,
+    "first_order": 0.019793191164497598,
+    "alignment": 0.5645329877534017,
+    "train_acc": 0.994140625,
+    "switch_start": 0.003932744588890393
+   },
+   {
+    "change": 0.12239670091183545,
+    "first_order": 0.02297679484605312,
+    "alignment": 0.6569606924900575,
+    "train_acc": 0.9921875,
+    "switch_start": -0.017561344846548935
+   },
+   {
+    "change": 0.047502533593234905,
+    "first_order": 0.0008800964752267638,
+    "alignment": -0.03818444475913563,
+    "train_acc": 0.994140625,
+    "switch_start": -0.05855762311899835
+   },
+   {
+    "change": -0.04962046536681794,
+    "first_order": 0.0030768287009323085,
+    "alignment": 0.062392360692614474,
+    "train_acc": 0.998046875,
+    "switch_start": 0.0689296234853588
+   },
+   {
+    "change": 0.030912470450670096,
+    "first_order": 0.03079670786984178,
+    "alignment": 0.9005233684869489,
+    "train_acc": 0.9921875,
+    "switch_start": 0.08904573404477047
+   },
+   {
+    "change": 0.01881728122900054,
+    "first_order": -0.007852455681976065,
+    "alignment": -0.1246403125808293,
+    "train_acc": 0.9921875,
+    "switch_start": -0.023553115573617278
+   },
+   {
+    "change": -0.11905924227644492,
+    "first_order": -0.018884000748585386,
+    "alignment": -0.6262310676820487,
+    "train_acc": 0.990234375,
+    "switch_start": -0.0015887636415571073
+   },
+   {
+    "change": -0.05640941381437933,
+    "first_order": -0.012765071187615426,
+    "alignment": -0.32312490931092963,
+    "train_acc": 0.998046875,
+    "switch_start": 0.0010417625570768464
+   },
+   {
+    "change": -0.032441654504146766,
+    "first_order": -0.003402560421660361,
+    "alignment": -0.13278192001988426,
+    "train_acc": 0.9921875,
+    "switch_start": 0.020948094669949586
+   },
+   {
+    "change": 0.12885118747001878,
+    "first_order": 0.019592469107251057,
+    "alignment": 0.5340307874568255,
+    "train_acc": 0.994140625,
+    "switch_start": -0.03298346429134171
+   },
+   {
+    "change": 0.024317134177344907,
+    "first_order": 0.010803311854866162,
+    "alignment": 0.32707945135448013,
+    "train_acc": 0.994140625,
+    "switch_start": 0.012327872636372278
+   },
+   {
+    "change": 0.07232610097212491,
+    "first_order": 0.011726928276192308,
+    "alignment": 0.391562263559099,
+    "train_acc": 1.0,
+    "switch_start": -0.051573049566488144
+   },
+   {
+    "change": 0.0009148828407655131,
+    "first_order": -0.00579793265618585,
+    "alignment": -0.1342204042679052,
+    "train_acc": 0.994140625,
+    "switch_start": -0.00270887444824173
+   },
+   {
+    "change": 0.01601602080118516,
+    "first_order": 0.014073094551367668,
+    "alignment": 0.3331584144366141,
+    "train_acc": 0.9921875,
+    "switch_start": 0.03418533003020865
+   },
+   {
+    "change": 0.008956478079149606,
+    "first_order": 0.008157865224264291,
+    "alignment": 0.2794016474810808,
+    "train_acc": 0.9921875,
+    "switch_start": 0.009451357907495789
+   },
+   {
+    "change": -0.03253403487272988,
+    "first_order": -0.008486472718249172,
+    "alignment": -0.2339366456644613,
+    "train_acc": 0.9921875,
+    "switch_start": 0.02569740699353916
+   },
+   {
+    "change": -0.025173553862534195,
+    "first_order": 0.005566053305785296,
+    "alignment": 0.0674582446271984,
+    "train_acc": 0.998046875,
+    "switch_start": 0.02717820345745979
+   },
+   {
+    "change": -0.04819597559872843,
+    "first_order": -0.008127822417177915,
+    "alignment": -0.2683770409820442,
+    "train_acc": 0.990234375,
+    "switch_start": 0.01854145662143354
+   },
+   {
+    "change": -0.04295701787666643,
+    "first_order": -0.0008791842541866936,
+    "alignment": 0.06471221028849855,
+    "train_acc": 0.9921875,
+    "switch_start": 0.05027971655073078
+   },
+   {
+    "change": 0.029996940147794374,
+    "first_order": 0.013414953051672996,
+    "alignment": 0.2917157127689883,
+    "train_acc": 0.990234375,
+    "switch_start": -0.015478607734974672
+   },
+   {
+    "change": -0.087141385367317,
+    "first_order": -0.012101362432160447,
+    "alignment": -0.3231180978993239,
+    "train_acc": 0.98828125,
+    "switch_start": -0.006947068102762079
+   },
+   {
+    "change": -0.05547082290474027,
+    "first_order": -0.02463133315151154,
+    "alignment": -0.6655606022824191,
+    "train_acc": 0.990234375,
+    "switch_start": 0.032308088894383226
+   },
+   {
+    "change": -0.10862187846197949,
+    "first_order": -0.008589415464373227,
+    "alignment": -0.255267681126748,
+    "train_acc": 0.98828125,
+    "switch_start": 0.07895851873208959
+   },
+   {
+    "change": 0.10925422842504451,
+    "first_order": 0.023982037491887386,
+    "alignment": 0.7509310326405292,
+    "train_acc": 0.9921875,
+    "switch_start": -0.05628973839781999
+   },
+   {
+    "change": 0.011287605000733104,
+    "first_order": 0.003489610465334067,
+    "alignment": 0.022609030784589812,
+    "train_acc": 0.9921875,
+    "switch_start": -0.012760571178461924
+   },
+   {
+    "change": 0.045902831380687015,
+    "first_order": 0.004070047804448152,
+    "alignment": 0.14996165613616658,
+    "train_acc": 0.9921875,
+    "switch_start": -0.04775440025777673
+   },
+   {
+    "change": -0.05353489398597544,
+    "first_order": -0.013651347389416342,
+    "alignment": -0.37147738068149017,
+    "train_acc": 0.99609375,
+    "switch_start": 0.014848914944475763
+   },
+   {
+    "change": -0.0713877012228714,
+    "first_order": -0.007273722161711683,
+    "alignment": -0.18014403985606414,
+    "train_acc": 0.994140625,
+    "switch_start": 0.060511141758466
+   },
+   {
+    "change": -0.014571842427580268,
+    "first_order": -0.0020125135061237203,
+    "alignment": -0.07244052407231655,
+    "train_acc": 0.9921875,
+    "switch_start": 0.011282893936007236
+   },
+   {
+    "change": 0.07419567764128891,
+    "first_order": 0.014767231747444055,
+    "alignment": 0.4714143722005686,
+    "train_acc": 0.9921875,
+    "switch_start": -0.05013740092859495
+   },
+   {
+    "change": -0.04160321896019136,
+    "first_order": -0.00017876351341824745,
+    "alignment": -0.006692419849514575,
+    "train_acc": 0.9921875,
+    "switch_start": 0.045797345139349736
+   },
+   {
+    "change": -0.05479899032280594,
+    "first_order": -0.02211017700502934,
+    "alignment": -0.5873285171108189,
+    "train_acc": 0.9921875,
+    "switch_start": 0.019443917109340014
+   },
+   {
+    "change": -0.09747591366038685,
+    "first_order": -0.02181076065898995,
+    "alignment": -0.6726136067784023,
+    "train_acc": 0.994140625,
+    "switch_start": 0.008384882758391185
+   },
+   {
+    "change": 0.0678350273328295,
+    "first_order": 0.017621850282316335,
+    "alignment": 0.5949989218518582,
+    "train_acc": 0.986328125,
+    "switch_start": -0.018849654590391042
+   },
+   {
+    "change": 0.07922644698834796,
+    "first_order": 0.020321250556615017,
+    "alignment": 0.5544747293419869,
+    "train_acc": 0.99609375,
+    "switch_start": -0.01334516661221565
+   },
+   {
+    "change": -0.006911135993867098,
+    "first_order": -0.007884738511785717,
+    "alignment": -0.18108766496005982,
+    "train_acc": 0.990234375,
+    "switch_start": 0.00368949500472327
+   },
+   {
+    "change": -0.003697409191863541,
+    "first_order": 0.0035347805940249962,
+    "alignment": 0.04435281225008783,
+    "train_acc": 0.994140625,
+    "switch_start": 0.023233376280201137
+   },
+   {
+    "change": 0.009833557804577217,
+    "first_order": -0.00555005774251001,
+    "alignment": -0.1390754329266527,
+    "train_acc": 0.994140625,
+    "switch_start": -0.02588739846455032
+   },
+   {
+    "change": 0.21672080083435732,
+    "first_order": 0.04600080278076818,
+    "alignment": 1.196026176747778,
+    "train_acc": 0.9921875,
+    "switch_start": -0.017931057959098932
+   },
+   {
+    "change": 0.05282362022213534,
+    "first_order": 0.016604508628326044,
+    "alignment": 0.4062412118792047,
+    "train_acc": 0.994140625,
+    "switch_start": -0.014590937092093468
+   },
+   {
+    "change": -0.2006578109494122,
+    "first_order": -0.04148568907598602,
+    "alignment": -1.2683926926539355,
+    "train_acc": 0.9921875,
+    "switch_start": 0.01481304559926417
+   },
+   {
+    "change": 0.0796586908602414,
+    "first_order": 0.0344556685955699,
+    "alignment": 0.9152476152301343,
+    "train_acc": 0.994140625,
+    "switch_start": 0.04555959275584685
+   },
+   {
+    "change": 0.13482785418030813,
+    "first_order": 0.033906546773305735,
+    "alignment": 0.8156102650848083,
+    "train_acc": 0.99609375,
+    "switch_start": 0.041130728166613104
+   },
+   {
+    "change": -0.19695576872312281,
+    "first_order": -0.024322048204219994,
+    "alignment": -0.5570797586592071,
+    "train_acc": 0.990234375,
+    "switch_start": 0.058934939263124125
+   },
+   {
+    "change": 0.03891644111278133,
+    "first_order": 0.007541597290098477,
+    "alignment": 0.19625125542576932,
+    "train_acc": 0.994140625,
+    "switch_start": -0.006472204136472276
+   },
+   {
+    "change": 0.07367504679077046,
+    "first_order": 0.034051845552631736,
+    "alignment": 0.8641333450426217,
+    "train_acc": 0.994140625,
+    "switch_start": 0.0621704940990795
+   },
+   {
+    "change": 0.02364567498248978,
+    "first_order": 0.009217948501337283,
+    "alignment": 0.24846818484218297,
+    "train_acc": 0.982421875,
+    "switch_start": 0.0029187233469753176
+   },
+   {
+    "change": 0.1631952442897544,
+    "first_order": 0.047282980722177584,
+    "alignment": 1.1306557234779966,
+    "train_acc": 0.98828125,
+    "switch_start": -0.018005199689380857
+   },
+   {
+    "change": -0.17983639359643347,
+    "first_order": -0.03380464916029086,
+    "alignment": -0.8915422800391568,
+    "train_acc": 0.9921875,
+    "switch_start": 0.025745756137634614
+   },
+   {
+    "change": 0.1624313979375456,
+    "first_order": 0.041956466304341744,
+    "alignment": 1.1213414237346409,
+    "train_acc": 0.994140625,
+    "switch_start": 0.002279283909363914
+   },
+   {
+    "change": 0.05786922967620682,
+    "first_order": 0.013983924480562807,
+    "alignment": 0.33485323627933256,
+    "train_acc": 0.990234375,
+    "switch_start": -0.019854213540467493
+   },
+   {
+    "change": -0.041483131330488525,
+    "first_order": 0.0010579496817417992,
+    "alignment": 0.06301490558247486,
+    "train_acc": 0.9921875,
+    "switch_start": 0.05055521542858715
+   },
+   {
+    "change": -0.09710434719187003,
+    "first_order": -0.02563464459118973,
+    "alignment": -0.724870887993692,
+    "train_acc": 0.994140625,
+    "switch_start": 0.020091195926564283
+   },
+   {
+    "change": 0.06848266746750843,
+    "first_order": 0.012168130817629024,
+    "alignment": 0.33904219551488113,
+    "train_acc": 0.998046875,
+    "switch_start": -0.005614289973218295
+   },
+   {
+    "change": -0.25100454129320593,
+    "first_order": -0.039842033624307514,
+    "alignment": -1.0101621909774665,
+    "train_acc": 0.990234375,
+    "switch_start": 0.11234861673078171
+   },
+   {
+    "change": -0.029886105686888993,
+    "first_order": -0.014649158289867296,
+    "alignment": -0.3458279360530177,
+    "train_acc": 0.990234375,
+    "switch_start": 0.0020591810466509238
+   },
+   {
+    "change": 0.07090658903954349,
+    "first_order": 0.009080684276510684,
+    "alignment": 0.23141437670471246,
+    "train_acc": 0.994140625,
+    "switch_start": -0.012349096502149909
+   },
+   {
+    "change": -0.10316407973691627,
+    "first_order": -0.031190362073059173,
+    "alignment": -0.923751762894711,
+    "train_acc": 0.9921875,
+    "switch_start": -0.03013151765508232
+   },
+   {
+    "change": 0.01110917147985736,
+    "first_order": -0.0007109471736446751,
+    "alignment": -0.05310806828304037,
+    "train_acc": 0.984375,
+    "switch_start": -0.017773422899057867
+   },
+   {
+    "change": -0.10815225426477416,
+    "first_order": -0.0305886972874543,
+    "alignment": -0.8577065662386807,
+    "train_acc": 0.9921875,
+    "switch_start": -0.03125490870976537
+   },
+   {
+    "change": 0.05932613852189392,
+    "first_order": 0.011018150444887506,
+    "alignment": 0.40599351721458,
+    "train_acc": 0.990234375,
+    "switch_start": -0.017314703797693155
+   },
+   {
+    "change": -0.14962483268678456,
+    "first_order": -0.047250198972499054,
+    "alignment": -1.1320813282843576,
+    "train_acc": 0.9921875,
+    "switch_start": 0.028340500429669395
+   },
+   {
+    "change": 0.061890022112477,
+    "first_order": 0.008867100575877359,
+    "alignment": 0.2682330356302519,
+    "train_acc": 0.99609375,
+    "switch_start": -0.05990215167084663
+   },
+   {
+    "change": 0.012439761994168196,
+    "first_order": -0.00012458458754397488,
+    "alignment": 0.007988346964854162,
+    "train_acc": 0.99609375,
+    "switch_start": -0.01410350449411624
+   },
+   {
+    "change": 0.0984175165177821,
+    "first_order": 0.02010743768223384,
+    "alignment": 0.4998528217600175,
+    "train_acc": 0.998046875,
+    "switch_start": -0.07989698517511061
+   },
+   {
+    "change": -0.056799828814720524,
+    "first_order": -0.021132575792947163,
+    "alignment": -0.5764152471341107,
+    "train_acc": 0.99609375,
+    "switch_start": -0.0020465182355890793
+   },
+   {
+    "change": 0.030123518168281505,
+    "first_order": 0.0069851008669858305,
+    "alignment": 0.22715206458851916,
+    "train_acc": 0.994140625,
+    "switch_start": 0.002612573879570434
+   },
+   {
+    "change": 0.07199190747098103,
+    "first_order": 0.01643197395154211,
+    "alignment": 0.4324818645932478,
+    "train_acc": 0.9921875,
+    "switch_start": 0.018126575566407933
+   },
+   {
+    "change": -0.06973079129233735,
+    "first_order": -0.011411856619293089,
+    "alignment": -0.29089103299648056,
+    "train_acc": 0.98828125,
+    "switch_start": 0.03028090834007067
+   },
+   {
+    "change": -0.007776716598855376,
+    "first_order": -0.0038333147753207178,
+    "alignment": -0.1543964521767175,
+    "train_acc": 0.98828125,
+    "switch_start": 0.001965926409647778
+   },
+   {
+    "change": 0.00853352786835037,
+    "first_order": 0.0008162824262249521,
+    "alignment": 0.057685843489013955,
+    "train_acc": 0.99609375,
+    "switch_start": -0.018448157985484926
+   },
+   {
+    "change": 0.005553944334649722,
+    "first_order": 0.0010579186373636596,
+    "alignment": 0.02994996614526607,
+    "train_acc": 0.98046875,
+    "switch_start": -0.002011579448250314
+   },
+   {
+    "change": -0.006057099384783743,
+    "first_order": -0.010648277044060206,
+    "alignment": -0.34704074725696765,
+    "train_acc": 0.994140625,
+    "switch_start": -0.02399274252116078
+   },
+   {
+    "change": 0.013512336669874187,
+    "first_order": 0.003411112955063846,
+    "alignment": 0.13080777080524142,
+    "train_acc": 0.9921875,
+    "switch_start": -0.004687698447552033
+   },
+   {
+    "change": -0.052031568880753123,
+    "first_order": -0.01029651673638269,
+    "alignment": -0.26762894940627163,
+    "train_acc": 0.994140625,
+    "switch_start": 0.036213513206385814
+   },
+   {
+    "change": 0.08227088793104942,
+    "first_order": 0.008390323409770369,
+    "alignment": 0.33091862267920574,
+    "train_acc": 0.986328125,
+    "switch_start": -0.07085508805973333
+   },
+   {
+    "change": -0.07565778135689069,
+    "first_order": -0.03453921621835044,
+    "alignment": -0.8791014530855559,
+    "train_acc": 0.98828125,
+    "switch_start": -0.02129306178598078
+   },
+   {
+    "change": -0.0168390525328281,
+    "first_order": -0.011683042427435491,
+    "alignment": -0.3051453038003744,
+    "train_acc": 0.994140625,
+    "switch_start": -0.011202318864953147
+   },
+   {
+    "change": 0.08721817310839113,
+    "first_order": 0.019955494030725725,
+    "alignment": 0.6432291555694503,
+    "train_acc": 0.982421875,
+    "switch_start": 0.027898753651652355
+   },
+   {
+    "change": 0.04021203474374066,
+    "first_order": 0.01504821229605667,
+    "alignment": 0.40907068527814755,
+    "train_acc": 0.98828125,
+    "switch_start": 0.03789549387926691
+   },
+   {
+    "change": 0.023340795447855892,
+    "first_order": 0.00799763699497354,
+    "alignment": 0.21480261693190308,
+    "train_acc": 0.98828125,
+    "switch_start": 0.026568441199011996
+   },
+   {
+    "change": 0.058225420286103564,
+    "first_order": 0.00590986936118592,
+    "alignment": 0.14772942826116386,
+    "train_acc": 0.98828125,
+    "switch_start": 0.01585358557578389
+   },
+   {
+    "change": 0.029713841528615864,
+    "first_order": 0.017793121955711633,
+    "alignment": 0.4773421873634286,
+    "train_acc": 0.990234375,
+    "switch_start": 0.03762618545908257
+   },
+   {
+    "change": 0.060849677901745315,
+    "first_order": 0.01793139163712054,
+    "alignment": 0.485290859090818,
+    "train_acc": 0.998046875,
+    "switch_start": -0.0007929689725057522
+   },
+   {
+    "change": -0.00852741416900455,
+    "first_order": -0.0006551227962216362,
+    "alignment": -0.01834933905312436,
+    "train_acc": 0.9921875,
+    "switch_start": 0.0065754797506684705
+   },
+   {
+    "change": 0.005808777847710159,
+    "first_order": -0.0013330047087576488,
+    "alignment": 0.004386385438338136,
+    "train_acc": 0.990234375,
+    "switch_start": -0.01116225521518266
+   },
+   {
+    "change": 0.166372660374133,
+    "first_order": 0.0213502766776792,
+    "alignment": 0.5369669454677891,
+    "train_acc": 0.986328125,
+    "switch_start": 0.030196384441917648
+   },
+   {
+    "change": -0.02728055868677981,
+    "first_order": -0.012835531206462468,
+    "alignment": -0.356802330500377,
+    "train_acc": 0.984375,
+    "switch_start": -0.03461183831926448
+   },
+   {
+    "change": 0.054420539350262226,
+    "first_order": 0.014842695002292721,
+    "alignment": 0.5380597057673819,
+    "train_acc": 0.984375,
+    "switch_start": 0.006409558484728433
+   },
+   {
+    "change": 0.018577504150676716,
+    "first_order": -0.0020400805226245267,
+    "alignment": -0.051930857138514586,
+    "train_acc": 0.9921875,
+    "switch_start": -0.02673633743145892
+   },
+   {
+    "change": -0.1266884169388754,
+    "first_order": -0.02051735780013279,
+    "alignment": -0.5804581907429898,
+    "train_acc": 0.99609375,
+    "switch_start": -0.01585248607302432
+   },
+   {
+    "change": -0.007956112734386928,
+    "first_order": 0.0029006463376825015,
+    "alignment": 0.10766326334879639,
+    "train_acc": 0.990234375,
+    "switch_start": 0.025608328415294618
+   },
+   {
+    "change": 0.0470014200533763,
+    "first_order": 0.009046125996145534,
+    "alignment": 0.19312905221282944,
+    "train_acc": 0.99609375,
+    "switch_start": -0.04035957267510519
+   },
+   {
+    "change": 0.038299108856911984,
+    "first_order": 0.019790479502670356,
+    "alignment": 0.5280187329217294,
+    "train_acc": 0.994140625,
+    "switch_start": 0.09858905379241376
+   },
+   {
+    "change": 0.021003602404894937,
+    "first_order": 0.005507399981314513,
+    "alignment": 0.13261515343020422,
+    "train_acc": 0.986328125,
+    "switch_start": -0.004951108764527184
+   },
+   {
+    "change": 0.025887368780179037,
+    "first_order": 0.002012191728411314,
+    "alignment": 0.037659954379773194,
+    "train_acc": 0.994140625,
+    "switch_start": -0.027331879616934313
+   },
+   {
+    "change": 0.10119247503847181,
+    "first_order": 0.03681623427896628,
+    "alignment": 0.8550882328501663,
+    "train_acc": 0.990234375,
+    "switch_start": 0.008003965208905452
+   },
+   {
+    "change": 0.019445773229405418,
+    "first_order": 0.02626795249013299,
+    "alignment": 0.7534209400576544,
+    "train_acc": 0.994140625,
+    "switch_start": 0.03451532226253117
+   },
+   {
+    "change": -0.003687271229640538,
+    "first_order": -0.004733059834804891,
+    "alignment": -0.1549276331502456,
+    "train_acc": 0.99609375,
+    "switch_start": -0.012205402239463602
+   },
+   {
+    "change": -0.07838170034881378,
+    "first_order": -0.01217886525687234,
+    "alignment": -0.34864575202774134,
+    "train_acc": 0.98828125,
+    "switch_start": -0.001884049457715008
+   },
+   {
+    "change": 0.086629258697879,
+    "first_order": 0.011859469820126874,
+    "alignment": 0.3013323917999333,
+    "train_acc": 0.9921875,
+    "switch_start": -0.004421783159150307
+   },
+   {
+    "change": 0.003902754852826845,
+    "first_order": 0.01402471388384913,
+    "alignment": 0.3383699896777955,
+    "train_acc": 0.99609375,
+    "switch_start": 0.06798219239165895
+   },
+   {
+    "change": 0.04171764748331226,
+    "first_order": 0.004541708215047545,
+    "alignment": 0.17798730420034775,
+    "train_acc": 0.98828125,
+    "switch_start": -0.0522570090015544
+   },
+   {
+    "change": 0.18951874889922346,
+    "first_order": 0.03506462493050095,
+    "alignment": 1.0399838604279568,
+    "train_acc": 0.990234375,
+    "switch_start": -0.004200726127991435
+   },
+   {
+    "change": -0.20091931932520923,
+    "first_order": -0.03591718378193488,
+    "alignment": -1.0108138411534375,
+    "train_acc": 0.990234375,
+    "switch_start": 0.01624923962540854
+   },
+   {
+    "change": 0.10264749593304967,
+    "first_order": 0.023750696856089413,
+    "alignment": 0.6410704706010837,
+    "train_acc": 0.9921875,
+    "switch_start": -0.06614618493662988
+   },
+   {
+    "change": -0.01940572561707736,
+    "first_order": 0.003541967364761322,
+    "alignment": 0.06124773079352592,
+    "train_acc": 0.994140625,
+    "switch_start": 0.035554046785104806
+   },
+   {
+    "change": 0.0011760685419602204,
+    "first_order": -0.005645103928048304,
+    "alignment": -0.16995229314585636,
+    "train_acc": 0.994140625,
+    "switch_start": -0.006210524377657076
+   },
+   {
+    "change": 0.10756729859435826,
+    "first_order": 0.03422244784061248,
+    "alignment": 0.9965680869281214,
+    "train_acc": 0.9921875,
+    "switch_start": 0.012973838389967789
+   },
+   {
+    "change": 0.01749010870421828,
+    "first_order": 0.00032922383526411245,
+    "alignment": 0.034786461979938454,
+    "train_acc": 0.9921875,
+    "switch_start": -0.01654396554524707
+   },
+   {
+    "change": 0.013508385742323391,
+    "first_order": -0.0009442882036691887,
+    "alignment": -0.10917660226225978,
+    "train_acc": 0.98828125,
+    "switch_start": -0.021069774864436515
+   },
+   {
+    "change": 0.0025664928620118916,
+    "first_order": 0.0015170894579270566,
+    "alignment": 0.0689838571775327,
+    "train_acc": 0.98828125,
+    "switch_start": -0.003798223925227886
+   },
+   {
+    "change": -0.10435796408551143,
+    "first_order": -0.029460001136822518,
+    "alignment": -0.9264004193786819,
+    "train_acc": 0.990234375,
+    "switch_start": 0.026737222496628167
+   },
+   {
+    "change": -0.0891778643252225,
+    "first_order": -0.018072436171891294,
+    "alignment": -0.543016628709634,
+    "train_acc": 0.984375,
+    "switch_start": -0.00268114116875603
+   },
+   {
+    "change": -0.016266674042686377,
+    "first_order": -0.0011894938863364884,
+    "alignment": -0.0225848776680041,
+    "train_acc": 0.994140625,
+    "switch_start": 0.021716728155884282
+   },
+   {
+    "change": 0.05077645005240854,
+    "first_order": 0.010919723063784807,
+    "alignment": 0.3166134920000158,
+    "train_acc": 0.990234375,
+    "switch_start": -0.020965354928881238
+   },
+   {
+    "change": -0.06669777177171227,
+    "first_order": -0.03253783096249973,
+    "alignment": -0.8949229982053091,
+    "train_acc": 0.990234375,
+    "switch_start": -0.06210450047814425
+   },
+   {
+    "change": -0.04197740852097503,
+    "first_order": 0.007758508907521803,
+    "alignment": 0.20797866035097512,
+    "train_acc": 0.990234375,
+    "switch_start": 0.06067850279354398
+   },
+   {
+    "change": 0.07727017818438266,
+    "first_order": 0.03633089430860855,
+    "alignment": 0.8948243779205763,
+    "train_acc": 0.994140625,
+    "switch_start": 0.08202244017809794
+   },
+   {
+    "change": 0.050080864369141775,
+    "first_order": 0.016702852966677825,
+    "alignment": 0.44188845858323694,
+    "train_acc": 0.9921875,
+    "switch_start": -0.009000293341008832
+   },
+   {
+    "change": 0.02782112948604373,
+    "first_order": 0.00488920838017318,
+    "alignment": 0.1277097564458534,
+    "train_acc": 0.9921875,
+    "switch_start": -0.03065849125294145
+   },
+   {
+    "change": 0.01794710002340735,
+    "first_order": 0.007230076571371075,
+    "alignment": 0.18804338042148988,
+    "train_acc": 0.99609375,
+    "switch_start": 0.02842039794298402
+   },
+   {
+    "change": 0.013917328623700286,
+    "first_order": -0.0015491185174787657,
+    "alignment": -0.06214998162675414,
+    "train_acc": 0.994140625,
+    "switch_start": -0.027347218136432677
+   },
+   {
+    "change": -0.2560175825301344,
+    "first_order": -0.028440121705312044,
+    "alignment": -0.8740625440075096,
+    "train_acc": 0.9921875,
+    "switch_start": 0.058371863808862924
+   },
+   {
+    "change": -0.015538800572785685,
+    "first_order": 0.020944296981570878,
+    "alignment": 0.5018767151124431,
+    "train_acc": 0.994140625,
+    "switch_start": 0.11823355986670207
+   },
+   {
+    "change": -0.07136149557830015,
+    "first_order": -0.0171576128348614,
+    "alignment": -0.522120926646503,
+    "train_acc": 0.990234375,
+    "switch_start": 0.046703906169323905
+   },
+   {
+    "change": 0.0029890817138008632,
+    "first_order": 0.015137706987359572,
+    "alignment": 0.4586441175070881,
+    "train_acc": 0.982421875,
+    "switch_start": 0.05473116639969291
+   },
+   {
+    "change": 0.01656549386201674,
+    "first_order": 0.004739380563451071,
+    "alignment": 0.13226521945560857,
+    "train_acc": 0.99609375,
+    "switch_start": -0.015587808132615927
+   },
+   {
+    "change": 0.03001769761734987,
+    "first_order": 0.006381965139097242,
+    "alignment": 0.17639618747963445,
+    "train_acc": 0.994140625,
+    "switch_start": -0.007703848474490377
+   },
+   {
+    "change": -0.01509008433434291,
+    "first_order": -0.007646900866525969,
+    "alignment": -0.1684216650584328,
+    "train_acc": 0.994140625,
+    "switch_start": 0.001847242599860273
+   },
+   {
+    "change": -0.00795813176571876,
+    "first_order": -0.020135791420374912,
+    "alignment": -0.5088717417646089,
+    "train_acc": 0.994140625,
+    "switch_start": -0.041051918791501094
+   },
+   {
+    "change": -0.02165114106977379,
+    "first_order": -0.016361428338138518,
+    "alignment": -0.49952360445148,
+    "train_acc": 0.994140625,
+    "switch_start": -0.05004538900708263
+   },
+   {
+    "change": 0.0409842120032065,
+    "first_order": 0.010009070590450546,
+    "alignment": 0.2722043968758788,
+    "train_acc": 0.9921875,
+    "switch_start": -0.004878046673166939
+   },
+   {
+    "change": 0.052673103384780484,
+    "first_order": 0.008620401565691233,
+    "alignment": 0.20857485208589666,
+    "train_acc": 0.994140625,
+    "switch_start": -0.0035705541293889723
+   },
+   {
+    "change": 0.07136364409222645,
+    "first_order": 0.012943766409405758,
+    "alignment": 0.35195015118457196,
+    "train_acc": 0.994140625,
+    "switch_start": -0.011946292410352938
+   },
+   {
+    "change": 0.041399897068619185,
+    "first_order": 0.008556684330913618,
+    "alignment": 0.25023663471873986,
+    "train_acc": 0.990234375,
+    "switch_start": 0.0017963606925091994
+   },
+   {
+    "change": 0.08902793004049467,
+    "first_order": 0.03182784354812389,
+    "alignment": 0.9728076622632298,
+    "train_acc": 0.994140625,
+    "switch_start": 0.08205780991952935
+   },
+   {
+    "change": -0.2819592154408616,
+    "first_order": -0.060814586669567176,
+    "alignment": -1.6041834735566876,
+    "train_acc": 0.990234375,
+    "switch_start": -0.007634414239293374
+   },
+   {
+    "change": 0.17225382383087554,
+    "first_order": 0.04846023745534102,
+    "alignment": 1.2492848656360827,
+    "train_acc": 0.990234375,
+    "switch_start": 0.008770642227944476
+   },
+   {
+    "change": 0.042018755545572384,
+    "first_order": 0.013516615831672565,
+    "alignment": 0.3315789895200626,
+    "train_acc": 0.9921875,
+    "switch_start": -0.010193410102867572
+   },
+   {
+    "change": 0.05870616074059216,
+    "first_order": 0.006252689814193691,
+    "alignment": 0.16887695247766704,
+    "train_acc": 0.990234375,
+    "switch_start": -0.06368203536090589
+   },
+   {
+    "change": 0.00135804309146274,
+    "first_order": -0.010670937221433672,
+    "alignment": -0.37480523904842317,
+    "train_acc": 0.9921875,
+    "switch_start": -0.024792957751905806
+   },
+   {
+    "change": 0.04956869579734276,
+    "first_order": 0.014478291821163405,
+    "alignment": 0.337303656831556,
+    "train_acc": 0.990234375,
+    "switch_start": -0.013973879374162869
+   },
+   {
+    "change": 0.03301543457114275,
+    "first_order": 0.0007662262410774398,
+    "alignment": -0.026616290225159614,
+    "train_acc": 0.994140625,
+    "switch_start": -0.050299218665158046
+   }
+  ]
+ }
+}

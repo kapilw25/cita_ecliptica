@@ -453,3 +453,27 @@ sponsor_label_check:
     - {run: impartial, model: CITA_Instruct_AsTrained, arm: sponsor, flag: mention, value: true, n: 10}
     - {run: plain, model: Llama31_Instruct_Prompted, arm: neutral, flag: any, value: true, n: 10}
     - {run: plain, model: DPO_Instruct_AsTrained, arm: sponsor, flag: any, value: true, n: 10}
+
+# MATH4AI toy experiment (src/eval/toy_contract_drift.py, CPU; ChatGPT v7 priority 3, Fri Nov 27 2026): contract-conditioned DPO on
+# one contract, independent vs shared contract parameters; the switch between two unseen contracts, its change after training, and the
+# first-order prediction -<grad g, grad L> at initialization. Synthetic data; every size below is a choice of the toy, not a measurement.
+toy_contract_drift:
+  out_dir: outputs/evaluation/toy_contract_drift
+  seeds: 500                             # independent draws of data, contract embeddings and initialization
+  seed_base: 3407                        # seed s uses numpy default_rng(seed_base + s)
+  n_train: 512                           # training requests, half harmful (harm score x.u > 0)
+  n_test: 1024                           # harmful test requests on which the unseen switch is measured
+  d: 16                                  # request features
+  m: 8                                   # contract embedding size (shared class)
+  n_contracts: 3                         # I0 trained (strict: refuse harmful, comply otherwise); I1, I2 unseen
+  beta: 1.0
+  lr: 0.5
+  steps: 300
+  init_scale: 0.1                        # initial parameters ~ N(0, init_scale^2); the initial policy is the reference
+  bins: 6                                # alignment bins for the plotted means
+  plot:
+    stem: toy_contract_drift             # saved as v<i>_toy_contract_drift.{png,pdf}
+    figsize: [6.8, 6.2]
+    font_size: 13
+    dpi: 300
+    colors: {shared: "#C2185B", independent: "#1565C0"}
