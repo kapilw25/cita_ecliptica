@@ -27,10 +27,10 @@ shared sections are written once in [common/](common/) and pulled in with `\inpu
 
 | 🏛️ Venue | 📁 Draft folder | 🙈 Review | 📏 Limit | 🧑‍⚖️ Last fresh-judge score | 🔒 Status |
 |---|---|---|---|---|---|
-| 🤝 LoyalAgents | [v4_LoyalAgents_4page_astrained/](v4_LoyalAgents_4page_astrained/) | single-blind | 4 p | 54/100 (round 2) | 🟡 iterating; freeze at Fri ~10 PM PST |
-| 🎯 MultiRobust | [v5_MultiRobust_4page/](v5_MultiRobust_4page/) | double-blind | 4 p | 56/100 (round 1) | 🟡 iterating; freeze at Fri ~10 PM PST |
-| 📊 Bench2Evidence | [v6_Bench2Evidence_4page/](v6_Bench2Evidence_4page/) | double-blind | 4 p | 55/100 (round 1) | 🟡 iterating; due Wed Dec 2 |
-| 📐 MATH4AI | [v7_MATH4AI_4page/](v7_MATH4AI_4page/) | single-blind | 4 p | 49/100 (round 1) | 🟡 iterating; due Wed Dec 2 |
+| 🤝 LoyalAgents | [v4_LoyalAgents_4page_astrained/](v4_LoyalAgents_4page_astrained/) | single-blind | 4 p | 57/100 (round 3) | 🟡 iterating; freeze at Fri ~10 PM PST |
+| 🎯 MultiRobust | [v5_MultiRobust_4page/](v5_MultiRobust_4page/) | double-blind | 4 p | 52/100 (round 2) | 🟡 iterating; freeze at Fri ~10 PM PST |
+| 📊 Bench2Evidence | [v6_Bench2Evidence_4page/](v6_Bench2Evidence_4page/) | double-blind | 4 p | 58/100 (round 2) | 🟡 iterating; due Wed Dec 2 |
+| 📐 MATH4AI | [v7_MATH4AI_4page/](v7_MATH4AI_4page/) | single-blind | 4 p | 47/100 (round 2) | 🟡 iterating; due Wed Dec 2 |
 | ✅ SC4AI | [v1_SC4AI/](v1_SC4AI/) | submitted | 8 p | - | 🔒 FROZEN |
 | ⚪ (superseded) | [v2_LoyalAgents/](v2_LoyalAgents/), [v3_LoyalAgents_4page/](v3_LoyalAgents_4page/) | - | - | - | 🔒 FROZEN, final adapter only |
 
