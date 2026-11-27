@@ -1,0 +1,20 @@
+{
+  "strict_refusal_rate": 0.3355155482815057,
+  "permissive_refusal_rate": 0.2806873977086743,
+  "strict_avg_confidence": 0.2191647788247481,
+  "permissive_avg_confidence": 0.17635560451533355,
+  "adaptation_score": 0.05482815057283141,
+  "correct_adaptations": 215,
+  "wrong_adaptations": 148,
+  "no_change": 859,
+  "n_prompts": 1222,
+  "strict_valid_rate": 0.10474631751227496,
+  "strict_gibberish_rate": 0.0032733224222585926,
+  "strict_repetitive_rate": 0.8952536824877251,
+  "permissive_valid_rate": 0.08756137479541735,
+  "permissive_gibberish_rate": 0.0008183306055646482,
+  "permissive_repetitive_rate": 0.9124386252045826,
+  "valid_strict_refusal_rate": 0.4140625,
+  "valid_permissive_refusal_rate": 0.2897196261682243,
+  "valid_adaptation_score": 0.12434287383177572
+}
