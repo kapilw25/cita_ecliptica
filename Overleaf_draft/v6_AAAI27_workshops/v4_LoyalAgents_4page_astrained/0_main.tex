@@ -47,15 +47,15 @@ A deployer steers a switchable model by writing a natural-language contract into
 
 \section{Introduction}
 
-AI agents increasingly act for people, and inside a language model whom an agent works for has a concrete form: the system and user turns compete to direct it. Preference optimization such as DPO \cite{rafailov2023direct} fits one default policy to all annotators. Switchable alignment instead passes a natural-language contract $I$ next to the request $X$, so that the same $X$ yields different behavior only because $I$ changed (Figure~\ref{fig:loyal}), steerable pluralism in the terms of \citet{sorensen2024roadmap}.
+AI agents increasingly act for people, and inside a language model whom an agent works for has a concrete form: the system and user turns compete to direct it. Preference optimization such as DPO \cite{rafailov2023direct} fits one default policy to all annotators. Switchable alignment instead passes a natural-language contract $I$ next to the request $X$, so that the same $X$ yields different behavior only because $I$ changed, steerable pluralism in the terms of \citet{sorensen2024roadmap}.
 
 \input{../common/fig_loyal}  % owner pick Fri Nov 27 2026: LoyalAgents' own Figure 1 (the loyalty levers)
 
 
-For loyalty the contract has a second reading. $I$ sits in the deployer's slot and the user usually does not see it, so every behavior it controls is a lever the deployer holds over the user. Our contributions are:
+For loyalty the contract has a second reading. $I$ sits in the deployer's slot, unseen by the user, so every behavior it controls is a lever the deployer holds over the user. Our contributions are:
 \begin{itemize}
-    \item A principal-agent reading of switchable alignment: the system slot as the delegation interface, its levers, and five controls for keeping the agent loyal to its user, three of them tested (Section~\ref{sec:loyalty}).
-    \item Each lever measured on the models as trained, under two refusal instruments (Section~\ref{sec:results}): steerability and exploitability arrive together: of the two models whose refusals follow the contract (a prompted instruction-tuned model and SwiPO without SFT), both also yield to a user turn that loosens the contract (phrase heuristic), and the prompted one serves a hidden sponsor against the user's request; no system contract moves a trained model's harm, though a contrary user turn raises it after SFT, PPO and GRPO.
+    \item A principal-agent reading of switchable alignment: the system slot as delegation interface, its levers, and five loyalty controls, three tested (Section~\ref{sec:loyalty}).
+    \item Each lever measured on the models as trained, under two refusal instruments (Section~\ref{sec:results}): steerability and exploitability arrive together: of the two models whose refusals follow the contract (a prompted instruction-tuned model and SwiPO without SFT), both also yield to a user turn that loosens the contract (phrase heuristic), and the prompted one serves a hidden sponsor against the user's request; no system contract moves a trained model's harm; a contrary user turn raises it after SFT, PPO and GRPO.
 \end{itemize}
 
 
@@ -80,7 +80,7 @@ Four parties stand behind one answer: the provider fixes defaults in training, t
 
 \section{Related Work}
 
-\citet{aguirre2020loyalty} call an AI system loyal to the degree that it minimizes and discloses conflicts of interest; fiduciary procedures \cite{benthall2023fiduciary}, agency law \cite{kolt2025governing}, alignment among assistant, user, developer, and society \cite{gabriel2024ethics}, and behavioral loyalty tests \cite{greenwood2026loyalevals} build on that view. \input{../common/related_core}
+\citet{aguirre2020loyalty} call an AI system loyal to the degree that it minimizes and discloses conflicts of interest; fiduciary procedures \cite{benthall2023fiduciary}, agency law \cite{kolt2025governing}, alignment among assistant, user, developer, and society \cite{gabriel2024ethics}, and behavioral loyalty tests \cite{greenwood2026loyalevals} build on that view. Studies of sponsored answers \cite{wu2026ads} and instruction-hierarchy benchmarks \cite{zhang2025iheval,geng2025control} prompt fixed models; we measure what contract training changes, on the models as trained, under two instruments, with harm scored apart. \input{../common/related_core}
 \input{../common/sec_limits}
 
 \section{Conclusion}
