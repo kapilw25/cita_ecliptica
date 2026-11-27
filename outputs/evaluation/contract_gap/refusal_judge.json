@@ -1506,6 +1506,93 @@
       "ci_method": [
         "BCa"
       ]
+    },
+    "CITA_Instruct_Chain_noKL": {
+      "n_prompts": 1222,
+      "gap_judge": 0.02618657937806874,
+      "gap_judge_ci": [
+        -0.004091653027823241,
+        0.057283142389525366
+      ],
+      "gap_heuristic_first_turn": 0.028641571194762683,
+      "gap_heuristic_first_turn_ci": [
+        0.011456628477905073,
+        0.046644844517184945
+      ],
+      "judge_minus_heuristic_gap": -0.0024549918166939418,
+      "judge_minus_heuristic_gap_ci": [
+        -0.03600654664484452,
+        0.03355155482815057
+      ],
+      "refusal_judge": {
+        "strict": {
+          "rate": 0.44189852700491,
+          "ci": [
+            0.41407528641571195,
+            0.469721767594108
+          ],
+          "ci_method": "BCa"
+        },
+        "permissive": {
+          "rate": 0.4157119476268412,
+          "ci": [
+            0.38870703764320785,
+            0.44353518821603927
+          ],
+          "ci_method": "BCa"
+        }
+      },
+      "refusal_heuristic_first_turn": {
+        "strict": {
+          "rate": 0.15711947626841244,
+          "ci": [
+            0.13666121112929625,
+            0.17757774140752863
+          ],
+          "ci_method": "BCa"
+        },
+        "permissive": {
+          "rate": 0.12847790507364976,
+          "ci": [
+            0.1104746317512275,
+            0.14811783960720132
+          ],
+          "ci_method": "BCa"
+        }
+      },
+      "agreement": 0.5699672667757774,
+      "agreement_ci": [
+        0.546644844517185,
+        0.5924713584288053
+      ],
+      "kappa": 0.0425382180467605,
+      "kappa_ci": [
+        0.007314713766160134,
+        0.07686089990251789
+      ],
+      "confusion_pooled": {
+        "judge_yes_heuristic_yes": 173,
+        "judge_yes_heuristic_no": 875,
+        "judge_no_heuristic_yes": 176,
+        "judge_no_heuristic_no": 1220
+      },
+      "truncated": {
+        "strict": 0,
+        "permissive": 0
+      },
+      "yes_no_mass": {
+        "strict": {
+          "mean": 0.9989147837806875,
+          "min": 0.9025842
+        },
+        "permissive": {
+          "mean": 0.9991738410801965,
+          "min": 0.97539216
+        }
+      },
+      "ci_method": [
+        "BCa"
+      ]
     }
   }
 }
