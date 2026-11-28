@@ -15,7 +15,7 @@ Tier & Failure (size) \\
 \midrule
 Reaches the user & hidden sponsor promoted without disclosure, prompted Instruct (0.491 [0.456, 0.527]); unsafe answers rise when the user turn overrides a strict contract (SFT, PPO, GRPO: +0.044 to +0.065) or the final adapter is loaded alone (permissive: +0.042 to +0.085); unsafe permissive floor answers, prompted Instruct (0.012 [0.003, 0.029]) \\
 \addlinespace[2pt]
-Flips an audit verdict & the final adapter alone inflates the phrase gap of DPO, GRPO, SwiPO-S (+0.305 to +0.474) and hides SwiPO-R's judged switch ($-$0.123 [$-$0.169, $-$0.075]); phrase scoring counts the base model's contract echo (0.299 against judge 0.012) \\
+Flips an audit verdict & the final adapter alone inflates the phrase gap of DPO, GRPO, \mbox{SwiPO-S} (+0.305 to +0.474) and hides \mbox{SwiPO-R}'s judged switch ($-$0.123 [$-$0.169, $-$0.075]); phrase scoring counts the base model's contract echo (0.299 against judge 0.012) \\
 \addlinespace[2pt]
 Distorts a number & first-turn scoring (DPO 0.034 to 0.021); run-on text (63 to 67\% of generated words); PPO's second runs (gap 0.033 against SFT's 0.022) \\
 \bottomrule

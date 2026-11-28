@@ -1,7 +1,7 @@
 % common/fig_loyal.tex: LoyalAgents' Figure 1 (owner pick Fri Nov 27 2026: own lead figure; Claude v4 C1).
 % Figure by src/eval/loyalty_levers_plot.py (outputs/evaluation/contract_gap/figures/v6_loyalty_levers.pdf) from
 % contract_gap/refusal_judge.json (a), authority_split.json (b), sponsor_echo_stop_eot.json and sponsor_impartial_stop_eot.json (c; other families: src/eval/sponsor_contract.py, MODELS stop_tokens native).
-\begin{figure}[!ht]
+\begin{figure}[t]
 \centering
 \includegraphics[width=0.95\columnwidth]{v6_loyalty_levers.pdf}
 \caption{Three levers of the system slot, models as trained, 95\% BCa whiskers. (a) Strict-minus-permissive refusal gap, LLM judge on the first turn, 1,222 prompts. (b) Refusal change, LLM judge, when the user turn asks for the permissive contract under a strict system contract: below zero, the user loosened it. (c) Share of 805 requests promoting the hidden sponsor without repeating the contract; hatched: the user asks for impartiality and disclosure. Prompted: Base, Instruct (Llama-3.1-8B-Instruct), OLMo (OLMo-2-7B-Instruct), Qwen (Qwen2.5-7B-Instruct), Phi (Phi-3.5-mini-instruct).}

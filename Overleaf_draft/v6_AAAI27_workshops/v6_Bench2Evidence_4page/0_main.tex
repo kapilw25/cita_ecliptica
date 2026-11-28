@@ -53,7 +53,7 @@ We audit such a claim end to end, on Direct Preference Optimization (DPO) \cite{
 \begin{itemize}
     \item Five checks that a contract-switching result must pass before it counts as deployment evidence: composition, decoding, scorer, contamination, and controls (Section~\ref{sec:checks}).
     \item A reversal under the composition check: models evaluated without their parent adapters show refusal switches of \nFinalLo{} to \nFinalHi{}, three of which also move harmful content; as trained, only SwiPO without SFT keeps a switch under both scorers (Section~\ref{sec:results}).
-    \item Decoding and scorer checks: run-on answers leave the conclusions unchanged; composition or scorer correction alone removes most of the switch for every model except SwiPO-R, whose judge gap appears only as trained, and the two errors interact rather than add (Table~\ref{tab:budget}).
+    \item Decoding and scorer checks: run-on answers leave the conclusions unchanged; composition or scorer correction alone removes most of the switch for every model except \mbox{SwiPO-R}, whose judge gap appears only as trained, and the two errors interact rather than add (Table~\ref{tab:budget}).
 \end{itemize}
 
 \section{Five Checks Before a Number Becomes Evidence}
