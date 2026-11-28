@@ -26,6 +26,13 @@ description: One source, many workshop drafts. Shared sections of a paper live o
 | 4 | 🔒 A draft whose deadline is under 6 h away, or already submitted, gets a `FROZEN` file; the build skips it and keeps its PDF. |
 | 5 | ✅ One command rebuilds every unfrozen draft and runs the page, number and tone gates on each; one failing draft does not stop the others, and the run ends with a table. |
 | 6 | ✅ Then one fresh checker agent per draft reads only that draft's page pictures and returns PASS/FAIL per format check. A FAIL is fixed in that draft's venue parts or by a switch, then rebuilt. |
+| 7 | 🎯 Every draft choice (pages, cuts, titles) is judged by AAAI workshop acceptance odds: stay at 4 pages even where the call allows more, and pose the title as a question the abstract answers (section below). |
+
+## 🎯 Every draft decision serves workshop acceptance (owner Fri Nov 27 2026 ~5:55 PM PST)
+
+- **The owner:** "Stay at 4 pages to have a higher probability of acceptance at AAAI workshops >> keep all decisions with this goal in mind", and, on a judge's title idea: "try to convert TITLE into QUESTION ... to build the hook; update existing skills ... to not needed to repeat these instructions".
+- **4 pages, even where the call allows more** (SwiPO LoyalAgents allows 8): short papers are judged on the idea and its first evidence, poster sessions take far more of them than oral slots take long papers, and a long paper invites "missing baselines or ablations". A new result earns its lines by a cut from the judges' cut lists.
+- **The title is a question the abstract answers in its first sentence.** SwiPO, Nov 27: "Whose Contract Does an AI Agent Follow? ...", "Does a Contract Select a Pareto Point? ...", "Which Model Does an Alignment Benchmark Measure?", "Can One Contract Teach a Model to Switch? ...". Each venue title stays unique, and a title still changes only on the owner's OK. Question titles draw more downloads but fewer citations ([Jamali and Nikzad 2011](https://link.springer.com/doi/10.1007/s11192-011-0412-z), 2,172 PLoS articles); at a workshop the reviewer's first read decides.
 
 ## 1️⃣ Layout (same in all 3 projects)
 
