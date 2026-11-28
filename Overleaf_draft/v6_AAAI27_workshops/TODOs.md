@@ -1,6 +1,6 @@
 # ✅ SwiPO TODOs (v4, v5, v6, v7)
 
-Updated Fri Nov 27 2026, 12:33 PM PST. One TODO file for all SwiPO workshop drafts (owner order Fri Nov 27 ~8:05 AM PST), next to [venues.md](venues.md). It replaces `v2_LoyalAgents/TODOs.md`, archived at [legacy/v2_LoyalAgents/TODOs.md](legacy/v2_LoyalAgents/TODOs.md). Sources: the ARR reviews ([KpHA](../ARR_feedback/Reviewer_KpHA.md), [gMno](../ARR_feedback/Reviewer_gMno.md), [shuX](../ARR_feedback/Reviewer_shuX.md)) and the ChatGPT and Claude reviews in `feedback/output/<draft>/by_chatgpt.md` and `by_claude.md`. No early freeze: every draft iterates until its deadline (owner, Fri Nov 27). Owner away Fri Nov 27 ~8:40 AM to ~8:40 PM PST; picks before leaving: Claude integrates each new result honestly (abstracts included, titles fixed, cuts only from the judges' cut lists), runs a fresh Claude judge round on the Saturday drafts around 6 PM, keeps the anonymous data link, and sends a phone ping only on key events.
+Updated Fri Nov 27 2026, 4:30 PM PST (box checked 4:20 PM PST). One TODO file for all SwiPO workshop drafts (owner order Fri Nov 27 ~8:05 AM PST), next to [venues.md](venues.md). It replaces `v2_LoyalAgents/TODOs.md`, archived at [legacy/v2_LoyalAgents/TODOs.md](legacy/v2_LoyalAgents/TODOs.md). Sources: the ARR reviews ([KpHA](../ARR_feedback/Reviewer_KpHA.md), [gMno](../ARR_feedback/Reviewer_gMno.md), [shuX](../ARR_feedback/Reviewer_shuX.md)) and the ChatGPT and Claude reviews in `feedback/output/<draft>/by_chatgpt.md` and `by_claude.md`. No early freeze: every draft iterates until its deadline (owner, Fri Nov 27). Owner away Fri Nov 27 ~8:40 AM to ~8:40 PM PST; picks before leaving: Claude integrates each new result honestly (abstracts included, titles fixed, cuts only from the judges' cut lists), runs a fresh Claude judge round on the Saturday drafts around 6 PM, keeps the anonymous data link, and sends a phone ping only on key events.
 
 **Legend:** 🔴 open · ⏳ queued · 🟡 in progress · ✅ done · 👤 a person does it · ⚪ deferred · ⛔ blocked · 🟢 ChatGPT · 🟠 Claude · 📜 ARR
 
@@ -19,7 +19,7 @@ ELI5: four homework papers, two due tomorrow; two teachers graded each.
 
 ## 🖥️ GPU tasks
 
-One rented RTX PRO 6000 (96 GB), driven over SSH. The four Saturday runs go one after another in a side session, beside three running g3 jobs; Dec 2 runs wait in the queue behind them. "~" marks an estimate from measured speed.
+One rented RTX PRO 6000 (96 GB), driven over SSH, at most 3 GPU jobs at once. Every Saturday run is done. The three resampled answers run now (4 of 9 runs done, 2 running), then the Qwen judge, then the Dec 2 trainings. "~" marks an estimate from measured speed: a contract run takes about 3 h, an XSTest run about 1 h, a held-out run about 3 h 20 min.
 
 | 🧩 Task | 📄 Draft | ⏰ ETA (PST) | 🚦 Status |
 |---|---|---|---|
@@ -29,10 +29,10 @@ One rented RTX PRO 6000 (96 GB), driven over SSH. The four Saturday runs go one 
 | ❓ Disclosure follow-up question | 🤝 v4 | ✅ Fri Nov 27, 10:32 AM | ✅ in text |
 | ⚖️ Judge on authority answers | 🤝 v4, 🎯 v5 | ✅ Fri Nov 27, 12:28 PM | ✅ done |
 | 🧪 Evaluate no-KL ablation | 🔗 all | ✅ Fri Nov 27, 11:05 AM | ✅ done |
-| 🔁 Three resampled answers | 📊 v6, 🎯 v5 | ⏰ ~Sat Nov 28 | ⏳ queued |
-| ⚖️ Qwen second judge | 📊 v6 | ⏰ ~Sat Nov 28 | ⏳ queued |
-| 🧬 Two-contract SwiPO, SFT chain | 📐 v7 | ⏰ ~Sun Nov 29 | ⏳ queued |
-| 🌱 3-seed DPO, SwiPO retrains | 📊 v6, 📐 v7 | ⏰ ~Mon Nov 30 | ⏳ queued |
+| 🔁 Three resampled answers | 🎯 v5, 🤝 v4, 📊 v6 | ⏰ ~Fri Nov 27, 9 PM (XSTest ~5:35 PM) | 🟡 running, 4 of 9 done |
+| ⚖️ Qwen second judge | 📊 v6, 🎯 v5 | ⏰ ~Fri Nov 27, 9 PM | ⏳ queued, starts ~7 PM |
+| 🧬 Two-contract SwiPO, SFT chain | 📐 v7 | ⏰ ~Sat Nov 28, 6 AM | ⏳ queued, starts ~9 PM |
+| 🌱 3-seed DPO, SwiPO retrains | 📊 v6, 📐 v7 | ⏰ ~Mon Nov 30 | ⏳ queued, behind g1c evals and g2 |
 | 🧬 Two-contract SwiPO, R chain | 🔗 all | ✅ Fri Nov 27, 6 AM | ✅ done |
 | 🗳️ XSTest judge labels | 🎯 v5 | ✅ Fri Nov 27, 7 AM | ✅ done |
 | 📏 Capability MMLU, GSM8K | 🔗 all | ✅ Fri Nov 27, 2 AM | ✅ done, unused |
@@ -57,12 +57,16 @@ Owner pick Fri Nov 27 ~8:25 AM PST: no new baseline trainings before Dec 2. The 
 | ⚖️ Dominance, non-dominated points | 🎯 v5 | ✅ Fri Nov 27, 8 AM | ✅ done |
 | 📉 Objective-driven harm differences | 🎯 v5 | ✅ Fri Nov 27, 8 AM | ✅ in text |
 | 🔤 Larger Figure 1 text | 📊 v6, 📐 v7 | ✅ Fri Nov 27, 9:58 AM | ✅ about 17% larger |
-| 🧾 Rebuild, gates, page checkers | 🤝 v4, 🎯 v5 | ⏰ Fri Nov 27, 9 PM | 🔴 open |
-| 🔁 Judge reread, Saturday drafts | 🤝 v4, 🎯 v5 | 👤 Fri Nov 27, 11 PM | 🔴 owner |
+| 🔁 Claude judge round 6, Saturday drafts | 🤝 v4, 🎯 v5 | ⏰ Fri Nov 27, ~6 PM | 🟡 starting 4:30 PM |
+| 🛠️ Round-6 fixes into drafts | 🤝 v4, 🎯 v5 | ⏰ Fri Nov 27, ~8 PM | 🔴 waits round 6 |
+| 📥 Resampling into drafts | 🎯 v5, 🤝 v4 | ⏰ Fri Nov 27, ~10 PM | 🔴 waits run |
+| 📥 Qwen judge into drafts | 🎯 v5, 🤝 v4 | ⏰ Fri Nov 27, ~10 PM | 🔴 waits run, if it fits |
+| 🧾 Rebuild, gates, page checkers | 🤝 v4, 🎯 v5 | ⏰ every change; last Sat 2 AM | 🟡 all four PASS at e8fb843 |
+| 🔁 Owner final read, Saturday drafts | 🤝 v4, 🎯 v5 | 👤 Fri Nov 27, 11 PM | 🔴 owner |
 | 🔗 Data link: anonymous or named | 🔗 all | ✅ Fri Nov 27, 11:29 AM | ✅ cut in v5, v6 |
-| 📝 OpenReview overlap disclosure | 🎯 v5, 📊 v6 | 👤 at submission | 🔴 owner |
-| 📤 Submit LoyalAgents | 🤝 v4 | 👤 Sat Nov 28, 3 AM | 🔴 owner |
-| 📤 Submit MultiRobust | 🎯 v5 | 👤 Sat Nov 28, 3 AM | 🔴 owner |
+| 📝 OpenReview overlap disclosure | 🎯 v5, 📊 v6 | 👤 v5 Sat 3 AM, v6 Dec 1 | 🔴 owner |
+| 📤 Submit LoyalAgents | 🤝 v4 | 👤 first upload Fri 11 PM, final Sat 3:30 AM | 🔴 owner |
+| 📤 Submit MultiRobust | 🎯 v5 | 👤 first upload Fri 11 PM, final Sat 3:30 AM | 🔴 owner |
 | 🧮 Paired loading-by-scorer contrasts | 📊 v6 | ✅ Fri Nov 27, 10:01 AM | ✅ in Table 5 |
 | 🚨 Severity tiers table | 📊 v6 | ✅ Fri Nov 27, 10:03 AM | ✅ Table 5 |
 | ⏱️ Run-on token cost | 📊 v6 | ✅ Fri Nov 27, 9:50 AM | ✅ in text |
@@ -99,8 +103,8 @@ Anything that cannot finish without a human rater lives here and in no other tab
 | 🧩 Task | 📄 Draft | ⏰ ETA (PST) | 🚦 Status |
 |---|---|---|---|
 | 🏷️ Build sponsor labeling page | 🤝 v4 | ✅ Fri Nov 27, 9:39 AM | ✅ live, 150 items |
-| ✍️ Label 150 sponsor answers | 🤝 v4 | 👤 Fri Nov 27, 10 PM | 🔴 owner |
-| 📥 Sponsor labels into paper | 🤝 v4 | ⏰ Sat Nov 28, 1 AM | 🔴 open |
+| ✍️ Label 150 sponsor answers | 🤝 v4 | 👤 Fri Nov 27, 10 PM | 🔴 owner, 0 of 150 at 4:20 PM |
+| 📥 Sponsor labels into paper | 🤝 v4 | ⏰ 1 h after the labels, by Sat 1 AM | 🔴 waits labels |
 | 🧪 Draw scorer-validation sample | 📊 v6 | ✅ Fri Nov 27, 10:13 AM | ✅ 200 stratified |
 | 📋 Extend Safety Answer Check | 📊 v6 | ✅ Fri Nov 27, 10:13 AM | ✅ live, 300 items |
 | 🧑‍⚖️ Blind labels, three raters | 📊 v6 | 👤 Mon Nov 30, noon | 🔴 owner, 2 raters |
