@@ -1,6 +1,6 @@
 # ✅ SwiPO TODOs (v4, v5, v6, v7)
 
-Updated Fri Nov 27 2026, 6:00 PM PST (box checked 5:18 PM PST). Submissions are tracked on the [Workshop Deadlines](https://claude.ai/artifact/FemMusSPv4xxXJBTWGcw6b) page, not here (owner, Fri Nov 27 ~6 PM PST). One TODO file for all SwiPO workshop drafts (owner order Fri Nov 27 ~8:05 AM PST), next to [venues.md](venues.md). It replaces `v2_LoyalAgents/TODOs.md`, archived at [legacy/v2_LoyalAgents/TODOs.md](legacy/v2_LoyalAgents/TODOs.md). Sources: the ARR reviews ([KpHA](../ARR_feedback/Reviewer_KpHA.md), [gMno](../ARR_feedback/Reviewer_gMno.md), [shuX](../ARR_feedback/Reviewer_shuX.md)) and the ChatGPT and Claude reviews in `feedback/output/<draft>/by_chatgpt.md` and `by_claude.md`. No early freeze: every draft iterates until its deadline (owner, Fri Nov 27). Owner away Fri Nov 27 ~8:40 AM to ~8:40 PM PST; picks before leaving: Claude integrates each new result honestly (abstracts included, titles fixed, cuts only from the judges' cut lists), runs a fresh Claude judge round on the Saturday drafts around 6 PM, keeps the anonymous data link, and sends a phone ping only on key events.
+Updated Fri Nov 27 2026, 6:40 PM PST (box checked 6:32 PM PST). Submissions are tracked on the [Workshop Deadlines](https://claude.ai/artifact/FemMusSPv4xxXJBTWGcw6b) page, not here (owner, Fri Nov 27 ~6 PM PST). One TODO file for all SwiPO workshop drafts (owner order Fri Nov 27 ~8:05 AM PST), next to [venues.md](venues.md). It replaces `v2_LoyalAgents/TODOs.md`, archived at [legacy/v2_LoyalAgents/TODOs.md](legacy/v2_LoyalAgents/TODOs.md). Sources: the ARR reviews ([KpHA](../ARR_feedback/Reviewer_KpHA.md), [gMno](../ARR_feedback/Reviewer_gMno.md), [shuX](../ARR_feedback/Reviewer_shuX.md)) and the ChatGPT and Claude reviews in `feedback/output/<draft>/by_chatgpt.md` and `by_claude.md`. No early freeze: every draft iterates until its deadline (owner, Fri Nov 27). Owner away Fri Nov 27 ~8:40 AM to ~8:40 PM PST; picks before leaving: Claude integrates each new result honestly (abstracts included, titles fixed, cuts only from the judges' cut lists), runs a fresh Claude judge round on the Saturday drafts around 6 PM, keeps the anonymous data link, and sends a phone ping only on key events.
 
 **Legend:** 🔴 open · ⏳ queued · 🟡 in progress · ✅ done · 👤 a person does it · ⚪ deferred · ⛔ blocked · 🟢 ChatGPT · 🟠 Claude · 📜 ARR
 
@@ -21,15 +21,19 @@ ELI5: four homework papers, two due tomorrow; two teachers graded each.
 
 ## 🖥️ GPU tasks
 
-One rented RTX PRO 6000 (96 GB), driven over SSH, at most 3 GPU jobs at once. Every Saturday run is done. The three resampled answers run now (5 of 9 runs done, 3 running), beside the sponsor test on other model families; then the Qwen judge, then the Dec 2 trainings. Disk was 95% full; smoke-test outputs, intermediate checkpoints of finished trainings and the Llama Guard cache were removed at ~4:50 PM PST (24 GB; final adapters kept; owner: decide by RoI). "~" marks an estimate from measured speed: a contract run takes about 3 h, an XSTest run about 1 h, a held-out run about 3 h 20 min.
+One rented RTX PRO 6000 (96 GB), driven over SSH, at most 3 GPU jobs at once. Every Saturday run is done. Running: the sponsor test on other model families and the resampled answers (6 of 9 runs done); then the Qwen judge, the two-contract SFT-chain run, OLMo-2, and the Dec 2 trainings (seeds, penalty weights) with their evaluations. The g1c and g2 runs were dropped (no draft uses them). Disk was 95% full; smoke-test outputs, intermediate checkpoints of finished trainings and the Llama Guard cache were removed at ~4:50 PM PST (24 GB; final adapters kept; owner: decide by RoI). "~" marks an estimate from measured speed: a contract run takes about 3 h, an XSTest run about 1 h, a held-out run about 3 h 20 min.
 
 | 🧩 Task | 📄 Draft | ⏰ ETA (PST) | 🚦 Status | 💰 RoI |
 |---|---|---|---|---|
-| 🌐 Sponsor test, other families | 🤝 v4 | ⏰ Qwen, Phi ~6:40 PM; OLMo-2 ~10:30 PM | 🟡 Qwen plain done; Phi rerun after OOM, batch 16 | 🔥 high, answers one-model critique |
-| 🔁 Three resampled answers | 🎯 v5, 🤝 v4, 📊 v6 | ⏰ ~Fri Nov 27, 10 PM (XSTest ~5:35 PM) | 🟡 running, 5 of 9 done | 🔥 high, answers single-sample critique |
-| 🌱 3-seed DPO, SwiPO retrains | 📊 v6, 📐 v7 | ⏰ ~Mon Nov 30 | ⏳ queued, next after SFT-chain run | 🔥 high, Dec 2 variance, shuX |
-| ⚖️ Qwen second judge | 📊 v6, 🎯 v5 | ⏰ XSTest ~7:30 PM, Cond. Safety ~9:30 PM | ⏳ queued, model downloaded | 🟢 medium, judge from another family |
-| 🧬 Two-contract SwiPO, SFT chain | 📐 v7 | ⏰ ~Sat Nov 28, 6 AM | ⏳ queued, starts ~9 PM | 🟢 medium, v7 test, second chain |
+| 🌐 Sponsor test, other families | 🤝 v4 | ⏰ Qwen, Phi ~7:15 PM; OLMo-2 ~10:35 PM | 🟡 Qwen, Phi plain arms done; impartial running | 🔥 high, answers one-model critique |
+| ⚖️ Qwen second judge | 🎯 v5, 🤝 v4, 📊 v6 | ⏰ XSTest ~7:50 PM, Cond. Safety ~8:50 PM | ⏳ starts ~7:15 PM, dry run passed | 🔥 high, answers same-family judge critique |
+| 🔁 Three resampled answers | 🎯 v5, 🤝 v4, 📊 v6 | ⏰ ~10:30 PM | 🟡 6 of 9 done, 2 running | 🔥 high, answers single-sample critique |
+| 🌱 3-seed DPO, SwiPO retrains | 📊 v6, 📐 v7 | ⏰ ~Sat Nov 28, 2 PM, with evals | ⏳ after OLMo; evals now queued | 🔥 high, Dec 2 variance, shuX |
+| 🦙 Second backbone, Qwen2.5-7B chain | 📊 v6, 📐 v7 | ⏰ start Sat after the upload; ~Mon 6 AM | 🔴 open, dry run first | 🔥 high, answers one-backbone critique |
+| 🆚 SimPO, KTO on the SFT chain | 📐 v7, 📊 v6 | ⏰ start Sat after the upload; ~Sun | 🔴 open, trainers to wire | 🟢 medium, tests any single-contract loss |
+| 🎛️ Penalty weight x10, x100, x1000 | 📐 v7 | ⏰ ~Sat Nov 28, 2 PM | ⏳ queued with the seeds | 🟢 medium, tests the unbounded-penalty claim |
+| 🧬 Two-contract SwiPO, SFT chain | 📐 v7 | ⏰ ~Sat Nov 28, 2 AM | ⏳ starts ~7:50 PM | 🟢 medium, v7 test, second chain |
+| 🧲 Gradient-coupling measurement | 📐 v7 | ⏰ Sat after the upload | 🔴 open | 🟢 medium, measures the coupling the theory uses |
 | 🛑 Stop box, rotate token | 🔗 all | 👤 after Dec 1 | 🔴 owner | 🔸 low, ops: spend, secret |
 | ⚖️ Judge on authority answers | 🤝 v4, 🎯 v5 | ✅ Fri Nov 27, 12:28 PM | ✅ done | 🔥 high, v4 lever, both instruments |
 | 🤝 Conflict-of-interest arm | 🤝 v4 | ✅ Fri Nov 27, 9:26 AM | ✅ done | 🔥 high, v4 core sponsor result |
@@ -45,19 +49,19 @@ ELI5: the big computer re-asks the models new questions and grades them.
 
 ## 💻 Non-GPU tasks
 
-Owner pick Fri Nov 27 ~8:25 AM PST: no new baseline trainings before Dec 2. The no-KL run answers the KL ablation, the queued seed retrains answer variance, and SimPO, KTO and a lambda sweep go to the arXiv revision.
+Decision rule (owner, Fri Nov 27 ~6:30 PM PST): every choice is made by its RoI for acceptance and by the deadlines of the open submissions; nothing else blocks a task, and decisions are not asked. Earlier holds (no new baseline trainings before Dec 2) are lifted; rows that stay deferred say which RoI reason keeps them there.
 
 | 🧩 Task | 📄 Draft | ⏰ ETA (PST) | 🚦 Status | 💰 RoI |
 |---|---|---|---|---|
 | 📝 OpenReview overlap disclosure | 🎯 v5, 📊 v6 | 👤 v5 Sat 3 AM, v6 Dec 1 | 🔴 owner | 🔥 high, avoids a policy reject |
-| 🧾 Rebuild, gates, page checkers | 🤝 v4, 🎯 v5 | ⏰ every change; last Sat 2 AM | 🟡 all four PASS at e8fb843 | 🔥 high, avoids a format reject |
+| 🧾 Rebuild, gates, page checkers | 🤝 v4, 🎯 v5 | ⏰ every change; last Sat 2 AM | 🟡 all four PASS (6:06 PM build) | 🔥 high, avoids a format reject |
 | 🔁 Claude judge round 6, Saturday drafts | 🤝 v4, 🎯 v5 | ✅ Fri Nov 27, 4:35 PM | ✅ v4 61, v5 56 | 🔥 high, last error catch |
 | 🛠️ Round-6 fixes into drafts | 🤝 v4, 🎯 v5 | ✅ Fri Nov 27, 4:42 PM | ✅ text fixes in, all four PASS | 🔥 high, score gain before upload |
-| 📥 Other-family sponsor into v4 | 🤝 v4 | ⏰ Fri Nov 27, ~7 PM | 🔴 waits run | 🔥 high, answers one-model critique |
+| 📥 Other-family sponsor into v4 | 🤝 v4 | ⏰ Qwen, Phi ~7:45 PM; OLMo-2 ~11 PM | 🔴 waits run | 🔥 high, answers one-model critique |
 | 🔁 Owner final read, Saturday drafts | 🤝 v4, 🎯 v5 | 👤 Fri Nov 27, 11 PM | 🔴 owner | 🔥 high, author sign-off |
-| 📥 Resampling into drafts | 🎯 v5, 🤝 v4 | ⏰ Fri Nov 27, ~10 PM | 🔴 waits run | 🔥 high, answers single-sample critique |
+| 📥 Resampling into drafts | 🎯 v5, 🤝 v4 | ⏰ Fri Nov 27, ~11 PM | 🔴 waits run | 🔥 high, answers single-sample critique |
 | 🔁 Judge reread, Dec 2 drafts | 📊 v6, 📐 v7 | 👤 Mon Nov 30, 6 PM | 🔴 owner | 🔥 high, last error catch |
-| 📥 Qwen judge into drafts | 🎯 v5, 🤝 v4 | ⏰ Fri Nov 27, ~10 PM | 🔴 waits run, if it fits | 🟢 medium, second judge, if it fits |
+| 📥 Qwen judge into drafts | 🎯 v5, 🤝 v4 | ⏰ Fri Nov 27, ~9:30 PM | 🔴 waits run | 🔥 high, answers same-family judge critique |
 | 📦 Anonymous audit code link | 📊 v6 | ⏰ Mon Nov 30, noon | 🔴 open | 🟢 medium, v6 artifact check |
 | 📏 Drift band, untargeted switches | 📐 v7 | ⏰ Sat Nov 28, 8 PM | 🔴 open | 🟢 medium, v7 bound, optional |
 | 🔗 Data link: anonymous or named | 🔗 all | ✅ Fri Nov 27, 11:29 AM | ✅ cut in v5, v6 | 🔥 high, stopped a blind leak |
@@ -85,14 +89,10 @@ Owner pick Fri Nov 27 ~8:25 AM PST: no new baseline trainings before Dec 2. The 
 | 🔁 PPO test-retest line | 📊 v6 | ✅ Fri Nov 27, 8 AM | ✅ done | 🔸 low, v6, one line |
 | 📉 Objective-driven harm differences | 🎯 v5 | ✅ Fri Nov 27, 8 AM | ✅ in text | 🔸 low, v5, one clause |
 | 🔤 Larger Figure 1 text | 📊 v6, 📐 v7 | ✅ Fri Nov 27, 9:58 AM | ✅ about 17% larger | 🔸 low, v6, v7 readability |
-| 🦙 Second backbone model | 🔗 all | ⚪ after Dec 2 | ⚪ deferred, disclosed | 🔥 high, main-track ask, after Dec 2 |
-| 🧾 arXiv, SC4AI corrections | 🔗 arXiv, SC4AI | 👤 owner's call | ⚪ owner | 🟢 medium, public record |
-| 🆚 SimPO, KTO baselines | 🔗 arXiv revision | ⚪ after Dec 2 | ⚪ owner: not now | 🟢 medium, baseline ask, gMno |
-| 🎛️ Beta, lambda sweep | 🔗 arXiv revision | ⚪ after Dec 2 | ⚪ owner: not now | 🟢 medium, sensitivity, shuX |
-| 🗡️ Jailbreak attack test | 🔗 all | ⚪ after Dec 2 | ⚪ deferred | 🟢 medium, robustness, gMno |
-| 💸 Training cost table | 🔗 all | ⚪ after Dec 2 | ⚪ deferred | 🔸 low, cost, KpHA |
-| 🎚️ Third intermediate contract | 🎯 v5 | ⚪ not picked | ⚪ deferred | 🔸 low, v5 extra arm |
-| 🧲 Gradient-coupling measurement | 📐 v7 | ⚪ stretch | ⚪ deferred | 🔸 low, v7 stretch |
+| 🧾 arXiv, SC4AI corrections | 🔗 arXiv, SC4AI | 👤 after Dec 2 | ⚪ public posting is the owner's | 🟢 medium, public record |
+| 🗡️ Jailbreak attack test | 🔗 all | ⚪ after Dec 2 | ⚪ RoI: no open venue asks for attacks | 🟢 medium, robustness, gMno |
+| 💸 Training cost table | 🔗 all | ⚪ after Dec 2 | ⚪ RoI: no room at 4 pages | 🔸 low, cost, KpHA |
+| 🎚️ Third intermediate contract | 🎯 v5 | ⚪ closed | ⚪ RoI: MultiRobust closes Sat 3:59 AM | 🔸 low, v5 extra arm |
 
 ELI5: fix words, tables and pictures on the laptop; no big computer needed.
 
