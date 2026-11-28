@@ -212,6 +212,10 @@ MODELS["CITA_Instruct_Chain_FinalOnly"] = {**MODELS["CITA_Instruct_Chain"], "sta
 MODELS["CITA_Instruct_Chain_noKL"] = {**MODELS["CITA_Instruct_Chain"],  # KL-anchor ablation: cita.py --lambda-kl 0, same chain
                                       "hf_repo": str(project_root / "outputs/training/chain/CITA_Instruct_noKL/lora_model_CITA_Instruct"),
                                       "display_name": "CITA Instruct (chain, no KL anchor)"}
+for _mult in ("10x", "100x", "1000x"):  # penalty-weight sweep (MATH4AI, owner Fri Nov 27 2026 ~6:30 PM PST: decide by RoI): cita.py --lambda-kl <mult> x 0.000235, same chain
+    MODELS[f"CITA_Instruct_Chain_lam{_mult}"] = {**MODELS["CITA_Instruct_Chain"],
+                                                 "hf_repo": str(project_root / f"outputs/training/chain/CITA_Instruct_lam{_mult}/lora_model_CITA_Instruct"),
+                                                 "display_name": f"CITA Instruct (chain, penalty x{_mult[:-1]})"}
 # G1a on the intended chain (owner pick Fri Nov 27 2026): the two-contract SwiPO data (g1_contracts/a_swipo2c) trained on base + SFT + DPO
 # merged, as CITA_Instruct_Chain; defined after the G1/G2/G5 loop so it gets the SFT+DPO stack, not the DPO-only one
 MODELS["G1a_SwiPO2C_Instruct_Chain"] = {**MODELS["CITA_Instruct_Chain"],
