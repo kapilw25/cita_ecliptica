@@ -360,6 +360,125 @@ def design_final(A, request, sponsor_row, F):
     finish(fig, ax, W, 9.0, y - 0.04, project_root / F["dir"] / F["stem"])
 
 
+def design_loading():
+    """Bench2Evidence Figure 1: two loadings of the same DPO model, then its verbatim first words under both contracts."""
+    F, Lg = D["final"], D["loading"]
+    W, f = P["figsize_w"], F["wrap_factor"]
+    fig, ax = new(W)
+    y = 9.0 - 0.02
+    sw, gap = (W - 0.04 - 0.1) / 2, 0.1
+    tops = []
+    for j, (title, stack) in enumerate(Lg["stacks"].items()):
+        x = 0.02 + j * (sw + gap)
+        lines_at(ax, x + sw / 2, y, wrap(title, sw, f), ha="center", bold=True)
+        tops.append(len(wrap(title, sw, f)))
+    y -= max(tops) * LINE + 0.03
+    bh = LINE + 2 * PAD
+    hs = []
+    for j, (title, stack) in enumerate(Lg["stacks"].items()):
+        x, yy = 0.02 + j * (sw + gap), y
+        layers = list(reversed(stack))
+        if len(stack) == 2:
+            layers = [stack[1], Lg["missing"], stack[0]]
+        for layer in layers:
+            missing = layer == Lg["missing"]
+            rbox(ax, x + 0.08, yy, sw - 0.16, bh, "white" if missing else ("#eeeeee" if "base" in layer else OURS_FACE),
+                 RED if missing else ("#555555" if "base" in layer else OURS_EDGE), ls="--" if missing else "-")
+            lines_at(ax, x + sw / 2, yy - PAD, [layer], ha="center", color=RED if missing else INK)
+            yy -= bh + 0.03
+        hs.append(y - yy)
+    y -= max(hs) + 0.05
+    lines_at(ax, 0.02, y, [Lg["head"]], bold=True)
+    y -= LINE + 0.02
+    E, Lb = project_root / S["answers_dir"], project_root / S["labels_dir"]
+    first = None
+    cells = {}
+    for label, key in Lg["rows"].items():
+        cells[label] = {}
+        for arm in ("strict", "permissive"):
+            a = pd.read_csv(E / key / f"{arm}_responses.csv").set_index("prompt_idx")
+            lb = pd.read_csv(Lb / key / f"{arm}.csv").set_index("prompt_idx")
+            words = first_turn(a.loc[Lg["item"], "response"]).split()
+            cells[label][arm] = (" ".join(words[:F["snippet_words"]]) + "\u00a0…", int(lb.loc[Lg["item"], "is_refusal_judge"]))
+            first = a.loc[Lg["item"], "prompt"]
+    rl = wrap(f"“{verbatim(Lg['request_excerpt'], first, 'the request')}”", W - 0.04 - 2 * PAD, F["full_wrap_factor"])
+    rh = len(rl) * LINE + 2 * PAD
+    rbox(ax, 0.02, y, W - 0.04, rh, USER_FACE, USER_EDGE)
+    lines_at(ax, 0.02 + PAD, y - PAD, rl)
+    y -= rh + 0.03
+    lab_w, cgap = 0.72, 0.04
+    cw = (W - 0.04 - lab_w - cgap) / 2
+    heads = [wrap(f"{arm.capitalize()}: “{S['contracts'][arm]}”", cw - 2 * PAD + cgap, F["head_wrap_factor"])
+             for arm in ("strict", "permissive")]
+    for j, hd in enumerate(heads):
+        lines_at(ax, 0.02 + lab_w + j * (cw + cgap) + PAD, y, hd, color="#444444")
+    y -= max(len(hd) for hd in heads) * LINE + 0.01
+    for label, arms in cells.items():
+        same = arms["strict"][1] == arms["permissive"][1]
+        hs = []
+        for j, arm in enumerate(("strict", "permissive")):
+            tag, col = verdict(arms[arm][1])
+            hs.append(tagged(ax, 0.02 + lab_w + j * (cw + cgap) + PAD, y - PAD, cw - 2 * PAD, tag, col, arms[arm][0], f))
+        rh = max(max(hs), 2 * LINE) + 2 * PAD
+        for j in range(2):
+            rbox(ax, 0.02 + lab_w + j * (cw + cgap), y, cw, rh, OTHER_FACE if same else OURS_FACE,
+                 OTHER_EDGE if same else OURS_EDGE, lw=0.6 if same else 0.9)
+        lines_at(ax, 0.02, y - PAD, wrap(label, lab_w - 0.04, f), bold=True)
+        ax.text(0.02, y - PAD - (len(wrap(label, lab_w - 0.04, f)) + 0.8) * LINE, "no switch" if same else "switches",
+                fontsize=FS, fontweight="bold", color=GREY if same else RED)
+        y -= rh + 0.025
+    finish(fig, ax, W, 9.0, y - 0.02, project_root / F["dir"] / Lg["stem"])
+
+
+def design_proposition():
+    """MATH4AI Figure 1: the separability proposition as two small diagrams (separate vs shared parameters), no numbers."""
+    F, Pr = D["final"], D["proposition"]
+    W = P["figsize_w"]
+    fig, ax = new(W)
+    y = 9.0 - 0.02
+    y -= lines_at(ax, W / 2, y, wrap(Pr["title"], W - 0.04, 1.15), ha="center", bold=True) + 0.04
+    pw, gap = (W - 0.04 - 0.12) / 2, 0.12
+    arrow = dict(arrowstyle="-|>", mutation_scale=7, lw=0.8)
+    bottoms = []
+    for j in range(2):
+        x, yy = 0.02 + j * (pw + gap), y
+        yy -= lines_at(ax, x + pw / 2, yy, wrap(Pr["left" if j == 0 else "right"], pw, 1.1), ha="center", bold=True) + 0.03
+        lh = LINE + 2 * PAD
+        rbox(ax, x + 0.15, yy, pw - 0.3, lh, OURS_FACE, OURS_EDGE)
+        lines_at(ax, x + pw / 2, yy - PAD, [Pr["loss"]], ha="center")
+        top = yy - lh
+        yy = top - 0.22
+        if j == 0:
+            bw = (pw - 0.1) / 3
+            ph = 2 * LINE + 2 * PAD
+            for k in range(3):
+                bx = x + k * (bw + 0.05)
+                live = k == 0
+                rbox(ax, bx, yy, bw, ph, "#eeeeee" if live else "white", "#555555" if live else "#aaaaaa", ls="-" if live else "--")
+                lines_at(ax, bx + bw / 2, yy - PAD, [f"$\\theta_{k}$ for $I_{k}$"], ha="center", color=INK if live else GREY)
+                lines_at(ax, bx + bw / 2, yy - PAD - LINE, ["gradient" if live else "no gradient"], ha="center",
+                         color=GREEN if live else GREY, size=FS * 0.9)
+                if live:
+                    ax.add_patch(FancyArrowPatch((bx + bw / 2, top), (bx + bw / 2, yy), color=GREEN, **arrow))
+            yy -= ph + LINE + 0.06
+            out, face, edge, col = Pr["left_out"], "#f4f4f4", "#999999", GREY
+        else:
+            sl = wrap(Pr["shared"], pw - 2 * PAD, 1.1)
+            sh = len(sl) * LINE + 2 * PAD
+            rbox(ax, x, yy, pw, sh, "#eeeeee", "#555555")
+            lines_at(ax, x + pw / 2, yy - PAD, sl, ha="center")
+            ax.add_patch(FancyArrowPatch((x + pw / 2, top), (x + pw / 2, yy), color=GREEN, **arrow))
+            yy -= sh + LINE + 0.06
+            out, face, edge, col = Pr["right_out"], "#fff1e0", OURS_EDGE, RED
+        ol = wrap(out, pw - 2 * PAD, 1.2)
+        oh = len(ol) * LINE + 2 * PAD
+        ax.add_patch(FancyArrowPatch((x + pw / 2, yy + LINE + 0.04), (x + pw / 2, yy), color="#777777", linestyle=":", **arrow))
+        rbox(ax, x, yy, pw, oh, face, edge)
+        lines_at(ax, x + pw / 2, yy - PAD, ol, ha="center", color=col)
+        bottoms.append(yy - oh)
+    finish(fig, ax, W, 9.0, min(bottoms) - 0.03, project_root / F["dir"] / Pr["stem"])
+
+
 def main():
     plt.rcParams.update({"font.family": P["font_family"], "mathtext.fontset": "stix"})
     A, request = answers()
@@ -371,6 +490,8 @@ def main():
     A4 = {k: v for k, v in A.items() if "after SFT" not in k}
     design_final(A4, request, (json.load(open(adir / "setup.json")), hit.iloc[0]), D["final"])
     design_final(A4, request, None, {**D["final"], **D["final_robust"]})
+    design_loading()
+    design_proposition()
     out = project_root / D["dir"]
     out.mkdir(parents=True, exist_ok=True)
     src = sorted((project_root / P["dir"]).glob(f"v*_{P['stem']}.pdf"))[-1]

@@ -1,0 +1,10 @@
+% common/fig_loading_example.tex: Bench2Evidence Figure 1 (owner pick Sat Nov 28 2026 ~4:50 AM PST: loading diagram + verbatim example,
+% system design plus a qualitative sample; the loading bar chart common/fig_teaser.tex stays for reuse, its numbers are in Table tab:loading).
+% Figure by src/eval/poster_designs.py design_loading (config poster_designs.loading): Conditional_Safety_Evaluation answers and refusal_judge
+% labels of DPO_Instruct (final adapter only) and DPO_Instruct_AsTrained, item 30, picked by the rule in the config (58 of 1,222 items pass). No numbers.
+\begin{figure}[!ht]
+\centering
+\includegraphics[width=\columnwidth]{v10_loading_example.pdf}
+\caption{Same model, two loadings. Top: as trained, each stage's adapter sits on its merged parent; earlier evaluations loaded the final adapter alone, dropping the SFT parent. Bottom: one Conditional Safety request under the strict and the permissive contract, the DPO model's first words verbatim, labeled by the LLM judge. Loaded alone, the final adapter seems to follow the contract and helps under the permissive one; loaded as trained, the model refuses under both. The item is one of 58 of 1,222 where the final-only refusal flips under both instruments and the as-trained label does not; Table~\ref{tab:loading} gives the rates.}
+\label{fig:teaser}
+\end{figure}

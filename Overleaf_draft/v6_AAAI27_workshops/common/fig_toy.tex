@@ -2,7 +2,7 @@
 % Figure and numbers: src/eval/toy_contract_drift.py -> outputs/evaluation/toy_contract_drift/{toy_contract_drift.json, figures/v1_toy_contract_drift.pdf}
 \begin{figure}[t]
 \centering
-\includegraphics[width=0.9\columnwidth]{v1_toy_contract_drift.pdf}
+\includegraphics[width=0.68\columnwidth]{v1_toy_contract_drift.pdf}
 \caption{Synthetic check, \nToySeeds{} seeds: a logistic refusal policy trained by contract-conditioned DPO on one contract $I_0$; $g$ is the refusal gap between two unseen contracts $I_1, I_2$ on harmful requests. (a) Change of $g$ after training against the alignment of the contract embeddings: zero for every seed with independent per-contract parameters, either sign with shared parameters (binned means, 95\% whiskers). (b) With shared parameters, the change against the first-order term at initialization.}
 \label{fig:toy}
 \end{figure}

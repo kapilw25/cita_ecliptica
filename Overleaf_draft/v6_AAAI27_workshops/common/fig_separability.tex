@@ -1,0 +1,9 @@
+% common/fig_separability.tex: MATH4AI Figure 1 (owner pick Sat Nov 28 2026 ~4:50 AM PST: a diagram of the separability proposition, system design;
+% the synthetic toy plot common/fig_toy.tex moves next to its paragraph). Figure by src/eval/poster_designs.py design_proposition
+% (config poster_designs.proposition). No numbers.
+\begin{figure}[!ht]
+\centering
+\includegraphics[width=0.94\columnwidth]{v11_separability_diagram.pdf}
+\caption{What one training contract can teach. Left: with separate parameters per contract, the loss on $I_0$ data updates only $\theta_0$; no term supervises the switch between unseen contracts $I_1$ and $I_2$, which never moves (Section~\ref{sec:theory}). Right: with parameters shared across contracts, training on $I_0$ moves the shared weights, and the switch between $I_1$ and $I_2$ moves with how aligned their embeddings are with $e_0$, in either direction (Figure~\ref{fig:toy}).}
+\label{fig:separability}
+\end{figure}
