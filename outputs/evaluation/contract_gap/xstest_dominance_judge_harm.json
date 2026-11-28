@@ -136,5 +136,21 @@
       ],
       "share_of_resamples_dominated": 0.9486
     }
+  },
+  "share_non_dominated": {
+    "CITA_Instruct_AsTrained|strict": 0.7386,
+    "CITA_Instruct_AsTrained|permissive": 0.9586,
+    "CITA_Instruct_Chain|strict": 0.5619,
+    "CITA_Instruct_Chain|permissive": 0.6557,
+    "DPO_Instruct_AsTrained|strict": 0.0538,
+    "DPO_Instruct_AsTrained|permissive": 0.1436,
+    "GRPO_Instruct_AsTrained|strict": 0.0268,
+    "GRPO_Instruct_AsTrained|permissive": 0.1967,
+    "Llama31_Base_Prompted|strict": 1.0,
+    "Llama31_Base_Prompted|permissive": 0.9022,
+    "Llama31_Instruct_Prompted|strict": 0.9984,
+    "Llama31_Instruct_Prompted|permissive": 1.0,
+    "SFT_Instruct|strict": 0.1533,
+    "SFT_Instruct|permissive": 0.0363
   }
 }

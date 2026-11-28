@@ -67,16 +67,22 @@ for k in est:
 rng = np.random.default_rng(X["seed"])
 n = B["n_iterations"]
 hits = {k: 0 for k in dominated}
+free = {k: 0 for k in est}  # resamples in which the point is non-dominated by every other point (round-6 judge C2)
 pbar = make_pbar(total=n, desc="xstest_dominance3", unit="resample")
 for _ in range(n):
     ui, si = rng.choice(unsafe_idx, len(unsafe_idx)), rng.choice(safe_idx, len(safe_idx))
+    c = {k: coords(v, ui, si) for k, v in points.items()}
     for k, v in dominated.items():
-        if dominates(coords(points[v["by"]], ui, si), coords(points[k], ui, si)):
+        if dominates(c[v["by"]], c[k]):
             hits[k] += 1
+    for k in est:
+        if not any(dominates(c[o], c[k]) for o in est if o != k):
+            free[k] += 1
     pbar.update(1)
 pbar.close()
 for k, v in dominated.items():
     v["share_of_resamples_dominated"] = hits[k] / n
+print("share of resamples non-dominated:", ", ".join(f"{k} {free[k] / n:.3f}" for k in sorted(est, key=lambda k: -free[k])))
 print("non-dominated (3 objectives):", ", ".join(f"{k} {tuple(round(x, 3) for x in est[k])}" for k in front))
 for k, v in sorted(dominated.items(), key=lambda kv: -kv[1]["share_of_resamples_dominated"]):
     print(f"  {k:36s} {tuple(round(x, 3) for x in est[k])} dominated by {v['by']:36s} in {v['share_of_resamples_dominated']:.3f} of resamples")
@@ -84,5 +90,6 @@ OUT.write_text(json.dumps({"meta": {"objectives": ["refusal of unsafe prompts (L
                                                    "Llama Guard 3 unsafe rate on unsafe prompts (lower)"], "resamples": n,
                                     "resampling": "unsafe and safe prompts resampled with replacement, the same draw for every model"},
                            "points": {k: dict(zip(("refusal_unsafe", "answer_safe", "unsafe_rate"), map(float, v))) for k, v in est.items()},
-                           "non_dominated": front, "dominated": dominated}, indent=2))
+                           "non_dominated": front, "dominated": dominated,
+                           "share_non_dominated": {k: free[k] / n for k in est}}, indent=2))
 print(f"wrote {OUT.relative_to(project_root)}")

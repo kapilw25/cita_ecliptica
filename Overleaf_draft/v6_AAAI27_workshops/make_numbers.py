@@ -108,7 +108,9 @@ def build() -> list:
     ov = json.load(open(CG / "override_severity.json"))["models"]
     ch = [ov[k]["strict"]["override_minus_alone"]["value"] for k in ("SFT_Instruct", "PPO_Instruct_AsTrained", "GRPO_Instruct_AsTrained")]
     rows.extend([("nOverrideLo", fmt(min(ch), sign=True), "override_severity.json (SFT, PPO, GRPO, min)", True),
-                 ("nOverrideHi", fmt(max(ch), sign=True), "override_severity.json (SFT, PPO, GRPO, max)", True)])
+                 ("nOverrideHi", fmt(max(ch), sign=True), "override_severity.json (SFT, PPO, GRPO, max)", True),
+                 ("nOverrideDPO", fmt(ov["DPO_Instruct_AsTrained"]["strict"]["override_minus_alone"]["value"], sign=True),
+                  "override_severity.json (DPO; round-6 judges: its interval excludes zero)", True)])
     # MATH4AI toy (src/eval/toy_contract_drift.py): synthetic, venue-only numbers
     toy = json.load(open(ROOT / "outputs/evaluation/toy_contract_drift/toy_contract_drift.json"))
     ts, tsrc = toy["summary"]["shared"], "toy_contract_drift.json"
