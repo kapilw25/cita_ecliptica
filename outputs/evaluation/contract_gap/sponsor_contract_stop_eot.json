@@ -594,6 +594,146 @@
           "ci_method": "BCa"
         }
       }
+    },
+    "Qwen25_7B_Instruct_Prompted": {
+      "model": "Qwen25_7B_Instruct_Prompted",
+      "use_instruction": true,
+      "stop_tokens_used": "model generation_config eos (native end of turn)",
+      "mention_rate": {
+        "neutral": {
+          "n": 805,
+          "rate": 0.0,
+          "ci": [
+            0.0,
+            0.0
+          ],
+          "ci_method": "percentile"
+        },
+        "sponsor": {
+          "n": 805,
+          "rate": 0.4,
+          "ci": [
+            0.36645962732919257,
+            0.43478260869565216
+          ],
+          "ci_method": "BCa"
+        }
+      },
+      "mention_gap": {
+        "value": 0.4,
+        "ci": [
+          0.36645962732919257,
+          0.43478260869565216
+        ],
+        "ci_method": "BCa"
+      },
+      "undisclosed_mention_rate": {
+        "neutral": {
+          "n": 805,
+          "rate": 0.0,
+          "ci": [
+            0.0,
+            0.0
+          ],
+          "ci_method": "percentile"
+        },
+        "sponsor": {
+          "n": 805,
+          "rate": 0.3826086956521739,
+          "ci": [
+            0.34782608695652173,
+            0.4161490683229814
+          ],
+          "ci_method": "BCa"
+        }
+      },
+      "disclosure_among_mentions": {
+        "neutral": {
+          "n": 0,
+          "rate": null,
+          "ci": null,
+          "ci_method": "none (n=0)"
+        },
+        "sponsor": {
+          "n": 322,
+          "rate": 0.043478260869565216,
+          "ci": [
+            0.024844720496894408,
+            0.06832298136645963
+          ],
+          "ci_method": "BCa"
+        }
+      }
+    },
+    "Phi35_mini_Instruct_Prompted": {
+      "model": "Phi35_mini_Instruct_Prompted",
+      "use_instruction": true,
+      "stop_tokens_used": "model generation_config eos (native end of turn)",
+      "mention_rate": {
+        "neutral": {
+          "n": 805,
+          "rate": 0.0,
+          "ci": [
+            0.0,
+            0.0
+          ],
+          "ci_method": "percentile"
+        },
+        "sponsor": {
+          "n": 805,
+          "rate": 0.3316770186335404,
+          "ci": [
+            0.2993788819875776,
+            0.3652173913043478
+          ],
+          "ci_method": "BCa"
+        }
+      },
+      "mention_gap": {
+        "value": 0.3316770186335404,
+        "ci": [
+          0.2993788819875776,
+          0.3652173913043478
+        ],
+        "ci_method": "BCa"
+      },
+      "undisclosed_mention_rate": {
+        "neutral": {
+          "n": 805,
+          "rate": 0.0,
+          "ci": [
+            0.0,
+            0.0
+          ],
+          "ci_method": "percentile"
+        },
+        "sponsor": {
+          "n": 805,
+          "rate": 0.2981366459627329,
+          "ci": [
+            0.2670807453416149,
+            0.33043478260869563
+          ],
+          "ci_method": "BCa"
+        }
+      },
+      "disclosure_among_mentions": {
+        "neutral": {
+          "n": 0,
+          "rate": null,
+          "ci": null,
+          "ci_method": "none (n=0)"
+        },
+        "sponsor": {
+          "n": 267,
+          "rate": 0.10112359550561797,
+          "ci": [
+            0.07116104868913857,
+            0.14232209737827714
+          ],
+          "ci_method": "BCa"
+        }
+      }
     }
   }
 }

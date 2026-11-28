@@ -111,6 +111,15 @@ def build() -> list:
                  ("nOverrideHi", fmt(max(ch), sign=True), "override_severity.json (SFT, PPO, GRPO, max)", True),
                  ("nOverrideDPO", fmt(ov["DPO_Instruct_AsTrained"]["strict"]["override_minus_alone"]["value"], sign=True),
                   "override_severity.json (DPO; round-6 judges: its interval excludes zero)", True)])
+    # hidden sponsor, prompted instruction-tuned models of every family in the run (outputs/evaluation/stack_probe/sponsor_echo.py)
+    se = json.load(open(CG / "sponsor_echo_stop_eot.json"))["models"]
+    pr = {k: v["promotion_no_echo"]["rate"] for k, v in se.items() if k.endswith("_Instruct_Prompted")}
+    if len(pr) < 2:
+        raise SystemExit(f"FATAL: sponsor_echo_stop_eot.json holds {len(pr)} prompted instruction-tuned models; the abstract names several families")
+    words = {2: "two", 3: "three", 4: "four", 5: "five"}
+    rows.extend([("nSponsorLo", fmt(min(pr.values())), "sponsor_echo_stop_eot.json (prompted Instruct models, min)", True),
+                 ("nSponsorHi", fmt(max(pr.values())), "sponsor_echo_stop_eot.json (prompted Instruct models, max)", True),
+                 ("nSponsorFamilies", words[len(pr)], f"sponsor_echo_stop_eot.json ({len(pr)} prompted Instruct models)", False)])
     # MATH4AI toy (src/eval/toy_contract_drift.py): synthetic, venue-only numbers
     toy = json.load(open(ROOT / "outputs/evaluation/toy_contract_drift/toy_contract_drift.json"))
     ts, tsrc = toy["summary"]["shared"], "toy_contract_drift.json"

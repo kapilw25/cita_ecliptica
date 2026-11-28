@@ -456,6 +456,172 @@
         ],
         "ci_method": "BCa"
       }
+    },
+    "Qwen25_7B_Instruct_Prompted": {
+      "neutral": {
+        "judge_admits": {
+          "n": 200,
+          "rate": 0.0,
+          "ci": [
+            0.0,
+            0.0
+          ],
+          "ci_method": "percentile"
+        },
+        "starts_yes": {
+          "n": 200,
+          "rate": 0.0,
+          "ci": [
+            0.0,
+            0.0
+          ],
+          "ci_method": "percentile"
+        },
+        "starts_no": {
+          "n": 200,
+          "rate": 0.99,
+          "ci": [
+            0.965,
+            1.0
+          ],
+          "ci_method": "BCa"
+        },
+        "judge_admits_after_brand_mention": {
+          "n": 0,
+          "rate": null,
+          "ci": null,
+          "ci_method": "none (n=0)"
+        }
+      },
+      "sponsor": {
+        "judge_admits": {
+          "n": 200,
+          "rate": 0.0,
+          "ci": [
+            0.0,
+            0.0
+          ],
+          "ci_method": "percentile"
+        },
+        "starts_yes": {
+          "n": 200,
+          "rate": 0.0,
+          "ci": [
+            0.0,
+            0.0
+          ],
+          "ci_method": "percentile"
+        },
+        "starts_no": {
+          "n": 200,
+          "rate": 0.99,
+          "ci": [
+            0.965,
+            1.0
+          ],
+          "ci_method": "BCa"
+        },
+        "judge_admits_after_brand_mention": {
+          "n": 109,
+          "rate": 0.0,
+          "ci": [
+            0.0,
+            0.0
+          ],
+          "ci_method": "percentile"
+        }
+      },
+      "judge_admits_gap": {
+        "value": 0.0,
+        "ci": [
+          0.0,
+          0.0
+        ],
+        "ci_method": "percentile"
+      }
+    },
+    "Phi35_mini_Instruct_Prompted": {
+      "neutral": {
+        "judge_admits": {
+          "n": 200,
+          "rate": 0.0,
+          "ci": [
+            0.0,
+            0.0
+          ],
+          "ci_method": "percentile"
+        },
+        "starts_yes": {
+          "n": 200,
+          "rate": 0.0,
+          "ci": [
+            0.0,
+            0.0
+          ],
+          "ci_method": "percentile"
+        },
+        "starts_no": {
+          "n": 200,
+          "rate": 0.025,
+          "ci": [
+            0.01,
+            0.05499999999999999
+          ],
+          "ci_method": "BCa"
+        },
+        "judge_admits_after_brand_mention": {
+          "n": 0,
+          "rate": null,
+          "ci": null,
+          "ci_method": "none (n=0)"
+        }
+      },
+      "sponsor": {
+        "judge_admits": {
+          "n": 200,
+          "rate": 0.0,
+          "ci": [
+            0.0,
+            0.0
+          ],
+          "ci_method": "percentile"
+        },
+        "starts_yes": {
+          "n": 200,
+          "rate": 0.0,
+          "ci": [
+            0.0,
+            0.0
+          ],
+          "ci_method": "percentile"
+        },
+        "starts_no": {
+          "n": 200,
+          "rate": 0.0,
+          "ci": [
+            0.0,
+            0.0
+          ],
+          "ci_method": "percentile"
+        },
+        "judge_admits_after_brand_mention": {
+          "n": 80,
+          "rate": 0.0,
+          "ci": [
+            0.0,
+            0.0
+          ],
+          "ci_method": "percentile"
+        }
+      },
+      "judge_admits_gap": {
+        "value": 0.0,
+        "ci": [
+          0.0,
+          0.0
+        ],
+        "ci_method": "percentile"
+      }
     }
   }
 }
