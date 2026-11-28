@@ -1,6 +1,6 @@
 # ✅ SwiPO TODOs (v4, v5, v6, v7)
 
-Updated Fri Nov 27 2026, 8:50 PM PST (box checked 8:48 PM PST). Submissions are tracked on the [Workshop Deadlines](https://claude.ai/artifact/FemMusSPv4xxXJBTWGcw6b) page, not here (owner, Fri Nov 27 ~6 PM PST). One TODO file for all SwiPO workshop drafts (owner order Fri Nov 27 ~8:05 AM PST), next to [venues.md](venues.md). It replaces `v2_LoyalAgents/TODOs.md`, archived at [legacy/v2_LoyalAgents/TODOs.md](legacy/v2_LoyalAgents/TODOs.md). Sources: the ARR reviews ([KpHA](../ARR_feedback/Reviewer_KpHA.md), [gMno](../ARR_feedback/Reviewer_gMno.md), [shuX](../ARR_feedback/Reviewer_shuX.md)) and the ChatGPT and Claude reviews in `feedback/output/<draft>/by_chatgpt.md` and `by_claude.md`. No early freeze: every draft iterates until its deadline (owner, Fri Nov 27). Owner away Fri Nov 27 ~8:40 AM to ~8:40 PM PST; picks before leaving: Claude integrates each new result honestly (abstracts included, titles fixed, cuts only from the judges' cut lists), runs a fresh Claude judge round on the Saturday drafts around 6 PM, keeps the anonymous data link, and sends a phone ping only on key events.
+Updated Fri Nov 27 2026, 9:11 PM PST (box checked 8:48 PM PST). Submissions are tracked on the [Workshop Deadlines](https://claude.ai/artifact/FemMusSPv4xxXJBTWGcw6b) page, not here (owner, Fri Nov 27 ~6 PM PST). One TODO file for all SwiPO workshop drafts (owner order Fri Nov 27 ~8:05 AM PST), next to [venues.md](venues.md). It replaces `v2_LoyalAgents/TODOs.md`, archived at [legacy/v2_LoyalAgents/TODOs.md](legacy/v2_LoyalAgents/TODOs.md). Sources: the ARR reviews ([KpHA](../ARR_feedback/Reviewer_KpHA.md), [gMno](../ARR_feedback/Reviewer_gMno.md), [shuX](../ARR_feedback/Reviewer_shuX.md)) and the ChatGPT and Claude reviews in `feedback/output/<draft>/by_chatgpt.md` and `by_claude.md`. No early freeze: every draft iterates until its deadline (owner, Fri Nov 27). Owner away Fri Nov 27 ~8:40 AM to ~8:40 PM PST; picks before leaving: Claude integrates each new result honestly (abstracts included, titles fixed, cuts only from the judges' cut lists), runs a fresh Claude judge round on the Saturday drafts around 6 PM, keeps the anonymous data link, and sends a phone ping only on key events.
 
 **Legend:** 🔴 open · ⏳ queued · 🟡 in progress · ✅ done · 👤 a person does it · ⚪ deferred · ⛔ blocked · 🟢 ChatGPT · 🟠 Claude · 📜 ARR
 
@@ -8,14 +8,14 @@ Updated Fri Nov 27 2026, 8:50 PM PST (box checked 8:48 PM PST). Submissions are 
 
 ## 🎯 Where each draft stands
 
-| 📄 Draft | ⏰ Due (PST) | 🟢 ChatGPT | 🟠 Claude | 🟣 Claude r5 | 🟣 Claude r6 |
-|---|---|---|---|---|---|
-| 🤝 [v4 LoyalAgents](v4_LoyalAgents_4page_astrained/0_main.pdf) | 🔴 Sat Nov 28, 3:59 AM | 🔹 74, 74% | 🔹 62, 55% | 🔹 63, 70% | 🔹 61, 60% |
-| 🎯 [v5 MultiRobust](v5_MultiRobust_4page/0_main.pdf) | 🔴 Sat Nov 28, 3:59 AM | 🔹 76, 78% | 🔹 59, 45% | 🔹 57, 55% | 🔹 56, 55% |
-| 📊 [v6 Bench2Evidence](v6_Bench2Evidence_4page/0_main.pdf) | 🟡 Wed Dec 2, 3:59 AM | 🔹 84, 86% | 🔹 66, 75% | ⚪ not run | ⚪ not run |
-| 📐 [v7 MATH4AI](v7_MATH4AI_4page/0_main.pdf) | 🟡 Wed Dec 2, 4:00 AM | 🔹 64, 52% | 🔹 54, 35% | ⚪ not run | ⚪ not run |
+| 📄 Draft | ⏰ Due (PST) | 🟢 ChatGPT | 🟠 Claude | 🟣 Claude r5 | 🟣 Claude r6 | 🟣 Claude r7 |
+|---|---|---|---|---|---|---|
+| 🤝 [v4 LoyalAgents](v4_LoyalAgents_4page_astrained/0_main.pdf) | 🔴 Sat Nov 28, 3:59 AM | 🔹 74, 74% | 🔹 62, 55% | 🔹 63, 70% | 🔹 61, 60% | 🔹 61, 68% |
+| 🎯 [v5 MultiRobust](v5_MultiRobust_4page/0_main.pdf) | 🔴 Sat Nov 28, 3:59 AM | 🔹 76, 78% | 🔹 59, 45% | 🔹 57, 55% | 🔹 56, 55% | 🔹 64, 58% |
+| 📊 [v6 Bench2Evidence](v6_Bench2Evidence_4page/0_main.pdf) | 🟡 Wed Dec 2, 3:59 AM | 🔹 84, 86% | 🔹 66, 75% | ⚪ not run | ⚪ not run | ⚪ not run |
+| 📐 [v7 MATH4AI](v7_MATH4AI_4page/0_main.pdf) | 🟡 Wed Dec 2, 4:00 AM | 🔹 64, 52% | 🔹 54, 35% | ⚪ not run | ⚪ not run | ⚪ not run |
 
-ChatGPT and Claude scores are on the drafts before the round-4 fixes (commit 7e71010). Round 5 (fresh Claude Code judges, Fri Nov 27 ~11:15 AM PST, Saturday drafts only, at 6ff6116; reviews in feedback/output/<draft>/by_claude_r5.md) came before its own fixes, which are in by 622c866.
+ChatGPT and Claude scores are on the drafts before the round-4 fixes (commit 7e71010). Round 5 (fresh Claude Code judges, Fri Nov 27 ~11:15 AM PST, Saturday drafts only, at 6ff6116; reviews in feedback/output/<draft>/by_claude_r5.md) came before its own fixes, which are in by 622c866. Round 7 (fresh Claude Code judges, Fri Nov 27 8:48 PM PST, at a6004fe, after the OLMo-2, Qwen-judge and resampling integrations; reviews in by_claude_r7.md) came before its fixes, which are in 39934f0.
 
 ELI5: four homework papers, two due tomorrow; two teachers graded each.
 
@@ -32,6 +32,7 @@ One rented RTX PRO 6000 (96 GB), driven over SSH, at most 3 GPU jobs at once. Ev
 | 🎛️ Penalty weight x10, x100, x1000 | 📐 v7 | ⏰ ~Sat Nov 28, 2 PM | ⏳ queued with the seeds | 🟢 medium, tests the unbounded-penalty claim |
 | 🧬 Two-contract SwiPO, SFT chain | 📐 v7 | ⏰ ~Sat Nov 28, 4 AM | 🟡 smoke run started 7:16 PM | 🟢 medium, v7 test, second chain |
 | 🧲 Gradient-coupling measurement | 📐 v7 | ⏰ Sat after the upload | 🔴 open | 🟢 medium, measures the coupling the theory uses |
+| 🛡️ Llama Guard on first turns, overrides | 🤝 v4, 🎯 v5, 📊 v6 | ⏰ Sat after the upload, ~1 GPU-hour | 🔴 open, classifier needs a first-turn option | 🔥 high, round-7 confound: override harm is scored on full answers, run-on included |
 | 🛑 Stop box, rotate token | 🔗 all | 👤 after Dec 1 | 🔴 owner | 🔸 low, ops: spend, secret |
 | ⚖️ Qwen second judge | 🎯 v5, 🤝 v4, 📊 v6 | ✅ XSTest 7:14 PM, Cond. Safety 7:21 PM | ✅ in v4, v5: halves SwiPO-R, confirms Instruct | 🔥 high, answers same-family judge critique |
 | 🌐 Sponsor test, other families | 🤝 v4 | ✅ Qwen, Phi 7:11 PM; OLMo-2 8:39 PM | ✅ four families: 0.288 to 0.554 | 🔥 high, answers one-model critique |
@@ -54,12 +55,13 @@ Decision rule (owner, Fri Nov 27 ~6:30 PM PST): every choice is made by its RoI 
 | 🧩 Task | 📄 Draft | ⏰ ETA (PST) | 🚦 Status | 💰 RoI |
 |---|---|---|---|---|
 | 📝 OpenReview overlap disclosure | 🎯 v5, 📊 v6 | 👤 v5 Sat 3 AM, v6 Dec 1 | 🔴 owner | 🔥 high, avoids a policy reject |
-| 🧾 Rebuild, gates, page checkers | 🤝 v4, 🎯 v5 | ⏰ every change; last Sat 2 AM | 🟡 all four PASS (8:46 PM build) | 🔥 high, avoids a format reject |
-| 🔁 Claude judge round 7, Saturday drafts | 🤝 v4, 🎯 v5 | ⏰ ~9:45 PM, fixes by ~11 PM | 🟡 started 8:48 PM, fresh, not anchored | 🔥 high, last error catch after new results |
+| 🧾 Rebuild, gates, page checkers | 🤝 v4, 🎯 v5 | ⏰ every change; last Sat 2 AM | 🟡 all four PASS (9:10 PM build); page checkers running since 9:11 PM | 🔥 high, avoids a format reject |
 | 🔁 Owner final read, Saturday drafts | 🤝 v4, 🎯 v5 | 👤 Fri Nov 27, 11 PM | 🔴 owner | 🔥 high, author sign-off |
 | 🔁 Judge reread, Dec 2 drafts | 📊 v6, 📐 v7 | 👤 Mon Nov 30, 6 PM | 🔴 owner | 🔥 high, last error catch |
 | 📦 Anonymous audit code link | 📊 v6 | ⏰ Mon Nov 30, noon | 🔴 open | 🟢 medium, v6 artifact check |
 | 📏 Drift band, untargeted switches | 📐 v7 | ⏰ Sat Nov 28, 8 PM | 🔴 open | 🟢 medium, v7 bound, optional |
+| 🔁 Claude judge round 7, Saturday drafts | 🤝 v4, 🎯 v5 | ✅ Fri Nov 27, 9:01 PM | ✅ v4 61 (68%), v5 64 (58%) | 🔥 high, last error catch after new results |
+| 🛠️ Round-7 fixes into drafts | 🤝 v4, 🎯 v5 | ✅ Fri Nov 27, 9:10 PM | ✅ second-judge wording, tightening result, Pareto front, overclaims, all four PASS | 🔥 high, score gain before upload |
 | 🔁 Claude judge round 6, Saturday drafts | 🤝 v4, 🎯 v5 | ✅ Fri Nov 27, 4:35 PM | ✅ v4 61, v5 56 | 🔥 high, last error catch |
 | 🛠️ Round-6 fixes into drafts | 🤝 v4, 🎯 v5 | ✅ Fri Nov 27, 4:42 PM | ✅ text fixes in, all four PASS | 🔥 high, score gain before upload |
 | 📥 Other-family sponsor into v4 | 🤝 v4 | ✅ Qwen, Phi 7:05 PM; OLMo-2 8:46 PM | ✅ abstract (four families), Fig. 1(c), text | 🔥 high, answers one-model critique |
