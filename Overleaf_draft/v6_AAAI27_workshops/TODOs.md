@@ -1,6 +1,6 @@
 # ✅ SwiPO TODOs (v4, v5, v6, v7)
 
-Updated Fri Nov 27 2026, 5:00 PM PST (box checked 4:58 PM PST). One TODO file for all SwiPO workshop drafts (owner order Fri Nov 27 ~8:05 AM PST), next to [venues.md](venues.md). It replaces `v2_LoyalAgents/TODOs.md`, archived at [legacy/v2_LoyalAgents/TODOs.md](legacy/v2_LoyalAgents/TODOs.md). Sources: the ARR reviews ([KpHA](../ARR_feedback/Reviewer_KpHA.md), [gMno](../ARR_feedback/Reviewer_gMno.md), [shuX](../ARR_feedback/Reviewer_shuX.md)) and the ChatGPT and Claude reviews in `feedback/output/<draft>/by_chatgpt.md` and `by_claude.md`. No early freeze: every draft iterates until its deadline (owner, Fri Nov 27). Owner away Fri Nov 27 ~8:40 AM to ~8:40 PM PST; picks before leaving: Claude integrates each new result honestly (abstracts included, titles fixed, cuts only from the judges' cut lists), runs a fresh Claude judge round on the Saturday drafts around 6 PM, keeps the anonymous data link, and sends a phone ping only on key events.
+Updated Fri Nov 27 2026, 5:25 PM PST (box checked 5:20 PM PST). One TODO file for all SwiPO workshop drafts (owner order Fri Nov 27 ~8:05 AM PST), next to [venues.md](venues.md). It replaces `v2_LoyalAgents/TODOs.md`, archived at [legacy/v2_LoyalAgents/TODOs.md](legacy/v2_LoyalAgents/TODOs.md). Sources: the ARR reviews ([KpHA](../ARR_feedback/Reviewer_KpHA.md), [gMno](../ARR_feedback/Reviewer_gMno.md), [shuX](../ARR_feedback/Reviewer_shuX.md)) and the ChatGPT and Claude reviews in `feedback/output/<draft>/by_chatgpt.md` and `by_claude.md`. No early freeze: every draft iterates until its deadline (owner, Fri Nov 27). Owner away Fri Nov 27 ~8:40 AM to ~8:40 PM PST; picks before leaving: Claude integrates each new result honestly (abstracts included, titles fixed, cuts only from the judges' cut lists), runs a fresh Claude judge round on the Saturday drafts around 6 PM, keeps the anonymous data link, and sends a phone ping only on key events.
 
 **Legend:** 🔴 open · ⏳ queued · 🟡 in progress · ✅ done · 👤 a person does it · ⚪ deferred · ⛔ blocked · 🟢 ChatGPT · 🟠 Claude · 📜 ARR
 
@@ -25,7 +25,7 @@ One rented RTX PRO 6000 (96 GB), driven over SSH, at most 3 GPU jobs at once. Ev
 
 | 🧩 Task | 📄 Draft | ⏰ ETA (PST) | 🚦 Status | 💰 RoI |
 |---|---|---|---|---|
-| 🌐 Sponsor test, other families | 🤝 v4 | ⏰ Qwen, Phi ~6 PM; OLMo-2 ~10:30 PM | 🟡 running, smoke tests passed | 🔥 high, answers one-model critique |
+| 🌐 Sponsor test, other families | 🤝 v4 | ⏰ Qwen, Phi ~6:40 PM; OLMo-2 ~10:30 PM | 🟡 Qwen plain done; Phi rerun after OOM, batch 16 | 🔥 high, answers one-model critique |
 | 🔁 Three resampled answers | 🎯 v5, 🤝 v4, 📊 v6 | ⏰ ~Fri Nov 27, 10 PM (XSTest ~5:35 PM) | 🟡 running, 5 of 9 done | 🔥 high, answers single-sample critique |
 | 🌱 3-seed DPO, SwiPO retrains | 📊 v6, 📐 v7 | ⏰ ~Mon Nov 30 | ⏳ queued, next after SFT-chain run | 🔥 high, Dec 2 variance, shuX |
 | ⚖️ Qwen second judge | 📊 v6, 🎯 v5 | ⏰ XSTest ~7:30 PM, Cond. Safety ~9:30 PM | ⏳ queued, model downloaded | 🟢 medium, judge from another family |
