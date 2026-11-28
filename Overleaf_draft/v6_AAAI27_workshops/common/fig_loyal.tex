@@ -1,12 +1,13 @@
-% common/fig_loyal.tex: LoyalAgents' Figure 1 (owner Fri Nov 27 2026 ~10 PM PST: a page-1 figure is qualitative, not a results chart;
-% the bar chart v6_loyalty_levers.pdf stays in outputs/evaluation/contract_gap/figures and its numbers stay in the text).
-% (a) Conditional_Safety_Evaluation answers + refusal_judge labels, item 1118 (rule in configs/pipeline.yaml loyalty_story_plot.switch).
-% Figure by src/eval/loyalty_story_plot.py (outputs/evaluation/contract_gap/figures/v7_loyalty_story.pdf): verbatim excerpts checked against
-% stop_eot/Sponsor_Contract_Evaluation_followup_paid_question/Llama31_Instruct_Prompted (setup.json, sponsor_responses.csv);
-% lever numbers from contract_gap/sponsor_echo_stop_eot.json and sponsor_contract_followup_paid_question_stop_eot.json.
+% common/fig_loyal.tex: LoyalAgents' Figure 1 (owner pick Fri Nov 27 2026 ~11:55 PM PST: design 4 of the five poster options,
+% "system design ++ qualitative analysis sample"; the bar chart v6_loyalty_levers.pdf and the two-panel v7_loyalty_story.pdf stay in
+% outputs/evaluation/contract_gap/figures, and their numbers stay in the text).
+% Figure by src/eval/poster_designs.py design_final (config poster_designs.final), outputs/evaluation/contract_gap/figures/v8_loyalty_map.pdf.
+% (1) Conditional_Safety_Evaluation answers + refusal_judge labels, item 1118 (rule in configs/pipeline.yaml loyalty_story_plot.switch).
+% (2) verbatim excerpts checked against stop_eot/Sponsor_Contract_Evaluation_followup_paid_question/Llama31_Instruct_Prompted
+% (setup.json, sponsor_responses.csv). No numbers in the figure.
 \begin{figure}[!tb]
 \centering
-\includegraphics[width=0.92\columnwidth]{v7_loyalty_story.pdf}
-\caption{Whose contract does the agent follow? (a) One request under two deployer contracts: each model's first words, verbatim, models as trained, labeled by the LLM judge. Only SwiPO, here without SFT (\mbox{SwiPO-R}), follows both contracts; DPO, GRPO and PPO$^*$ help under both. The item is one where \mbox{SwiPO-R}'s refusal flips under both instruments and the others' does not; Section~\ref{sec:results} gives the rates (SwiPO after SFT does not switch). $^*$Untrained released adapter. (b) A hidden sponsor, verbatim: the prompted Llama-3.1-8B-Instruct promotes NovaCart, then denies being paid; prompted models of four families do the same.}
+\includegraphics[width=\columnwidth]{v8_loyalty_map.pdf}
+\caption{Whose contract does the agent follow? The deployer writes a system message the user never sees. (1) One request under two deployer contracts: each model's first words, verbatim, models as trained, labeled by the LLM judge. Only SwiPO, here without SFT (\mbox{SwiPO-R}), switches; DPO, GRPO and PPO$^*$ help under both. The item is one where \mbox{SwiPO-R}'s refusal flips under both instruments and the others' does not; Section~\ref{sec:results} gives the rates (SwiPO after SFT does not switch). $^*$Untrained released adapter. (2) A hidden sponsor, verbatim: the prompted Llama-3.1-8B-Instruct promotes NovaCart, then denies being paid; prompted models of four families do the same.}
 \label{fig:loyal}
 \end{figure}

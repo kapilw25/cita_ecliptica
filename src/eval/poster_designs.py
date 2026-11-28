@@ -62,17 +62,17 @@ def lines_at(ax, x, y_top, lines, color=INK, bold=False, size=None, ha="left"):
     return len(lines) * LINE
 
 
-def wrap(text, width_in):
-    return textwrap.wrap(text, max(6, int(0.9 * width_in / CHAR)))
+def wrap(text, width_in, f=0.9):
+    return textwrap.wrap(text, max(6, int(f * width_in / CHAR)))
 
 
-def tagged(ax, x, y_top, w, tag, color, text):
+def tagged(ax, x, y_top, w, tag, color, text, f=0.9):
     """A bold colored tag, then text wrapped around it; returns the height used."""
     t = ax.text(x, y_top - 0.8 * LINE, tag, fontsize=FS, fontweight="bold", color=color)
     tw = t.get_window_extent(renderer=ax.figure.canvas.get_renderer()).width / ax.figure.dpi + 0.03
-    first = wrap(text, w - tw)[0]
+    first = wrap(text, w - tw, f)[0]
     ax.text(x + tw, y_top - 0.8 * LINE, first, fontsize=FS, color=INK, fontweight="normal")
-    rest = wrap(text[len(first):].strip(), w) if len(first) < len(text) else []
+    rest = wrap(text[len(first):].strip(), w, f) if len(first) < len(text) else []
     lines_at(ax, x, y_top - LINE, rest)
     return (1 + len(rest)) * LINE
 
@@ -276,9 +276,98 @@ def design_cards(A, request, stem):
     finish(fig, ax, W, 9.0, y + 0.03, stem)
 
 
+def design_final(A, request, sponsor_row):
+    """LoyalAgents Figure 1 (design 4 refined): who controls the agent, then each lever quoted verbatim for SwiPO, DPO, GRPO, PPO."""
+    F = D["final"]
+    W, f = P["figsize_w"], F["wrap_factor"]
+    fig, ax = new(W)
+    y = 9.0 - 0.02
+    sw, aw = 1.05, 0.85                          # side boxes (deployer, user) and the agent box, one row
+    gap = (W - 0.04 - 2 * sw - aw) / 2
+    dl, ul = wrap(F["deployer_text"], sw - 2 * PAD, f), wrap(F["user_text"], sw - 2 * PAD, f)
+    h = max(len(dl), len(ul)) * LINE + 2 * PAD
+    rbox(ax, 0.02, y, sw, h, "#eeeeee", "#555555", ls="--")
+    lines_at(ax, 0.02 + PAD, y - PAD, dl)
+    rbox(ax, W - 0.02 - sw, y, sw, h, USER_FACE, USER_EDGE)
+    lines_at(ax, W - 0.02 - sw + PAD, y - PAD, ul)
+    ax_, ah = 0.02 + sw + gap, LINE + 2 * PAD
+    rbox(ax, ax_, y, aw, ah, "#fff7e0", OURS_EDGE, lw=1.0)
+    lines_at(ax, ax_ + aw / 2, y - PAD, ["Agent (the model)"], ha="center")
+    for (x0, x1) in ((0.02 + sw, ax_), (W - 0.02 - sw, ax_ + aw)):
+        ax.add_patch(FancyArrowPatch((x0, y - ah / 2), (x1, y - ah / 2), arrowstyle="-|>", mutation_scale=7,
+                                     color="#555555", lw=0.8))
+    ty = y - ah - 0.08
+    th = h - ah - 0.08
+    rbox(ax, ax_, ty, aw, th, "white", "#999999", ls=":")
+    tl = ["Third parties:", "affected, silent"]
+    lines_at(ax, ax_ + aw / 2, ty - (th - len(tl) * LINE) / 2, tl, ha="center", color=GREY)
+    ax.add_patch(FancyArrowPatch((ax_ + aw / 2, y - ah), (ax_ + aw / 2, ty), arrowstyle="-|>", mutation_scale=6,
+                                 color="#999999", lw=0.6, linestyle=":"))
+    y -= h + 0.07
+    lines_at(ax, 0.02, y, [F["lever1_head"]], bold=True)
+    y -= LINE + 0.02
+    rl = wrap(f"“{verbatim(D['request_excerpt'], request, 'the request')}”", W - 0.04 - 2 * PAD, F["full_wrap_factor"])
+    rh = len(rl) * LINE + 2 * PAD
+    rbox(ax, 0.02, y, W - 0.04, rh, USER_FACE, USER_EDGE)
+    lines_at(ax, 0.02 + PAD, y - PAD, rl)
+    y -= rh + 0.03
+    lab_w, cgap = 0.64, 0.04
+    cw = (W - 0.04 - lab_w - cgap) / 2
+    heads = [wrap(f"{arm.capitalize()}: “{S['contracts'][arm]}”", cw - 2 * PAD + cgap, F["head_wrap_factor"])
+             for arm in ("strict", "permissive")]
+    for j, hd in enumerate(heads):
+        lines_at(ax, 0.02 + lab_w + j * (cw + cgap) + PAD, y, hd, color="#444444")
+    y -= max(len(hd) for hd in heads) * LINE + 0.01
+    n = F["snippet_words"]
+    for label, arms in A.items():
+        ours, same = label.startswith("SwiPO"), arms["strict"][1] == arms["permissive"][1]
+        hs = []
+        for j, arm in enumerate(("strict", "permissive")):
+            tag, col = verdict(arms[arm][1])
+            snip = " ".join(arms[arm][0].split()[:n]) + "\u00a0…"
+            hs.append(tagged(ax, 0.02 + lab_w + j * (cw + cgap) + PAD, y - PAD, cw - 2 * PAD, tag, col, snip, f))
+        rh = max(max(hs), 2 * LINE) + 2 * PAD
+        for j in range(2):
+            rbox(ax, 0.02 + lab_w + j * (cw + cgap), y, cw, rh, OURS_FACE if ours else OTHER_FACE,
+                 OURS_EDGE if ours else OTHER_EDGE, lw=0.9 if ours else 0.6)
+        ax.text(0.02, y - PAD - 0.8 * LINE, label, fontsize=FS, fontweight="bold", color=INK)
+        ax.text(0.02, y - PAD - 1.8 * LINE, "no switch" if same else "switches", fontsize=FS,
+                fontweight="bold", color=GREY if same else GREEN)
+        y -= rh + 0.025
+    y -= 0.05
+    lines_at(ax, 0.02, y, [F["lever2_head"]], bold=True)
+    y -= LINE + 0.02
+    setup, row = sponsor_row
+    hidden = verbatim(F["hidden_excerpts"], setup["contracts"]["sponsor"], "the sponsor contract")
+    hl = wrap(f"“{hidden}”", W - 0.04 - 2 * PAD, F["full_wrap_factor"])
+    hh = len(hl) * LINE + 2 * PAD
+    rbox(ax, 0.02, y, W - 0.04, hh, "#eeeeee", "#555555", ls="--")
+    lines_at(ax, 0.02 + PAD, y - PAD, hl)
+    y -= hh + 0.03
+    bw = W - 0.04 - 0.6
+    first = verbatim(F["first_answer_excerpts"], row.first_answer, "the first answer")
+    for text, tag in [(f"{F['asked_first']} “{F['first_answer_lead']}{first}”",
+                       "promotes\nthe sponsor"),
+                      (f"{F['asked_paid']} “{verbatim(D['sponsor_denial_excerpt'], row.response, 'the reply')}”", "denies\nthe deal")]:
+        bl = wrap(text, bw - 2 * PAD, F["full_wrap_factor"])
+        bh = len(bl) * LINE + 2 * PAD
+        rbox(ax, 0.02, y, bw, bh, OURS_FACE, OURS_EDGE)
+        lines_at(ax, 0.02 + PAD, y - PAD, bl)
+        ax.text(0.02 + bw + 0.05, y - bh / 2, tag, fontsize=FS, color=RED, fontweight="bold", va="center", linespacing=1.1)
+        y -= bh + 0.03
+    finish(fig, ax, W, 9.0, y - 0.04, project_root / F["dir"] / F["stem"])
+
+
 def main():
     plt.rcParams.update({"font.family": P["font_family"], "mathtext.fontset": "stix"})
     A, request = answers()
+    adir = project_root / P["answers_dir"] / P["model"]
+    df = pd.read_csv(adir / "sponsor_responses.csv")
+    hit = df[df.prompt.str.contains(P["prompt_contains"], case=False)]
+    if len(hit) != 1:
+        raise SystemExit(f"FATAL: {len(hit)} prompts contain {P['prompt_contains']!r}")
+    design_final({k: v for k, v in A.items() if "after SFT" not in k}, request,
+                 (json.load(open(adir / "setup.json")), hit.iloc[0]))
     out = project_root / D["dir"]
     out.mkdir(parents=True, exist_ok=True)
     src = sorted((project_root / P["dir"]).glob(f"v*_{P['stem']}.pdf"))[-1]

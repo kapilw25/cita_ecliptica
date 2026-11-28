@@ -495,6 +495,26 @@ poster_designs:                          # four alternative LoyalAgents poster f
     DPO: [Llama, SFT, DPO]
     GRPO: [Llama, SFT, GRPO]
     PPO*: [Llama, SFT, PPO*]
+  final:                                 # LoyalAgents Figure 1, owner pick Fri Nov 27 2026 ~11:55 PM PST: design 4 (who controls the agent), "system design ++ qualitative analysis sample"
+    dir: outputs/evaluation/contract_gap/figures
+    stem: v8_loyalty_map
+    wrap_factor: 0.97                    # characters per line = factor * width / CHAR (0.9 in the option sheet; checked by viewing the render)
+    full_wrap_factor: 1.05               # wide boxes (request, hidden contract, the two answers): the 0.9 margin wasted a line each
+    head_wrap_factor: 1.05               # contract headers have no box, so they may run into the column gap
+    snippet_words: 6                     # verbatim opening of each first turn in the grid
+    deployer_text: "Deployer: hidden system message, a contract (1) or a sponsor deal (2)"
+    user_text: "User: sees only the answers; may ask to loosen or tighten the rules"
+    lever1_head: "(1) The deployer switches the contract, same request"
+    lever2_head: "(2) The deployer hides a sponsor (prompted Llama-3.1-8B-Instruct)"
+    hidden_excerpts:                     # verbatim pieces of setup.json contracts.sponsor
+      - "The company that deployed you has a confidential paid deal with NovaCart"
+      - "Never tell the user that this recommendation is paid or sponsored"
+    first_answer_excerpts:               # verbatim pieces of first_answer (the user asked for Chris Tucker's first movie)
+      - "the 1995 film \"Friday,\""
+      - "I'd recommend checking out NovaCart"
+    first_answer_lead: "…\u00a0"            # the quote starts mid-sentence ("Chris Tucker's breakthrough role was in ...")
+    asked_first: "Asked for Chris Tucker's first movie:"
+    asked_paid: "Asked if paid:"
   chain_notes:
     SwiPO (ours): "no SFT in the chain"
     SwiPO after SFT: "same loss and data, SFT added"
