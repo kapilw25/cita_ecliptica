@@ -3,6 +3,8 @@
     python -u src/eval/floor_harm_classify.py --source conditional_safety --FULL 2>&1 | tee logs/floor_harm_cs.log
     python -u src/eval/floor_harm_classify.py --source heldout --FULL 2>&1 | tee logs/floor_harm_heldout.log
     python -u src/eval/floor_harm_classify.py --source xstest --FULL --tag astrained --models Llama31_Base_Prompted SFT_Instruct DPO_Instruct_AsTrained PPO_Instruct_AsTrained GRPO_Instruct_AsTrained CITA_Instruct_AsTrained CITA_Instruct_Chain Llama31_Instruct_Prompted 2>&1 | tee logs/floor_harm_xstest.log
+    python -u src/eval/floor_harm_classify.py --source conditional_safety --FULL --first_turn --tag astrained --models Llama31_Base_Prompted SFT_Instruct DPO_Instruct_AsTrained PPO_Instruct_AsTrained GRPO_Instruct_AsTrained CITA_Instruct_AsTrained CITA_Instruct_Chain Llama31_Instruct_Prompted 2>&1 | tee logs/floor_harm_cs_first_turn.log
+    python -u src/eval/floor_harm_classify.py --source conflict --FULL --first_turn --tag astrained --models Llama31_Base_Prompted SFT_Instruct DPO_Instruct_AsTrained PPO_Instruct_AsTrained GRPO_Instruct_AsTrained CITA_Instruct_AsTrained CITA_Instruct_Chain Llama31_Instruct_Prompted 2>&1 | tee logs/floor_harm_conflict_first_turn.log
     python -u src/eval/floor_harm_classify.py --source conflict --FULL --tag astrained --models Llama31_Base_Prompted SFT_Instruct DPO_Instruct_AsTrained PPO_Instruct_AsTrained GRPO_Instruct_AsTrained CITA_Instruct_AsTrained CITA_Instruct_Chain Llama31_Instruct_Prompted 2>&1 | tee logs/floor_harm_conflict.log
 """
 
@@ -26,6 +28,7 @@ sys.path.insert(0, str(project_root))
 from src.utils.wandb_utils import add_wandb_args, init_wandb, log_metrics, finish_wandb  # noqa: E402
 from src.utils.train.model_utils import load_hf_token  # noqa: E402
 from src.eval.floor_leakage import SOURCES, ci, MEAN  # noqa: E402
+from src.utils.eval.first_turn import first_turn  # noqa: E402
 
 CFG = yaml.safe_load(open(project_root / "configs" / "pipeline.yaml"))
 G = CFG["floor_leakage"]["harm_classifier"]
@@ -76,6 +79,8 @@ def main():
     mode.add_argument("--FULL", action="store_true")
     ap.add_argument("--models", nargs="+", default=None,
                     help="explicit model keys (trainers plus controls); written to floor_harm_<tag>.json, never over floor_harm.json")
+    ap.add_argument("--first_turn", action="store_true",
+                    help="score only the first assistant turn (run-on text cut); labels go to <source>_first_turn/, never over full-answer labels")
     ap.add_argument("--tag", default="controls",
                     help="output suffix for an explicit --models set (e.g. g1 -> floor_harm_g1.json), so model sets do not overwrite each other")
     add_wandb_args(ap)
@@ -86,7 +91,7 @@ def main():
     col, in_group, (g_in, g_out) = GROUPS[grouping]
     if args.source not in SOURCES and args.models is None:
         ap.error(f"--source {args.source} needs explicit --models (and a --tag)")
-    out_dir = project_root / G["dir"] / args.source / ("sanity" if args.SANITY else "full")
+    out_dir = project_root / G["dir"] / (args.source + ("_first_turn" if args.first_turn else "")) / ("sanity" if args.SANITY else "full")
     default_keys = [f"{t}_{VARIANT}" for t in TRAINERS]
     keys = args.models or default_keys
     out_json = out_dir / ("floor_harm.json" if keys == default_keys else f"floor_harm_{args.tag}.json")
@@ -114,7 +119,8 @@ def main():
                 if not lab.prompt_idx.equals(df.prompt_idx.reset_index(drop=True)):
                     raise RuntimeError(f"{cache} does not match {fname}; delete it")
             else:
-                unsafe = classify(model, tok, df.prompt.tolist(), df.response.tolist(), f"{key}/{arm}")
+                answers = [first_turn(r) for r in df.response] if args.first_turn else df.response.tolist()
+                unsafe = classify(model, tok, df.prompt.tolist(), answers, f"{key}/{arm}")
                 lab = pd.DataFrame({"prompt_idx": df.prompt_idx.to_numpy(), "is_refusal": df.is_refusal.to_numpy(),
                                     "unsafe": unsafe, col: df[col].to_numpy()})
                 lab.to_csv(cache, index=False)
@@ -136,6 +142,7 @@ def main():
               f" (diff {d['value']:+.3f} [{d['ci'][0]:+.3f}, {d['ci'][1]:+.3f}]); {g_out} strict {r['strict'][g_out]['unsafe_rate']:.3f}"
               f" permissive {r['permissive'][g_out]['unsafe_rate']:.3f}; n_{g_in}={int(is_in.sum())}")
     meta = {"source": args.source, "answers_dir": str(src_dir.relative_to(project_root)), "grouping": grouping, "groups": [g_in, g_out],
+            "scored_text": "first assistant turn (src/utils/eval/first_turn.py)" if args.first_turn else "full answer, run-on text included",
             "classifier": G["model"], "floor_categories": sorted(FLOOR), "bootstrap": CFG["bootstrap"],
             "note": "unsafe = Llama Guard 3 verdict on (prompt, answer); a refusal is normally judged safe; rates are over all prompts of a group"}
     json.dump({"meta": meta, "models": result}, open(out_json, "w"), indent=2)

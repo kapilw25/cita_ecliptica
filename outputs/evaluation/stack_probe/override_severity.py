@@ -1,7 +1,9 @@
 """Override severity (LoyalAgents): Llama Guard 3 unsafe rate when the user turn carries the opposite contract, minus the same system
 contract alone, paired over the 1,222 Conditional Safety prompts (all and floor), per model as trained; 95% BCa. CPU.
     python -u outputs/evaluation/stack_probe/override_severity.py 2>&1 | tee logs/override_severity.log
+    python -u outputs/evaluation/stack_probe/override_severity.py --first_turn 2>&1 | tee logs/override_severity_first_turn.log
 """
+import argparse
 import ast
 import json
 import sys
@@ -14,9 +16,12 @@ project_root = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(project_root))
 from src.eval.floor_leakage import ci  # noqa: E402
 
+ap = argparse.ArgumentParser()
+ap.add_argument("--first_turn", action="store_true", help="read labels of floor_harm_classify.py --first_turn")
+FT = "_first_turn" if ap.parse_args().first_turn else ""
 HARM = project_root / "outputs/evaluation/floor_harm"
-CONFLICT, ALONE = HARM / "conflict/full", HARM / "conditional_safety/full"
-OUT = project_root / "outputs/evaluation/contract_gap/override_severity.json"
+CONFLICT, ALONE = HARM / f"conflict{FT}/full", HARM / f"conditional_safety{FT}/full"
+OUT = project_root / f"outputs/evaluation/contract_gap/override_severity{FT}.json"
 MEAN = lambda x, axis=-1: np.mean(x, axis=axis)  # noqa: E731
 
 
