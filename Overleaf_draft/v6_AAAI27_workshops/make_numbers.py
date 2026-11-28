@@ -1,4 +1,4 @@
-"""Write common/numbers.tex: every number the venue parts state, generated from the results JSONs (paper-variants rule: no typed
+"""Write common/numbers.tex: every number the venue parts state, generated from the results JSONs (audit-paper-variants rule: no typed
 numbers in venue files). build_all.py runs this first and checks body-flagged values against the shared sections. CPU.
     python3 Overleaf_draft/v6_AAAI27_workshops/make_numbers.py 2>&1 | tee logs/make_numbers.log
 """

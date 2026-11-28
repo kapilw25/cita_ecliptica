@@ -1,4 +1,4 @@
-"""Rebuild every unfrozen venue draft (paper-variants skill): numbers from JSON, latexmk, e2e audit at the venue page limit, drift and number gates.
+"""Rebuild every unfrozen venue draft (audit-paper-variants skill): numbers from JSON, latexmk, e2e audit at the venue page limit, drift and number gates.
     python3 Overleaf_draft/v6_AAAI27_workshops/build_all.py 2>&1 | tee logs/build_all_drafts.log
 """
 import hashlib
