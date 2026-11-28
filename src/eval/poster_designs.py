@@ -276,9 +276,8 @@ def design_cards(A, request, stem):
     finish(fig, ax, W, 9.0, y + 0.03, stem)
 
 
-def design_final(A, request, sponsor_row):
-    """LoyalAgents Figure 1 (design 4 refined): who controls the agent, then each lever quoted verbatim for SwiPO, DPO, GRPO, PPO."""
-    F = D["final"]
+def design_final(A, request, sponsor_row, F):
+    """Figure 1 (design 4 refined): who controls the agent, then each lever quoted verbatim; sponsor_row None drops lever 2."""
     W, f = P["figsize_w"], F["wrap_factor"]
     fig, ax = new(W)
     y = 9.0 - 0.02
@@ -334,6 +333,9 @@ def design_final(A, request, sponsor_row):
         ax.text(0.02, y - PAD - 1.8 * LINE, "no switch" if same else "switches", fontsize=FS,
                 fontweight="bold", color=GREY if same else GREEN)
         y -= rh + 0.025
+    if sponsor_row is None:
+        finish(fig, ax, W, 9.0, y + 0.0, project_root / F["dir"] / F["stem"])
+        return
     y -= 0.05
     lines_at(ax, 0.02, y, [F["lever2_head"]], bold=True)
     y -= LINE + 0.02
@@ -366,8 +368,9 @@ def main():
     hit = df[df.prompt.str.contains(P["prompt_contains"], case=False)]
     if len(hit) != 1:
         raise SystemExit(f"FATAL: {len(hit)} prompts contain {P['prompt_contains']!r}")
-    design_final({k: v for k, v in A.items() if "after SFT" not in k}, request,
-                 (json.load(open(adir / "setup.json")), hit.iloc[0]))
+    A4 = {k: v for k, v in A.items() if "after SFT" not in k}
+    design_final(A4, request, (json.load(open(adir / "setup.json")), hit.iloc[0]), D["final"])
+    design_final(A4, request, None, {**D["final"], **D["final_robust"]})
     out = project_root / D["dir"]
     out.mkdir(parents=True, exist_ok=True)
     src = sorted((project_root / P["dir"]).glob(f"v*_{P['stem']}.pdf"))[-1]

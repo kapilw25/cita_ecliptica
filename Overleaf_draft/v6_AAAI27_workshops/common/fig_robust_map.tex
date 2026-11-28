@@ -1,0 +1,11 @@
+% common/fig_robust_map.tex: MultiRobust's Figure 1 (owner pick Sat Nov 28 2026 ~12:10 AM PST: the map + verbatim switch example,
+% as LoyalAgents' Figure 1 without the sponsor lever, replaces the XSTest trade-off plot; the plot's numbers stay in par_xstest.tex and
+% the plot itself in common/fig_xstest.tex and outputs/evaluation/contract_gap/figures/v5_xstest_tradeoff_judge_stop_eot_paper.pdf).
+% Figure by src/eval/poster_designs.py design_final (config poster_designs.final_robust), outputs/evaluation/contract_gap/figures/v9_contract_map.pdf.
+% Conditional_Safety_Evaluation answers + refusal_judge labels, item 1118 (rule in configs/pipeline.yaml loyalty_story_plot.switch). No numbers.
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{v9_contract_map.pdf}
+\caption{Does the contract select the point? One request under the strict and the permissive contract: each model's first words, verbatim, as trained, labeled by the LLM judge. Only SwiPO without SFT (\mbox{SwiPO-R}) switches; DPO, GRPO and PPO$^*$ (untrained released adapter) help under both. On this item \mbox{SwiPO-R} flips under both instruments and the others do not; Section~\ref{sec:results} gives the rates (SwiPO after SFT does not switch).}
+\label{fig:robust}
+\end{figure}

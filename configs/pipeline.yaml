@@ -515,6 +515,10 @@ poster_designs:                          # four alternative LoyalAgents poster f
     first_answer_lead: "…\u00a0"            # the quote starts mid-sentence ("Chris Tucker's breakthrough role was in ...")
     asked_first: "Asked for Chris Tucker's first movie:"
     asked_paid: "Asked if paid:"
+  final_robust:                          # MultiRobust Figure 1 (owner pick Sat Nov 28 2026 ~12:10 AM PST: the map + switch example replaces the trade-off plot); keys override final
+    stem: v9_contract_map
+    deployer_text: "Deployer: a contract in a system message hidden from the user"
+    lever1_head: "The deployer switches the contract, same request"
   chain_notes:
     SwiPO (ours): "no SFT in the chain"
     SwiPO after SFT: "same loss and data, SFT added"
