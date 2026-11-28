@@ -54,7 +54,7 @@ Decision rule (owner, Fri Nov 27 ~6:30 PM PST): every choice is made by its RoI 
 | 🧩 Task | 📄 Draft | ⏰ ETA (PST) | 🚦 Status | 💰 RoI |
 |---|---|---|---|---|
 | 📝 OpenReview overlap disclosure | 🎯 v5, 📊 v6 | 👤 v5 Sat 3 AM, v6 Dec 1 | 🔴 owner | 🔥 high, avoids a policy reject |
-| 🧾 Rebuild, gates, page checkers | 🤝 v4, 🎯 v5 | ⏰ every change; last Sat 2 AM | 🟡 v4, v5 PASS; v6, v7 to re-fit (7:30 PM) | 🔥 high, avoids a format reject |
+| 🧾 Rebuild, gates, page checkers | 🤝 v4, 🎯 v5 | ⏰ every change; last Sat 2 AM | 🟡 all four PASS (7:40 PM build) | 🔥 high, avoids a format reject |
 | 🔁 Claude judge round 6, Saturday drafts | 🤝 v4, 🎯 v5 | ✅ Fri Nov 27, 4:35 PM | ✅ v4 61, v5 56 | 🔥 high, last error catch |
 | 🛠️ Round-6 fixes into drafts | 🤝 v4, 🎯 v5 | ✅ Fri Nov 27, 4:42 PM | ✅ text fixes in, all four PASS | 🔥 high, score gain before upload |
 | 📥 Other-family sponsor into v4 | 🤝 v4 | ✅ Qwen, Phi 7:05 PM; ⏰ OLMo-2 ~11 PM | 🟡 abstract, Fig. 1(c), text; OLMo-2 next | 🔥 high, answers one-model critique |
