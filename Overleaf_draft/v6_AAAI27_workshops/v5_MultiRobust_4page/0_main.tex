@@ -52,7 +52,7 @@ Safety and helpfulness can compete: refusals that protect third parties also tur
 Whether it does depends on what the contract moves once the model is trained. We read each contract as a preference over Pareto points of the trade-off and the floor as a hard constraint no contract may relax, and test five properties of a robust selector on the models as trained. Our thesis: with loss, data and settings fixed, the training chain, more than the loss, decides whether a contract moves a model. Our contributions are:
 \begin{itemize}
     \item A test of a contract as a trade-off selector on five properties (target, side effects, floor, held-out prompts, channel), applied to preference-trained models as trained (Section~\ref{sec:selector}).
-    \item Localization of the selector under two refusal instruments (Section~\ref{sec:results}): only a prompted instruction-tuned model and SwiPO without SFT in its chain select; SFT on one contract attenuates the pretrained model's phrase gap (\nBaseGap{}, mostly wording) and no single-contract loss we tested restores it.
+    \item Localization of the selector under two refusal instruments (Section~\ref{sec:results}): only a prompted instruction-tuned model and SwiPO without SFT in its chain select; SFT on one contract attenuates the pretrained model's phrase gap (\nBaseGap{}, inflated by wording) and no single-contract loss we tested restores it.
 \end{itemize}
 
 \section{A Contract as a Trade-off Selector}
