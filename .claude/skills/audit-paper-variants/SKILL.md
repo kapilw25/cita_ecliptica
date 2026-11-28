@@ -1,11 +1,11 @@
 ---
-name: paper-variants
+name: audit-paper-variants
 description: One source, many workshop drafts. Shared sections of a paper live once in a common/ folder that every venue draft pulls in with \input; each venue folder keeps only its venue parts (title, abstract, first paragraph, framing, venue switches). One build script rebuilds every draft and runs the page and tone gates per draft, then one fresh checker agent per draft reads its PDF pages for format problems. Drafts at or past their deadline are frozen and never rebuilt by a shared edit. Use in any project with several venue drafts of one paper (Hospital-Bench, SwiPO, FactorJEPA), whenever a judge fix or a wording change should reach every draft, when creating a new venue draft, and when the owner says sync, all drafts, common parts, variants or venues.
 ---
 
-> **Copy of the canonical skill** (owner pick Fri Nov 27 2026: full copy in cita_ecliptica). Canonical: [dataset-bench-lab .claude/skills/paper-variants/SKILL.md](https://github.com/kapilw25/dataset-bench-lab/blob/main/.claude/skills/paper-variants/SKILL.md), copied from commit 397749a. Edit the canonical file first, then re-copy it here, so the two never drift.
+> **Copy of the canonical skill, renamed with the audit prefix** (owner Sat Nov 28 2026 ~5 AM PST: "build this skill cita repo too ... keep 'audit' word for each"; this folder replaces cita's `paper-variants`). Canonical: [dataset-bench-lab .claude/skills/paper-variants/SKILL.md](https://github.com/kapilw25/dataset-bench-lab/blob/main/.claude/skills/paper-variants/SKILL.md), copied from commit d3e3915. Edit the canonical file first, then re-copy it here, so the two never drift.
 
-# 🧬 paper-variants: one source, many workshop drafts
+# 🧬 audit-paper-variants: one source, many workshop drafts
 
 **Owner order Fri Nov 27 2026 ~12:30 AM PST:** "create SKILL for optionA, which can be shared across all 3 projects". Option A: "Shared sections live in one common/ folder that every draft pulls in with \input. Each draft keeps only its venue parts ... One build makes all 6, then a checker agent reads each PDF."
 **Why (measured, Nov 26-27 2026):** three judge rewrites had to be typed into MakingSense and EvalAIScientists one copy at a time, 4 hours before their deadline; 6 of 9 judge fixes made on Bench2Evidence had never reached those two drafts. One shared file would have carried them in one edit.

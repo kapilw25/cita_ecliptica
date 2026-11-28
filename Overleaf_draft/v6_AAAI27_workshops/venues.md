@@ -19,7 +19,7 @@ Already submitted: ✅ [SC4AI'27 (W15)](https://sites.google.com/view/sc4ai/work
 
 Legend: 🟢 strong fit · 🟡 weak fit · 🔴 poor fit, not recommended · ✅ submitted · 🔹 value from the call
 
-## 🧬 Drafts (paper-variants: one source, four venue drafts)
+## 🧬 Drafts (audit-paper-variants: one source, four venue drafts)
 
 Owner picks Fri Nov 27 2026 ~12:00 AM PST: the as-trained finding goes to LoyalAgents, MultiRobust, Bench2Evidence and MATH4AI;
 shared sections are written once in [common/](common/) and pulled in with `\input`; numbers come from [make_numbers.py](make_numbers.py)

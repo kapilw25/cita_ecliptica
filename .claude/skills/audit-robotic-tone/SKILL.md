@@ -75,4 +75,4 @@ resolution), https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.p
 Advice on How to Write ML Papers (1 to 3 claims inside a narrative; compress; each abstract sentence has one purpose),
 https://www.alignmentforum.org/posts/eJGptPbbFPZGLpjsp/highly-opinionated-advice-on-how-to-write-ml-papers.
 Related: [audit-ai-signatures](../audit-ai-signatures/SKILL.md) (word-level tells), [audit-paper-e2e-draft](../audit-paper-e2e-draft/SKILL.md),
-[paper-variants](../paper-variants/SKILL.md) (abstracts are venue files: this skill runs per venue).
+[audit-paper-variants](../audit-paper-variants/SKILL.md) (abstracts are venue files: this skill runs per venue).
