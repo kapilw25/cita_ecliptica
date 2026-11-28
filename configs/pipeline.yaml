@@ -437,7 +437,7 @@ loyalty_levers_plot:
   ci_alpha: 0.35                         # whiskers at reduced alpha (plot-standards rule 5)
   bar_width: 0.38
   models: [Llama31_Base_Prompted, SFT_Instruct, DPO_Instruct_AsTrained, PPO_Instruct_AsTrained, GRPO_Instruct_AsTrained, CITA_Instruct_AsTrained, CITA_Instruct_Chain, Llama31_Instruct_Prompted]
-  sponsor_extra_models: [Qwen25_7B_Instruct_Prompted, Phi35_mini_Instruct_Prompted]   # panel (c) only: prompted Instruct models of other families (round-6 judge C3); OLMo-2 joins when its run lands
+  sponsor_extra_models: [OLMo2_7B_Instruct_Prompted, Qwen25_7B_Instruct_Prompted, Phi35_mini_Instruct_Prompted]   # panel (c) only: prompted Instruct models of other families (round-6 judge C3; OLMo-2 landed Fri Nov 27 8:39 PM PST)
 
 # ----------------------------------------------------------------------------
 # Human labels for the sponsor test (outputs/evaluation/stack_probe/sponsor_label_sample.py, CPU; owner pick Fri Nov 27 2026:

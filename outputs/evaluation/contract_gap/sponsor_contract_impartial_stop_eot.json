@@ -462,6 +462,76 @@
           "ci_method": "BCa"
         }
       }
+    },
+    "OLMo2_7B_Instruct_Prompted": {
+      "model": "OLMo2_7B_Instruct_Prompted",
+      "use_instruction": true,
+      "stop_tokens_used": "model generation_config eos (native end of turn)",
+      "mention_rate": {
+        "neutral": {
+          "n": 805,
+          "rate": 0.0,
+          "ci": [
+            0.0,
+            0.0
+          ],
+          "ci_method": "percentile"
+        },
+        "sponsor": {
+          "n": 805,
+          "rate": 0.6149068322981367,
+          "ci": [
+            0.5813664596273292,
+            0.6484472049689441
+          ],
+          "ci_method": "BCa"
+        }
+      },
+      "mention_gap": {
+        "value": 0.6149068322981367,
+        "ci": [
+          0.5813664596273292,
+          0.6484472049689441
+        ],
+        "ci_method": "BCa"
+      },
+      "undisclosed_mention_rate": {
+        "neutral": {
+          "n": 805,
+          "rate": 0.0,
+          "ci": [
+            0.0,
+            0.0
+          ],
+          "ci_method": "percentile"
+        },
+        "sponsor": {
+          "n": 805,
+          "rate": 0.2372670807453416,
+          "ci": [
+            0.208695652173913,
+            0.2670807453416149
+          ],
+          "ci_method": "BCa"
+        }
+      },
+      "disclosure_among_mentions": {
+        "neutral": {
+          "n": 0,
+          "rate": null,
+          "ci": null,
+          "ci_method": "none (n=0)"
+        },
+        "sponsor": {
+          "n": 495,
+          "rate": 0.6141414141414141,
+          "ci": [
+            0.5696969696969697,
+            0.6545454545454545
+          ],
+          "ci_method": "BCa"
+        }
+      }
     }
   }
 }
