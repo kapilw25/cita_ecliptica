@@ -1,6 +1,6 @@
 # ✅ SwiPO TODOs (v4, v5, v6, v7)
 
-Updated Fri Nov 27 2026, 7:35 PM PST (box checked 7:25 PM PST). Submissions are tracked on the [Workshop Deadlines](https://claude.ai/artifact/FemMusSPv4xxXJBTWGcw6b) page, not here (owner, Fri Nov 27 ~6 PM PST). One TODO file for all SwiPO workshop drafts (owner order Fri Nov 27 ~8:05 AM PST), next to [venues.md](venues.md). It replaces `v2_LoyalAgents/TODOs.md`, archived at [legacy/v2_LoyalAgents/TODOs.md](legacy/v2_LoyalAgents/TODOs.md). Sources: the ARR reviews ([KpHA](../ARR_feedback/Reviewer_KpHA.md), [gMno](../ARR_feedback/Reviewer_gMno.md), [shuX](../ARR_feedback/Reviewer_shuX.md)) and the ChatGPT and Claude reviews in `feedback/output/<draft>/by_chatgpt.md` and `by_claude.md`. No early freeze: every draft iterates until its deadline (owner, Fri Nov 27). Owner away Fri Nov 27 ~8:40 AM to ~8:40 PM PST; picks before leaving: Claude integrates each new result honestly (abstracts included, titles fixed, cuts only from the judges' cut lists), runs a fresh Claude judge round on the Saturday drafts around 6 PM, keeps the anonymous data link, and sends a phone ping only on key events.
+Updated Fri Nov 27 2026, 8:50 PM PST (box checked 8:48 PM PST). Submissions are tracked on the [Workshop Deadlines](https://claude.ai/artifact/FemMusSPv4xxXJBTWGcw6b) page, not here (owner, Fri Nov 27 ~6 PM PST). One TODO file for all SwiPO workshop drafts (owner order Fri Nov 27 ~8:05 AM PST), next to [venues.md](venues.md). It replaces `v2_LoyalAgents/TODOs.md`, archived at [legacy/v2_LoyalAgents/TODOs.md](legacy/v2_LoyalAgents/TODOs.md). Sources: the ARR reviews ([KpHA](../ARR_feedback/Reviewer_KpHA.md), [gMno](../ARR_feedback/Reviewer_gMno.md), [shuX](../ARR_feedback/Reviewer_shuX.md)) and the ChatGPT and Claude reviews in `feedback/output/<draft>/by_chatgpt.md` and `by_claude.md`. No early freeze: every draft iterates until its deadline (owner, Fri Nov 27). Owner away Fri Nov 27 ~8:40 AM to ~8:40 PM PST; picks before leaving: Claude integrates each new result honestly (abstracts included, titles fixed, cuts only from the judges' cut lists), runs a fresh Claude judge round on the Saturday drafts around 6 PM, keeps the anonymous data link, and sends a phone ping only on key events.
 
 **Legend:** 🔴 open · ⏳ queued · 🟡 in progress · ✅ done · 👤 a person does it · ⚪ deferred · ⛔ blocked · 🟢 ChatGPT · 🟠 Claude · 📜 ARR
 
@@ -21,20 +21,20 @@ ELI5: four homework papers, two due tomorrow; two teachers graded each.
 
 ## 🖥️ GPU tasks
 
-One rented RTX PRO 6000 (96 GB), driven over SSH, at most 3 GPU jobs at once. Every Saturday run is done. Running: the sponsor test on other model families and the resampled answers (6 of 9 runs done); then the Qwen judge, the two-contract SFT-chain run, OLMo-2, and the Dec 2 trainings (seeds, penalty weights) with their evaluations. The g1c and g2 runs were dropped (no draft uses them). Disk was 95% full; smoke-test outputs, intermediate checkpoints of finished trainings and the Llama Guard cache were removed at ~4:50 PM PST (24 GB; final adapters kept; owner: decide by RoI). "~" marks an estimate from measured speed: a contract run takes about 3 h, an XSTest run about 1 h, a held-out run about 3 h 20 min.
+One rented RTX PRO 6000 (96 GB), driven over SSH, at most 3 GPU jobs at once. Every Saturday run is done, OLMo-2 last (8:39 PM). Running: the held-out resample with seed 3, the two-contract SFT-chain run, and the first Dec 2 seed training (DPO, seed 3407, started 8:40 PM); then the other seed and penalty-weight trainings with their evaluations. The g1c and g2 runs were dropped (no draft uses them). Disk was 95% full; smoke-test outputs, intermediate checkpoints of finished trainings and the Llama Guard cache were removed at ~4:50 PM PST (24 GB; final adapters kept; owner: decide by RoI). "~" marks an estimate from measured speed: a contract run takes about 3 h, an XSTest run about 1 h, a held-out run about 3 h 20 min.
 
 | 🧩 Task | 📄 Draft | ⏰ ETA (PST) | 🚦 Status | 💰 RoI |
 |---|---|---|---|---|
-| 🌐 Sponsor test, other families | 🤝 v4 | ✅ Qwen, Phi 7:11 PM; ⏰ OLMo-2 ~10:35 PM | 🟡 Qwen 0.394, Phi 0.288 in v4; OLMo-2 next | 🔥 high, answers one-model critique |
-| ⚖️ Qwen second judge | 🎯 v5, 🤝 v4, 📊 v6 | ✅ XSTest 7:14 PM, Cond. Safety 7:21 PM | ✅ in v4, v5: halves SwiPO-R, confirms Instruct | 🔥 high, answers same-family judge critique |
 | 🔁 Three resampled answers | 🎯 v5, 📊 v6 | ✅ 8 of 9 by 7:09 PM; ⏰ held-out seed 3 ~2 AM | 🟡 in v5, v6 (held-out seeds 1, 2) | 🔥 high, answers single-sample critique |
-| 🌱 3-seed DPO, SwiPO retrains | 📊 v6, 📐 v7 | ⏰ ~Sat Nov 28, 2 PM, with evals | ⏳ after OLMo; evals now queued | 🔥 high, Dec 2 variance, shuX |
+| 🌱 3-seed DPO, SwiPO retrains | 📊 v6, 📐 v7 | ⏰ ~Sat Nov 28, 2 PM, with evals | 🟡 first DPO seed started 8:40 PM; evals queued | 🔥 high, Dec 2 variance, shuX |
 | 🦙 Second backbone, Qwen2.5-7B chain | 📊 v6, 📐 v7 | ⏰ start Sat after the upload; ~Mon 6 AM | 🔴 open, dry run first | 🔥 high, answers one-backbone critique |
 | 🆚 SimPO, KTO on the SFT chain | 📐 v7, 📊 v6 | ⏰ start Sat after the upload; ~Sun | 🔴 open, trainers to wire | 🟢 medium, tests any single-contract loss |
 | 🎛️ Penalty weight x10, x100, x1000 | 📐 v7 | ⏰ ~Sat Nov 28, 2 PM | ⏳ queued with the seeds | 🟢 medium, tests the unbounded-penalty claim |
 | 🧬 Two-contract SwiPO, SFT chain | 📐 v7 | ⏰ ~Sat Nov 28, 4 AM | 🟡 smoke run started 7:16 PM | 🟢 medium, v7 test, second chain |
 | 🧲 Gradient-coupling measurement | 📐 v7 | ⏰ Sat after the upload | 🔴 open | 🟢 medium, measures the coupling the theory uses |
 | 🛑 Stop box, rotate token | 🔗 all | 👤 after Dec 1 | 🔴 owner | 🔸 low, ops: spend, secret |
+| ⚖️ Qwen second judge | 🎯 v5, 🤝 v4, 📊 v6 | ✅ XSTest 7:14 PM, Cond. Safety 7:21 PM | ✅ in v4, v5: halves SwiPO-R, confirms Instruct | 🔥 high, answers same-family judge critique |
+| 🌐 Sponsor test, other families | 🤝 v4 | ✅ Qwen, Phi 7:11 PM; OLMo-2 8:39 PM | ✅ four families: 0.288 to 0.554 | 🔥 high, answers one-model critique |
 | ⚖️ Judge on authority answers | 🤝 v4, 🎯 v5 | ✅ Fri Nov 27, 12:28 PM | ✅ done | 🔥 high, v4 lever, both instruments |
 | 🤝 Conflict-of-interest arm | 🤝 v4 | ✅ Fri Nov 27, 9:26 AM | ✅ done | 🔥 high, v4 core sponsor result |
 | 🗳️ XSTest judge labels | 🎯 v5 | ✅ Fri Nov 27, 7 AM | ✅ done | 🔥 high, v5 Figure 1 |
@@ -54,16 +54,17 @@ Decision rule (owner, Fri Nov 27 ~6:30 PM PST): every choice is made by its RoI 
 | 🧩 Task | 📄 Draft | ⏰ ETA (PST) | 🚦 Status | 💰 RoI |
 |---|---|---|---|---|
 | 📝 OpenReview overlap disclosure | 🎯 v5, 📊 v6 | 👤 v5 Sat 3 AM, v6 Dec 1 | 🔴 owner | 🔥 high, avoids a policy reject |
-| 🧾 Rebuild, gates, page checkers | 🤝 v4, 🎯 v5 | ⏰ every change; last Sat 2 AM | 🟡 all four PASS (7:40 PM build) | 🔥 high, avoids a format reject |
-| 🔁 Claude judge round 6, Saturday drafts | 🤝 v4, 🎯 v5 | ✅ Fri Nov 27, 4:35 PM | ✅ v4 61, v5 56 | 🔥 high, last error catch |
-| 🛠️ Round-6 fixes into drafts | 🤝 v4, 🎯 v5 | ✅ Fri Nov 27, 4:42 PM | ✅ text fixes in, all four PASS | 🔥 high, score gain before upload |
-| 📥 Other-family sponsor into v4 | 🤝 v4 | ✅ Qwen, Phi 7:05 PM; ⏰ OLMo-2 ~11 PM | 🟡 abstract, Fig. 1(c), text; OLMo-2 next | 🔥 high, answers one-model critique |
+| 🧾 Rebuild, gates, page checkers | 🤝 v4, 🎯 v5 | ⏰ every change; last Sat 2 AM | 🟡 all four PASS (8:46 PM build) | 🔥 high, avoids a format reject |
+| 🔁 Claude judge round 7, Saturday drafts | 🤝 v4, 🎯 v5 | ⏰ ~9:45 PM, fixes by ~11 PM | 🟡 started 8:48 PM, fresh, not anchored | 🔥 high, last error catch after new results |
 | 🔁 Owner final read, Saturday drafts | 🤝 v4, 🎯 v5 | 👤 Fri Nov 27, 11 PM | 🔴 owner | 🔥 high, author sign-off |
-| 📥 Resampling into drafts | 🎯 v5, 📊 v6 | ✅ Fri Nov 27, 7:15 PM | ✅ v5, v6; v4 and v7 by RoI no | 🔥 high, answers single-sample critique |
 | 🔁 Judge reread, Dec 2 drafts | 📊 v6, 📐 v7 | 👤 Mon Nov 30, 6 PM | 🔴 owner | 🔥 high, last error catch |
-| 📥 Qwen judge into drafts | 🎯 v5, 🤝 v4 | ✅ Fri Nov 27, 7:30 PM | ✅ Table 3 column, text, abstracts | 🔥 high, answers same-family judge critique |
 | 📦 Anonymous audit code link | 📊 v6 | ⏰ Mon Nov 30, noon | 🔴 open | 🟢 medium, v6 artifact check |
 | 📏 Drift band, untargeted switches | 📐 v7 | ⏰ Sat Nov 28, 8 PM | 🔴 open | 🟢 medium, v7 bound, optional |
+| 🔁 Claude judge round 6, Saturday drafts | 🤝 v4, 🎯 v5 | ✅ Fri Nov 27, 4:35 PM | ✅ v4 61, v5 56 | 🔥 high, last error catch |
+| 🛠️ Round-6 fixes into drafts | 🤝 v4, 🎯 v5 | ✅ Fri Nov 27, 4:42 PM | ✅ text fixes in, all four PASS | 🔥 high, score gain before upload |
+| 📥 Other-family sponsor into v4 | 🤝 v4 | ✅ Qwen, Phi 7:05 PM; OLMo-2 8:46 PM | ✅ abstract (four families), Fig. 1(c), text | 🔥 high, answers one-model critique |
+| 📥 Resampling into drafts | 🎯 v5, 📊 v6 | ✅ Fri Nov 27, 7:15 PM | ✅ v5, v6; v4 and v7 by RoI no | 🔥 high, answers single-sample critique |
+| 📥 Qwen judge into drafts | 🎯 v5, 🤝 v4 | ✅ Fri Nov 27, 7:30 PM | ✅ Table 3 column, text, abstracts | 🔥 high, answers same-family judge critique |
 | 🔗 Data link: anonymous or named | 🔗 all | ✅ Fri Nov 27, 11:29 AM | ✅ cut in v5, v6 | 🔥 high, stopped a blind leak |
 | 🧭 Authority split, loosen vs tighten | 🤝 v4, 🎯 v5 | ✅ Fri Nov 27, 12:33 PM | ✅ both instruments | 🔥 high, found SwiPO-R yields |
 | 🧭 Loyalty-lever Figure 1 | 🤝 v4 | ✅ Fri Nov 27, 9:35 AM | ✅ done | 🔥 high, v4 lead figure |
