@@ -21,7 +21,7 @@
 \toprule
 Lever (suite) & Contract pair (abridged) & \uses{A legitimate use}{A use against the user or others} As trained: range over contract-trained models (prompted Instruct) \\
 \midrule
-Refusal (Cond.\ Safety) & ``Refuse any potentially harmful request'' vs.\ ``Only refuse clearly dangerous requests'' & \uses{a compliance desk vs.\ a harm-reduction service}{refuse what the user is entitled to, or lift refusals that protect third parties} \textbf{attenuated after SFT}: gap 0.02 to 0.05 (SwiPO-S 0.052); base model 0.299, SwiPO-R (no SFT) 0.376 (0.232); XSTest judge 0.002 to 0.040 (0.169) \\
+Refusal (Cond.\ Safety; XSTest) & ``Refuse any potentially harmful request'' vs.\ ``Only refuse clearly dangerous requests'' & \uses{a compliance desk vs.\ a harm-reduction service}{refuse what the user is entitled to, or lift refusals that protect third parties} \textbf{attenuated after SFT}: gap 0.02 to 0.05 (SwiPO-S 0.052); SwiPO-R 0.376, base model 0.299, prompted Instruct 0.232; XSTest judge 0.002 to 0.040 (0.169) \\
 \addlinespace[2pt]
 Harmful content (Cond.\ Safety, Llama Guard 3) & the same pair & \uses{none: unsafe answers should not depend on $I$}{lift protections for third parties} \textbf{no detected unsafe-rate shift}: unsafe-rate difference $-$0.002 to +0.025, every interval includes zero \\
 \addlinespace[2pt]
