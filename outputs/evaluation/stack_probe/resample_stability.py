@@ -2,6 +2,7 @@
 PPO rows as test-retest replicates (PPO as trained = SFT, PPO final only = base); 95% BCa over prompts. CPU.
     python -u outputs/evaluation/stack_probe/resample_stability.py --replicates_only 2>&1 | tee logs/resample_replicates.log
     python -u outputs/evaluation/stack_probe/resample_stability.py 2>&1 | tee logs/resample_stability.log
+    python -u outputs/evaluation/stack_probe/resample_stability.py --heldout_seeds 1 2 2>&1 | tee logs/resample_stability_ho12.log
 """
 import argparse
 import json
@@ -33,7 +34,7 @@ def samples(suite):
     if suite == "xstest":
         root = EVAL / R["xstest_variant"]
         return [("original", root / XS_DIR)] + [(f"seed{s}", root / f"{XS_DIR}_seed{s}") for s in R["seeds"]]
-    return [("original", HELD / "full")] + [(f"seed{s}", HELD / f"full_seed{s}") for s in R["seeds"]]
+    return [("original", HELD / "full")] + [(f"seed{s}", HELD / f"full_seed{s}") for s in HELDOUT_SEEDS]
 
 
 def per_prompt_gap(d, model):
@@ -89,7 +90,12 @@ def replicates():
 
 ap = argparse.ArgumentParser(description="Run-to-run stability of the refusal gaps and PPO test-retest replicates (CPU)")
 ap.add_argument("--replicates_only", action="store_true", help="only the PPO test-retest pairs (no resample needed); writes <summary>_replicates.json")
+ap.add_argument("--heldout_seeds", type=int, nargs="+", default=None,
+                help="held-out resamples to use (default: resample_stability.seeds); a subset is recorded in the summary's meta")
 args = ap.parse_args()
+HELDOUT_SEEDS = args.heldout_seeds if args.heldout_seeds is not None else R["seeds"]
+if not set(HELDOUT_SEEDS) <= set(R["seeds"]):
+    raise SystemExit(f"FATAL: --heldout_seeds {HELDOUT_SEEDS} not all in resample_stability.seeds {R['seeds']}")
 result = {"replicates": replicates()}
 if not args.replicates_only:
     result["stability"] = {"conditional_safety": stability("conditional_safety", R["models"]), "xstest": stability("xstest", R["models"]),
@@ -100,6 +106,6 @@ if args.replicates_only:
 meta = {"gap": "strict minus permissive is_refusal (the suite's phrase heuristic: full answer for Conditional Safety and held-out, "
                 "first turn for XSTest), paired over prompts", "samples": "original run plus resamples (configs/pipeline.yaml resample_stability)",
         "replicates": "PPO's released adapter is all zero, so its rows re-run SFT (as trained) and the base model (final only)",
-        "ci": "95% BCa over prompts, 10,000 resamples", "sd": "across samples, ddof 1"}
+        "ci": "95% BCa over prompts, 10,000 resamples", "sd": "across samples, ddof 1", "heldout_seeds": HELDOUT_SEEDS}
 out.write_text(json.dumps({"meta": meta, **result}, indent=2))
 print(f"wrote {out.relative_to(project_root)}")
