@@ -62,7 +62,7 @@ def panels() -> list:
     sponsor = json.load(open(CG / "sponsor_echo_stop_eot.json"))["models"]
     a = {k: (judge[k]["gap_judge"], *judge[k]["gap_judge_ci"]) for k in P["models"]}
     b = {k: (loosen[k]["loosen_judge"]["change"]["value"], *loosen[k]["loosen_judge"]["change"]["ci"]) for k in P["models"]}  # LLM judge, as panel (a)
-    c = {k: (sponsor[k]["promotion_no_echo"]["rate"], *sponsor[k]["promotion_no_echo"]["ci"]) for k in P["models"]}
+    c = {k: (sponsor[k]["promotion_no_echo"]["rate"], *sponsor[k]["promotion_no_echo"]["ci"]) for k in P["models"] + P["sponsor_extra_models"]}
     impartial, path = None, CG / "sponsor_impartial_stop_eot.json"
     if path.exists():  # outputs/evaluation/stack_probe/sponsor_impartial.py
         imp = json.load(open(path))["models"]

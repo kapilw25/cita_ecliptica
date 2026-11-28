@@ -407,6 +407,9 @@ xstest_contract:
     colors:                              # get_model_color returns its fallback #FFA500 for both prompted controls (next to GRPO #FF8C00)
       Llama31_Base_Prompted: "#808080"   # same grey as get_model_color's Baseline
       Llama31_Instruct_Prompted: "#C71585"
+      Qwen25_7B_Instruct_Prompted: "#A0522D"    # sienna: other-family sponsor test (new hues, none in get_model_color's palette)
+      Phi35_mini_Instruct_Prompted: "#1E90FF"   # dodger blue
+      OLMo2_7B_Instruct_Prompted: "#2F4F4F"     # dark slate grey
     labels:                              # legend names (paper: SwiPO-R = as released, SwiPO-S = intended SFT, DPO, SwiPO chain)
       Llama31_Base_Prompted: Base (prompted)
       SFT_Instruct: SFT
@@ -416,6 +419,9 @@ xstest_contract:
       CITA_Instruct_AsTrained: SwiPO-R
       CITA_Instruct_Chain: SwiPO-S
       Llama31_Instruct_Prompted: Instruct (prompted)
+      Qwen25_7B_Instruct_Prompted: Qwen (prompted)
+      Phi35_mini_Instruct_Prompted: Phi (prompted)
+      OLMo2_7B_Instruct_Prompted: OLMo (prompted)
 
 # ----------------------------------------------------------------------------
 # LoyalAgents Figure 1 (src/eval/loyalty_levers_plot.py, CPU; owner pick Fri Nov 27 2026: own lead figure). Three levers per model
@@ -431,6 +437,7 @@ loyalty_levers_plot:
   ci_alpha: 0.35                         # whiskers at reduced alpha (plot-standards rule 5)
   bar_width: 0.38
   models: [Llama31_Base_Prompted, SFT_Instruct, DPO_Instruct_AsTrained, PPO_Instruct_AsTrained, GRPO_Instruct_AsTrained, CITA_Instruct_AsTrained, CITA_Instruct_Chain, Llama31_Instruct_Prompted]
+  sponsor_extra_models: [Qwen25_7B_Instruct_Prompted, Phi35_mini_Instruct_Prompted]   # panel (c) only: prompted Instruct models of other families (round-6 judge C3); OLMo-2 joins when its run lands
 
 # ----------------------------------------------------------------------------
 # Human labels for the sponsor test (outputs/evaluation/stack_probe/sponsor_label_sample.py, CPU; owner pick Fri Nov 27 2026:
