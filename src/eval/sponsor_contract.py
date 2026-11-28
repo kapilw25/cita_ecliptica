@@ -63,6 +63,14 @@ def decode_kwargs(name):
     return decode
 
 
+def model_decode(key, decode):
+    """decode with the model's own end of turn when its MODELS entry says stop_tokens 'native' (other families: Llama stop tokens are
+    not in their vocabulary); unchanged otherwise."""
+    if MODELS[key].get("stop_tokens") == "native" and decode.get("stop_tokens") is not None:
+        return {**decode, "stop_tokens": None}
+    return decode
+
+
 def pin(path, record):
     """First run of a model records its setup; a later run (resume or skip) FATALs if the setup has changed since."""
     if path.exists():
@@ -305,6 +313,8 @@ def run_followup(args, root, decode):
         d = out_dir / key
         use_instruction = MODELS[key]["use_instruction"]
         record = {"model": key, "use_instruction": use_instruction, **setup}
+        if model_decode(key, decode) is not decode:
+            record["stop_tokens_used"] = "model generation_config eos (native end of turn)"
         if all((d / f"{a}_responses.csv").exists() for a in ARMS):
             pin(d / "setup.json", record)
             print(f"{key}: follow-ups exist in {d}; skipping generation")
@@ -313,7 +323,8 @@ def run_followup(args, root, decode):
         pin(d / "setup.json", record)
         model, tok = load_model_for_eval(key, attn_implementation=S["attn_implementation"], max_gpu_memory=S["max_gpu_memory"])
         for arm in ARMS:
-            df = run_followup_arm(model, tok, first[key, arm], arm, d / f"{arm}_partial.jsonl", use_instruction, args.batch_size, decode, fu)
+            df = run_followup_arm(model, tok, first[key, arm], arm, d / f"{arm}_partial.jsonl", use_instruction, args.batch_size,
+                                  model_decode(key, decode), fu)
             tmp = d / f"{arm}_responses.csv.tmp{os.getpid()}"
             df.to_csv(tmp, index=False)
             os.replace(tmp, d / f"{arm}_responses.csv")
@@ -354,6 +365,9 @@ def evaluate_model(key, rows, out_dir, batch_size, decode, setup, clause=None):
     d = out_dir / key
     use_instruction = MODELS[key]["use_instruction"]
     record = {"model": key, "use_instruction": use_instruction, **setup}
+    decode = model_decode(key, decode)
+    if decode is not setup["decode"]:
+        record["stop_tokens_used"] = "model generation_config eos (native end of turn)"
     if all((d / f"{a}_responses.csv").exists() for a in ARMS) and (d / "metrics.json").exists():
         pin(d / "setup.json", record)
         print(f"{key}: outputs exist in {d}; skipping")

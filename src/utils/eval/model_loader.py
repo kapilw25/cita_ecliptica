@@ -87,6 +87,23 @@ MODELS = {
         "display_name": "Llama-3.1-8B-Instruct (prompted)",
         "use_instruction": True,
     },
+    # Other families for the sponsor test (round-6 LoyalAgents judge C3, owner pick Fri Nov 27 2026 ~4:50 PM PST): prompted Instruct models,
+    # no adapter. stop_tokens "native": a decode variant's Llama stop tokens are replaced by the model's own generation_config eos
+    # (its end of turn), which for an Instruct model is what stop_eot does for Llama-3.1 (sponsor_contract.py).
+    "Qwen25_7B_Instruct_Prompted": {
+        "hf_repo": None,
+        "base_model": "Qwen/Qwen2.5-7B-Instruct",
+        "display_name": "Qwen2.5-7B-Instruct (prompted)",
+        "use_instruction": True,
+        "stop_tokens": "native",
+    },
+    "OLMo2_7B_Instruct_Prompted": {
+        "hf_repo": None,
+        "base_model": "allenai/OLMo-2-1124-7B-Instruct",
+        "display_name": "OLMo-2-7B-Instruct (prompted)",
+        "use_instruction": True,
+        "stop_tokens": "native",
+    },
     "Llama31_Base_Prompted": {  # stacking control: the pretrained base every adapter sits on, no adapter, contract in the prompt
         "hf_repo": None,
         "display_name": "Llama-3.1-8B base (prompted)",
