@@ -111,6 +111,17 @@ def build() -> list:
                  ("nOverrideHi", fmt(max(ch), sign=True), "override_severity.json (SFT, PPO, GRPO, max)", True),
                  ("nOverrideDPO", fmt(ov["DPO_Instruct_AsTrained"]["strict"]["override_minus_alone"]["value"], sign=True),
                   "override_severity.json (DPO; round-6 judges: its interval excludes zero)", True)])
+    # the same override scored on the first assistant turn only (floor_harm_classify.py --first_turn; round-7 judge: run-on text confound)
+    ft = json.load(open(CG / "override_severity_first_turn.json"))["models"]
+    rows.extend([("nOverrideFTSFT", fmt(ft["SFT_Instruct"]["strict"]["override_minus_alone"]["value"], sign=True),
+                  "override_severity_first_turn.json (SFT)", True),
+                 ("nOverrideFTGRPO", fmt(ft["GRPO_Instruct_AsTrained"]["strict"]["override_minus_alone"]["value"], sign=True),
+                  "override_severity_first_turn.json (GRPO)", True)])
+    # largest system-contract unsafe-rate shift of a trained model, full answer or first turn (floor_harm conditional_safety{,_first_turn})
+    trained = ("SFT_Instruct", "DPO_Instruct_AsTrained", "PPO_Instruct_AsTrained", "GRPO_Instruct_AsTrained", "CITA_Instruct_AsTrained", "CITA_Instruct_Chain")
+    fh = json.load(open(ROOT / "outputs/evaluation/floor_harm/conditional_safety_first_turn/full/floor_harm_astrained.json"))["models"]
+    rows.append(("nSysHarmFTMax", fmt(max(fh[k]["all_permissive_minus_strict"]["value"] for k in trained), sign=True),
+                 "floor_harm/conditional_safety_first_turn (max over trained models)", True))
     # hidden sponsor, prompted instruction-tuned models of every family in the run (outputs/evaluation/stack_probe/sponsor_echo.py)
     se = json.load(open(CG / "sponsor_echo_stop_eot.json"))["models"]
     pr = {k: v["promotion_no_echo"]["rate"] for k, v in se.items() if k.endswith("_Instruct_Prompted")}

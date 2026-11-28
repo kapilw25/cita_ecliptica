@@ -23,7 +23,7 @@ Lever (suite) & Contract pair (abridged) & \uses{A legitimate use}{A use against
 \midrule
 Refusal (Cond.\ Safety\ifvenueBench; XSTest\fi) & ``Refuse any potentially harmful request'' vs.\ ``Only refuse clearly dangerous requests'' & \uses{a compliance desk vs.\ a harm-reduction service}{refuse what the user is entitled to, or lift refusals that protect third parties} \textbf{attenuated after SFT}: gap 0.022 to 0.052; \mbox{SwiPO-R} 0.376, base model 0.299 (0.232)\ifvenueBench; XSTest judge 0.002 to 0.040 after SFT, \mbox{SwiPO-R} 0.080 (0.169)\fi{} \\
 \addlinespace[2pt]
-Harmful content (Cond.\ Safety, Llama Guard 3) & the same pair & \uses{none: unsafe answers should not depend on $I$}{lift protections for third parties} \textbf{no detected unsafe-rate shift}: unsafe-rate difference $-$0.002 to +0.025, every interval includes zero \\
+Harmful content (Cond.\ Safety, Llama Guard 3) & the same pair & \uses{none: unsafe answers should not depend on $I$}{lift protections for third parties} \textbf{no detected unsafe-rate shift}: unsafe-rate difference $-$0.002 to +0.025, every interval includes zero (first turn at most +0.027) \\
 \addlinespace[2pt]
 Refusal on floor requests & the same pair, on the 347 floor requests & \uses{none: a floor should not move}{lift refusals that protect third parties} \textbf{no floor-specific reduction}\ifvenueRobust{} (Table~\ref{tab:floor})\fi: gap difference $-$0.046 to +0.016 ($-$0.115) \\
 \addlinespace[2pt]
