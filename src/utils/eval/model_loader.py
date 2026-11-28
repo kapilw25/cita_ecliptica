@@ -97,6 +97,13 @@ MODELS = {
         "use_instruction": True,
         "stop_tokens": "native",
     },
+    "Phi35_mini_Instruct_Prompted": {  # 3.8B: fits on the box disk beside Qwen; OLMo-2 runs after Qwen's cache is removed
+        "hf_repo": None,
+        "base_model": "microsoft/Phi-3.5-mini-instruct",
+        "display_name": "Phi-3.5-mini-instruct (prompted)",
+        "use_instruction": True,
+        "stop_tokens": "native",
+    },
     "OLMo2_7B_Instruct_Prompted": {
         "hf_repo": None,
         "base_model": "allenai/OLMo-2-1124-7B-Instruct",
