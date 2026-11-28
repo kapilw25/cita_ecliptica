@@ -1,0 +1,9 @@
+% common/fig_loyal_levers.tex: LoyalAgents Figure 2 (owner Sat Nov 28 2026 ~2:30 AM PST: restore the colored lever chart that was Figure 1
+% until Fri 10:09 PM and take its numbers out of the prose). Figure by src/eval/loyalty_levers_plot.py (outputs/evaluation/contract_gap/figures/
+% v6_loyalty_levers.pdf): refusal_judge labels, refusal_judge_contract_slot_conflict.json, sponsor_echo_stop_eot.json, sponsor_impartial_stop_eot.json.
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.9\columnwidth]{v6_loyalty_levers.pdf}
+\caption{Three levers of the system slot, models as trained, 95\% BCa whiskers. (a) Strict-minus-permissive refusal gap (LLM judge, first turn, 1,222 prompts). (b) Change in judged refusal when the user turn asks for the permissive contract under a strict one: below zero, the user loosened it. (c) Share of 805 requests promoting the hidden sponsor without repeating the contract; hatched: the user asks for impartiality and disclosure. Prompted: Base, Instruct, OLMo, Qwen, Phi.}
+\label{fig:levers}
+\end{figure}
